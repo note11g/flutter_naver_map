@@ -25,7 +25,7 @@ dependencies:
 
 ## 시작하기(Android)
 
-###1. 권한 선언 및 Client ID 설정
+### 1. 권한 선언 및 Client ID 설정
 
 `[프로젝트 폴더]/android/app/src/AndroidManifest.xml`에
 
@@ -54,7 +54,7 @@ _권한 선언은 네이버 맵에서 현 위치 탐색 기능을 사용할 때�
 </manifest>
 ```
   
-###2. 참고사항 (Android)
+### 2. 참고사항 (Android)
 네이버 Map SDK의 경우 안드로이드에서 지도를 표시하기 위해 기본값으로 GLSurfaceView를 사용합니다.
 하지만, flutter에서 Hot Reload 기능을 사용할 경우, 네이버 Map SDK의 binary에서 정확하지 않은 이유로 Crash가 발생합니다.
 
@@ -78,7 +78,7 @@ NaverMap(
 
 ## 시작하기(iOS)
 
-###1. 라이브러리 의존성을 위한 설정
+### 1. 라이브러리 의존성을 위한 설정
 대용량 파일을 받기 위해 [git-lfs](https://git-lfs.github.com/) 설치가 필요합니다.
 터미널을 열고, 다음 커맨드를 실행해주세요.
 
@@ -90,7 +90,7 @@ lfs 사용 설정이 안될 경우 Pod를 통한 dependency가 다운로드 되�
 
 `$ git lfs install`
 
-###2. 권한 선언 및 Client ID 설정
+### 2. 권한 선언 및 Client ID 설정
 `[프로젝트 폴더]/ios/Runner/Info.plist`에
 
 다음과 같이 **네이버 맵 SDK의 Client ID**를 넣습니다.
