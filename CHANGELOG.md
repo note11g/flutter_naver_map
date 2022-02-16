@@ -7,3 +7,7 @@
 
 ## 0.10.1
 - fix iOS podspec issue
+
+## 0.10.1-hotfix.1
+- fix async camera moving issue on Android
+- change to kotlin code style (Android Native)

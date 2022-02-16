@@ -221,14 +221,12 @@ class NaverMapController(
                 if (::naverMap.isInitialized) {
                     val update = methodCall.argument<Map<String, Any>>("cameraUpdate")!!
                         .toCameraUpdate(density)
+                    update.run {
+                        val isAnimate = methodCall.argument<Boolean>("animation") ?: true
+                        if (isAnimate) animate(CameraAnimation.Easing)
 
-                    val isAnimate = methodCall.argument<Boolean>("animation") ?: true
-                    if(isAnimate) update.animate(CameraAnimation.Easing)
-                    update.finishCallback{
-                        result.success(null)
-                    }
-                    update.cancelCallback{
-                        result.success(null)
+                        finishCallback { result.success(null) }
+                        cancelCallback { result.success(null) }
                     }
                     naverMap.moveCamera(update)
                 } else result.error(
@@ -461,7 +459,7 @@ class NaverMapController(
         naverMap.symbolPerspectiveRatio = symbolPerspectiveRatio.toFloat()
     }
 
-    override fun setActiveLayers(activeLayers: List<Any?>?) {
+    override fun setActiveLayers(activeLayers: List<Int>?) {
         naverMap.run {
             setLayerGroupEnabled(NaverMap.LAYER_GROUP_BUILDING, false)
             setLayerGroupEnabled(NaverMap.LAYER_GROUP_TRAFFIC, false)
@@ -472,7 +470,7 @@ class NaverMapController(
         }
         if (activeLayers != null) {
             for (i in activeLayers.indices) {
-                when (activeLayers[i] as Int) {
+                when (activeLayers[i]) {
                     0 -> naverMap.setLayerGroupEnabled(NaverMap.LAYER_GROUP_BUILDING, true)
                     1 -> naverMap.setLayerGroupEnabled(NaverMap.LAYER_GROUP_TRAFFIC, true)
                     2 -> naverMap.setLayerGroupEnabled(NaverMap.LAYER_GROUP_TRANSIT, true)

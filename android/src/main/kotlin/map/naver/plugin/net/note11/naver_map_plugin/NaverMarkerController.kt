@@ -93,7 +93,8 @@ class NaverMarkerController(
             val captionText = json["captionText"]
             if (captionText != null) marker.captionText = (captionText as String?)!!
             val captionTextSize = json["captionTextSize"]
-            if (captionTextSize != null) marker.captionTextSize = (captionTextSize as Double).toFloat()
+            if (captionTextSize != null) marker.captionTextSize =
+                (captionTextSize as Double).toFloat()
             val captionColor = json["captionColor"]
             if (captionColor != null) marker.captionColor = toColorInt(captionColor)
             val captionHaloColor = json["captionHaloColor"]
@@ -132,7 +133,8 @@ class NaverMarkerController(
             val subCaptionText = json["subCaptionText"]
             if (subCaptionText != null) marker.subCaptionText = (subCaptionText as String?)!!
             val subCaptionTextSize = json["subCaptionTextSize"]
-            if (subCaptionTextSize != null) marker.subCaptionTextSize = (subCaptionTextSize as Double).toFloat()
+            if (subCaptionTextSize != null) marker.subCaptionTextSize =
+                (subCaptionTextSize as Double).toFloat()
             val subCaptionColor = json["subCaptionColor"]
             if (subCaptionColor != null) marker.subCaptionColor = toColorInt(subCaptionColor)
             val subCaptionHaloColor = json["subCaptionHaloColor"]

@@ -58,8 +58,7 @@ class NaverCircleController(
         }
     }
 
-    internal inner class CircleController(json: HashMap<String, Any>) {
-        @JvmField
+    inner class CircleController(json: HashMap<String, Any>) {
         val id: String = json["overlayId"] as String
         private val circle: CircleOverlay = CircleOverlay()
 

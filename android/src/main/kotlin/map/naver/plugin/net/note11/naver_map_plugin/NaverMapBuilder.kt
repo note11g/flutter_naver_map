@@ -35,10 +35,11 @@ class NaverMapBuilder : NaverMapOptionSink {
             initialPaths!!,
             initialCircles!!,
             initialPolygon!!
-        )
-        controller.init()
-        controller.setLocationTrackingMode(locationTrackingMode)
-        controller.setContentPadding(paddingData)
+        ).apply {
+            init()
+            setLocationTrackingMode(locationTrackingMode)
+            setContentPadding(paddingData)
+        }
         return controller
     }
 
@@ -78,15 +79,15 @@ class NaverMapBuilder : NaverMapOptionSink {
         options.symbolPerspectiveRatio(symbolPerspectiveRatio.toFloat())
     }
 
-    override fun setActiveLayers(activeLayers: List<Any?>?) {
+    override fun setActiveLayers(activeLayers: List<Int>?) {
         if (activeLayers.isNullOrEmpty()) return
         // 0~5까지의 길이 6개인 리스트 생성 (전체 레이어 타입들.)
-        val initList = ArrayList<Int>()
+        val initList = mutableListOf<Int>()
         for (i in 0..5) initList.add(i)
 
         // 받은 리스트에 있는 것들을 활성화후 initList 에서 제거
         for (i in activeLayers.indices) {
-            val index = activeLayers[i] as Int
+            val index = activeLayers[i]
             if (initList.contains(index)) initList.remove(Integer.valueOf(index))
             when (index) {
                 0 -> options.enabledLayerGroups(NaverMap.LAYER_GROUP_BUILDING)

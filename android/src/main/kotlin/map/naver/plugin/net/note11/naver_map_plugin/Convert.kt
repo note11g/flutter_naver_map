@@ -12,25 +12,33 @@ import java.util.*
 import kotlin.math.roundToInt
 
 object Convert {
-    fun carveMapOptions(sink: NaverMapOptionSink, options: Map<String, Any>) {
-        if (options.containsKey("mapType")) sink.setMapType((options["mapType"] as Int))
-        if (options.containsKey("liteModeEnable")) sink.setLiteModeEnable((options["liteModeEnable"] as Boolean))
-        if (options.containsKey("nightModeEnable")) sink.setNightModeEnable((options["nightModeEnable"] as Boolean))
-        if (options.containsKey("indoorEnable")) sink.setIndoorEnable((options["indoorEnable"] as Boolean))
-        if (options.containsKey("buildingHeight")) sink.setBuildingHeight((options["buildingHeight"] as Double))
-        if (options.containsKey("symbolScale")) sink.setSymbolScale((options["symbolScale"] as Double))
-        if (options.containsKey("symbolPerspectiveRatio")) sink.setSymbolPerspectiveRatio((options["symbolPerspectiveRatio"] as Double))
-        if (options.containsKey("activeLayers")) sink.setActiveLayers(options["activeLayers"] as List<Any?>)
-        if (options.containsKey("locationButtonEnable")) sink.setLocationButtonEnable((options["locationButtonEnable"] as Boolean))
-        if (options.containsKey("scrollGestureEnable")) sink.setScrollGestureEnable((options["scrollGestureEnable"] as Boolean))
-        if (options.containsKey("zoomGestureEnable")) sink.setZoomGestureEnable((options["zoomGestureEnable"] as Boolean))
-        if (options.containsKey("rotationGestureEnable")) sink.setRotationGestureEnable((options["rotationGestureEnable"] as Boolean))
-        if (options.containsKey("tiltGestureEnable")) sink.setTiltGestureEnable((options["tiltGestureEnable"] as Boolean))
-        if (options.containsKey("locationButtonEnable")) sink.setLocationButtonEnable((options["locationButtonEnable"] as Boolean))
-        if (options.containsKey("locationTrackingMode")) sink.setLocationTrackingMode((options["locationTrackingMode"] as Int))
-        if (options.containsKey("contentPadding")) sink.setContentPadding(options["contentPadding"]?.toDoubleList())
-        if (options.containsKey("maxZoom")) sink.setMaxZoom((options["maxZoom"] as Double))
-        if (options.containsKey("minZoom")) sink.setMinZoom((options["minZoom"] as Double))
+    fun carveMapOptions(sink: NaverMapOptionSink, options: Map<String, Any>) = sink.run {
+        val keyFunList: Map<String, (Any) -> Unit> = mapOf(
+            /* Boolean */
+            "liteModeEnable" to { setLiteModeEnable(it as Boolean) },
+            "nightModeEnable" to { setNightModeEnable(it as Boolean) },
+            "indoorEnable" to { setIndoorEnable(it as Boolean) },
+            "locationButtonEnable" to { setLocationButtonEnable(it as Boolean) },
+            "scrollGestureEnable" to { setScrollGestureEnable(it as Boolean) },
+            "zoomGestureEnable" to { setZoomGestureEnable(it as Boolean) },
+            "rotationGestureEnable" to { setRotationGestureEnable(it as Boolean) },
+            "tiltGestureEnable" to { setTiltGestureEnable(it as Boolean) },
+            "locationButtonEnable" to { setLocationButtonEnable(it as Boolean) },
+            /* Int */
+            "mapType" to { setMapType(it as Int) },
+            "locationTrackingMode" to { setLocationTrackingMode(it as Int) },
+            /* Double */
+            "buildingHeight" to { setBuildingHeight(it as Double) },
+            "symbolScale" to { setSymbolScale(it as Double) },
+            "symbolPerspectiveRatio" to { setSymbolPerspectiveRatio(it as Double) },
+            "maxZoom" to { setMaxZoom(it as Double) },
+            "minZoom" to { setMinZoom(it as Double) },
+            /* List */
+            "activeLayers" to { setActiveLayers(it.toIntList()) },
+            "contentPadding" to { setContentPadding(it.toDoubleList()) }
+        )
+
+        keyFunList.forEach { (k, f) -> if (options.containsKey(k)) f.invoke(options[k]!!) }
     }
 
     private fun Any.toDoubleList(): List<Double> {
@@ -40,6 +48,16 @@ object Convert {
             val floatList = list.filterIsInstance<Float>().map { it.toDouble() }
             require(floatList.isNotEmpty())
             floatList
+        }
+    }
+
+    private fun Any.toIntList(): List<Int> {
+        val list = this as List<Any?>
+        val intList = list.filterIsInstance<Int>()
+        return intList.ifEmpty {
+            val longList = list.filterIsInstance<Long>().map { it.toInt() }
+            require(longList.isNotEmpty())
+            longList
         }
     }
 

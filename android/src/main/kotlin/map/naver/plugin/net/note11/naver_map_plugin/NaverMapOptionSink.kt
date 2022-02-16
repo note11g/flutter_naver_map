@@ -8,7 +8,7 @@ interface NaverMapOptionSink {
     fun setBuildingHeight(buildingHeight: Double)
     fun setSymbolScale(symbolScale: Double)
     fun setSymbolPerspectiveRatio(symbolPerspectiveRatio: Double)
-    fun setActiveLayers(activeLayers: List<Any?>?)
+    fun setActiveLayers(activeLayers: List<Int>?)
     fun setLocationButtonEnable(locationButtonEnable: Boolean)
     fun setContentPadding(paddingData: List<Double>?)
     fun setMaxZoom(maxZoom: Double)
