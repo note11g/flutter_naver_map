@@ -1,5 +1,7 @@
 # flutter_naver_map
 
+[![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=4285F4)](https://pub.dev/packages/flutter_naver_map)
+
 **[네이버 지도](https://www.ncloud.com/product/applicationService/maps)** 를 플러터에서 띄울 수 있는 플러그인입니다. 
 
 Plug-in which shows naver map on flutter project support Android and iOS.
