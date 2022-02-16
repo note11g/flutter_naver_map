@@ -221,10 +221,16 @@ class NaverMapController(
                 if (::naverMap.isInitialized) {
                     val update = methodCall.argument<Map<String, Any>>("cameraUpdate")!!
                         .toCameraUpdate(density)
+
                     val isAnimate = methodCall.argument<Boolean>("animation") ?: true
                     if(isAnimate) update.animate(CameraAnimation.Easing)
+                    update.finishCallback{
+                        result.success(null)
+                    }
+                    update.cancelCallback{
+                        result.success(null)
+                    }
                     naverMap.moveCamera(update)
-                    result.success(null)
                 } else result.error(
                     "네이버맵 초기화 안됨.",
                     "네이버 지도가 생성되기 전에 이 메서드를 사용할 수 없습니다.",
