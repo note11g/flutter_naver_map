@@ -3,15 +3,15 @@
 # Run `pod lib lint naver_map_plugin.podspec' to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'naver_map_plugin'
-  s.version          = '0.9.4'
+  s.name             = 'flutter_naver_map'
+  s.version          = '0.10.1'
   s.summary          = 'flutter naver map plugin'
   s.description      = <<-DESC
 flutter naver map plugin
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://github.com/note11g/flutter_naver_map'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Park seong-jin' => 'curtspec@gmail.com' }
+  s.author           = { 'Kim Seung Bin' => 'note11@kakao.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'

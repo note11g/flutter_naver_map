@@ -4,3 +4,6 @@
 - add enableAnimation option on cameraMove method (Android & iOS)
 - fix iOS memory is not release issue
 - fix some bugs...
+
+## 0.10.1
+- fix iOS podspec issue
