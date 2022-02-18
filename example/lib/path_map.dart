@@ -183,7 +183,7 @@ class _PathMapPageState extends State<PathMapPage> {
           LatLngBounds.fromLatLngList(_coordinates),
           padding: 48,
         ),
-        enableAnimation: false);
+        animationDuration: 0);
   }
 
   void _onMapTap(LatLng latLng) {

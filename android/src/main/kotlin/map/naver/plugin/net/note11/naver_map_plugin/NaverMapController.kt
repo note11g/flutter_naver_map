@@ -1,7 +1,6 @@
 package map.naver.plugin.net.note11.naver_map_plugin
 
 import map.naver.plugin.net.note11.naver_map_plugin.Convert.carveMapOptions
-import map.naver.plugin.net.note11.naver_map_plugin.Convert.cameraPositionToJson
 import map.naver.plugin.net.note11.naver_map_plugin.Convert.toLatLng
 import io.flutter.plugin.common.BinaryMessenger
 import android.app.Activity
@@ -23,8 +22,8 @@ import android.os.Bundle
 import android.view.View
 import com.naver.maps.map.NaverMap.MapType
 import io.flutter.Log
-import map.naver.plugin.net.note11.naver_map_plugin.Convert.latLngBoundsToJson
 import map.naver.plugin.net.note11.naver_map_plugin.Convert.toCameraUpdate
+import map.naver.plugin.net.note11.naver_map_plugin.Convert.toJson
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -186,7 +185,7 @@ class NaverMapController(
             "map#getVisibleRegion" -> {
                 if (::naverMap.isInitialized) {
                     val latLngBounds = naverMap.contentBounds
-                    result.success(latLngBoundsToJson(latLngBounds))
+                    result.success(latLngBounds.toJson())
                 } else {
                     result.error(
                         "네이버맵 초기화 안됨.",
@@ -198,7 +197,7 @@ class NaverMapController(
             "map#getPosition" -> {
                 if (::naverMap.isInitialized) {
                     val position = naverMap.cameraPosition
-                    result.success(cameraPositionToJson(position))
+                    result.success(position.toJson())
                 } else result.error(
                     "네이버맵 초기화 안됨.",
                     "네이버 지도가 생성되기 전에 이 메서드를 사용할 수 없습니다.",
@@ -222,8 +221,12 @@ class NaverMapController(
                     val update = methodCall.argument<Map<String, Any>>("cameraUpdate")!!
                         .toCameraUpdate(density)
                     update.run {
-                        val isAnimate = methodCall.argument<Boolean>("animation") ?: true
-                        if (isAnimate) animate(CameraAnimation.Easing)
+                        val animationDuration = methodCall.argument<Int?>("animation")
+                        if (animationDuration != null) {
+                            animate(CameraAnimation.Easing, animationDuration.toLong())
+                        } else {
+                            animate(CameraAnimation.Easing)
+                        }
 
                         finishCallback { result.success(null) }
                         cancelCallback { result.success(null) }

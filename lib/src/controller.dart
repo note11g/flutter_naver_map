@@ -175,10 +175,15 @@ class NaverMapController {
   /// <h2>카메라 이동</h2>
   /// <p>카메라를 이동시키는 가장 주요 메서드이다. [CameraUpdate]의 static 생성자를 이용해서
   /// 인자를 전달한다.</p>
-  Future<void> moveCamera(CameraUpdate cameraUpdate, { bool enableAnimation = true }) async {
+  ///
+  /// <p>[animationDuration]은 밀리초 단위로 애니메이션 이동 시간을 설정한다.</p>
+  /// <p>기본적으로 필수 인자가 아니므로, 전달하지 않으면 기본 애니메이션 시간으로 설정된다.</p>
+  /// <p>0을 전달하면, 애니메이션이 없이 이동하게 된다.
+  Future<void> moveCamera(CameraUpdate cameraUpdate,
+      {int? animationDuration}) async {
     await _channel.invokeMethod<void>('camera#move', <String, dynamic>{
       'cameraUpdate': cameraUpdate._toJson(),
-      'animation': enableAnimation
+      'animation': animationDuration
     });
   }
 

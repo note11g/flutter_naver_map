@@ -56,6 +56,7 @@ class _BaseMapPageState extends State<BaseMapPage> {
   }
 
   _onMapTap(LatLng position) async {
+    await (await _controller.future).moveCamera(CameraUpdate.scrollTo(position), animationDuration: 1500);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content:
           Text('[onTap] lat: ${position.latitude}, lon: ${position.longitude}'),

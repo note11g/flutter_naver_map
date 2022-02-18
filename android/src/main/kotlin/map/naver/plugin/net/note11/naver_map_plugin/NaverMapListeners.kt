@@ -1,7 +1,6 @@
 package map.naver.plugin.net.note11.naver_map_plugin
 
 import android.content.Context
-import map.naver.plugin.net.note11.naver_map_plugin.Convert.latLngToJson
 import io.flutter.plugin.common.MethodChannel
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.NaverMap.OnMapClickListener
@@ -16,6 +15,7 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.Symbol
 import com.naver.maps.map.overlay.*
+import map.naver.plugin.net.note11.naver_map_plugin.Convert.toJson
 import map.naver.plugin.net.note11.naver_map_plugin.NaverMarkerController.MarkerController
 import map.naver.plugin.net.note11.naver_map_plugin.NaverPathsController.PathController
 import map.naver.plugin.net.note11.naver_map_plugin.NaverCircleController.CircleController
@@ -37,34 +37,33 @@ class NaverMapListeners( // member variable
 
     override fun onMapClick(pointF: PointF, latLng: LatLng) {
         val arguments: MutableMap<String, Any> = HashMap(2)
-        arguments["position"] = latLngToJson(latLng)
+        arguments["position"] = latLng.toJson()
         channel.invokeMethod("map#onTap", arguments)
     }
 
     override fun onMapLongClick(pointF: PointF, latLng: LatLng) {
         val arguments: MutableMap<String, Any> = HashMap(2)
-        arguments["position"] = latLngToJson(latLng)
+        arguments["position"] = latLng.toJson()
         channel.invokeMethod("map#onLongTap", arguments)
     }
 
     override fun onMapDoubleTap(pointF: PointF, latLng: LatLng): Boolean {
         val arguments: MutableMap<String, Any> = HashMap(2)
-        arguments["position"] = latLngToJson(latLng)
+        arguments["position"] = latLng.toJson()
         channel.invokeMethod("map#onMapDoubleTap", arguments)
         return false
     }
 
     override fun onMapTwoFingerTap(pointF: PointF, latLng: LatLng): Boolean {
         val arguments: MutableMap<String, Any> = HashMap(2)
-        arguments["position"] = latLngToJson(latLng)
+        arguments["position"] = latLng.toJson()
         channel.invokeMethod("map#onMapTwoFingerTap", arguments)
         return false
     }
 
     override fun onSymbolClick(symbol: Symbol): Boolean {
         val arguments: MutableMap<String, Any> = HashMap(2)
-        arguments["position"] =
-            latLngToJson(symbol.position)
+        arguments["position"] = symbol.position.toJson()
         arguments["caption"] = symbol.caption
         channel.invokeMethod("map#onSymbolClick", arguments)
         return true
@@ -73,7 +72,7 @@ class NaverMapListeners( // member variable
     override fun onCameraChange(i: Int, b: Boolean) {
         val arguments: MutableMap<String, Any> = HashMap(2)
         val latLng = naverMap.cameraPosition.target
-        arguments["position"] = latLngToJson(latLng)
+        arguments["position"] = latLng.toJson()
         var reason = 0
         when (i) {
             CameraUpdate.REASON_GESTURE -> reason = 1

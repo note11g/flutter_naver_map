@@ -8,7 +8,6 @@ import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.overlay.OverlayImage
 import io.flutter.view.FlutterMain
-import java.util.*
 import kotlin.math.roundToInt
 
 object Convert {
@@ -73,15 +72,15 @@ object Convert {
 
     private fun Any.toLatLngBounds(): LatLngBounds {
         require(this is List<Any?>)
-        val data: List<Any> = this.requireNoNulls()
+        val data: List<Any> = requireNoNulls()
         return LatLngBounds(data[0].toLatLng(), data[1].toLatLng())
     }
 
     fun Map<String, Any?>.toCameraPosition(): CameraPosition {
-        val bearing: Double = this["bearing"] as Double
-        val tilt: Double = this["tilt"] as Double
-        val zoom: Double = this["zoom"] as Double
-        val target = this["target"] as List<Any?>
+        val bearing: Double = get("bearing") as Double
+        val tilt: Double = get("tilt") as Double
+        val zoom: Double = get("zoom") as Double
+        val target = get("target") as List<Any?>
         assert(target.size == 2) // target size 가 2가 아니면, 선언 실패(assert) 에러
         val lat = target[0] as Double
         val lng = target[1] as Double
@@ -89,62 +88,57 @@ object Convert {
     }
 
     fun Map<String, Any>.toCameraUpdate(density: Float): CameraUpdate {
-        require(this.isNotEmpty()) { "Cannot interpret $this as CameraUpdate" } // map 이 비어있다면 error
+        require(isNotEmpty()) { "Cannot interpret $this as CameraUpdate" } // map 이 비어있다면 error
 
         // position
-        if (this["newCameraPosition"] != null) {
-            val position = this["newCameraPosition"] as Map<String, Any?>
-            return CameraUpdate.toCameraPosition(position.toCameraPosition())
+        get("newCameraPosition")?.let { p ->
+            return CameraUpdate.toCameraPosition((p as Map<String, Any?>).toCameraPosition())
         }
 
         // scroll
-        if (this["scrollTo"] != null) {
-            val latLng: LatLng = this["scrollTo"]!!.toLatLng()
-            val zoomTo = this["zoomTo"] as Double
+        get("scrollTo")?.let { l ->
+            val latLng = l.toLatLng()
+            val zoomTo = get("zoomTo") as Double? ?: 0.0
             return if (zoomTo == 0.0) CameraUpdate.scrollTo(latLng)
             else CameraUpdate.scrollAndZoomTo(latLng, zoomTo)
         }
 
         /* zoom start */
-        if (this.containsKey("zoomIn")) return CameraUpdate.zoomIn()
-        if (this.containsKey("zoomOut")) return CameraUpdate.zoomOut()
+        if (containsKey("zoomIn")) return CameraUpdate.zoomIn()
+        if (containsKey("zoomOut")) return CameraUpdate.zoomOut()
 
-        val zoomBy = this["zoomBy"] as Double?
+        val zoomBy = get("zoomBy") as Double?
         if (zoomBy != null && zoomBy != 0.0) return CameraUpdate.zoomBy(zoomBy)
         /* zoom end */
 
-        val fitBounds = this["fitBounds"] as List<Any?>
+        val fitBounds = get("fitBounds") as List<Any?>
         val dp = fitBounds[1] as Int
         val px = (dp * density).roundToInt()
         return CameraUpdate.fitBounds(fitBounds[0]!!.toLatLngBounds(), px)
     }
 
     fun List<Any?>.toCoords(): List<LatLng> {
-        val filteredData = this.filterIsInstance<List<Double>>().ifEmpty {
-            this.filterIsInstance<List<Float>>().map { it.toDoubleList() }
+        val filteredData = filterIsInstance<List<Double>>().ifEmpty {
+            filterIsInstance<List<Float>>().map { it.toDoubleList() }
         }
         return mutableListOf<LatLng>().apply {
             for (point in filteredData) add(LatLng(point[0], point[1]))
         }
     }
 
-    fun cameraPositionToJson(position: CameraPosition?): Any? {
-        if (position == null) return null
-
-        val data: MutableMap<String, Any> = HashMap()
-        data["bearing"] = position.bearing
-        data["target"] = latLngToJson(position.target)
-        data["tilt"] = position.tilt
-        data["zoom"] = position.zoom
-        return data
-    }
-
-    fun latLngBoundsToJson(latLngBounds: LatLngBounds): Any = mapOf(
-        "southwest" to latLngToJson(latLngBounds.southWest),
-        "northeast" to latLngToJson(latLngBounds.northEast)
+    fun CameraPosition.toJson(): Any = mapOf(
+        "bearing" to bearing,
+        "target" to target,
+        "tilt" to tilt,
+        "zoom" to zoom
     )
 
-    fun latLngToJson(latLng: LatLng): Any = listOf(latLng.latitude, latLng.longitude)
+    fun LatLngBounds.toJson(): Any = mapOf(
+        "southwest" to southWest.toJson(),
+        "northeast" to northEast.toJson()
+    )
+
+    fun LatLng.toJson(): Any = listOf(latitude, longitude)
 
     fun toHoles(data: List<Any?>): List<List<LatLng>> {
         val holes = mutableListOf<List<LatLng>>()
