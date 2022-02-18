@@ -128,7 +128,7 @@ object Convert {
 
     fun CameraPosition.toJson(): Any = mapOf(
         "bearing" to bearing,
-        "target" to target,
+        "target" to target.toJson(),
         "tilt" to tilt,
         "zoom" to zoom
     )

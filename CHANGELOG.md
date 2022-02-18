@@ -17,3 +17,6 @@
 - delete moveCamera enableAnimation option
 - add moveCamera animationDuration option
 - change to kotlin code style (Android Native)
+
+## 0.10.3
+- fix getCameraPosition issue on Android
