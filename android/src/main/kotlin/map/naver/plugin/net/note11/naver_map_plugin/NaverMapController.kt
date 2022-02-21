@@ -1,9 +1,9 @@
 package map.naver.plugin.net.note11.naver_map_plugin
 
+import android.app.Activity
 import map.naver.plugin.net.note11.naver_map_plugin.Convert.carveMapOptions
 import map.naver.plugin.net.note11.naver_map_plugin.Convert.toLatLng
 import io.flutter.plugin.common.BinaryMessenger
-import android.app.Activity
 import com.naver.maps.map.NaverMapOptions
 import io.flutter.plugin.platform.PlatformView
 import com.naver.maps.map.OnMapReadyCallback
@@ -78,8 +78,8 @@ class NaverMapController(
             isZoomControlEnabled = false
             isIndoorLevelPickerEnabled = false
 
-            // 네이버 로고 선택시 Crash 나는 현상 방지
-            isLogoClickEnabled = false
+            // 네이버 로고 선택시 Crash 나는 현상 test
+            isLogoClickEnabled = true
         }
 
         if (mapReadyResult != null) {
@@ -424,6 +424,10 @@ class NaverMapController(
             return
         }
         mapView.onDestroy()
+    }
+
+    override fun setLogoClickEnable(clickEnable: Boolean) {
+        naverMap.uiSettings.isLogoClickEnabled = clickEnable
     }
 
     override fun setNightModeEnable(nightModeEnable: Boolean) {

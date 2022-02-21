@@ -29,6 +29,7 @@ class NaverMap extends StatefulWidget {
     this.tiltGestureEnable = true,
     this.zoomGestureEnable = true,
     this.locationButtonEnable = false,
+    this.logoClickEnabled = false,
     this.useSurface = false,
     this.initLocationTrackingMode = LocationTrackingMode.NoFollow,
     this.contentPadding,
@@ -160,6 +161,12 @@ class NaverMap extends StatefulWidget {
   /// <br/>
   /// <p>기본값은 [false]이다.</p>
   final bool locationButtonEnable;
+
+  /// <h2> Naver Map 로고 버튼의 활성화 여부를 바꿀 수 있습니다.</h2>
+  /// <br/>
+  /// <p>현재는 Android에서만 동작합니다.</p>
+  /// <p>기본값은 [false]이다. [true]일 경우, 현재는 Crash가 발생합니다.</p>
+  final bool logoClickEnabled;
 
   /// 지도에 표시될 마커의 리스트입니다.
   final List<Marker> markers;
@@ -454,6 +461,7 @@ class _NaverMapOptions {
     this.rotationGestureEnable,
     this.initLocationTrackingMode,
     this.locationButtonEnable,
+    this.logoClickEnabled,
     this.contentPadding,
     this.useSurface,
     this.maxZoom,
@@ -476,6 +484,7 @@ class _NaverMapOptions {
       zoomGestureEnable: map.zoomGestureEnable,
       initLocationTrackingMode: map.initLocationTrackingMode,
       locationButtonEnable: map.locationButtonEnable,
+      logoClickEnabled: map.logoClickEnabled,
       contentPadding: map.contentPadding,
       useSurface: map.useSurface,
       maxZoom: map.maxZoom,
@@ -497,6 +506,7 @@ class _NaverMapOptions {
   final bool? zoomGestureEnable;
   final LocationTrackingMode? initLocationTrackingMode;
   final bool? locationButtonEnable;
+  final bool? logoClickEnabled;
   final EdgeInsets? contentPadding;
   final bool? useSurface;
   final double? maxZoom;
@@ -528,6 +538,7 @@ class _NaverMapOptions {
     addIfNonNull('tiltGestureEnable', tiltGestureEnable);
     addIfNonNull('locationTrackingMode', initLocationTrackingMode?.index);
     addIfNonNull('locationButtonEnable', locationButtonEnable);
+    addIfNonNull('logoClickEnabled', logoClickEnabled);
     addIfNonNull('useSurface', useSurface);
     addIfNonNull('maxZoom', maxZoom);
     addIfNonNull('minZoom', minZoom);

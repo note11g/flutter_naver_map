@@ -1,11 +1,11 @@
 package map.naver.plugin.net.note11.naver_map_plugin
 
+import android.app.Activity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import android.app.Application.ActivityLifecycleCallbacks
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
-import android.app.Activity
 import android.os.Bundle
 import io.flutter.plugin.common.PluginRegistry.Registrar
 import java.util.concurrent.atomic.AtomicInteger

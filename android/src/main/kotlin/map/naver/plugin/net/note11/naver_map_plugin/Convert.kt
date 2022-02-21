@@ -23,6 +23,7 @@ object Convert {
             "rotationGestureEnable" to { setRotationGestureEnable(it as Boolean) },
             "tiltGestureEnable" to { setTiltGestureEnable(it as Boolean) },
             "locationButtonEnable" to { setLocationButtonEnable(it as Boolean) },
+            "logoClickEnabled" to { setLogoClickEnable(it as Boolean) },
             /* Int */
             "mapType" to { setMapType(it as Int) },
             "locationTrackingMode" to { setLocationTrackingMode(it as Int) },

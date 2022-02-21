@@ -1,14 +1,13 @@
 package map.naver.plugin.net.note11.naver_map_plugin
 
+import android.app.Activity
 import com.naver.maps.map.NaverMapOptions
 import io.flutter.plugin.common.BinaryMessenger
-import android.app.Activity
 import android.content.Context
 import android.util.Log
 import com.naver.maps.map.NaverMap.MapType
 import com.naver.maps.map.NaverMap
 import map.naver.plugin.net.note11.naver_map_plugin.Convert.toCameraPosition
-import java.util.ArrayList
 import java.util.concurrent.atomic.AtomicInteger
 
 class NaverMapBuilder : NaverMapOptionSink {
