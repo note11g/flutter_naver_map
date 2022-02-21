@@ -66,9 +66,7 @@ class NaverMapController(
     private lateinit var circleController: NaverCircleController
     private lateinit var polygonController: NaverPolygonController
 
-    init {
-        methodChannel.setMethodCallHandler(this)
-    }
+    init { methodChannel.setMethodCallHandler(this) }
 
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
@@ -79,7 +77,7 @@ class NaverMapController(
             isIndoorLevelPickerEnabled = false
 
             // 네이버 로고 선택시 Crash 나는 현상 test
-            isLogoClickEnabled = true
+            // isLogoClickEnabled = true
         }
 
         if (mapReadyResult != null) {

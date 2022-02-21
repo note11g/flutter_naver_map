@@ -136,6 +136,10 @@ class NaverMapBuilder : NaverMapOptionSink {
         options.locationButtonEnabled(locationButtonEnable)
     }
 
+    override fun setLogoClickEnable(clickEnable: Boolean) {
+        options.logoClickEnabled(clickEnable)
+    }
+
     override fun setLocationTrackingMode(locationTrackingMode: Int) {
         this.locationTrackingMode = locationTrackingMode
     }

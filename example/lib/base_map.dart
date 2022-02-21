@@ -44,6 +44,7 @@ class _BaseMapPageState extends State<BaseMapPage> {
             maxZoom: 17,
             minZoom: 15,
             useSurface: kReleaseMode,
+            logoClickEnabled: true,
           ),
           Padding(
             padding: EdgeInsets.all(16),
