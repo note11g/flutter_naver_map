@@ -42,7 +42,7 @@ class _BaseMapPageState extends State<BaseMapPage> {
             onMapTwoFingerTap: _onMapTwoFingerTap,
             onSymbolTap: _onSymbolTap,
             maxZoom: 17,
-            minZoom: 15,
+            minZoom: 12,
             useSurface: kReleaseMode,
             logoClickEnabled: true,
           ),
@@ -58,6 +58,7 @@ class _BaseMapPageState extends State<BaseMapPage> {
 
   _onMapTap(LatLng position) async {
     await (await _controller.future).moveCamera(CameraUpdate.scrollTo(position), animationDuration: 1500);
+    await (await _controller.future).moveCamera(CameraUpdate.zoomTo(12), animationDuration: 1500);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content:
           Text('[onTap] lat: ${position.latitude}, lon: ${position.longitude}'),

@@ -110,9 +110,13 @@ object Convert {
 
         val zoomBy = get("zoomBy") as Double?
         if (zoomBy != null && zoomBy != 0.0) return CameraUpdate.zoomBy(zoomBy)
+
+        val zoomTo = get("zoomTo") as Double?
+        if (zoomTo != null && zoomTo != 0.0) return CameraUpdate.zoomTo(zoomTo)
         /* zoom end */
 
         val fitBounds = get("fitBounds") as List<Any?>
+
         val dp = fitBounds[1] as Int
         val px = (dp * density).roundToInt()
         return CameraUpdate.fitBounds(fitBounds[0]!!.toLatLngBounds(), px)
