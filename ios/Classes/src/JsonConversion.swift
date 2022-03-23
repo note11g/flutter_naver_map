@@ -32,7 +32,7 @@ public func toCameraUpdate(json: Any) -> NMFCameraUpdate{
     print(data)
     var cameraUpdate: NMFCameraUpdate?
     
-    if let position = data["newCameraPosition"] as? Array<Double>{
+    if let position = data["newCameraPosition"] as? Dictionary<String,Any?>{
         cameraUpdate = .init(position: toCameraPosition(json: position))
     }
 

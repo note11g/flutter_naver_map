@@ -20,3 +20,9 @@
 
 ## 0.10.3
 - fix getCameraPosition issue on Android
+
+## 0.10.4
+- fix zoomTo issue on Android
+
+## 0.10.5
+- fix toCameraPosition issue on iOS
