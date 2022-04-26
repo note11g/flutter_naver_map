@@ -13,9 +13,9 @@ class _PolygonMapState extends State<PolygonMap>
   bool _isAdding = false;
 
   Completer<NaverMapController> _controller = Completer();
-  AnimationController _animationController;
-  Animation _colorTwin;
-  Animation _rotation;
+  late AnimationController _animationController;
+  late Animation<Color?> _colorTwin;
+  late Animation<double> _rotation;
 
   List<Marker> _markers = [];
   List<PolygonOverlay> _polygon = [];
@@ -165,7 +165,7 @@ class _PolygonMapState extends State<PolygonMap>
       if (_markers.length >= 3) {
         _polygon.add(PolygonOverlay(
           DateTime.now().millisecondsSinceEpoch.toString(),
-          _markers.map((e) => e.position).toList(),
+          _markers.map((e) => e.position!).toList(),
           color: Colors.transparent,
           outlineWidth: 3,
           outlineColor: Colors.redAccent,

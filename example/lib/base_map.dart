@@ -93,10 +93,10 @@ class _BaseMapPageState extends State<BaseMapPage> {
     ));
   }
 
-  _onSymbolTap(LatLng position, String caption) {
+  _onSymbolTap(LatLng? position, String? caption) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
-          '[onSymbolTap] caption: $caption, lat: ${position.latitude}, lon: ${position.longitude}'),
+          '[onSymbolTap] caption: $caption, lat: ${position?.latitude}, lon: ${position?.longitude}'),
       duration: Duration(milliseconds: 500),
       backgroundColor: Colors.black,
     ));
@@ -207,8 +207,8 @@ class _BaseMapPageState extends State<BaseMapPage> {
   // }
 
   void _onCameraChange(
-      LatLng latLng, CameraChangeReason reason, bool isAnimated) {
-    print('카메라 움직임 >>> 위치 : ${latLng.latitude}, ${latLng.longitude}'
+      LatLng? latLng, CameraChangeReason reason, bool? isAnimated) {
+    print('카메라 움직임 >>> 위치 : ${latLng?.latitude}, ${latLng?.longitude}'
         '\n원인: $reason'
         '\n에니메이션 여부: $isAnimated');
   }

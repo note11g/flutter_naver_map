@@ -14,7 +14,7 @@ class _CircleMapPageState extends State<CircleMapPage> {
   List<CircleOverlay> _circles = [];
   double _sliderValue = 40.0;
 
-  int _selectedCircleIndex;
+  int? _selectedCircleIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +77,7 @@ class _CircleMapPageState extends State<CircleMapPage> {
 
   void _onMapTap(LatLng latLng) {
     if (_selectedCircleIndex != null) {
-      _circles[_selectedCircleIndex].color = Colors.black.withOpacity(0.3);
+      _circles[_selectedCircleIndex!].color = Colors.black.withOpacity(0.3);
     }
     String id = DateTime.now().toIso8601String();
     _circles.add(CircleOverlay(
@@ -101,7 +101,7 @@ class _CircleMapPageState extends State<CircleMapPage> {
 
   void _onCircleTap(String overlayId) {
     if (_selectedCircleIndex != null) {
-      _circles[_selectedCircleIndex].color = Colors.black.withOpacity(0.3);
+      _circles[_selectedCircleIndex!].color = Colors.black.withOpacity(0.3);
     }
 
     for (int i = 0; i < _circles.length; i++) {
@@ -119,7 +119,7 @@ class _CircleMapPageState extends State<CircleMapPage> {
   void _onSliderChangeEnd(double value) {
     if (_selectedCircleIndex != null) {
       setState(() {
-        _circles[_selectedCircleIndex].radius = value;
+        _circles[_selectedCircleIndex!].radius = value;
       });
     }
   }

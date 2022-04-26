@@ -19,7 +19,7 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       OverlayImage.fromAssetImage(
         assetName: 'icon/marker.png',
       ).then((image) {
@@ -173,14 +173,14 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
     }
   }
 
-  void _onMarkerTap(Marker marker, Map<String, int> iconSize) {
-    int pos = _markers.indexWhere((m) => m.markerId == marker.markerId);
+  void _onMarkerTap(Marker? marker, Map<String, int?> iconSize) {
+    int pos = _markers.indexWhere((m) => m.markerId == marker?.markerId);
     setState(() {
       _markers[pos].captionText = '선택됨';
     });
     if (_currentMode == MODE_REMOVE) {
       setState(() {
-        _markers.removeWhere((m) => m.markerId == marker.markerId);
+        _markers.removeWhere((m) => m.markerId == marker?.markerId);
       });
     }
   }

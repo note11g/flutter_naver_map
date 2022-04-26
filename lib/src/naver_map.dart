@@ -1,4 +1,3 @@
-
 part of flutter_naver_map;
 
 /// ### 네이버지도
@@ -38,6 +37,7 @@ class NaverMap extends StatefulWidget {
     this.polygons = const [],
     this.minZoom = 0.0,
     this.maxZoom = 21.0,
+    this.forceGesture = false,
   }) : super(key: key);
 
   /// 지도가 완전히 만들어진 후에 컨트롤러를 파라미터로 가지는 콜백.
@@ -235,6 +235,11 @@ class NaverMap extends StatefulWidget {
   /// default 21.0
   final double maxZoom;
 
+  /// gesture를 항상 우선적으로 적용합니다.
+  /// Listview 예제를 확인해주세요.
+  /// default false
+  final bool forceGesture;
+
   @override
   _NaverMapState createState() => _NaverMapState();
 }
@@ -260,7 +265,7 @@ class _NaverMapState extends State<NaverMap> {
 
   @override
   void dispose() {
-    if(Platform.isIOS) _controller.future.then((c) => c.clearMapView());
+    if (Platform.isIOS) _controller.future.then((c) => c.clearMapView());
     super.dispose();
   }
 
@@ -289,11 +294,17 @@ class _NaverMapState extends State<NaverMap> {
     };
 
     if (defaultTargetPlatform == TargetPlatform.android) {
-      AndroidView view = AndroidView( // virtual screen
+      AndroidView view = AndroidView(
+        // virtual screen
         viewType: VIEW_TYPE,
         onPlatformViewCreated: onPlatformViewCreated,
         creationParams: createParams,
         creationParamsCodec: const StandardMessageCodec(),
+        gestureRecognizers: widget.forceGesture
+            ? (Set()
+              ..add(Factory<EagerGestureRecognizer>(
+                  () => EagerGestureRecognizer())))
+            : const <Factory<OneSequenceGestureRecognizer>>{},
       );
       return view;
 
@@ -324,6 +335,11 @@ class _NaverMapState extends State<NaverMap> {
         onPlatformViewCreated: onPlatformViewCreated,
         creationParams: createParams,
         creationParamsCodec: const StandardMessageCodec(),
+        gestureRecognizers: widget.forceGesture
+            ? (Set()
+              ..add(Factory<EagerGestureRecognizer>(
+                  () => EagerGestureRecognizer())))
+            : const <Factory<OneSequenceGestureRecognizer>>{},
       );
       return view;
     }

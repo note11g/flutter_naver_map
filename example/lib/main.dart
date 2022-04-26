@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_map_example/listview_map.dart';
 import 'package:flutter_naver_map_example/padding_test.dart';
 import 'package:flutter_naver_map_example/path_map.dart';
 import 'package:flutter_naver_map_example/polygon_map.dart';
@@ -40,6 +41,7 @@ class _MainPageState extends State<MainPage> {
     '컨트롤러 테스트',
     '폴리곤 예제',
     'GLSurface Thread collision test',
+    "리스트뷰 예제"
   ];
 
   @override
@@ -124,10 +126,17 @@ class _MainPageState extends State<MainPage> {
         break;
       case 6:
         Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => TextFieldPage(),
-          ));
+            context,
+            MaterialPageRoute(
+              builder: (_) => TextFieldPage(),
+            ));
+        break;
+      case 7:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ListViewMapPage(),
+            ));
     }
   }
 }

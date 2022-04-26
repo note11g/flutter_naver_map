@@ -147,7 +147,7 @@ class _PathMapPageState extends State<PathMapPage> {
                 width: _width,
                 color: Colors.red,
                 outlineColor: Colors.white,
-              )
+              ),
             },
           ),
           Align(
@@ -198,11 +198,11 @@ class _PathMapPageState extends State<PathMapPage> {
     }
   }
 
-  void _onMarkerTap(Marker marker, Map<String, int> iconSize) {
+  void _onMarkerTap(Marker? marker, Map<String, int?> iconSize) {
     if (_currentMode == MODE_REMOVE && _coordinates.length > 2) {
       setState(() {
-        _coordinates.remove(marker.position);
-        _markers.removeWhere((m) => m.markerId == marker.markerId);
+        _coordinates.remove(marker?.position);
+        _markers.removeWhere((m) => m.markerId == marker?.markerId);
       });
     }
   }
