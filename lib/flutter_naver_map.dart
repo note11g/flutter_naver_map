@@ -2,6 +2,7 @@ library flutter_naver_map;
 
 import 'dart:async';
 import 'dart:io' show Platform;
+import 'dart:io' show File;
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';

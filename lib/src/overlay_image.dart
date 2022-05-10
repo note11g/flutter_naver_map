@@ -4,16 +4,16 @@ part of flutter_naver_map;
 class OverlayImage {
   final AssetImage? _image;
   final AssetBundleImageKey? _key;
-  final String? _imagePath;
+  final File? _imageFile;
 
   get assetName => Platform.isIOS ? _image?.assetName : _key?.name;
 
-  get imageFilePath => _imagePath;
+  File? get imageFile => _imageFile?.absolute;
 
-  const OverlayImage._({image, key, imagePath})
+  const OverlayImage._({image, key, imageFile})
       : _image = image,
         _key = key,
-        _imagePath = imagePath;
+        _imageFile = imageFile;
 
   /// ## [assetName] 이미지 중 [configuration]에 맞는 이미지를 찾아 [OverlayImage]객체를 만든다.
   ///
@@ -52,7 +52,7 @@ class OverlayImage {
   ///
   /// AOS SDK Reference : https://navermaps.github.io/android-map-sdk/reference/com/naver/maps/map/overlay/OverlayImage.html#fromPath(java.lang.String)
   /// iOS SDK Reference : https://navermaps.github.io/ios-map-sdk/reference/Classes/NMFOverlayImage.html#/c:objc(cs)NMFOverlayImage(cm)overlayImageWithImage:reuseIdentifier:
-  static OverlayImage fromImageFile(String imagePath) {
-    return OverlayImage._(imagePath: imagePath);
+  static OverlayImage fromImageFile(File imageFile) {
+    return OverlayImage._(imageFile: imageFile);
   }
 }
