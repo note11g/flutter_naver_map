@@ -33,6 +33,21 @@ class LatLng {
 
   @override
   int get hashCode => hashValues(latitude, longitude);
+
+  /// 다른 좌표와의 거리를 반환합니다.
+  /// [other] : 거리를 잴 다른 좌표
+  /// [return] : 좌표 간의 거리. 미터 단위.
+  double distanceTo(LatLng other) {
+    if (latitude == other.latitude && longitude == other.longitude) {
+      return 0.0;
+    } else {
+      final double lat1 = radians(latitude);
+      final double lng1 = radians(longitude);
+      final double lat2 = radians(other.latitude);
+      final double lng2 = radians(other.longitude);
+      return 1.2756274e7 * asin(sqrt(pow(sin((lat1 - lat2) / 2.0), 2.0) + cos(lat1) * cos(lat2) * pow(sin((lng1 - lng2) / 2.0), 2.0)));
+    }
+  }
 }
 
 /// 북동쪽 위, 경도와 남서쪽 위,경도로 만들어진 사각형 영역이다.

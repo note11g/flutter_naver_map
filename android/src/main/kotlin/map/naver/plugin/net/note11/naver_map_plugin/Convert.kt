@@ -159,4 +159,9 @@ object Convert {
         val key = FlutterMain.getLookupKeyForAsset(assetName)
         return OverlayImage.fromAsset(key)
     }
+
+    fun toOverlayImageFromPath(o: Any?): OverlayImage {
+        val imagePath = o as String
+        return OverlayImage.fromPath(imagePath)
+    }
 }

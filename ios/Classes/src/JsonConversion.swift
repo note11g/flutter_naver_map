@@ -84,6 +84,13 @@ public func toOverlayImage(assetName: String, registrar: FlutterPluginRegistrar)
     return NMFOverlayImage(name: assetPath)
 }
 
+public func toOverlayImageFromFile(imagePath: String) -> NMFOverlayImage? {
+    if let image = UIImage.init(contentsOfFile: imagePath) {
+        return NMFOverlayImage(image: image, reuseIdentifier: imagePath)
+    }
+    return nil
+}
+
 // ============================= 객체를 json 으로 =================================
 
 

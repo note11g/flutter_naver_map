@@ -64,6 +64,9 @@ class NPathController: NSObject {
         if let patternImage = json["patternImage"] as? String {
             path.patternIcon = toOverlayImage(assetName: patternImage, registrar: registrar)
         }
+        if let patternImageFromFile = json["patternImageFromPath"] as? String {
+            path.patternIcon = toOverlayImageFromFile(imagePath: patternImageFromFile)
+        }
         if let patternInterval = json["patternInterval"] as? UInt {
             path.patternInterval = patternInterval
         }

@@ -6,6 +6,7 @@ import map.naver.plugin.net.note11.naver_map_plugin.Convert.toLatLng
 import map.naver.plugin.net.note11.naver_map_plugin.Convert.toPoint
 import map.naver.plugin.net.note11.naver_map_plugin.Convert.toColorInt
 import map.naver.plugin.net.note11.naver_map_plugin.Convert.toOverlayImage
+import map.naver.plugin.net.note11.naver_map_plugin.Convert.toOverlayImageFromPath
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.Overlay
 import android.os.Looper
@@ -145,6 +146,8 @@ class NaverMarkerController(
                 (subCaptionRequestedWidth as Int * this@NaverMarkerController.density).roundToInt()
             val icon = json["icon"]
             if (icon != null) marker.icon = toOverlayImage(icon)
+            val iconImagePath = json["iconFromPath"]
+            if (iconImagePath != null) marker.icon = toOverlayImageFromPath(iconImagePath)
             val infoWindow = json["infoWindow"]
             infoWindowText = if (infoWindow != null) infoWindow as String? else null
         }
