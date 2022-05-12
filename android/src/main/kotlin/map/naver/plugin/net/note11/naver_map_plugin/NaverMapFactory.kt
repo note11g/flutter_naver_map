@@ -15,7 +15,7 @@ class NaverMapFactory(
     private val activity: Activity
 ) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
 
-    override fun create(context: Context, i: Int, args: Any): PlatformView {
+    override fun create(context: Context?, i: Int, args: Any?): PlatformView {
         val params = args as Map<String, Any>
         val builder = NaverMapBuilder()
         if (params.containsKey("initialCameraPosition")) {
