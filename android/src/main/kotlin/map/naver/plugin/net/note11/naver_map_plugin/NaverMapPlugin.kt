@@ -124,13 +124,15 @@ class NaverMapPlugin : FlutterPlugin, ActivityLifecycleCallbacks, ActivityAware 
 
         // 플러그인 등록 (Legacy)
         fun registerWith(registrar: Registrar) {
-            if (registrar.activity() == null) {
+            val registrarActivity = registrar.activity() as Activity;
+            if (registrarActivity == null) {
                 // 백그라운드에서 플러그인을 등록하려고 시도할때 엑티비티는 존재하지 않습니다.
                 // 이 플러그인이 포어그라운드에서만 돌아가기 때문에 백그라운드에서 등록하는 것을 막습니다.
                 return
             }
-            val plugin = NaverMapPlugin(registrar.activity())
-            registrar.activity().application.registerActivityLifecycleCallbacks(plugin)
+          
+            val plugin = NaverMapPlugin(registrarActivity)
+            registrarActivity.application.registerActivityLifecycleCallbacks(plugin)
             // 라이프사이클 콜백
             registrar
                 .platformViewRegistry()
@@ -139,7 +141,7 @@ class NaverMapPlugin : FlutterPlugin, ActivityLifecycleCallbacks, ActivityAware 
                     NaverMapFactory(
                         plugin.state,
                         registrar.messenger(),
-                        registrar.activity()
+                        registrarActivity
                     )
                 )
         }

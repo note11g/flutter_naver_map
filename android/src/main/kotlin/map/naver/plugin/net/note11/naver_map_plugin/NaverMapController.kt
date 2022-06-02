@@ -51,7 +51,7 @@ class NaverMapController(
 
     private val mapView: MapView = MapView(context, options)
     private val methodChannel: MethodChannel =
-        MethodChannel(binaryMessenger, "naver_map_plugin_$id")
+        MethodChannel(binaryMessenger!!, "naver_map_plugin_$id")
     private val registrarActivityHashCode: Int = activity.hashCode()
     private lateinit var naverMap: NaverMap
     private var disposed = false
@@ -70,7 +70,6 @@ class NaverMapController(
 
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
-
         this.naverMap.uiSettings.run {
             // 제대로 동작하지 않는 컨트롤러 UI로 원인이 밝혀지기 전까진 강제 비활성화.
             isZoomControlEnabled = false
