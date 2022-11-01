@@ -100,7 +100,7 @@ class NaverMapController: NSObject, FlutterPlatformView, NaverMapOptionSink, NMF
         
         // 제대로 동작하지 않는 컨트롤러 UI로 원인이 밝혀지기 전까진 강제 비활성화.
         naverMap!.showZoomControls = false
-        naverMap!.showIndoorLevelPicker = false
+        naverMap!.showIndoorLevelPicker = true
     }
     
     func view() -> UIView {

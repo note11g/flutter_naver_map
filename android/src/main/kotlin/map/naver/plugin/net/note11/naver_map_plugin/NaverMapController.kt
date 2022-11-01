@@ -73,7 +73,7 @@ class NaverMapController(
         this.naverMap.uiSettings.run {
             // 제대로 동작하지 않는 컨트롤러 UI로 원인이 밝혀지기 전까진 강제 비활성화.
             isZoomControlEnabled = false
-            isIndoorLevelPickerEnabled = false
+            isIndoorLevelPickerEnabled = true
 
             // 네이버 로고 선택시 Crash 나는 현상 test
             // isLogoClickEnabled = true
