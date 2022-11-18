@@ -5,15 +5,19 @@ class OverlayImage {
   final AssetImage? _image;
   final AssetBundleImageKey? _key;
   final File? _imageFile;
+  final Uint8List? _imageByteArray;
 
   get assetName => Platform.isIOS ? _image?.assetName : _key?.name;
 
   File? get imageFile => _imageFile?.absolute;
 
-  const OverlayImage._({image, key, imageFile})
+  Uint8List? get imageByteArray => _imageByteArray;
+
+  const OverlayImage._({image, key, imageFile, imageByteArray})
       : _image = image,
         _key = key,
-        _imageFile = imageFile;
+        _imageFile = imageFile,
+        _imageByteArray = imageByteArray;
 
   /// ## [assetName] 이미지 중 [configuration]에 맞는 이미지를 찾아 [OverlayImage]객체를 만든다.
   ///
@@ -54,5 +58,9 @@ class OverlayImage {
   /// iOS SDK Reference : https://navermaps.github.io/ios-map-sdk/reference/Classes/NMFOverlayImage.html#/c:objc(cs)NMFOverlayImage(cm)overlayImageWithImage:reuseIdentifier:
   static OverlayImage fromImageFile(File imageFile) {
     return OverlayImage._(imageFile: imageFile);
+  }
+
+  static OverlayImage fromByteArray(Uint8List byteArray) {
+    return OverlayImage._(imageByteArray: byteArray);
   }
 }

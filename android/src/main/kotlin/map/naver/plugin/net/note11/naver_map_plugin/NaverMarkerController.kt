@@ -12,9 +12,11 @@ import com.naver.maps.map.overlay.Overlay
 import android.os.Looper
 import com.naver.maps.map.overlay.InfoWindow
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.WindowManager
 import com.naver.maps.map.overlay.InfoWindow.DefaultTextAdapter
 import com.naver.maps.map.overlay.Marker
+import map.naver.plugin.net.note11.naver_map_plugin.Convert.toOverlayImageFromByteArray
 import java.util.HashMap
 import java.util.concurrent.Executors
 import kotlin.math.roundToInt
@@ -148,6 +150,10 @@ class NaverMarkerController(
             if (icon != null) marker.icon = toOverlayImage(icon)
             val iconImagePath = json["iconFromPath"]
             if (iconImagePath != null) marker.icon = toOverlayImageFromPath(iconImagePath)
+            val iconImageByteArray = json["iconFromByteArray"]
+            Log.e("JHC_DEBUG", "iconImageByteArray : ${iconImageByteArray}")
+            if (iconImageByteArray != null) marker.icon = toOverlayImageFromByteArray(iconImageByteArray)
+
             val infoWindow = json["infoWindow"]
             infoWindowText = if (infoWindow != null) infoWindow as String? else null
         }

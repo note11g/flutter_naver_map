@@ -24,6 +24,8 @@
 	<true/>
 	<key>NMFClientId</key>
 	<string>uamnqs4a1c</string>
+	<key>NSAllowsArbitraryLoads</key>
+	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>need location permission to show user's currnet location in map</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -49,7 +51,7 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
-    <key>NSAllowsArbitraryLoads</key>
-    <true/>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 </dict>
 </plist>
