@@ -19,7 +19,11 @@ Plug-in which shows naver map on flutter project support Android and iOS.
 
 추가할 신기능 제안을 받고 있습니다. **[여기](https://github.com/note11g/flutter_naver_map/discussions/25)** 에서 제안해주세요!
 
-출시 예정일은 8월 15일입니다. 감사합니다.
+**11월 21일자로 개발을 재개하였습니다.**
+알파 버전이 개발완료되는대로 pre-release 하도록 하겠습니다.
+감사합니다.
+
+목표 pre-release date는 **11월 30일**입니다.
 
 ---
 
