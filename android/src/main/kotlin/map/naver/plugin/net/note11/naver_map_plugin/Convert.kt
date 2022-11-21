@@ -1,5 +1,6 @@
 package map.naver.plugin.net.note11.naver_map_plugin
 
+import android.graphics.BitmapFactory
 import com.naver.maps.geometry.LatLng
 import android.graphics.PointF
 import com.naver.maps.geometry.LatLngBounds
@@ -164,4 +165,11 @@ object Convert {
         val imagePath = o as String
         return OverlayImage.fromPath(imagePath)
     }
+
+    fun toOverlayImageFromByteArray(o: Any?): OverlayImage {
+        val byteArray = o as ByteArray
+        val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+        return OverlayImage.fromBitmap(bitmap)
+    }
+
 }

@@ -110,6 +110,10 @@ class NMarkerController: NSObject {
            let overlayImage = toOverlayImageFromFile(imagePath: imagePath) {
             marker.iconImage = overlayImage
         }
+        if let imageByteArray = json["iconFromByteArray"] as? FlutterStandardTypedData,
+           let overlayImage = toOverlayImageFromByteArray(data: imageByteArray.data) {
+            marker.iconImage = overlayImage
+        }
         if let infoWindowText = json["infoWindow"] as? String {
             self.infoWindowTitle = infoWindowText
         }
