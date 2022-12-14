@@ -79,8 +79,8 @@ class NaverCircleController(
             if (json.containsKey("zIndex")) circle.zIndex = json["zIndex"] as Int
             if (json.containsKey("globalZIndex")) circle.globalZIndex =
                 json["globalZIndex"] as Int + 1
-            if (json.containsKey("minZoom")) circle.minZoom = (json["minZoom"] as Int).toDouble()
-            if (json.containsKey("maxZoom")) circle.maxZoom = (json["maxZoom"] as Int).toDouble()
+            if (json.containsKey("minZoom")) circle.minZoom = json["minZoom"] as Double
+            if (json.containsKey("maxZoom")) circle.maxZoom = json["maxZoom"] as Double
         }
 
         fun setMap(naverMap: NaverMap?) {
