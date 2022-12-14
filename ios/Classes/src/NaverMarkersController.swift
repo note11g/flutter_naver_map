@@ -99,6 +99,9 @@ class NMarkerController: NSObject {
         if let subCaptionColor = json["subCaptionColor"] as? NSNumber {
             marker.subCaptionColor = toColor(colorNumber: subCaptionColor)
         }
+        if let subCaptionHaloColor = json["subCaptionHaloColor"] as? NSNumber {
+            marker.subCaptionHaloColor = toColor(colorNumber: subCaptionHaloColor)
+        }
         if let subCaptionRequestedWidth = json["subCaptionRequestedWidth"] as? CGFloat {
             marker.subCaptionRequestedWidth = subCaptionRequestedWidth
         }
