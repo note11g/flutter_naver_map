@@ -23,7 +23,7 @@ Plug-in which shows naver map on flutter project support Android and iOS.
 알파 버전이 개발완료되는대로 pre-release 하도록 하겠습니다.
 감사합니다.
 
-목표 pre-release date는 **11월 30일**입니다.
+목표 pre-release date는 ~~11월 30일~~ -> **12월 30일** 입니다.
 
 ---
 
