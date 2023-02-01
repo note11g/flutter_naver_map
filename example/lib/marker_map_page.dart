@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_naver_map_example/widget_marker.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
@@ -69,7 +67,9 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
                   onTap: () => setState(() => _currentMode = MODE_ADD),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: _currentMode == MODE_ADD ? Colors.black : Colors.white,
+                        color: _currentMode == MODE_ADD
+                            ? Colors.black
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(color: Colors.black)),
                     padding: EdgeInsets.all(8),
@@ -78,7 +78,9 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
                       '추가',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: _currentMode == MODE_ADD ? Colors.white : Colors.black,
+                        color: _currentMode == MODE_ADD
+                            ? Colors.white
+                            : Colors.black,
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                       ),
@@ -93,7 +95,9 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
                   onTap: () => setState(() => _currentMode = MODE_REMOVE),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: _currentMode == MODE_REMOVE ? Colors.black : Colors.white,
+                        color: _currentMode == MODE_REMOVE
+                            ? Colors.black
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(color: Colors.black)),
                     padding: EdgeInsets.all(8),
@@ -102,7 +106,9 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
                       '삭제',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: _currentMode == MODE_REMOVE ? Colors.white : Colors.black,
+                        color: _currentMode == MODE_REMOVE
+                            ? Colors.white
+                            : Colors.black,
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                       ),
@@ -116,13 +122,16 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
                 onTap: () => setState(() => _currentMode = MODE_NONE),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: _currentMode == MODE_NONE ? Colors.black : Colors.white,
+                      color: _currentMode == MODE_NONE
+                          ? Colors.black
+                          : Colors.white,
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(color: Colors.black)),
                   padding: EdgeInsets.all(4),
                   child: Icon(
                     Icons.clear,
-                    color: _currentMode == MODE_NONE ? Colors.white : Colors.black,
+                    color:
+                        _currentMode == MODE_NONE ? Colors.white : Colors.black,
                   ),
                 ),
               ),
@@ -146,7 +155,9 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
               onTap: () => setState(() => markerType = MarkerType.basic),
               child: Container(
                 decoration: BoxDecoration(
-                    color: markerType == MarkerType.basic ? Colors.blue : Colors.white,
+                    color: markerType == MarkerType.basic
+                        ? Colors.blue
+                        : Colors.white,
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(color: Colors.blue)),
                 padding: EdgeInsets.all(8),
@@ -155,7 +166,9 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
                   '기본 마커',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: markerType == MarkerType.basic ? Colors.white : Colors.blue,
+                    color: markerType == MarkerType.basic
+                        ? Colors.white
+                        : Colors.blue,
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ),
@@ -167,7 +180,9 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
               onTap: () => setState(() => markerType = MarkerType.asset),
               child: Container(
                 decoration: BoxDecoration(
-                    color: markerType == MarkerType.asset ? Colors.blue : Colors.white,
+                    color: markerType == MarkerType.asset
+                        ? Colors.blue
+                        : Colors.white,
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(color: Colors.blue)),
                 padding: EdgeInsets.all(8),
@@ -176,7 +191,9 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
                   '커스텀(Asset) 마커',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: markerType == MarkerType.asset ? Colors.white : Colors.blue,
+                    color: markerType == MarkerType.asset
+                        ? Colors.white
+                        : Colors.blue,
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ),
@@ -188,7 +205,9 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
               onTap: () => setState(() => markerType = MarkerType.byteArray),
               child: Container(
                 decoration: BoxDecoration(
-                    color: markerType == MarkerType.byteArray ? Colors.blue : Colors.white,
+                    color: markerType == MarkerType.byteArray
+                        ? Colors.blue
+                        : Colors.white,
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(color: Colors.blue)),
                 padding: EdgeInsets.all(8),
@@ -197,7 +216,9 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
                   '커스텀(byteArray) 마커',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: markerType == MarkerType.byteArray ? Colors.white : Colors.blue,
+                    color: markerType == MarkerType.byteArray
+                        ? Colors.white
+                        : Colors.blue,
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ),
@@ -209,7 +230,9 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
               onTap: () => setState(() => markerType = MarkerType.file),
               child: Container(
                 decoration: BoxDecoration(
-                    color: markerType == MarkerType.file ? Colors.blue : Colors.white,
+                    color: markerType == MarkerType.file
+                        ? Colors.blue
+                        : Colors.white,
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(color: Colors.blue)),
                 padding: EdgeInsets.all(8),
@@ -218,7 +241,9 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
                   '커스텀(File) 마커',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: markerType == MarkerType.file ? Colors.white : Colors.blue,
+                    color: markerType == MarkerType.file
+                        ? Colors.white
+                        : Colors.blue,
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ),
@@ -282,19 +307,26 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
   /// default marker
   void _onMapTapDefault(LatLng latLng) {
     if (_currentMode == MODE_ADD) {
-      _markers.add(Marker(
-        markerId: DateTime.now().toIso8601String(),
-        position: latLng,
-        infoWindow: '테스트',
-        onMarkerTab: _onMarkerTap,
-      ));
-      setState(() {});
+      for (int i = 1; i <= 2*100000; i++) {
+      final willLatLng = LatLng(latLng.latitude, latLng.longitude + 0.0001 * i);
+        _markers.add(Marker(
+          markerId: DateTime.now().toIso8601String(),
+          position: willLatLng,
+          infoWindow: '$i',
+          onMarkerTab: _onMarkerTap,
+        ));
+      }
+
+      setState(() {
+        print("setState!");
+      });
     }
   }
 
   /// 커스텀 위젯 -> assets
   void _onMapTapAsset(LatLng latLng) async {
-    var overlayImage = await OverlayImage.fromAssetImage(assetName: 'icon/marker.png');
+    var overlayImage =
+        await OverlayImage.fromAssetImage(assetName: 'icon/marker.png');
 
     _markers.add(Marker(
         markerId: DateTime.now().toIso8601String(),
@@ -319,7 +351,8 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
     var path = '';
 
     if (path.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('파일의 경로를 소스에 직접 입력 후 시도 하세요')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('파일의 경로를 소스에 직접 입력 후 시도 하세요')));
       return;
     }
 
