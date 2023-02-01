@@ -1,0 +1,144 @@
+package dev.note11.flutter_naver_map.flutter_naver_map.controller
+
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.LocationTrackingMode
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asBoolean
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asInt
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asList
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asCameraUpdate
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLocationTrackingMode
+import dev.note11.flutter_naver_map.flutter_naver_map.model.NPoint
+import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
+import dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.NOverlayInfo
+import io.flutter.plugin.common.MethodCall
+import io.flutter.plugin.common.MethodChannel
+
+private fun MethodChannel.Result.send(result: Any? = null) = success(result)
+
+private fun MethodChannel.Result.fail(e: Exception) =
+    error(e.message ?: "unknownError", e.stackTrace.toString(), null)
+
+internal interface NaverMapControlHandler {
+    fun handle(call: MethodCall, result: MethodChannel.Result) = when (call.method) {
+        "updateCamera" -> updateCamera(
+            cameraUpdate = call.arguments.asCameraUpdate(),
+            onSuccess = result::send,
+        )
+        "cancelTransitions" -> cancelTransitions(
+            reason = call.arguments.asInt(), onSuccess = result::send
+        )
+        "getCameraPosition" -> getCameraPosition(result::send)
+        "getContentBounds" -> getContentBounds(
+            withPadding = call.arguments.asBoolean(),
+            onSuccess = result::send,
+        )
+        "getContentRegion" -> getContentRegion(
+            withPadding = call.arguments.asBoolean(),
+            onSuccess = result::send,
+        )
+        "getSelectedIndoor" -> getSelectedIndoor(result::send)
+        "getLocationOverlay" -> getLocationOverlay(result::send)
+        "screenLocationToLatLng" -> screenLocationToLatLng(
+            nPoint = NPoint.fromMap(call.arguments),
+            onSuccess = result::send,
+        )
+        "latLngToScreenLocation" -> latLngToScreenLocation(
+            latLng = call.arguments.asLatLng(),
+            onSuccess = result::send,
+        )
+        "getMeterPerDp" -> call.arguments.asMap().let {
+            getMeterPerDp(
+                lat = it["latitude"]?.asDouble(),
+                zoom = it["zoom"]?.asDouble(),
+                onSuccess = result::send,
+            )
+        }
+        "isDestroyed" -> isDestroyed(result::send)
+        "pickAll" -> call.arguments.asMap().let {
+            pickAll(
+                nPoint = NPoint.fromMap(it["point"]!!),
+                dpRadius = it["radius"]!!.asDouble(),
+                onSuccess = result::send,
+            )
+        }
+        "takeSnapshot" -> call.arguments.asMap().let {
+            takeSnapshot(
+                showControls = it["showControls"]!!.asBoolean(),
+                compressQuality = it["compressQuality"]!!.asInt(),
+                onSuccess = result::send,
+                onFailure = result::fail,
+            )
+        }
+        "setLocationTrackingMode" -> setLocationTrackingMode(
+            locationTrackingMode = call.arguments.asLocationTrackingMode(),
+            onSuccess = result::send,
+        )
+        "getLocationTrackingMode" -> getLocationTrackingMode(result::send)
+        "addOverlayAll" -> addOverlayAll(
+            rawOverlays = call.arguments.asList { it.asMap() },
+            onSuccess = result::send,
+        )
+        "deleteOverlay" -> deleteOverlay(
+            overlayInfo = NOverlayInfo.fromMap(call.arguments),
+            onSuccess = result::send,
+        )
+        "clearOverlays" -> call.arguments.let {
+            clearOverlays(
+                type = if (it == null) null else NOverlayType.fromString(it.toString()),
+                onSuccess = result::send
+            )
+        }
+        "updateOptions" -> updateOptions(options = call.arguments.asMap(), onSuccess = result::send)
+        else -> result.notImplemented()
+    }
+
+    fun updateCamera(cameraUpdate: CameraUpdate, onSuccess: (isCanceled: Boolean) -> Unit)
+
+    fun cancelTransitions(reason: Int, onSuccess: () -> Unit)
+
+    fun getCameraPosition(onSuccess: (cameraPosition: Map<String, Any>) -> Unit)
+
+    fun getContentBounds(withPadding: Boolean, onSuccess: (latLngBounds: Map<String, Any>) -> Unit)
+
+    fun getContentRegion(withPadding: Boolean, onSuccess: (latLngs: List<Map<String, Any>>) -> Unit)
+
+    fun getSelectedIndoor(onSuccess: (selectedIndoor: Map<String, Any>?) -> Unit)
+
+    fun getLocationOverlay(onSuccess: () -> Unit)
+
+    fun screenLocationToLatLng(nPoint: NPoint, onSuccess: (latLng: Map<String, Any>) -> Unit)
+
+    fun latLngToScreenLocation(latLng: LatLng, onSuccess: (nPoint: Map<String, Any>) -> Unit)
+
+    fun getMeterPerDp(lat: Double?, zoom: Double?, onSuccess: (meterPerDp: Double) -> Unit)
+
+    fun isDestroyed(onSuccess: (destroyed: Boolean) -> Unit)
+
+    fun pickAll(
+        nPoint: NPoint,
+        dpRadius: Double,
+        onSuccess: (pickables: List<Map<String, Any?>>) -> Unit,
+    )
+
+    fun takeSnapshot(
+        showControls: Boolean,
+        compressQuality: Int,
+        onSuccess: (String) -> Unit, onFailure: (e: Exception) -> Unit,
+    )
+
+    fun setLocationTrackingMode(locationTrackingMode: LocationTrackingMode, onSuccess: () -> Unit)
+
+    fun getLocationTrackingMode(onSuccess: (String) -> Unit)
+
+    fun addOverlayAll(rawOverlays: List<Map<String, Any>>, onSuccess: () -> Unit)
+
+    fun deleteOverlay(overlayInfo: NOverlayInfo, onSuccess: () -> Unit)
+
+    fun clearOverlays(type: NOverlayType?, onSuccess: () -> Unit)
+
+    fun updateOptions(options: Map<String, Any>, onSuccess: () -> Unit)
+}
