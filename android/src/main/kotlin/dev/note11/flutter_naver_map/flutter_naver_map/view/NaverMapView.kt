@@ -13,8 +13,8 @@ import dev.note11.flutter_naver_map.flutter_naver_map.R
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapControlSender
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapController
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
-import dev.note11.flutter_naver_map.flutter_naver_map.model.NPoint
-import dev.note11.flutter_naver_map.flutter_naver_map.model.NaverMapViewOptions
+import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 

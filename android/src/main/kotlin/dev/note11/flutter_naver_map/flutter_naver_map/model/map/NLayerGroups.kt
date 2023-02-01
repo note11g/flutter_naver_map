@@ -1,11 +1,8 @@
-package dev.note11.flutter_naver_map.flutter_naver_map.model
+package dev.note11.flutter_naver_map.flutter_naver_map.model.map
 
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asList
 
-internal data class NLayerGroups(
-    val groups: List<String>,
-) {
-
+internal data class NLayerGroups(val groups: List<String>) {
 
     fun useWithEnableAndDisableGroups(func: (enableGroups: List<String>, disableGroups: List<String>) -> Unit) {
         val disableGroups = ALL_LAYER_GROUPS.groups - groups.toSet()

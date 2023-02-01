@@ -3,7 +3,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.controller
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.Symbol
 import com.naver.maps.map.indoor.IndoorSelection
-import dev.note11.flutter_naver_map.flutter_naver_map.model.NPoint
+import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
 
 internal interface NaverMapControlSender {
     fun onMapReady()

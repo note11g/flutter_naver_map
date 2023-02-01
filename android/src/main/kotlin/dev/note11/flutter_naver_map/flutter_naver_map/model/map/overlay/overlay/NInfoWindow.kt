@@ -1,4 +1,4 @@
-package dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.overlay
+package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 
 import android.content.Context
 import com.naver.maps.geometry.LatLng
@@ -9,9 +9,9 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMap
-import dev.note11.flutter_naver_map.flutter_naver_map.model.NPoint
+import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
-import dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil.dpToPx
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil.pxToDp
 

@@ -2,7 +2,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.handle
 
 import com.naver.maps.map.overlay.InfoWindow
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
-import dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.overlay.NInfoWindow
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NInfoWindow
 import io.flutter.plugin.common.MethodChannel
 
 internal interface InfoWindowHandler : OverlayHandler {

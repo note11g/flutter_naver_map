@@ -5,7 +5,13 @@ import com.naver.maps.map.overlay.LocationOverlay
 import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapControlHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
-import dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.*
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NArrowHeadPathOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NCircleOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NGroundOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NInfoWindow
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NMarker
 import dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.overlay.*
 
 internal interface AddableOverlay<T : Overlay> {

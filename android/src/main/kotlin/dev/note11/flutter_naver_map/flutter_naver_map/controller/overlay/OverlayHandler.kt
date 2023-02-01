@@ -4,7 +4,7 @@ import android.util.Log
 import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
-import dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
 import io.flutter.plugin.common.MethodChannel
 
 internal interface OverlayHandler {

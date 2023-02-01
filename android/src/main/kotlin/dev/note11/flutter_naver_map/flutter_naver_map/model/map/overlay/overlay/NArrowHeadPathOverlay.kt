@@ -1,4 +1,4 @@
-package dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.overlay
+package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 
 import androidx.annotation.ColorInt
 import com.naver.maps.geometry.LatLng
@@ -12,7 +12,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
-import dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 
 internal data class NArrowHeadPathOverlay(

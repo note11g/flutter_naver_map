@@ -3,7 +3,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.handle
 import com.naver.maps.map.overlay.PolylineOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler.Companion.getterName
-import dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.overlay.NPolylineOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NPolylineOverlay
 import io.flutter.plugin.common.MethodChannel
 
 internal interface PolylineOverlayHandler : OverlayHandler {

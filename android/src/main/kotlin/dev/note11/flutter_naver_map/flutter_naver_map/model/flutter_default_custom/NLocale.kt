@@ -1,4 +1,4 @@
-package dev.note11.flutter_naver_map.flutter_naver_map.model
+package dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom
 
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import java.util.*

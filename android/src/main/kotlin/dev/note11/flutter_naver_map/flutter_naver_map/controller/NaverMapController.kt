@@ -13,11 +13,11 @@ import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageableString
-import dev.note11.flutter_naver_map.flutter_naver_map.model.NPoint
-import dev.note11.flutter_naver_map.flutter_naver_map.model.NaverMapViewOptions
+import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
-import dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.NOverlayInfo
-import dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.NOverlayInfo.Companion.fromString
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo.Companion.fromString
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 import io.flutter.plugin.common.MethodChannel
 import java.io.File

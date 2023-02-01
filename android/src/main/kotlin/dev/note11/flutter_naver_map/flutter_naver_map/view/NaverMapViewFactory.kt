@@ -5,7 +5,7 @@ import android.content.Context
 import dev.note11.flutter_naver_map.flutter_naver_map.FlutterNaverMapPlugin
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayController
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
-import dev.note11.flutter_naver_map.flutter_naver_map.model.NaverMapViewOptions
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.StandardMessageCodec

@@ -13,7 +13,7 @@ import com.naver.maps.map.overlay.PolylineOverlay.LineCap
 import com.naver.maps.map.overlay.PolylineOverlay.LineJoin
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
-import dev.note11.flutter_naver_map.flutter_naver_map.model.NCameraUpdate
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NCameraUpdate
 
 internal object MapTypeConverter {
     /*

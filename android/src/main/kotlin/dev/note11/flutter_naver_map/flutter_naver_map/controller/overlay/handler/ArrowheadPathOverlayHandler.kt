@@ -3,7 +3,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.handle
 import com.naver.maps.map.overlay.ArrowheadPathOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler.Companion.getterName
-import dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.overlay.NArrowHeadPathOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NArrowHeadPathOverlay
 import io.flutter.plugin.common.MethodChannel
 
 internal interface ArrowheadPathOverlayHandler : OverlayHandler {

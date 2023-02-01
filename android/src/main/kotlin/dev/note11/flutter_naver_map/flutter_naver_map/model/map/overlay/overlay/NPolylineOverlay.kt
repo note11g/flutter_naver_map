@@ -1,4 +1,4 @@
-package dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.overlay
+package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 
 import androidx.annotation.ColorInt
 import com.naver.maps.geometry.LatLng
@@ -17,7 +17,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageableString
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
-import dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 import kotlin.math.roundToInt
 

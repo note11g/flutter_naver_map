@@ -1,4 +1,4 @@
-package dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.overlay
+package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.MultipartPathOverlay
@@ -10,9 +10,9 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asList
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
-import dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.NMultipartPath
-import dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.NOverlayImage
-import dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NMultipartPath
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayImage
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 
 internal data class NMultipartPathOverlay(

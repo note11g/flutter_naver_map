@@ -1,4 +1,4 @@
-package dev.note11.flutter_naver_map.flutter_naver_map.model.overlay
+package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay
 
 import androidx.annotation.ColorInt
 import com.naver.maps.geometry.LatLng

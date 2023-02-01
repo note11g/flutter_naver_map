@@ -3,7 +3,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.handle
 import com.naver.maps.map.overlay.Marker
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
-import dev.note11.flutter_naver_map.flutter_naver_map.model.overlay.overlay.NMarker
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NMarker
 import io.flutter.plugin.common.MethodChannel
 
 internal interface MarkerHandler : OverlayHandler {
