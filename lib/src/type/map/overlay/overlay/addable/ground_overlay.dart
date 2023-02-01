@@ -4,8 +4,8 @@ class NGroundOverlay extends NAddableOverlay<NGroundOverlay> {
   NLatLngBounds get bounds => _bounds;
   NLatLngBounds _bounds;
 
-  NOverlayImage? get image => _image;
-  NOverlayImage? _image;
+  NOverlayImage get image => _image;
+  NOverlayImage _image;
 
   double get alpha => _alpha;
   double _alpha;
@@ -14,16 +14,6 @@ class NGroundOverlay extends NAddableOverlay<NGroundOverlay> {
     required String id,
     required NLatLngBounds bounds,
     required NOverlayImage image,
-    double alpha = 1.0,
-  })  : _bounds = bounds,
-        _image = image,
-        _alpha = alpha,
-        super(id: id, type: NOverlayType.groundOverlay);
-
-  NGroundOverlay._({
-    required String id,
-    required NLatLngBounds bounds,
-    required NOverlayImage? image,
     double alpha = 1.0,
   })  : _bounds = bounds,
         _image = image,
@@ -45,11 +35,10 @@ class NGroundOverlay extends NAddableOverlay<NGroundOverlay> {
     _set(_alphaName, alpha);
   }
 
-  factory NGroundOverlay._fromJson(dynamic json) => NGroundOverlay._(
+  factory NGroundOverlay._fromJson(dynamic json) => NGroundOverlay(
         id: NOverlayInfo._fromJson(json[_infoName]!).id,
         bounds: NLatLngBounds._fromJson(json[_boundsName]!),
-        image: null, // todo : support later
-        // image: NOverlayImage._fromJson(json["imageName"]!),
+        image: NOverlayImage._fromJson(json["imageName"]!),
         alpha: json[_alphaName]!,
       );
 

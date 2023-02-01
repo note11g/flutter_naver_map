@@ -29,11 +29,9 @@ internal interface LocationOverlayHandler : OverlayHandler {
         getterName(circleOutlineColorName) -> getCircleOutlineColor(overlay, result::success)
         getterName(circleOutlineWidthName) -> getCircleOutlineWidth(overlay, result::success)
         getterName(circleRadiusName) -> getCircleRadius(overlay, result::success)
-        getterName(iconName) -> getIconSize(overlay, result::success)
         getterName(iconSizeName) -> getIconSize(overlay, result::success)
         getterName(positionName) -> getPosition(overlay, result::success)
         getterName(subAnchorName) -> getSubAnchor(overlay, result::success)
-        getterName(subIconName) -> getSubIconSize(overlay, result::success)
         getterName(subIconSizeName) -> getSubIconSize(overlay, result::success)
 
         else -> result.notImplemented()

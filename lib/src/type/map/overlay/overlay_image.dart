@@ -1,20 +1,21 @@
 part of flutter_naver_map;
 
 class NOverlayImage implements NMessageable {
-  final String path;
+  final String _path;
   final _NOverlayImageMode _mode;
 
   const NOverlayImage._({
-    required this.path,
+    required String path,
     required _NOverlayImageMode mode,
-  }) : _mode = mode;
+  })  : _path = path,
+        _mode = mode;
 
   const NOverlayImage.fromAssetImage(String assetName)
-      : path = assetName,
+      : _path = assetName,
         _mode = _NOverlayImageMode.asset;
 
   NOverlayImage.fromFile(File file)
-      : path = file.path,
+      : _path = file.path,
         _mode = _NOverlayImageMode.file;
 
   static Future<NOverlayImage> fromByteArray(Uint8List imageBytes) async {
@@ -28,7 +29,8 @@ class NOverlayImage implements NMessageable {
     required BuildContext context,
   }) async {
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
-    final imageBytes = await WidgetToImageUtil.widgetToImageByte(widget, size: size, pixelRatio: pixelRatio);
+    final imageBytes = await WidgetToImageUtil.widgetToImageByte(widget,
+        size: size, pixelRatio: pixelRatio);
     return NOverlayImage.fromByteArray(imageBytes);
   }
 
@@ -39,7 +41,10 @@ class NOverlayImage implements NMessageable {
 
   @override
   NPayload toNPayload() => NPayload.make({
-        "path": path,
+        "path": _path,
         "mode": _mode,
       });
+
+  @override
+  String toString() => "NOverlayImage{}";
 }

@@ -52,7 +52,7 @@ internal data class NMultipartPathOverlay(
         pathsName to paths.map(NMultipartPath::toMap),
         widthName to widthDp,
         outlineWidthName to outlineWidthDp,
-        patternImageName to null, // todo
+        patternImageName to patternImage?.toMap(),
         patternIntervalName to patternIntervalDp,
         progressName to progress,
         isHideCollidedCaptionsName to isHideCollidedCaptions,
@@ -64,17 +64,16 @@ internal data class NMultipartPathOverlay(
         fun fromMap(rawMap: Any): NMultipartPathOverlay = rawMap.asMap().let {
             NMultipartPathOverlay(
                 info = NOverlayInfo.fromMap(it[infoName]!!),
-                paths = it[pathsName]!!.asList(NMultipartPath.Companion::fromMap),
+                paths = it[pathsName]!!.asList(NMultipartPath::fromMap),
                 widthDp = it[widthName]!!.asDouble(),
                 outlineWidthDp = it[outlineWidthName]!!.asDouble(),
-                patternImage = it[patternImageName]?.let(NOverlayImage.Companion::fromMap),
+                patternImage = it[patternImageName]?.let(NOverlayImage::fromMap),
                 patternIntervalDp = it[patternIntervalName]!!.asDouble(),
                 progress = it[progressName]!!.asDouble(),
                 isHideCollidedCaptions = it[isHideCollidedCaptionsName]!!.asBoolean(),
                 isHideCollidedMarkers = it[isHideCollidedMarkersName]!!.asBoolean(),
                 isHideCollidedSymbols = it[isHideCollidedSymbolsName]!!.asBoolean(),
-
-                )
+            )
         }
 
         fun fromMultipartPathOverlay(
@@ -88,7 +87,7 @@ internal data class NMultipartPathOverlay(
                 },
                 widthDp = DisplayUtil.pxToDp(width),
                 outlineWidthDp = DisplayUtil.pxToDp(outlineWidth),
-                patternImage = null, //todo
+                patternImage = patternImage?.let(NOverlayImage::fromOverlayImage),
                 patternIntervalDp = DisplayUtil.pxToDp(patternInterval),
                 progress = progress,
                 isHideCollidedCaptions = isHideCollidedCaptions,

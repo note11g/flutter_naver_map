@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:developer' show log;
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'package:http/http.dart' as http;
 
 void main() async {
   await _initialize();
@@ -87,17 +84,8 @@ class TestPageState extends State<TestPage> {
         },
         onMapTapped: (point, latLng) async {
           log("onMapTapped: $point, $latLng", name: "onMapTapped");
-          final marker = NMarker(
-              id: latLng.toString(), position: latLng, size: NSize(256, 256));
+          final marker = NMarker(id: latLng.toString(), position: latLng);
           _mapController.addOverlay(marker);
         },
       );
-
-  Future<Uint8List> loadImage() async {
-    const a =
-        "https://docs.flutter.dev/assets/images/docs/assets-and-images/icon.png";
-    final response = await http.get(Uri.parse(a));
-    final responseBody = response.bodyBytes;
-    return responseBody;
-  }
 }

@@ -86,7 +86,7 @@ internal data class NMarker(
 
     override fun toMap(): Map<String, Any?> = mapOf(
         infoName to info.toMap(),
-        iconName to null,
+        iconName to icon?.toMap(),
         positionName to position.toMap(),
         iconTintColorName to iconTintColor,
         alphaName to alpha,
@@ -112,14 +112,14 @@ internal data class NMarker(
             NMarker(
                 info = NOverlayInfo.fromMap(it[infoName]!!),
                 position = it[positionName]!!.asLatLng(),
-                icon = it[iconName]?.let(NOverlayImage.Companion::fromMap),
+                icon = it[iconName]?.let(NOverlayImage::fromMap),
                 iconTintColor = it[iconTintColorName]!!.asInt(),
                 alpha = it[alphaName]!!.asFloat(),
                 angle = it[angleName]!!.asFloat(),
                 anchor = NPoint.fromMap(it[anchorName]!!),
                 size = NSize.fromMap(it[sizeName]!!),
-                caption = it[captionName]?.let(NOverlayCaption.Companion::fromMap),
-                subCaption = it[subCaptionName]?.let(NOverlayCaption.Companion::fromMap),
+                caption = it[captionName]?.let(NOverlayCaption::fromMap),
+                subCaption = it[subCaptionName]?.let(NOverlayCaption::fromMap),
                 captionAligns = it[captionAlignsName]!!.asList { raw -> raw.asAlign() },
                 captionDpOffset = it[captionOffsetName]!!.asDouble(),
                 isCaptionPerspectiveEnabled = it[isCaptionPerspectiveEnabledName]!!.asBoolean(),
@@ -137,7 +137,7 @@ internal data class NMarker(
             NMarker(
                 info = NOverlayInfo(NOverlayType.MARKER, id),
                 position = position,
-                icon = null,
+                icon = NOverlayImage.fromOverlayImage(icon),
                 iconTintColor = iconTintColor,
                 alpha = alpha,
                 angle = angle,

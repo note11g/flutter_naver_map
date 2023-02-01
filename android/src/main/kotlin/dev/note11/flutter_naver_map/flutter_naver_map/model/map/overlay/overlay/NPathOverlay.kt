@@ -60,7 +60,7 @@ internal data class NPathOverlay(
         passedColorName to passedColor,
         passedOutlineColorName to passedOutlineColor,
         progressName to progress,
-        patternImageName to null, // todo
+        patternImageName to patternImage?.toMap(),
         patternIntervalName to patternIntervalDp,
         isHideCollidedCaptionsName to isHideCollidedCaptions,
         isHideCollidedMarkersName to isHideCollidedMarkers,
@@ -79,7 +79,7 @@ internal data class NPathOverlay(
                 passedColor = it[passedColorName]!!.asInt(),
                 passedOutlineColor = it[passedOutlineColorName]!!.asInt(),
                 progress = it[progressName]!!.asDouble(),
-                patternImage = it[patternImageName]?.let(NOverlayImage.Companion::fromMap),
+                patternImage = it[patternImageName]?.let(NOverlayImage::fromMap),
                 patternIntervalDp = it[patternIntervalName]!!.asDouble(),
                 isHideCollidedCaptions = it[isHideCollidedCaptionsName]!!.asBoolean(),
                 isHideCollidedMarkers = it[isHideCollidedMarkersName]!!.asBoolean(),
@@ -101,7 +101,7 @@ internal data class NPathOverlay(
                 passedColor = passedColor,
                 passedOutlineColor = passedOutlineColor,
                 progress = progress,
-                patternImage = null, // todo
+                patternImage = patternImage?.let(NOverlayImage::fromOverlayImage),
                 patternIntervalDp = DisplayUtil.pxToDp(patternInterval),
                 isHideCollidedCaptions = isHideCollidedCaptions,
                 isHideCollidedMarkers = isHideCollidedMarkers,

@@ -86,12 +86,10 @@ internal interface NaverMapControlHandler {
             overlayInfo = NOverlayInfo.fromMap(call.arguments),
             onSuccess = result::send,
         )
-        "clearOverlays" -> call.arguments.let {
-            clearOverlays(
-                type = if (it == null) null else NOverlayType.fromString(it.toString()),
-                onSuccess = result::send
-            )
-        }
+        "clearOverlays" -> clearOverlays(
+            type = call.arguments?.toString()?.let(NOverlayType::fromString),
+            onSuccess = result::send
+        )
         "updateOptions" -> updateOptions(options = call.arguments.asMap(), onSuccess = result::send)
         else -> result.notImplemented()
     }

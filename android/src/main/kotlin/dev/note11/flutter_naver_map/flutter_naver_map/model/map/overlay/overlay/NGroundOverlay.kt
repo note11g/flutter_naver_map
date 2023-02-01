@@ -3,6 +3,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.overlay.GroundOverlay
 import com.naver.maps.map.overlay.Overlay
+import com.naver.maps.map.overlay.OverlayImage
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
@@ -16,20 +17,20 @@ import dev.note11.flutter_naver_map.flutter_naver_map.util.CalcUtil
 internal data class NGroundOverlay(
     override val info: NOverlayInfo,
     val bounds: LatLngBounds,
-    val image: NOverlayImage?,
+    val image: NOverlayImage,
     val alpha: Double,
 ) : AddableOverlay<GroundOverlay> {
 
     override fun createMapOverlay(): GroundOverlay = GroundOverlay().also { g ->
         g.bounds = bounds
         g.alpha = alpha.toFloat()
-        image!!.applyToOverlay(g::setImage)
+        image.applyToOverlay(g::setImage)
     }
 
     override fun toMap(): Map<String, Any?> = mapOf(
         infoName to info.toMap(),
         boundsName to bounds.toMap(),
-        imageName to null,
+        imageName to image.toMap(),
         alphaName to alpha,
     )
 
@@ -50,7 +51,7 @@ internal data class NGroundOverlay(
             NGroundOverlay(
                 info = NOverlayInfo(NOverlayType.GROUND_OVERLAY, id),
                 bounds = bounds,
-                image = null, // todo
+                image = NOverlayImage.fromOverlayImage(image),
                 alpha = CalcUtil.float32To64(alpha),
             )
         }

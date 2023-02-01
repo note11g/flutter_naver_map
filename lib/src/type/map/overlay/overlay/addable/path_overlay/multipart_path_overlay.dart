@@ -104,7 +104,9 @@ class NMultiPartPathOverlay extends NAddableOverlay<NMultiPartPathOverlay> {
         paths: NMultipartPath._fromJsonList(json[_pathsName]!),
         width: json[_widthName]!,
         outlineWidth: json[_outlineWidthName]!,
-        patternImage: null, // todo
+        patternImage: json[_patternImageName] != null
+            ? NOverlayImage._fromJson(json[_patternImageName])
+            : null,
         patternInterval: json[_patternIntervalName]!,
         progress: json[_progressName]!,
         isHideCollidedCaptions: json[_isHideCollidedCaptionsName]!,
