@@ -1,3 +1,7 @@
+## 0.10.6
+- bug fix
+- support widget to OverlayImage
+
 ## 0.10.5
 - fix toCameraPosition issue on iOS
 
