@@ -3,11 +3,18 @@ PODS:
   - flutter_naver_map (1.0.0):
     - Flutter
     - NMapsMap
+  - integration_test (0.0.1):
+    - Flutter
   - NMapsMap (3.16.0)
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_naver_map (from `.symlinks/plugins/flutter_naver_map/ios`)
+  - integration_test (from `.symlinks/plugins/integration_test/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
 
 SPEC REPOS:
   trunk:
@@ -18,11 +25,17 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_naver_map:
     :path: ".symlinks/plugins/flutter_naver_map/ios"
+  integration_test:
+    :path: ".symlinks/plugins/integration_test/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/ios"
 
 SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_naver_map: 8b8ad3a217af500abd18bad7483b07de0a955faf
+  integration_test: a1e7d09bd98eca2fc37aefd79d4f41ad37bdbbe5
   NMapsMap: a2593320fca2bb09e521c05b4dffee4da42e96ed
+  path_provider_foundation: 37748e03f12783f9de2cb2c4eadfaa25fe6d4852
 
 PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
 

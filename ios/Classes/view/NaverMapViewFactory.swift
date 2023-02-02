@@ -1,7 +1,3 @@
-import Flutter
-import UIKit
-import NMapsMap
-
 class NaverMapFactory: NSObject, FlutterPlatformViewFactory {
     private var messenger: FlutterBinaryMessenger
 
@@ -15,28 +11,16 @@ class NaverMapFactory: NSObject, FlutterPlatformViewFactory {
         viewIdentifier viewId: Int64,
         arguments args: Any?
     ) -> FlutterPlatformView {
-        return NaverMapNativeView(
+        let channel = FlutterMethodChannel(name: SwiftFlutterNaverMapPlugin.createViewMethodChannelName(id: viewId), binaryMessenger: messenger)
+        let overlayChannel = FlutterMethodChannel(name: SwiftFlutterNaverMapPlugin.createOverlayMethodChannelName(viewId: viewId), binaryMessenger: messenger)
+//        let overlayController = OverlayController(overlayChannel)
+        
+//        let convertedArgs = asDict(args!)
+        
+        return NaverMapView(
             frame: frame,
             viewIdentifier: viewId,
             arguments: args,
             binaryMessenger: messenger)
-    }
-}
-
-class NaverMapNativeView: NSObject, FlutterPlatformView {
-    private var naverMap : NMFNaverMapView!
-    
-    init(
-        frame: CGRect,
-        viewIdentifier viewId: Int64,
-        arguments args: Any?,
-        binaryMessenger messenger: FlutterBinaryMessenger?
-    ) {
-        naverMap = NMFNaverMapView(frame: frame)
-        super.init()
-    }
-    
-    func view() -> UIView {
-        return naverMap
     }
 }

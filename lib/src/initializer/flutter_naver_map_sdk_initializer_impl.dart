@@ -27,7 +27,7 @@ class _NaverMapSdkImpl implements NaverMapSdk {
       "setAuthFailedListener": onAuthFailed != null
     });
 
-    _androidSdkVersion = result["androidSdkVersion"];
+    if(result != null) _androidSdkVersion = result["androidSdkVersion"];
     _isInitialized = true;
 
     log(
