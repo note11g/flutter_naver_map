@@ -49,7 +49,7 @@ internal class FlutterNaverMapPlugin : FlutterPlugin, ActivityAware {
 
         private const val SEPARATE_STRING = "#"
 
-        internal fun createViewMethodChannelName(id: Any): String =
+        internal fun createViewMethodChannelName(id: Int): String =
             "${MAP_VIEW_TYPE_ID}${SEPARATE_STRING}$id"
 
         internal fun createOverlayMethodChannelName(viewId: Int): String =
