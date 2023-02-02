@@ -6,12 +6,6 @@ internal object DefaultTypeConverter {
     fun Any.asFloat(): Float = if (this is Double) toFloat() else this as Float
     fun Any.asInt(): Int = if (this is Long) toInt() else this as Int
     fun Any.asLong(): Long = if (this is Int) toLong() else this as Long
-
-    @Suppress("UNCHECKED_CAST")
-    fun Any.asByteArray(): ByteArray =
-        if (this is ArrayList<*>) (this as ArrayList<Byte>).toByteArray()
-        else this as ByteArray
-
     @Suppress("UNCHECKED_CAST")
     fun Any.asMap(): Map<String, Any> = this as Map<String, Any>
 
