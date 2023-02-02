@@ -1,6 +1,5 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay
 
-import android.util.Log
 import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
