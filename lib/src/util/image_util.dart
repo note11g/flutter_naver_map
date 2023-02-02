@@ -1,5 +1,5 @@
 import "dart:developer" show log;
-import "dart:io" show File, Directory;
+import "dart:io" show Directory, File, FileSystemException;
 import "dart:typed_data" show Uint8List;
 
 import "package:crypto/crypto.dart" show sha256;
@@ -33,8 +33,13 @@ class ImageUtil {
   static Future<String> _makeFile(String hash, Uint8List bytes) async {
     final tempDirPath = await _getDir().then((d) => d.path);
     final path = "$tempDirPath/$hash.png";
-    final file = await File(path).writeAsBytes(bytes);
-    return file.path;
+    try {
+      final file = await File(path).writeAsBytes(bytes);
+      return file.path;
+    } on FileSystemException catch (e) {
+      log("저장중 오류가 발생했습니다. 메시지: ${e.message}", name: "ImageSaveUtil");
+      rethrow;
+    }
   }
 
   /* ----- TempDir ----- */

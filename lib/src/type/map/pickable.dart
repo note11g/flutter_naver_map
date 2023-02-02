@@ -43,7 +43,7 @@ abstract class Pickable {
       }
       return overlay.._addedOnMap(overlayController, addFunc: false);
     } else {
-      throw Exception("Unknown signature: $signature");
+      throw NUnknownTypeCastException(unknownValue: json);
     }
   }
 }

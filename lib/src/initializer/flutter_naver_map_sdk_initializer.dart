@@ -15,13 +15,3 @@ abstract class NaverMapSdk {
     Function(NAuthFailedException ex)? onAuthFailed,
   });
 }
-
-class NAuthFailedException implements Exception {
-  final String code;
-  final String? message;
-
-  NAuthFailedException._(this.code, this.message);
-
-  @override
-  String toString() => "AuthFailedException(code: $code, message: $message)";
-}

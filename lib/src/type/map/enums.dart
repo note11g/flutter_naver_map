@@ -48,7 +48,7 @@ enum NLocationTrackingMode implements NMessageableForEnum {
     for (final value in values) {
       if (value.toNPayload() == json) return value;
     }
-    throw Exception("Unknown LocationTrackingMode: $json");
+    throw NUnknownTypeCastException(unknownValue: json);
   }
 
   @override
@@ -70,7 +70,7 @@ enum NAlign implements NMessageableForEnum {
     for (final value in values) {
       if (value.toNPayload() == json) return value;
     }
-    throw Exception("Unknown NAlign: $json");
+    throw NUnknownTypeCastException(unknownValue: json);
   }
 
   @override
@@ -101,7 +101,7 @@ enum NCameraUpdateReason implements NMessageableForEnum {
     for (final value in values) {
       if (value.toNPayload() == json) return value;
     }
-    throw Exception("Unknown CameraUpdateReason: $json");
+    throw NUnknownTypeCastException(unknownValue: json);
   }
 
   @override
@@ -128,7 +128,7 @@ enum NOverlayType implements NMessageableForEnum {
     for (final value in values) {
       if (value.toNPayload() == json) return value;
     }
-    throw Exception("Unknown OverlayType: $json");
+    throw NUnknownTypeCastException(unknownValue: json);
   }
 
   @override
@@ -147,7 +147,7 @@ enum NLineCap implements NMessageableForEnum {
     for (final value in values) {
       if (value.toNPayload() == json) return value;
     }
-    throw Exception("Unknown OverlayType: $json");
+    throw NUnknownTypeCastException(unknownValue: json);
   }
 
   @override
@@ -163,7 +163,7 @@ enum NLineJoin implements NMessageableForEnum {
     for (final value in values) {
       if (value.toNPayload() == json) return value;
     }
-    throw Exception("Unknown OverlayType: $json");
+    throw NUnknownTypeCastException(unknownValue: json);
   }
 
   @override
@@ -181,7 +181,7 @@ enum _NOverlayImageMode implements NMessageableForEnum {
     for (final value in values) {
       if (value.toNPayload() == json) return value;
     }
-    throw Exception("Unknown OverlayType: $json");
+    throw NUnknownTypeCastException(unknownValue: json);
   }
 
   @override

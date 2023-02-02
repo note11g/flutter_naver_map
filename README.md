@@ -9,7 +9,7 @@ iOS는 2월 첫째주 내로 개발될 예정입니다.
 
 ### TODO
 - [x] NOverlayImage 객체의 Native to Dart 생성 구현
-- [ ] Exception 정의 및 구현
+- [x] Exception 정의 및 구현
 - [ ] iOS 구현
 - [ ] 통합 테스트 작성
 - [ ] 단위테스트 작성

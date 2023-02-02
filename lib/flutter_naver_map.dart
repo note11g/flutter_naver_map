@@ -72,3 +72,8 @@ part 'src/type/map/symbol.dart';
 
 part 'src/widget/map_widget.dart';
 part 'src/widget/platform_view.dart';
+
+/*
+  --- exceptions ---
+*/
+part 'src/exceptions/exceptions.dart';

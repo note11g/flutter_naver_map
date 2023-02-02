@@ -71,7 +71,8 @@ class NInfoWindow extends NAddableOverlay<NInfoWindow> {
 
   void setPosition(NLatLng position) {
     if (withMarker) {
-      throw Exception("NInfoWindow attached NMarker can't set position.");
+      throw NInfoWindowAddedOnMarkerSetPositionException(
+          "NInfoWindow added on Marker can't set position. if you want to set position, use NInfoWindow.onMap");
     }
     _position = position;
     _set(_positionName, position);

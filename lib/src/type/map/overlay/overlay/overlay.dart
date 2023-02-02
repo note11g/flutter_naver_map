@@ -24,7 +24,7 @@ abstract class NOverlay<O extends NOverlay<void>> implements Pickable {
   }
 
   Future<dynamic> _invokeMethod(String method, [dynamic arguments]) async {
-    if (!_isAdded) throw Exception("Overlay Not added on Map!");
+    if (!_isAdded) throw NOverlayNotAddedOnMapException("Overlay Not added on Map!");
     final queryString = info.toQueryString(injectMethod: method);
 
     if (arguments == null) {
