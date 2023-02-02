@@ -34,7 +34,8 @@ internal class SdkInitializer(
         val setAuthFailedListener = args["setAuthFailedListener"]!!.asBoolean()
 
         try {
-            if (clientId != null) initializeMapSdk(context, clientId, isGov, setAuthFailedListener)
+            if (clientId != null) initializeMapSdk(context, clientId, isGov)
+            if (setAuthFailedListener) setOnAuthFailedListener()
             val sendPayload = mapOf("androidSdkVersion" to androidSdkVersion)
             onSuccess(sendPayload)
         } catch (e: NaverMapSdk.AuthFailedException) {
@@ -46,13 +47,13 @@ internal class SdkInitializer(
         context: Context,
         clientId: String,
         isGov: Boolean,
-        setAuthFailedListener: Boolean,
     ) = NaverMapSdk.getInstance(context).run {
-        if (setAuthFailedListener) setOnAuthFailedListener(::onAuthFailedListener)
-        client =
-            if (!isGov) NaverMapSdk.NaverCloudPlatformClient(clientId)
-            else NaverMapSdk.NaverCloudPlatformGovClient(clientId)
+        client = if (!isGov) NaverMapSdk.NaverCloudPlatformClient(clientId)
+        else NaverMapSdk.NaverCloudPlatformGovClient(clientId)
     }
+
+    private fun setOnAuthFailedListener() =
+        NaverMapSdk.getInstance(context).setOnAuthFailedListener(::onAuthFailedListener)
 
     private fun onAuthFailedListener(ex: NaverMapSdk.AuthFailedException) {
         channel.invokeMethod(
