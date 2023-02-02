@@ -46,9 +46,10 @@ class SdkInitializer: NSObject, NMFAuthManagerDelegate {
     }
 
     func authorized(_ state: NMFAuthState, error: Error?) {
+        print("네이버맵 Auth State : \(state), e: \(String(describing: error))")
         if (error != nil) {
             channel.invokeMethod("onAuthFailed", arguments: [
-                "code": "",
+                "code": String(error!._code),
                 "message": error!.localizedDescription
             ])
         }
