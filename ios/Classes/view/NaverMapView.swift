@@ -12,7 +12,7 @@ class NaverMapView: NSObject, FlutterPlatformView {
         self.channel = channel
         super.init()
 
-        naverMapViewOptions.updateWithNaverMapView(naverMap: naverMap)
+        naverMapViewOptions.updateWithNaverMapView(naverMap: naverMap, isFirst: true)
     }
 
     func view() -> UIView {

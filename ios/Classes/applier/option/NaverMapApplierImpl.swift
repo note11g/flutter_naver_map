@@ -1,6 +1,7 @@
 import NMapsMap
 
 class NaverMapApplierImpl: NaverMapOptionApplier {
+    private let isFirst: Bool
     private let naverMapView: NMFNaverMapView
     private var mapView: NMFMapView {
         get {
@@ -8,8 +9,9 @@ class NaverMapApplierImpl: NaverMapOptionApplier {
         }
     }
 
-    init(_ mapView: NMFNaverMapView) {
+    init(_ mapView: NMFNaverMapView, isFirst: Bool) {
         naverMapView = mapView
+        self.isFirst = isFirst
     }
 
     func setInitialCameraPosition(_ rawPosition: Any) {

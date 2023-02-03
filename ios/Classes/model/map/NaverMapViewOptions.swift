@@ -14,11 +14,11 @@ class NaverMapViewOptions {
         return NaverMapViewOptions(consumeSymbolTapEvents: consumeSymbolTapEvents, args: args)
     }
 
-    func updateWithNaverMapView(naverMap: NMFNaverMapView) {
+    func updateWithNaverMapView(naverMap: NMFNaverMapView, isFirst: Bool) {
         naverMap.showCompass = false
         naverMap.showZoomControls = false
 
-        let applier = NaverMapApplierImpl(naverMap)
+        let applier = NaverMapApplierImpl(naverMap, isFirst: isFirst)
         applier.applyOptions(args: args)
     }
 }
