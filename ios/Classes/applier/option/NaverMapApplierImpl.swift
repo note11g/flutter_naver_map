@@ -85,15 +85,15 @@ class NaverMapApplierImpl: NaverMapOptionApplier {
     }
 
     func setScrollGesturesFriction(_ rawFriction: Any) {
-        mapView.scrollFriction = asCGFloat(rawFriction) // todo : 기본값 지정 필요 : -1
+        mapView.scrollFriction = asCGFloat(rawFriction).orDefault(CGFloat(0.088))
     }
 
     func setZoomGesturesFriction(_ rawFriction: Any) {
-        mapView.zoomFriction = asCGFloat(rawFriction) // todo : 기본값 지정 필요 : -1
+        mapView.zoomFriction = asCGFloat(rawFriction).orDefault(CGFloat(0.12375))
     }
 
     func setRotationGesturesFriction(_ rawFriction: Any) {
-        mapView.rotateFriction = asCGFloat(rawFriction) // todo : 기본값 지정 필요 : -1
+        mapView.rotateFriction = asCGFloat(rawFriction).orDefault(CGFloat(0.19333))
     }
 
     func setScaleBarEnable(_ rawEnable: Any) {
