@@ -2,6 +2,14 @@ public func asBool(_ v: Any) -> Bool {
     v as! Bool
 }
 
+public func asFloat(_ v: Any) -> Float {
+    v as! Float
+}
+
+public func asCGFloat(_ v: Any) -> CGFloat {
+    CGFloat(asDouble(v))
+}
+
 public func asDouble(_ v: Any) -> Double {
     v as! Double
 }
@@ -15,7 +23,7 @@ public func asString(_ v: Any) -> String {
 }
 
 public func asStringWithNil(_ v: Any?) -> String? {
-    (v is NSNull) ? nil : asString(v!) // todo : convert to (v == nil) condition
+    (v is NSNull || v == nil) ? nil : asString(v!)
 }
 
 public func asDict(_ v: Any) -> Dictionary<String, Any> {

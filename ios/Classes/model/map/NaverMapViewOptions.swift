@@ -1,8 +1,24 @@
-//
-//  NaverMapViewOptions.swift
-//  flutter_naver_map
-//
-//  Created by 김승빈 on 2023/02/02.
-//
+import NMapsMap
 
-import Foundation
+class NaverMapViewOptions {
+    private let args: Dictionary<String, Any>
+    let consumeSymbolTapEvents: Bool
+
+    init(consumeSymbolTapEvents: Bool, args: Dictionary<String, Any>) {
+        self.consumeSymbolTapEvents = consumeSymbolTapEvents
+        self.args = args
+    }
+
+    static func fromMap(_ args: Dictionary<String, Any>) -> NaverMapViewOptions {
+        let consumeSymbolTapEvents = asBool(args["consumeSymbolTapEvents"]!)
+        return NaverMapViewOptions(consumeSymbolTapEvents: consumeSymbolTapEvents, args: args)
+    }
+
+    func updateWithNaverMapView(naverMap: NMFNaverMapView) {
+        naverMap.showCompass = false
+        naverMap.showZoomControls = false
+
+        let applier = NaverMapApplierImpl(naverMap)
+        applier.applyOptions(args: args)
+    }
+}

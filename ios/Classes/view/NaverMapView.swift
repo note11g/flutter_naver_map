@@ -1,14 +1,18 @@
 import NMapsMap
 
 class NaverMapView: NSObject, FlutterPlatformView {
-    private var naverMap: NMFNaverMapView!
+    private let naverMap: NMFNaverMapView!
+    private let naverMapViewOptions: NaverMapViewOptions
+    private let channel: FlutterMethodChannel
+//    private let overlayController: OverlayController
 
-    init(frame: CGRect,
-         viewIdentifier viewId: Int64,
-         arguments args: Any?,
-         binaryMessenger messenger: FlutterBinaryMessenger?) {
+    init(frame: CGRect, options: NaverMapViewOptions, channel: FlutterMethodChannel) {
         naverMap = NMFNaverMapView(frame: frame)
+        naverMapViewOptions = options
+        self.channel = channel
         super.init()
+
+        naverMapViewOptions.updateWithNaverMapView(naverMap: naverMap)
     }
 
     func view() -> UIView {

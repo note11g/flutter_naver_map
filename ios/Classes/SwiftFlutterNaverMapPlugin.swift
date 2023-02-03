@@ -33,8 +33,8 @@ public class SwiftFlutterNaverMapPlugin: NSObject, FlutterPlugin {
         "\(MAP_VIEW_TYPE_ID)\(SEPARATE_STRING)\(id)"
     }
 
-    public static func createOverlayMethodChannelName(viewId: Int64) -> String {
-        "\(OVERLAY_CHANNEL_NAME)\(SEPARATE_STRING)\(viewId)"
+    public static func createOverlayMethodChannelName(id: Int64) -> String {
+        "\(OVERLAY_CHANNEL_NAME)\(SEPARATE_STRING)\(id)"
     }
 
     public static func getAssets(path: String) -> String {
