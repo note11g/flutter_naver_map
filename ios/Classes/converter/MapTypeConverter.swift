@@ -160,9 +160,7 @@ func asAlign(_ v: Any) throws -> NMFAlignType {
     case "topRight": return .topRight
     case "bottomLeft": return .bottomLeft
     case "bottomRight": return .bottomRight
-    default:
-        throw DecodingError.valueNotFound(NMFAlignType.self,
-                DecodingError.Context(codingPath: [], debugDescription: "Unsupported Align value: \(v)"))
+    default: throw NSError()
     }
 }
 

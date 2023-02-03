@@ -1,15 +1,12 @@
 extension NaverMapOptionApplier {
-    func applyOptions(args: Dictionary<String, Any>) {
+    func applyOptions(args: Dictionary<String, Any>) throws {
         for (funcName, arg) in args {
-//            do {
-            let fun = ApplyUtil.optionApplyFuncMap[funcName]!(self)
-            fun(arg)
-//            } catch (e: NullPointerException) {
-//                throw NoSuchMethodException(
-//                        "No such method \"$funcName\". " +
-//                                "Please check the handling of this method."
-//                )
-//            }
+            let fun = ApplyUtil.optionApplyFuncMap[funcName]?(self)
+            if let fun {
+                fun(arg)
+            } else {
+                throw NSError()
+            }
         }
     }
 }

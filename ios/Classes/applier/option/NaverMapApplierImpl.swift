@@ -15,16 +15,20 @@ class NaverMapApplierImpl: NaverMapOptionApplier {
     }
 
     func setInitialCameraPosition(_ rawPosition: Any) {
-        // todo : 두번째부터는 적용되지 않도록 수정 필요. (init 이니까)
-//        mapView.cameraPosition
+        if (!isFirst) {
+            return
+        }
+        let cameraUpdate = NMFCameraUpdate(position: asCameraPosition(rawPosition))
+        cameraUpdate.animationDuration = 0
+        mapView.moveCamera(cameraUpdate)
     }
 
     func setExtent(_ rawLatLngBounds: Any) {
-//        mapView.extent
+        mapView.extent = asLatLngBounds(rawLatLngBounds)
     }
 
     func setMapType(_ rawMapType: Any) {
-
+        mapView.mapType = asMapType(rawMapType)
     }
 
     func setLiteModeEnable(_ rawEnable: Any) {
@@ -40,6 +44,8 @@ class NaverMapApplierImpl: NaverMapOptionApplier {
     }
 
     func setActiveLayerGroups(_ rawLayerGroups: Any) {
+        // todo
+
     }
 
     func setBuildingHeight(_ rawHeight: Any) {
@@ -115,12 +121,15 @@ class NaverMapApplierImpl: NaverMapOptionApplier {
     }
 
     func setLogoAlign(_ rawAlign: Any) {
+        mapView.logoAlign = asLogoAlign(rawAlign)
     }
 
     func setLogoMargin(_ rawEdgeInsets: Any) {
+        // todo
     }
 
     func setContentPadding(_ rawEdgeInsets: Any) {
+        // todo
     }
 
     func setMinZoom(_ rawLevel: Any) {
@@ -136,6 +145,7 @@ class NaverMapApplierImpl: NaverMapOptionApplier {
     }
 
     func setLocale(_ rawLocale: Any) {
+        // todo
     }
 
     func setUseGLSurfaceView(_ rawUseSurface: Any) {
