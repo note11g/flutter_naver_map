@@ -8,11 +8,11 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asInt
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asList
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asCameraUpdate
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLocationTrackingMode
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NCameraUpdate
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -25,7 +25,7 @@ private fun MethodChannel.Result.fail(e: Exception) =
 internal interface NaverMapControlHandler {
     fun handle(call: MethodCall, result: MethodChannel.Result) = when (call.method) {
         "updateCamera" -> updateCamera(
-            cameraUpdate = call.arguments.asCameraUpdate(),
+            cameraUpdate = call.arguments.let(NCameraUpdate::fromMap).toCameraUpdate(),
             onSuccess = result::send,
         )
         "cancelTransitions" -> cancelTransitions(

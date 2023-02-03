@@ -57,11 +57,6 @@ internal object MapTypeConverter {
         "bearing" to bearing
     )
 
-    fun Any.asCameraUpdate(): CameraUpdate = asMap().let { map ->
-        val nCameraUpdate = NCameraUpdate.fromMap(map)
-        return nCameraUpdate.toCameraUpdate()
-    }
-
     fun Symbol.toMap(): Map<String, Any> = mapOf(
         "caption" to caption,
         "position" to position.toMap(),
