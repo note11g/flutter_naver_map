@@ -27,7 +27,7 @@ class NaverMapApplierImpl(
         naverMap.mapType = rawMapType.asMapType()
     }
 
-    override fun setLightModeEnable(rawEnable: Any) {
+    override fun setLiteModeEnable(rawEnable: Any) {
         naverMap.isLiteModeEnabled = rawEnable.asBoolean()
     }
 

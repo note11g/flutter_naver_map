@@ -31,7 +31,7 @@ class NaverMapOptionApplierImpl(
         options.mapType(rawMapType.asMapType())
     }
 
-    override fun setLightModeEnable(rawEnable: Any) {
+    override fun setLiteModeEnable(rawEnable: Any) {
         options.liteModeEnabled(rawEnable.asBoolean())
     }
 

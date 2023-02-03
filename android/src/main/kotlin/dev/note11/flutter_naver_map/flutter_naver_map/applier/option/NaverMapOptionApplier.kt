@@ -4,7 +4,7 @@ internal interface NaverMapOptionApplier {
     fun setInitialCameraPosition(rawPosition: Any)
     fun setExtent(rawLatLngBounds: Any)
     fun setMapType(rawMapType: Any)
-    fun setLightModeEnable(rawEnable: Any)
+    fun setLiteModeEnable(rawEnable: Any)
     fun setNightModeEnable(rawEnable: Any)
     fun setIndoorEnable(rawEnable: Any)
     fun setActiveLayerGroups(rawLayerGroups: Any)

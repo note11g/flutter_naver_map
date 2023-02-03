@@ -25,7 +25,7 @@ internal object ApplyUtil {
             "initialCameraPosition" to { it::setInitialCameraPosition },
             "extent" to { it::setExtent },
             "mapType" to { it::setMapType },
-            "liteModeEnable" to { it::setLightModeEnable },
+            "liteModeEnable" to { it::setLiteModeEnable },
             "nightModeEnable" to { it::setNightModeEnable },
             "indoorEnable" to { it::setIndoorEnable },
             "activeLayerGroups" to { it::setActiveLayerGroups },
