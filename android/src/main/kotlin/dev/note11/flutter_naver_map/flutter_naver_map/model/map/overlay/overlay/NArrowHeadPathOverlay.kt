@@ -65,7 +65,7 @@ internal data class NArrowHeadPathOverlay(
             arrowheadPathOverlay: Overlay, id: String,
         ): NArrowHeadPathOverlay = (arrowheadPathOverlay as ArrowheadPathOverlay).run {
             NArrowHeadPathOverlay(
-                info = NOverlayInfo(NOverlayType.ARROW_HEAD_PATH_OVERLAY, id),
+                info = NOverlayInfo(NOverlayType.ARROWHEAD_PATH_OVERLAY, id),
                 coords = coords,
                 widthDp = DisplayUtil.pxToDp(width),
                 color = color,

@@ -81,7 +81,7 @@ internal data class NMultipartPathOverlay(
             id: String,
         ): NMultipartPathOverlay = (multipartPathOverlay as MultipartPathOverlay).run {
             NMultipartPathOverlay(
-                info = NOverlayInfo(NOverlayType.MULTI_PART_PATH_OVERLAY, id),
+                info = NOverlayInfo(NOverlayType.MULTIPART_PATH_OVERLAY, id),
                 paths = colorParts.mapIndexed { i, colorPart ->
                     NMultipartPath.fromCoordsAmdColorParts(coordParts[i], colorPart)
                 },

@@ -133,10 +133,10 @@ internal class OverlayController(
             NOverlayType.PATH_OVERLAY -> handlePathOverlay(
                 overlay as PathOverlay, queryInfo.method, call.arguments, result
             )
-            NOverlayType.MULTI_PART_PATH_OVERLAY -> handleMultipartPathOverlay(
+            NOverlayType.MULTIPART_PATH_OVERLAY -> handleMultipartPathOverlay(
                 overlay as MultipartPathOverlay, queryInfo.method, call.arguments, result
             )
-            NOverlayType.ARROW_HEAD_PATH_OVERLAY -> handleArrowheadPathOverlay(
+            NOverlayType.ARROWHEAD_PATH_OVERLAY -> handleArrowheadPathOverlay(
                 overlay as ArrowheadPathOverlay, queryInfo.method, call.arguments, result
             )
             NOverlayType.LOCATION_OVERLAY -> handleLocationOverlay(

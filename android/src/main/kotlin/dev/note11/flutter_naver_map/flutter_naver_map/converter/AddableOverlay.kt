@@ -39,8 +39,8 @@ internal interface AddableOverlay<T : Overlay> {
                 NOverlayType.POLYGON_OVERLAY -> NPolygonOverlay::fromMap
                 NOverlayType.POLYLINE_OVERLAY -> NPolylineOverlay::fromMap
                 NOverlayType.PATH_OVERLAY -> NPathOverlay::fromMap
-                NOverlayType.MULTI_PART_PATH_OVERLAY -> NMultipartPathOverlay::fromMap
-                NOverlayType.ARROW_HEAD_PATH_OVERLAY -> NArrowHeadPathOverlay::fromMap
+                NOverlayType.MULTIPART_PATH_OVERLAY -> NMultipartPathOverlay::fromMap
+                NOverlayType.ARROWHEAD_PATH_OVERLAY -> NArrowHeadPathOverlay::fromMap
                 NOverlayType.LOCATION_OVERLAY -> throw IllegalArgumentException("LocationOverlay can not be created from json")
             }
             return creator.invoke(args)
@@ -60,8 +60,8 @@ internal interface AddableOverlay<T : Overlay> {
                 NOverlayType.POLYGON_OVERLAY -> NPolygonOverlay::fromPolygonOverlay
                 NOverlayType.POLYLINE_OVERLAY -> NPolylineOverlay::fromPolylineOverlay
                 NOverlayType.PATH_OVERLAY -> NPathOverlay::fromPathOverlay
-                NOverlayType.MULTI_PART_PATH_OVERLAY -> NMultipartPathOverlay::fromMultipartPathOverlay
-                NOverlayType.ARROW_HEAD_PATH_OVERLAY -> NArrowHeadPathOverlay::fromArrowheadPathOverlay
+                NOverlayType.MULTIPART_PATH_OVERLAY -> NMultipartPathOverlay::fromMultipartPathOverlay
+                NOverlayType.ARROWHEAD_PATH_OVERLAY -> NArrowHeadPathOverlay::fromArrowheadPathOverlay
                 NOverlayType.LOCATION_OVERLAY -> ::makeLocationOverlayCreator
             }
             return creator.invoke(overlay, info.id)
