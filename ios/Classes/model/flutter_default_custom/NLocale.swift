@@ -1,8 +1,22 @@
-//
-//  NLocale.swift
-//  flutter_naver_map
-//
-//  Created by 김승빈 on 2023/02/02.
-//
+struct NLocale {
+    let languageCode: String
+    let countryCode: String?
 
-import Foundation
+    var localeStr: String {
+        get {
+            languageCode
+        }
+    }
+
+    static func fromDict(_ args: Any) -> NLocale? {
+        let d = asDict(args)
+        let languageCode: String = asString(d["languageCode"]!)
+        if languageCode == "sys" {
+            return nil
+        }
+        return NLocale(
+                languageCode: languageCode,
+                countryCode: asStringWithNil(d["countryCode"])
+        )
+    }
+}

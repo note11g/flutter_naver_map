@@ -1,8 +1,22 @@
-//
-//  NEdgeInsets.swift
-//  flutter_naver_map
-//
-//  Created by 김승빈 on 2023/02/02.
-//
+struct NEdgeInsets {
+    let left: CGFloat
+    let top: CGFloat
+    let right: CGFloat
+    let bottom: CGFloat
 
-import Foundation
+    var uiEdgeInsets: UIEdgeInsets {
+        get {
+            UIEdgeInsets(top: top, left: left, bottom: bottom, right: right)
+        }
+    }
+
+    static func fromDict(_ args: Any) -> NEdgeInsets {
+        let d = asDict(args)
+        return NEdgeInsets(
+                left: asCGFloat(d["left"]!),
+                top: asCGFloat(d["top"]!),
+                right: asCGFloat(d["right"]!),
+                bottom: asCGFloat(d["bottom"]!)
+        )
+    }
+}

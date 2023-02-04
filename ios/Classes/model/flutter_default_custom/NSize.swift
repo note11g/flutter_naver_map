@@ -1,8 +1,22 @@
-//
-//  NSize.swift
-//  flutter_naver_map
-//
-//  Created by 김승빈 on 2023/02/02.
-//
+import NMapsMap
 
-import Foundation
+struct NSize {
+    let width, height: CGFloat
+
+    func use(widthFun: (CGFloat) -> Void, heightFun: (CGFloat) -> Void) {
+        widthFun(width)
+        heightFun(height)
+    }
+
+    func toDict() -> Dictionary<String, Any> {
+        [
+            "width": width,
+            "height": height
+        ]
+    }
+
+    static func fromDict(_ args: Any) -> NSize {
+        let d = asDict(args)
+        return NSize(width: asCGFloat(d["width"]!), height: asCGFloat(d["height"]!))
+    }
+}
