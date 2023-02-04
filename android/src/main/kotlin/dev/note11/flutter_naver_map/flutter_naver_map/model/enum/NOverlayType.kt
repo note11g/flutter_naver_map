@@ -8,8 +8,8 @@ internal enum class NOverlayType(private val str: String) {
     POLYGON_OVERLAY("pg"),
     POLYLINE_OVERLAY("pl"),
     PATH_OVERLAY("pa"),
-    MULTI_PART_PATH_OVERLAY("mp"),
-    ARROW_HEAD_PATH_OVERLAY("ah"),
+    MULTIPART_PATH_OVERLAY("mp"),
+    ARROWHEAD_PATH_OVERLAY("ah"),
     LOCATION_OVERLAY("lo");
 
     override fun toString(): String = str
