@@ -47,7 +47,7 @@ class NMultiPartPathOverlay extends NAddableOverlay<NMultiPartPathOverlay> {
         _isHideCollidedCaptions = isHideCollidedCaptions,
         _isHideCollidedMarkers = isHideCollidedMarkers,
         _isHideCollidedSymbols = isHideCollidedSymbols,
-        super(id: id, type: NOverlayType.multiPartPathOverlay);
+        super(id: id, type: NOverlayType.multipartPathOverlay);
 
   void setPaths(List<NMultipartPath> paths) {
     _paths = paths;

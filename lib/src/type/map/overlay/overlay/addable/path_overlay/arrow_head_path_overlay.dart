@@ -38,7 +38,7 @@ class NArrowHeadPathOverlay extends NAddableOverlay<NArrowHeadPathOverlay> {
         _outlineColor = outlineColor,
         _elevation = elevation,
         _headSizeRatio = headSizeRatio,
-        super(id: id, type: NOverlayType.arrowHeadPathOverlay);
+        super(id: id, type: NOverlayType.arrowheadPathOverlay);
 
   void setCoords(List<NLatLng> coords) {
     _coords = coords;

@@ -116,8 +116,8 @@ enum NOverlayType implements NMessageableForEnum {
   polygonOverlay._("pg"),
   polylineOverlay._("pl"),
   pathOverlay._("pa"),
-  multiPartPathOverlay._("mp"),
-  arrowHeadPathOverlay._("ah"),
+  multipartPathOverlay._("mp"),
+  arrowheadPathOverlay._("ah"),
   locationOverlay._("lo");
 
   final String _str;

@@ -31,10 +31,10 @@ abstract class Pickable {
         case NOverlayType.pathOverlay:
           overlay = NPathOverlay._fromJson(json);
           break;
-        case NOverlayType.multiPartPathOverlay:
+        case NOverlayType.multipartPathOverlay:
           overlay = NMultiPartPathOverlay._fromJson(json);
           break;
-        case NOverlayType.arrowHeadPathOverlay:
+        case NOverlayType.arrowheadPathOverlay:
           overlay = NArrowHeadPathOverlay._fromJson(json);
           break;
         case NOverlayType.locationOverlay:
