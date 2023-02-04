@@ -83,7 +83,7 @@ internal data class NMultipartPathOverlay(
             NMultipartPathOverlay(
                 info = NOverlayInfo(NOverlayType.MULTIPART_PATH_OVERLAY, id),
                 paths = colorParts.mapIndexed { i, colorPart ->
-                    NMultipartPath.fromCoordsAmdColorParts(coordParts[i], colorPart)
+                    NMultipartPath.fromCoordsAndColorParts(coordParts[i], colorPart)
                 },
                 widthDp = DisplayUtil.pxToDp(width),
                 outlineWidthDp = DisplayUtil.pxToDp(outlineWidth),

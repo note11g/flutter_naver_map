@@ -40,7 +40,7 @@ data class NMultipartPath(
             )
         }
 
-        fun fromCoordsAmdColorParts(
+        fun fromCoordsAndColorParts(
             coords: List<LatLng>,
             colorPart: MultipartPathOverlay.ColorPart,
         ): NMultipartPath =
