@@ -14,7 +14,7 @@ struct NSize {
     }
 
     static func fromDict(_ args: Any) -> NSize {
-        let d = asDict(args)
-        return NSize(width: asCGFloat(d["width"]!), height: asCGFloat(d["height"]!))
+        let d = asDict(args, valueCaster: asCGFloat)
+        return NSize(width: d["width"]!, height: d["height"]!)
     }
 }

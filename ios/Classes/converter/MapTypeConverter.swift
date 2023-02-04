@@ -5,8 +5,8 @@ import NMapsMap
   --- Objects ---
 */
 func asLatLng(_ v: Any) -> NMGLatLng {
-    let d = asDict(v)
-    return NMGLatLng(lat: asDouble(d["lat"]!), lng: asDouble(d["lng"]!))
+    let d = asDict(v, valueCaster: asDouble)
+    return NMGLatLng(lat: d["lat"]!, lng: d["lng"]!)
 }
 
 extension NMGLatLng {
@@ -16,10 +16,10 @@ extension NMGLatLng {
 }
 
 func asLatLngBounds(_ v: Any) -> NMGLatLngBounds {
-    let d = asDict(v)
+    let d = asDict(v, valueCaster: asLatLng)
     return NMGLatLngBounds.init(
-            southWest: asLatLng(d["southWest"]!),
-            northEast: asLatLng(d["northEast"]!)
+            southWest: d["southWest"]!,
+            northEast: d["northEast"]!
     )
 }
 

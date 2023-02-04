@@ -15,8 +15,8 @@ struct NPoint {
     }
 
     static func fromDict(_ args: Any) -> NPoint {
-        let d = asDict(args)
-        return NPoint(x: asDouble(d["x"]!), y: asDouble(d["y"]))
+        let d = asDict(args, valueCaster: asDouble)
+        return NPoint(x: d["x"]!, y: d["y"]!)
     }
 
     static func fromCGPoint(_ cgPoint: CGPoint) -> NPoint {

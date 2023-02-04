@@ -11,12 +11,12 @@ struct NEdgeInsets {
     }
 
     static func fromDict(_ args: Any) -> NEdgeInsets {
-        let d = asDict(args)
+        let d = asDict(args, valueCaster: asCGFloat)
         return NEdgeInsets(
-                left: asCGFloat(d["left"]!),
-                top: asCGFloat(d["top"]!),
-                right: asCGFloat(d["right"]!),
-                bottom: asCGFloat(d["bottom"]!)
+                left: d["left"]!,
+                top: d["top"]!,
+                right: d["right"]!,
+                bottom: d["bottom"]!
         )
     }
 }
