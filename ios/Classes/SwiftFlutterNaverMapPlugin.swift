@@ -4,7 +4,6 @@ import UIKit
 public class SwiftFlutterNaverMapPlugin: NSObject, FlutterPlugin {
 
     private static var registrar: FlutterPluginRegistrar?
-    private static var sdkInitializer: SdkInitializer?
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         self.registrar = registrar
@@ -19,9 +18,8 @@ public class SwiftFlutterNaverMapPlugin: NSObject, FlutterPlugin {
 
     private static func initializeSdkChannel(binaryMessenger: FlutterBinaryMessenger) {
         let sdkChannel = FlutterMethodChannel(name: SwiftFlutterNaverMapPlugin.SDK_CHANNEL_NAME, binaryMessenger: binaryMessenger)
-        sdkInitializer = SdkInitializer(channel: sdkChannel)
+        SdkInitializer.init(channel: sdkChannel)
     }
-
 
     private static let SDK_CHANNEL_NAME = "flutter_naver_map_sdk"
     private static let OVERLAY_CHANNEL_NAME = "flutter_naver_map_overlay"
