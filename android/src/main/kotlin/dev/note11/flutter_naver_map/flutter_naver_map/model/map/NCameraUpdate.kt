@@ -1,6 +1,5 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.model.map
 
-import android.graphics.PointF
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraAnimation
@@ -26,7 +25,7 @@ internal data class NCameraUpdate(
     val bearingBy: Double? = null,
     val bounds: LatLngBounds? = null,
     val boundsPadding: NEdgeInsets? = null,
-    val pivot: PointF? = null,
+    val pivot: NPoint? = null, // change to NPoint
     val animation: CameraAnimation,
     val duration: Long,
 ) {
@@ -49,7 +48,7 @@ internal data class NCameraUpdate(
         }
 
         return cameraUpdate.animate(animation, duration).run {
-            pivot?.let { pivot(it) } ?: this
+            pivot?.let { pivot(it.toPointF()) } ?: this
         }
     }
 
@@ -65,8 +64,8 @@ internal data class NCameraUpdate(
                 bearing = map["bearing"]?.asDouble(),
                 bearingBy = map["bearingBy"]?.asDouble(),
                 bounds = map["bounds"]?.asLatLngBounds(),
-                boundsPadding = map["boundsPadding"]?.let { NEdgeInsets.fromMap(it) },
-                pivot = map["pivot"]?.let { NPoint.fromMap(it).toPointF() },
+                boundsPadding = map["boundsPadding"]?.let(NEdgeInsets::fromMap),
+                pivot = map["pivot"]?.let(NPoint::fromMap),
                 animation = map["animation"]!!.asCameraAnimation(),
                 duration = map["duration"]!!.asLong(),
             )
