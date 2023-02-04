@@ -1,8 +1,12 @@
-//
-//  NOverlayType.swift
-//  flutter_naver_map
-//
-//  Created by 김승빈 on 2023/02/02.
-//
-
-import Foundation
+enum NOverlayType: String {
+    case marker = "ma"
+    case infoWindow = "in"
+    case circleOverlay = "ci"
+    case groundOverlay = "gr"
+    case polygonOverlay = "pg"
+    case polylineOverlay = "pl"
+    case pathOverlay = "pa"
+    case multipartPathOverlay = "mp"
+    case arrowheadPathOverlay = "ah"
+    case locationOverlay = "lo"
+}
