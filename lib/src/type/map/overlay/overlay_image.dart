@@ -31,13 +31,25 @@ class NOverlayImage implements NMessageable {
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
     final imageBytes = await WidgetToImageUtil.widgetToImageByte(widget,
         size: size, pixelRatio: pixelRatio);
-    return NOverlayImage.fromByteArray(imageBytes);
+    final path = await ImageUtil.saveImage(imageBytes);
+    return NOverlayImage._(path: path, mode: _NOverlayImageMode.widget);
   }
 
-  factory NOverlayImage._fromJson(dynamic json) => NOverlayImage._(
-        path: json["path"],
-        mode: _NOverlayImageMode._fromJson(json["mode"]),
-      );
+  factory NOverlayImage._fromJson(dynamic json) {
+    final nOverlayImage = NOverlayImage._(
+      path: json["path"],
+      mode: _NOverlayImageMode._fromJson(json["mode"]),
+    );
+
+    if (nOverlayImage != _none) {
+      throw NUnknownTypeCastException(
+          unknownValue: nOverlayImage.toNPayload().json.toString());
+    }
+
+    return _none;
+  }
+
+  static const _none = NOverlayImage._(path: "", mode: _NOverlayImageMode.temp);
 
   @override
   NPayload toNPayload() => NPayload.make({
@@ -46,5 +58,16 @@ class NOverlayImage implements NMessageable {
       });
 
   @override
-  String toString() => "NOverlayImage{}";
+  String toString() => "NOverlayImage{from: ${_mode.toExplainString()}";
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is NOverlayImage &&
+          runtimeType == other.runtimeType &&
+          _path == other._path &&
+          _mode == other._mode;
+
+  @override
+  int get hashCode => _path.hashCode ^ _mode.hashCode;
 }

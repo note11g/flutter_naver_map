@@ -175,7 +175,8 @@ enum NLineJoin implements NMessageableForEnum {
 enum _NOverlayImageMode implements NMessageableForEnum {
   asset,
   file,
-  temp;
+  temp,
+  widget;
 
   factory _NOverlayImageMode._fromJson(dynamic json) {
     for (final value in values) {
@@ -186,4 +187,7 @@ enum _NOverlayImageMode implements NMessageableForEnum {
 
   @override
   String toNPayload() => name;
+
+  String toExplainString() =>
+      this == _NOverlayImageMode.temp ? "byteArray" : name;
 }

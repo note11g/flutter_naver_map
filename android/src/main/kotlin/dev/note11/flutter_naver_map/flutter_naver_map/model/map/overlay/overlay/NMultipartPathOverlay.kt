@@ -87,7 +87,7 @@ internal data class NMultipartPathOverlay(
                 },
                 widthDp = DisplayUtil.pxToDp(width),
                 outlineWidthDp = DisplayUtil.pxToDp(outlineWidth),
-                patternImage = patternImage?.let(NOverlayImage::fromOverlayImage),
+                patternImage = NOverlayImage.none,
                 patternIntervalDp = DisplayUtil.pxToDp(patternInterval),
                 progress = progress,
                 isHideCollidedCaptions = isHideCollidedCaptions,

@@ -3,7 +3,8 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.enum
 internal enum class NOverlayImageMode(private val str: String) {
     ASSET("asset"),
     FILE("file"),
-    TEMP("temp");
+    TEMP("temp"),
+    WIDGET("widget");
 
     override fun toString(): String = str
 

@@ -50,7 +50,7 @@ internal data class NGroundOverlay(
             NGroundOverlay(
                 info = NOverlayInfo(NOverlayType.GROUND_OVERLAY, id),
                 bounds = bounds,
-                image = NOverlayImage.fromOverlayImage(image),
+                image = NOverlayImage.none,
                 alpha = CalcUtil.float32To64(alpha),
             )
         }

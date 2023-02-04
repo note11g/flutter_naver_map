@@ -4,7 +4,6 @@ class NMarker extends NAddableOverlay<NMarker> {
   NLatLng get position => _position;
   NLatLng _position;
 
-  NOverlayImage? get icon => _icon;
   NOverlayImage? _icon;
 
   Color get iconTintColor => _iconTintColor;

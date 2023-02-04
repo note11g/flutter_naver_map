@@ -16,7 +16,7 @@ internal data class NOverlayInfo(
     val overlayMapKey = listOf(type, id).joinToString(SEPARATE_STRING)
 
     fun toQueryString(injectMethod: String? = null): String =
-        listOf(overlayMapKey, injectMethod ?: method).joinToString(SEPARATE_STRING)
+        listOf(overlayMapKey, injectMethod ?: method!!).joinToString(SEPARATE_STRING)
 
     fun toMap(): Map<String, Any> = mapOf("type" to type.toString(), "id" to id)
 

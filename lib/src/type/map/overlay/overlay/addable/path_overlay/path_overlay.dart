@@ -25,7 +25,6 @@ class NPathOverlay extends NAddableOverlay<NPathOverlay> {
   double get progress => _progress;
   double _progress;
 
-  // NOverlayImage get patternImage => _patternImage;
   NOverlayImage? _patternImage;
 
   double get patternInterval => _patternInterval;

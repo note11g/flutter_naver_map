@@ -101,7 +101,7 @@ internal data class NPathOverlay(
                 passedColor = passedColor,
                 passedOutlineColor = passedOutlineColor,
                 progress = progress,
-                patternImage = patternImage?.let(NOverlayImage::fromOverlayImage),
+                patternImage = NOverlayImage.none,
                 patternIntervalDp = DisplayUtil.pxToDp(patternInterval),
                 isHideCollidedCaptions = isHideCollidedCaptions,
                 isHideCollidedMarkers = isHideCollidedMarkers,

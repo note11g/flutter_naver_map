@@ -13,25 +13,16 @@ internal data class NOverlayImage(
 
     private val overlayImage: OverlayImage
         get() = when (mode) {
-            NOverlayImageMode.FILE -> makeOverlayImageWithPath()
-            NOverlayImageMode.TEMP -> makeOverlayImageWithTempPath()
+            NOverlayImageMode.FILE, NOverlayImageMode.TEMP, NOverlayImageMode.WIDGET -> makeOverlayImageWithPath()
             NOverlayImageMode.ASSET -> makeOverlayImageWithAssetPath()
         }
 
 
-    private fun makeOverlayImageWithPath(): OverlayImage =
-        OverlayImage.fromPath(path).also(::saveOverlayImage)
-
-    private fun makeOverlayImageWithTempPath(): OverlayImage =
-        overlayImageMap[this] ?: OverlayImage.fromPath(path).also(::saveOverlayImage)
+    private fun makeOverlayImageWithPath(): OverlayImage = OverlayImage.fromPath(path)
 
     private fun makeOverlayImageWithAssetPath(): OverlayImage {
         val assetPath = FlutterNaverMapPlugin.getAssets(path)
-        return OverlayImage.fromAsset(assetPath).also(::saveOverlayImage)
-    }
-
-    private fun saveOverlayImage(overlayImage: OverlayImage) {
-        overlayImageMap[this] = overlayImage
+        return OverlayImage.fromAsset(assetPath)
     }
 
     fun toMap(): Map<String, Any> = mapOf("path" to path, "mode" to mode.toString())
@@ -44,27 +35,6 @@ internal data class NOverlayImage(
             )
         }
 
-        private val overlayImageMap = mutableMapOf<NOverlayImage, OverlayImage>()
-
-        fun fromOverlayImage(overlayImage: OverlayImage): NOverlayImage =
-            overlayImageMap.entries.find { it.value == overlayImage }!!.key
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as NOverlayImage
-
-        if (path != other.path) return false
-        if (mode != other.mode) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = path.hashCode()
-        result = 31 * result + mode.hashCode()
-        return result
+        val none = NOverlayImage(path = "", mode = NOverlayImageMode.TEMP)
     }
 }

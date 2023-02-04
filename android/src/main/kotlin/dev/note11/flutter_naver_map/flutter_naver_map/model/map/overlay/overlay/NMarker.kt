@@ -137,7 +137,7 @@ internal data class NMarker(
             NMarker(
                 info = NOverlayInfo(NOverlayType.MARKER, id),
                 position = position,
-                icon = NOverlayImage.fromOverlayImage(icon),
+                icon = NOverlayImage.none,
                 iconTintColor = iconTintColor,
                 alpha = alpha,
                 angle = angle,
