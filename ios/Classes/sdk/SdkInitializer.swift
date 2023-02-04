@@ -23,8 +23,8 @@ class SdkInitializer: NSObject, NMFAuthManagerDelegate {
         let isGov = asBool(args["gov"]!)
         let setAuthFailedListener = asBool(args["setAuthFailedListener"]!)
 
-        if (clientId != nil) {
-            initializeMapSdk(clientId: clientId!, isGov: isGov)
+        if let clientId {
+            initializeMapSdk(clientId: clientId, isGov: isGov)
         }
         if (setAuthFailedListener) {
             setOnAuthFailedListener()
@@ -47,10 +47,10 @@ class SdkInitializer: NSObject, NMFAuthManagerDelegate {
 
     func authorized(_ state: NMFAuthState, error: Error?) {
         print("네이버맵 Auth State : \(state), e: \(String(describing: error))")
-        if (error != nil) {
+        if let error {
             channel.invokeMethod("onAuthFailed", arguments: [
-                "code": String(error!._code),
-                "message": error!.localizedDescription
+                "code": String(error._code),
+                "message": error.localizedDescription
             ])
         }
     }

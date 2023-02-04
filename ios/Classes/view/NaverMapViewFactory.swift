@@ -1,5 +1,5 @@
 class NaverMapFactory: NSObject, FlutterPlatformViewFactory {
-    private var messenger: FlutterBinaryMessenger
+    private let messenger: FlutterBinaryMessenger
 
     init(messenger: FlutterBinaryMessenger) {
         self.messenger = messenger
