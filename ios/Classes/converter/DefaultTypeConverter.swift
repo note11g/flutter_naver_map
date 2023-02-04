@@ -22,10 +22,6 @@ public func asString(_ v: Any) -> String {
     v as! String
 }
 
-public func asStringWithNil(_ v: Any?) -> String? {
-    (v is NSNull || v == nil) ? nil : asString(v!)
-}
-
 public func asDict(_ v: Any) -> Dictionary<String, Any> {
     v as! Dictionary<String, Any>
 }
@@ -35,3 +31,10 @@ public func asArr<T>(_ v: Any, elementCaster: (Any) -> T) -> Array<T> {
     return list.map(elementCaster)
 }
 
+func castOrNull<T>(_ v: Any?, caster: (Any) -> T) -> T? {
+    if v == nil || v is NSNull {
+        return nil
+    } else {
+        return caster(v!)
+    }
+}

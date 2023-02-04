@@ -1,5 +1,3 @@
-import NMapsMap
-
 struct NSize {
     let width, height: CGFloat
 

@@ -16,7 +16,7 @@ struct NLocale {
         }
         return NLocale(
                 languageCode: languageCode,
-                countryCode: asStringWithNil(d["countryCode"])
+                countryCode: castOrNull(d["countryCode"], caster: asString)
         )
     }
 }

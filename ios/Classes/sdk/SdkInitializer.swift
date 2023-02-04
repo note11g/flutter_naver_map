@@ -19,7 +19,7 @@ class SdkInitializer: NSObject, NMFAuthManagerDelegate {
     }
 
     private func initialize(_ args: Dictionary<String, Any>, onSuccess: (Any?) -> Void, onFailure: (Error) -> Void) {
-        let clientId = asStringWithNil(args["clientId"])
+        let clientId = castOrNull(args["clientId"], caster: asString)
         let isGov = asBool(args["gov"]!)
         let setAuthFailedListener = asBool(args["setAuthFailedListener"]!)
 

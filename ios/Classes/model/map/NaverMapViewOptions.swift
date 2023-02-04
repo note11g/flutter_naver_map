@@ -19,6 +19,6 @@ class NaverMapViewOptions {
         naverMap.showZoomControls = false
 
         let applier = NaverMapApplierImpl(naverMap, isFirst: isFirst)
-        applier.applyOptions(args: args)
+        try! applier.applyOptions(args: args)
     }
 }
