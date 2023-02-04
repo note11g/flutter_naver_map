@@ -230,3 +230,30 @@ extension NMFOverlayLineJoin {
         }
     }
 }
+
+/*
+  --- Color ---
+*/
+
+func asUIColor(_ v: Any) -> UIColor {
+    UIColor(argb: asInt(v))
+}
+
+extension UIColor {
+    convenience init(argb: Int) {
+        let a = CGFloat((argb >> 24) & 0xff) / 255.0
+        let r = CGFloat((argb >> 16) & 0xff) / 255.0
+        let g = CGFloat((argb >> 8) & 0xff) / 255.0
+        let b = CGFloat(argb & 0xff) / 255.0
+        self.init(red: r, green: g, blue: b, alpha: a)
+    }
+
+    func toInt() -> Int {
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        return Int(a * 255) << 24 | Int(r * 255) << 16 | Int(g * 255) << 8 | Int(b * 255)
+    }
+}
