@@ -44,8 +44,15 @@ class NaverMapApplierImpl: NaverMapOptionApplier {
     }
 
     func setActiveLayerGroups(_ rawLayerGroups: Any) {
-        // todo
-
+        let layerGroups = NLayerGroups.fromRawArr(rawArr: rawLayerGroups)
+        layerGroups.useWithEnableAndDisableGroups { enableGroups, disableGroups in
+            enableGroups.forEach {
+                mapView.setLayerGroup($0, isEnabled: true)
+            }
+            disableGroups.forEach {
+                mapView.setLayerGroup($0, isEnabled: false)
+            }
+        }
     }
 
     func setBuildingHeight(_ rawHeight: Any) {
@@ -125,11 +132,11 @@ class NaverMapApplierImpl: NaverMapOptionApplier {
     }
 
     func setLogoMargin(_ rawEdgeInsets: Any) {
-        // todo
+        mapView.logoMargin = NEdgeInsets.fromDict(rawEdgeInsets).uiEdgeInsets
     }
 
     func setContentPadding(_ rawEdgeInsets: Any) {
-        // todo
+        mapView.contentInset = NEdgeInsets.fromDict(rawEdgeInsets).uiEdgeInsets
     }
 
     func setMinZoom(_ rawLevel: Any) {
@@ -145,7 +152,7 @@ class NaverMapApplierImpl: NaverMapOptionApplier {
     }
 
     func setLocale(_ rawLocale: Any) {
-        // todo
+        mapView.locale = NLocale.fromDict(rawLocale)?.localeStr
     }
 
     func setUseGLSurfaceView(_ rawUseSurface: Any) {
