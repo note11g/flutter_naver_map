@@ -35,7 +35,7 @@ internal interface OverlayHandler {
     fun handleOverlay(
         overlay: Overlay, method: String, arg: Any?, result: MethodChannel.Result,
     ): Boolean {
-        val isInvoked = when (method) {
+        when (method) {
             zIndexName -> setZIndex(overlay, arg!!)
             globalZIndexName -> setGlobalZIndex(overlay, arg!!)
             tagName -> setTag(overlay, arg!!.toString())
@@ -54,10 +54,9 @@ internal interface OverlayHandler {
             getterName(isMinZoomInclusiveName) -> getIsMinZoomInclusive(overlay, result::success)
             getterName(isMaxZoomInclusiveName) -> getIsMaxZoomInclusive(overlay, result::success)
             performClickName -> performClick(overlay, result::success)
-            else -> null
-        } == Unit
-
-        return isInvoked
+            else -> return false
+        }
+        return true
     }
 
     fun getZIndex(overlay: Overlay, success: (zIndex: Int) -> Unit)
