@@ -3,7 +3,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.handle
 import com.naver.maps.map.overlay.ArrowheadPathOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler.Companion.getterName
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NArrowHeadPathOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NArrowheadPathOverlay
 import io.flutter.plugin.common.MethodChannel
 
 internal interface ArrowheadPathOverlayHandler : OverlayHandler {
@@ -13,14 +13,14 @@ internal interface ArrowheadPathOverlayHandler : OverlayHandler {
         arg: Any?,
         result: MethodChannel.Result,
     ) = when (method) {
-        NArrowHeadPathOverlay.coordsName -> setCoords(arrowheadPathOverlay, arg!!)
-        NArrowHeadPathOverlay.widthName -> setWidth(arrowheadPathOverlay, arg!!)
-        NArrowHeadPathOverlay.colorName -> setColor(arrowheadPathOverlay, arg!!)
-        NArrowHeadPathOverlay.outlineWidthName -> setOutlineWidth(arrowheadPathOverlay, arg!!)
-        NArrowHeadPathOverlay.outlineColorName -> setOutlineColor(arrowheadPathOverlay, arg!!)
-        NArrowHeadPathOverlay.elevationName -> setElevation(arrowheadPathOverlay, arg!!)
-        NArrowHeadPathOverlay.headSizeRatioName -> setHeadSizeRatio(arrowheadPathOverlay, arg!!)
-        getterName(NArrowHeadPathOverlay.boundsName) -> getBounds(arrowheadPathOverlay, result::success)
+        NArrowheadPathOverlay.coordsName -> setCoords(arrowheadPathOverlay, arg!!)
+        NArrowheadPathOverlay.widthName -> setWidth(arrowheadPathOverlay, arg!!)
+        NArrowheadPathOverlay.colorName -> setColor(arrowheadPathOverlay, arg!!)
+        NArrowheadPathOverlay.outlineWidthName -> setOutlineWidth(arrowheadPathOverlay, arg!!)
+        NArrowheadPathOverlay.outlineColorName -> setOutlineColor(arrowheadPathOverlay, arg!!)
+        NArrowheadPathOverlay.elevationName -> setElevation(arrowheadPathOverlay, arg!!)
+        NArrowheadPathOverlay.headSizeRatioName -> setHeadSizeRatio(arrowheadPathOverlay, arg!!)
+        getterName(NArrowheadPathOverlay.boundsName) -> getBounds(arrowheadPathOverlay, result::success)
         else -> result.notImplemented()
     }
 

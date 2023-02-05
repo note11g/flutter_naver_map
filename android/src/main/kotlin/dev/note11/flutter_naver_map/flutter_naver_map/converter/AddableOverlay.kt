@@ -6,7 +6,7 @@ import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapControlHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NArrowHeadPathOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NArrowheadPathOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NCircleOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NGroundOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NInfoWindow
@@ -40,7 +40,7 @@ internal interface AddableOverlay<T : Overlay> {
                 NOverlayType.POLYLINE_OVERLAY -> NPolylineOverlay::fromMap
                 NOverlayType.PATH_OVERLAY -> NPathOverlay::fromMap
                 NOverlayType.MULTIPART_PATH_OVERLAY -> NMultipartPathOverlay::fromMap
-                NOverlayType.ARROWHEAD_PATH_OVERLAY -> NArrowHeadPathOverlay::fromMap
+                NOverlayType.ARROWHEAD_PATH_OVERLAY -> NArrowheadPathOverlay::fromMap
                 NOverlayType.LOCATION_OVERLAY -> throw IllegalArgumentException("LocationOverlay can not be created from json")
             }
             return creator.invoke(args)
@@ -61,7 +61,7 @@ internal interface AddableOverlay<T : Overlay> {
                 NOverlayType.POLYLINE_OVERLAY -> NPolylineOverlay::fromPolylineOverlay
                 NOverlayType.PATH_OVERLAY -> NPathOverlay::fromPathOverlay
                 NOverlayType.MULTIPART_PATH_OVERLAY -> NMultipartPathOverlay::fromMultipartPathOverlay
-                NOverlayType.ARROWHEAD_PATH_OVERLAY -> NArrowHeadPathOverlay::fromArrowheadPathOverlay
+                NOverlayType.ARROWHEAD_PATH_OVERLAY -> NArrowheadPathOverlay::fromArrowheadPathOverlay
                 NOverlayType.LOCATION_OVERLAY -> ::makeLocationOverlayCreator
             }
             return creator.invoke(overlay, info.id)

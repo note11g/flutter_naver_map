@@ -15,7 +15,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 
-internal data class NArrowHeadPathOverlay(
+internal data class NArrowheadPathOverlay(
     override val info: NOverlayInfo,
     val coords: List<LatLng>,
     val widthDp: Double,
@@ -48,8 +48,8 @@ internal data class NArrowHeadPathOverlay(
     )
 
     companion object {
-        fun fromMap(rawMap: Any): NArrowHeadPathOverlay = rawMap.asMap().let {
-            NArrowHeadPathOverlay(
+        fun fromMap(rawMap: Any): NArrowheadPathOverlay = rawMap.asMap().let {
+            NArrowheadPathOverlay(
                 info = NOverlayInfo.fromMap(it[infoName]!!),
                 coords = it[coordsName]!!.asList { coord -> coord.asLatLng() },
                 widthDp = it[widthName]!!.asDouble(),
@@ -63,8 +63,8 @@ internal data class NArrowHeadPathOverlay(
 
         fun fromArrowheadPathOverlay(
             arrowheadPathOverlay: Overlay, id: String,
-        ): NArrowHeadPathOverlay = (arrowheadPathOverlay as ArrowheadPathOverlay).run {
-            NArrowHeadPathOverlay(
+        ): NArrowheadPathOverlay = (arrowheadPathOverlay as ArrowheadPathOverlay).run {
+            NArrowheadPathOverlay(
                 info = NOverlayInfo(NOverlayType.ARROWHEAD_PATH_OVERLAY, id),
                 coords = coords,
                 widthDp = DisplayUtil.pxToDp(width),
