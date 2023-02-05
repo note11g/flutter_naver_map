@@ -5,6 +5,12 @@ struct NOverlayInfo {
     let id: String
     let method: String?
 
+    init(type: NOverlayType, id: String, method: String? = nil) {
+        self.type = type
+        self.id = id
+        self.method = method
+    }
+
     func getOverlay(overlays: Dictionary<String, NMFOverlay>) -> NMFOverlay? {
         overlays[overlayMapKey]
     }
@@ -36,11 +42,11 @@ struct NOverlayInfo {
     }
 
     static func fromString(query: String) -> NOverlayInfo {
-        let arr = query.split(separator: NOverlayInfo.separateString)
+        let arr = query.components(separatedBy: NOverlayInfo.separateString)
         return NOverlayInfo(
                 type: NOverlayType(rawValue: asString(arr[0]))!,
                 id: asString(arr[1]),
-                method: arr.count > 2 ? asString(arr[2]) : nil
+                method: (arr.count > 2) ? asString(arr[2]) : nil
         )
     }
 

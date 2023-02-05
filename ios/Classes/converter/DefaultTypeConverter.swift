@@ -26,24 +26,24 @@ public func asDict(_ v: Any) -> Dictionary<String, Any> {
     v as! Dictionary<String, Any>
 }
 
-public func asDict<T>(_ v: Any, valueCaster: (Any) -> T) -> Dictionary<String, T> {
+public func asDict<T>(_ v: Any, valueCaster: (Any) throws -> T) -> Dictionary<String, T> {
     let dict = asDict(v)
     var newDict: Dictionary<String, T> = [:]
     for (k, v) in dict {
-        newDict[k] = valueCaster(v)
+        newDict[k] = try! valueCaster(v)
     }
     return newDict
 }
 
-public func asArr<T>(_ v: Any, elementCaster: (Any) -> T) -> Array<T> {
+public func asArr<T>(_ v: Any, elementCaster: (Any) throws -> T) -> Array<T> {
     let list = v as! Array<Any>
     return list.map(elementCaster)
 }
 
-public func castOrNull<T>(_ v: Any?, caster: (Any) -> T) -> T? {
+public func castOrNull<T>(_ v: Any?, caster: (Any) throws -> T) -> T? {
     if v == nil || v is NSNull {
         return nil
     } else {
-        return caster(v!)
+        return try! caster(v!)
     }
 }

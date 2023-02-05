@@ -1,8 +1,16 @@
-//
-//  AddableOverlay.swift
-//  flutter_naver_map
-//
-//  Created by 김승빈 on 2023/02/02.
-//
+import NMapsMap
 
-import Foundation
+protocol AddableOverlay {
+    associatedtype T: NMFOverlay
+
+    var info: NOverlayInfo { get }
+
+    func createMapOverlay() -> T
+
+    func toDict() -> Dictionary<String, Any?>
+
+    static func fromJson(_ v: Any) -> Self
+
+    static func fromOverlay(_ overlay: NMFOverlay, id: String) -> Self
+}
+

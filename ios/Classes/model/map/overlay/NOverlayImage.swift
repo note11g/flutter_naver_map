@@ -4,11 +4,7 @@ struct NOverlayImage {
     let path: String
     let mode: NOverlayImageMode
 
-    func applyToOverlay(setImgFunc: (NMFOverlayImage) -> Void) {
-        setImgFunc(overlayImage)
-    }
-
-    private var overlayImage: NMFOverlayImage {
+    var overlayImage: NMFOverlayImage {
         get {
             switch mode {
             case .file, .temp, .widget: return makeOverlayImageWithPath()
