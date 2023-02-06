@@ -73,10 +73,6 @@ internal class NaverMapController(
         region.map { it.toMap() }.let(onSuccess)
     }
 
-    override fun getSelectedIndoor(onSuccess: (selectedIndoor: Map<String, Any>?) -> Unit) {
-        onSuccess(naverMap.indoorSelection?.toMap())
-    }
-
     override fun getLocationOverlay(onSuccess: () -> Unit) {
         val info = NOverlayInfo.locationOverlayInfo
         if (!overlayController.hasOverlay(info)) {

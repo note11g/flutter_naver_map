@@ -55,14 +55,6 @@ class _NaverMapControllerImpl
   }
 
   @override
-  Future<NSelectedIndoor?> getSelectedIndoor() async {
-    final rawSelectedIndoor = await invokeMethod("getSelectedIndoor");
-    return rawSelectedIndoor == null
-        ? null
-        : NSelectedIndoor._fromJson(rawSelectedIndoor);
-  }
-
-  @override
   Future<NLocationOverlay> getLocationOverlay() async {
     await invokeMethod("getLocationOverlay");
     return overlayController.locationOverlay;

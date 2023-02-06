@@ -40,7 +40,6 @@ internal interface NaverMapControlHandler {
             withPadding = call.arguments.asBoolean(),
             onSuccess = result::send,
         )
-        "getSelectedIndoor" -> getSelectedIndoor(result::send)
         "getLocationOverlay" -> getLocationOverlay(result::send)
         "screenLocationToLatLng" -> screenLocationToLatLng(
             nPoint = NPoint.fromMap(call.arguments),
@@ -103,8 +102,6 @@ internal interface NaverMapControlHandler {
     fun getContentBounds(withPadding: Boolean, onSuccess: (latLngBounds: Map<String, Any>) -> Unit)
 
     fun getContentRegion(withPadding: Boolean, onSuccess: (latLngs: List<Map<String, Any>>) -> Unit)
-
-    fun getSelectedIndoor(onSuccess: (selectedIndoor: Map<String, Any>?) -> Unit)
 
     fun getLocationOverlay(onSuccess: () -> Unit)
 

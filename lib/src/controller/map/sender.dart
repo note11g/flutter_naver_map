@@ -14,8 +14,6 @@ abstract class _NaverMapControlSender {
 
   Future<List<NLatLng>> getContentRegion({bool withPadding = false});
 
-  Future<NSelectedIndoor?> getSelectedIndoor();
-
   Future<NLocationOverlay> getLocationOverlay();
 
   Future<NLatLng> screenLocationToLatLng(NPoint point);
