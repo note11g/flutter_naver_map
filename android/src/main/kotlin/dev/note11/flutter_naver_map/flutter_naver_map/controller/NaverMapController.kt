@@ -181,16 +181,16 @@ internal class NaverMapController(
         rawOverlays: List<Map<String, Any>>,
         onSuccess: () -> Unit,
     ) {
-        val creators = rawOverlays.map {
-            val overlayInfo = NOverlayInfo.fromMap(it["info"]!!)
-            AddableOverlay.fromJson(info = overlayInfo, args = it, context = applicationContext)
-        }
+        for (rawOverlay in rawOverlays) {
+            val overlayInfo = NOverlayInfo.fromMap(rawOverlay["info"]!!)
+            val creator = AddableOverlay.fromJson(
+                info = overlayInfo,
+                args = rawOverlay,
+                context = applicationContext
+            )
 
-        creators.forEach { creator ->
-            overlayController.run {
-                val overlay = saveOverlayWithAddable(creator)
-                overlay.map = naverMap
-            }
+            val overlay = overlayController.saveOverlayWithAddable(creator)
+            overlay.map = naverMap
         }
 
         onSuccess()
