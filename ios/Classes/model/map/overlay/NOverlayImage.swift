@@ -5,11 +5,9 @@ struct NOverlayImage {
     let mode: NOverlayImageMode
 
     var overlayImage: NMFOverlayImage {
-        get {
-            switch mode {
-            case .file, .temp, .widget: return makeOverlayImageWithPath()
-            case .asset: return makeOverlayImageWithAssetPath()
-            }
+        switch mode {
+        case .file, .temp, .widget: return makeOverlayImageWithPath()
+        case .asset: return makeOverlayImageWithAssetPath()
         }
     }
 

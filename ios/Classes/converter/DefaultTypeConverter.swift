@@ -41,7 +41,7 @@ public func asDict<T>(_ v: Any, valueCaster: (Any) throws -> T) -> Dictionary<St
 
 public func asArr<T>(_ v: Any, elementCaster: (Any) throws -> T) -> Array<T> {
     let list = v as! Array<Any>
-    return list.map(elementCaster)
+    return try! list.map(elementCaster)
 }
 
 public func castOrNull<T>(_ v: Any?, caster: (Any) throws -> T) -> T? {

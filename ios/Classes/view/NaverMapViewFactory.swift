@@ -13,12 +13,12 @@ class NaverMapFactory: NSObject, FlutterPlatformViewFactory {
     ) -> FlutterPlatformView {
         let channel = FlutterMethodChannel(name: SwiftFlutterNaverMapPlugin.createViewMethodChannelName(id: viewId), binaryMessenger: messenger)
         let overlayChannel = FlutterMethodChannel(name: SwiftFlutterNaverMapPlugin.createOverlayMethodChannelName(id: viewId), binaryMessenger: messenger)
-//        let overlayController = OverlayController(overlayChannel)
+        let overlayController = OverlayController(channel: overlayChannel)
 
         let convertedArgs = asDict(args!)
         let options = NaverMapViewOptions.fromMap(convertedArgs)
 
-        return NaverMapView(frame: frame, options: options, channel: channel)
+        return NaverMapView(frame: frame, options: options, channel: channel, overlayController: overlayController)
     }
 
     func createArgsCodec() -> FlutterMessageCodec & NSObjectProtocol {

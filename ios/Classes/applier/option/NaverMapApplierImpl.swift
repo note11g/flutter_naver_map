@@ -4,9 +4,7 @@ class NaverMapApplierImpl: NaverMapOptionApplier {
     private let isFirst: Bool
     private let naverMapView: NMFNaverMapView
     private var mapView: NMFMapView {
-        get {
-            naverMapView.mapView
-        }
+        naverMapView.mapView
     }
 
     init(_ mapView: NMFNaverMapView, isFirst: Bool) {

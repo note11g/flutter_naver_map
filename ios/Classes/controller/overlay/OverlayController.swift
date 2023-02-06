@@ -76,7 +76,7 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
 
     private func filteredOverlays(_ predicate: (_ info: NOverlayInfo) -> Bool) -> Dictionary<String, NMFOverlay> {
         overlays.filter { key, value in
-            let info = NOverlayInfo.fromDict(key)
+            let info = NOverlayInfo.fromString(key)
             return predicate(info)
         }
     }
@@ -231,7 +231,7 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
 
     func performClick(_ overlay: NMFOverlay, success: (Any?) -> ()) {
         if let touchHandler = overlay.touchHandler {
-            let _ = touchHandler(overlay)
+            _ = touchHandler(overlay)
             success(nil)
         }
     }

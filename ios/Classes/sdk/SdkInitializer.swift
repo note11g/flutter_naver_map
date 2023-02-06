@@ -7,7 +7,7 @@ class SdkInitializer: NSObject, NMFAuthManagerDelegate {
         self.channel = channel
         super.init()
 
-        channel.setMethodCallHandler(handle(_:result:))
+        channel.setMethodCallHandler(handle)
     }
 
     private func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {

@@ -5,9 +5,7 @@ struct NEdgeInsets {
     let bottom: CGFloat
 
     var uiEdgeInsets: UIEdgeInsets {
-        get {
-            UIEdgeInsets(top: top, left: left, bottom: bottom, right: right)
-        }
+        UIEdgeInsets(top: top, left: left, bottom: bottom, right: right)
     }
 
     static func fromDict(_ args: Any) -> NEdgeInsets {

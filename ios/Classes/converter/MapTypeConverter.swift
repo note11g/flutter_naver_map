@@ -111,10 +111,8 @@ func asNMGLineString(rawArr: Any) -> NMGLineString<AnyObject> {
 
 extension NMGLineString<AnyObject> {
     var latLngPoints: Array<NMGLatLng> {
-        get {
-            (self as! NMGLineString<NMGPointable>).points.map { (point: NMGPointable) in
-                point.toLatLng!()
-            }
+        (self as! NMGLineString<NMGPointable>).points.map { (point: NMGPointable) in
+            point.toLatLng!()
         }
     }
 }

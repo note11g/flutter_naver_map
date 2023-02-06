@@ -18,9 +18,7 @@ struct NOverlayInfo {
     /* ----- toMessageable ----- */
 
     var overlayMapKey: String {
-        get {
-            [type.rawValue, id].joined(separator: NOverlayInfo.separateString)
-        }
+        [type.rawValue, id].joined(separator: NOverlayInfo.separateString)
     }
 
     func toQueryString(injectMethod: String? = nil) -> String {

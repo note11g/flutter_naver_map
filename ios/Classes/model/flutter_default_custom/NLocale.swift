@@ -3,9 +3,7 @@ struct NLocale {
     let countryCode: String?
 
     var localeStr: String {
-        get {
-            languageCode
-        }
+        languageCode
     }
 
     static func fromDict(_ args: Any) -> NLocale? {

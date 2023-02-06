@@ -101,7 +101,8 @@ extension OverlayHandler {
         return true
     }
 
-    func saveOverlayWithAddable(creator: some AddableOverlay) -> some NMFOverlay {
+    // todo : iOS 13 or higher only support "some"
+    func saveOverlayWithAddable(creator: any AddableOverlay) -> NMFOverlay {
         if hasOverlay(info: creator.info) {
             deleteOverlay(info: creator.info)
         }

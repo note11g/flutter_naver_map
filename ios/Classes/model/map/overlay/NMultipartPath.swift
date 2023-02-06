@@ -8,14 +8,12 @@ struct NMultipartPath {
     let passedOutlineColor: UIColor
 
     var colorPart: NMFPathColor {
-        get {
-            NMFPathColor(
-                    color: color,
-                    outlineColor: outlineColor,
-                    passedColor: passedColor,
-                    passedOutlineColor: passedOutlineColor
-            )
-        }
+        NMFPathColor(
+                color: color,
+                outlineColor: outlineColor,
+                passedColor: passedColor,
+                passedOutlineColor: passedOutlineColor
+        )
     }
 
     func toDict() -> Dictionary<String, Any> {

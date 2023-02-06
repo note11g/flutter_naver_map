@@ -15,7 +15,7 @@ struct NCameraUpdate {
     let animation: NMFCameraUpdateAnimation
     let duration: Int // mill seconds. not Second.
 
-    var cameraUpdate: NMFCameraUpdate? {
+    var cameraUpdate: NMFCameraUpdate {
         get throws {
             let cameraUpdate: NMFCameraUpdate
 
@@ -39,31 +39,29 @@ struct NCameraUpdate {
     }
 
     private var params: NMFCameraUpdateParams {
-        get {
-            let p = NMFCameraUpdateParams()
-            if let target {
-                p.scroll(to: target)
-            }
-            if let zoom {
-                p.zoom(to: zoom)
-            }
-            if let zoomBy {
-                p.zoom(by: zoomBy)
-            }
-            if let tilt {
-                p.tilt(to: tilt)
-            }
-            if let tiltBy {
-                p.tilt(by: tiltBy)
-            }
-            if let bearing {
-                p.rotate(by: bearing)
-            }
-            if let bearingBy {
-                p.rotate(by: bearingBy)
-            }
-            return p
+        let p = NMFCameraUpdateParams()
+        if let target {
+            p.scroll(to: target)
         }
+        if let zoom {
+            p.zoom(to: zoom)
+        }
+        if let zoomBy {
+            p.zoom(by: zoomBy)
+        }
+        if let tilt {
+            p.tilt(to: tilt)
+        }
+        if let tiltBy {
+            p.tilt(by: tiltBy)
+        }
+        if let bearing {
+            p.rotate(by: bearing)
+        }
+        if let bearingBy {
+            p.rotate(by: bearingBy)
+        }
+        return p
     }
 
     static func fromDict(_ v: Any) -> NCameraUpdate {

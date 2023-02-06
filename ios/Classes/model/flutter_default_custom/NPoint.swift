@@ -2,9 +2,7 @@ struct NPoint {
     let x, y: Double
 
     var cgPoint: CGPoint {
-        get {
-            CGPoint.init(x: x, y: y)
-        }
+        CGPoint.init(x: x, y: y)
     }
 
     func toDict() -> Dictionary<String, Any> {

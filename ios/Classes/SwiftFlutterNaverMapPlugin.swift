@@ -2,8 +2,7 @@ import Flutter
 import UIKit
 
 public class SwiftFlutterNaverMapPlugin: NSObject, FlutterPlugin {
-
-    private static var registrar: FlutterPluginRegistrar?
+    private static var registrar: FlutterPluginRegistrar!
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         self.registrar = registrar
@@ -18,7 +17,7 @@ public class SwiftFlutterNaverMapPlugin: NSObject, FlutterPlugin {
 
     private static func initializeSdkChannel(binaryMessenger: FlutterBinaryMessenger) {
         let sdkChannel = FlutterMethodChannel(name: SwiftFlutterNaverMapPlugin.SDK_CHANNEL_NAME, binaryMessenger: binaryMessenger)
-        SdkInitializer.init(channel: sdkChannel)
+        _ = SdkInitializer(channel: sdkChannel)
     }
 
     private static let SDK_CHANNEL_NAME = "flutter_naver_map_sdk"
@@ -36,6 +35,6 @@ public class SwiftFlutterNaverMapPlugin: NSObject, FlutterPlugin {
     }
 
     public static func getAssets(path: String) -> String {
-        registrar!.lookupKey(forAsset: path)
+        registrar.lookupKey(forAsset: path)
     }
 }
