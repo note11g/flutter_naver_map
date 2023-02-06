@@ -1,7 +1,7 @@
 import NMapsMap
 
 struct NPolylineOverlay: AddableOverlay {
-    typealias T = NMFPolylineOverlay
+    typealias OverlayType = NMFPolylineOverlay
 
     let info: NOverlayInfo
     let coords: Array<NMGLatLng>
@@ -11,7 +11,7 @@ struct NPolylineOverlay: AddableOverlay {
     let lineJoin: NMFOverlayLineJoin
     let pattern: Array<NSNumber>
 
-    func createMapOverlay() -> NMFPolylineOverlay {
+    func createMapOverlay() -> OverlayType {
         let polyline = NMFPolylineOverlay()
         polyline.line = NMGLineString(points: coords)
         polyline.color = color
@@ -48,7 +48,7 @@ struct NPolylineOverlay: AddableOverlay {
                 lineCap: asLineCap(d[lineCapName]!),
                 lineJoin: asLineJoin(d[lineJoinName]!),
                 pattern: asArr(d[patternName]!) {
-                    NSNumber(value: Int(round(asDouble($0))))
+                    NSNumber(value: asRoundInt(rawFloat: $0))
                 }
         )
     }

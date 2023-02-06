@@ -14,6 +14,10 @@ public func asDouble(_ v: Any) -> Double {
     v as! Double
 }
 
+public func asRoundInt(rawFloat: Any) -> Int {
+    Int(round(asDouble(rawFloat)))
+}
+
 public func asInt(_ v: Any) -> Int {
     v as! Int
 }

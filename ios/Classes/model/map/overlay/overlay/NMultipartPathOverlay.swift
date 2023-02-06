@@ -1,10 +1,10 @@
 import NMapsMap
 
 struct NMultipartPathOverlay: AddableOverlay {
-    typealias T = NMFMultipartPath
+    typealias OverlayType = NMFMultipartPath
 
     let info: NOverlayInfo
-    let path: Array<NMultipartPath>
+    let paths: Array<NMultipartPath>
     let width: CGFloat
     let outlineWidth: CGFloat
     let patternImage: NOverlayImage?
@@ -14,16 +14,9 @@ struct NMultipartPathOverlay: AddableOverlay {
     let isHideCollidedMarkers: Bool
     let isHideCollidedSymbols: Bool
 
-    func createMapOverlay() -> NMFMultipartPath {
+    func createMapOverlay() -> OverlayType {
         let overlay = NMFMultipartPath()
-        var coords = overlay.lineParts
-        var colors: Array<NMFPathColor> = []
-        for path in path {
-            coords.append(NMGLineString(points: path.coords))
-            colors.append(path.colorPart)
-        }
-        overlay.lineParts = coords
-        overlay.colorParts = colors
+        paths.applyLineAndColor(linePartsFun: { overlay.lineParts = $0 }, colorPartsFun: { overlay.colorParts = $0 })
         overlay.width = width
         overlay.outlineWidth = outlineWidth
         overlay.patternIcon = patternImage?.overlayImage
@@ -38,7 +31,7 @@ struct NMultipartPathOverlay: AddableOverlay {
     func toDict() -> Dictionary<String, Any?> {
         [
             NMultipartPathOverlay.infoName: info.toDict(),
-            NMultipartPathOverlay.pathsName: path.map {
+            NMultipartPathOverlay.pathsName: paths.map {
                 $0.toDict()
             },
             NMultipartPathOverlay.widthName: width,
@@ -56,7 +49,7 @@ struct NMultipartPathOverlay: AddableOverlay {
         let d = asDict(v)
         return NMultipartPathOverlay(
                 info: NOverlayInfo.fromDict(d[infoName]!),
-                path: asArr(d[pathsName]!, elementCaster: NMultipartPath.fromDict),
+                paths: asArr(d[pathsName]!, elementCaster: NMultipartPath.fromDict),
                 width: asCGFloat(d[widthName]!),
                 outlineWidth: asCGFloat(d[outlineWidthName]!),
                 patternImage: castOrNull(d[patternImageName], caster: NOverlayImage.fromDict),
@@ -73,14 +66,14 @@ struct NMultipartPathOverlay: AddableOverlay {
         var path: Array<NMultipartPath> = []
         for (i, line) in overlay.lineParts.enumerated() {
             path.append(NMultipartPath.fromCoordsAndColorParts(
-                    coords: line.points.map({ $0.toLatLng() }), // todo : test
+                    coords: line.latLngPoints,
                     colorPart: overlay.colorParts[i]
             ))
         }
 
         return NMultipartPathOverlay(
                 info: NOverlayInfo(type: .multipartPathOverlay, id: id),
-                path: path,
+                paths: path,
                 width: overlay.width,
                 outlineWidth: overlay.outlineWidth,
                 patternImage: NOverlayImage.none,

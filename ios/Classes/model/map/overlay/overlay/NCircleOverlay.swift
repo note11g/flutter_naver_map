@@ -1,7 +1,7 @@
 import NMapsMap
 
 struct NCircleOverlay: AddableOverlay {
-    typealias T = NMFCircleOverlay
+    typealias OverlayType = NMFCircleOverlay
     let info: NOverlayInfo
     let center: NMGLatLng
     let radius: Double
@@ -9,7 +9,7 @@ struct NCircleOverlay: AddableOverlay {
     let outlineColor: UIColor
     let outlineWidth: Double
 
-    func createMapOverlay() -> NMFCircleOverlay {
+    func createMapOverlay() -> OverlayType {
         let overlay = NMFCircleOverlay(center, radius: radius)
         overlay.fillColor = color
         overlay.outlineColor = outlineColor

@@ -1,11 +1,11 @@
 import NMapsMap
 
 protocol AddableOverlay {
-    associatedtype T: NMFOverlay
+    associatedtype OverlayType: NMFOverlay
 
     var info: NOverlayInfo { get }
 
-    func createMapOverlay() -> T
+    func createMapOverlay() -> OverlayType
 
     func toDict() -> Dictionary<String, Any?>
 

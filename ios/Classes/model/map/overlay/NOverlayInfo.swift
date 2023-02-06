@@ -41,7 +41,7 @@ struct NOverlayInfo {
         )
     }
 
-    static func fromString(query: String) -> NOverlayInfo {
+    static func fromString(_ query: String) -> NOverlayInfo {
         let arr = query.components(separatedBy: NOverlayInfo.separateString)
         return NOverlayInfo(
                 type: NOverlayType(rawValue: asString(arr[0]))!,

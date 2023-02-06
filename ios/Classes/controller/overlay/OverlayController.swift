@@ -1,0 +1,714 @@
+import NMapsMap
+
+class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOverlayHandler, GroundOverlayHandler, InfoWindowHandler, LocationOverlayHandler, MarkerHandler, MultipartPathOverlayHandler, PathOverlayHandler, PolygonOverlayHandler, PolylineOverlayHandler {
+
+    private let channel: FlutterMethodChannel
+
+    init(channel: FlutterMethodChannel) {
+        self.channel = channel
+        channel.setMethodCallHandler(handler)
+    }
+
+    /* ----- overlay storage ----- */
+
+    private var overlays: Dictionary<String, NMFOverlay> = [:]
+
+    func hasOverlay(info: NOverlayInfo) -> Bool {
+        overlays.contains { (key, _) in
+            key == info.overlayMapKey
+        }
+    }
+
+    func saveOverlay(overlay: NMFOverlay, info: NOverlayInfo) {
+        detachOverlay(info: info)
+        overlay.touchHandler = { [weak self] overlay in
+            self?.channel.invokeMethod(info.toQueryString(injectMethod: onTapName), arguments: nil)
+            return true
+        }
+        overlays[info.overlayMapKey] = overlay
+    }
+
+    private func getOverlay(info: NOverlayInfo) -> NMFOverlay? {
+        overlays[info.overlayMapKey]
+    }
+
+    func deleteOverlay(info: NOverlayInfo) {
+        detachOverlay(info: info)
+        overlays.removeValue(forKey: info.overlayMapKey)
+    }
+
+    func deleteOverlay(_ key: String, _ value: NMFOverlay) {
+        detachOverlay(value)
+        overlays.removeValue(forKey: key)
+    }
+
+    private func detachOverlay(info: NOverlayInfo) {
+        if info.type == .locationOverlay {
+            return
+        }
+        let overlay = getOverlay(info: info)
+        if let overlay {
+            detachOverlay(overlay)
+        }
+    }
+
+    private func detachOverlay(_ overlay: NMFOverlay) {
+        if let infoWindow = overlay as? NMFInfoWindow {
+            infoWindow.close()
+        } else {
+            overlay.mapView = nil
+        }
+    }
+
+    func clearOverlays() {
+        filteredOverlays {
+            $0.type != .locationOverlay
+        }
+                .forEach(deleteOverlay)
+    }
+
+    func clearOverlays(type: NOverlayType) {
+        filteredOverlays {
+            $0.type == type
+        }
+                .forEach(deleteOverlay)
+    }
+
+    private func filteredOverlays(_ predicate: (_ info: NOverlayInfo) -> Bool) -> Dictionary<String, NMFOverlay> {
+        overlays.filter { key, value in
+            let info = NOverlayInfo.fromDict(key)
+            return predicate(info)
+        }
+    }
+
+    func getSavedOverlayKey(overlay: NMFOverlay) -> String? {
+        for (key, value) in overlays {
+            if value == overlay {
+                return key
+            }
+        }
+        return nil
+    }
+
+    /* ----- handler ----- */
+
+    private func handler(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+        let queryInfo = NOverlayInfo.fromString(call.method)
+        let overlay = queryInfo.getOverlay(overlays: overlays)
+
+        guard let overlay else {
+            result(FlutterError(code: "overlay_not_found", message: "overlay not found", details: nil))
+            return
+        }
+
+        let isInvokedOnCommonOverlay =
+                handleOverlay(overlay: overlay, method: queryInfo.method!, args: call.arguments, result: result)
+
+        if !isInvokedOnCommonOverlay {
+            switch queryInfo.type {
+            case .marker: handleMarker(
+                    marker: overlay as! NMFMarker,
+                    method: queryInfo.method!,
+                    args: call.arguments,
+                    result: result)
+            case .infoWindow: handleInfoWindow(
+                    infoWindow: overlay as! NMFInfoWindow,
+                    method: queryInfo.method!,
+                    args: call.arguments,
+                    result: result)
+            case .circleOverlay: handleCircleOverlay(
+                    circleOverlay: overlay as! NMFCircleOverlay,
+                    method: queryInfo.method!,
+                    args: call.arguments,
+                    result: result)
+            case .groundOverlay: handleGroundOverlay(
+                    groundOverlay: overlay as! NMFGroundOverlay,
+                    method: queryInfo.method!,
+                    args: call.arguments,
+                    result: result)
+            case .polygonOverlay: handlePolygonOverlay(
+                    polygonOverlay: overlay as! NMFPolygonOverlay,
+                    method: queryInfo.method!,
+                    args: call.arguments,
+                    result: result)
+            case .polylineOverlay: handlePolylineOverlay(
+                    polylineOverlay: overlay as! NMFPolylineOverlay,
+                    method: queryInfo.method!,
+                    args: call.arguments,
+                    result: result)
+            case .pathOverlay: handlePathOverlay(
+                    pathOverlay: overlay as! NMFPath,
+                    method: queryInfo.method!,
+                    args: call.arguments,
+                    result: result)
+            case .multipartPathOverlay: handleMultipartPathOverlay(
+                    multipartPathOverlay: overlay as! NMFMultipartPath,
+                    method: queryInfo.method!,
+                    args: call.arguments,
+                    result: result)
+            case .arrowheadPathOverlay: handleArrowheadPathOverlay(
+                    arrowheadPathOverlay: overlay as! NMFArrowheadPath,
+                    method: queryInfo.method!,
+                    args: call.arguments,
+                    result: result)
+            case .locationOverlay: handleLocationOverlay(
+                    locationOverlay: overlay as! NMFLocationOverlay,
+                    method: queryInfo.method!,
+                    args: call.arguments,
+                    result: result)
+            }
+        }
+    }
+
+    /* ----- All Overlay handler ----- */
+    func getZIndex(_ overlay: NMFOverlay, success: (Int) -> ()) {
+        success(overlay.zIndex)
+    }
+
+    func setZIndex(_ overlay: NMFOverlay, rawZIndex: Any) {
+        overlay.zIndex = asInt(rawZIndex)
+    }
+
+    func getGlobalZIndex(_ overlay: NMFOverlay, success: (Int) -> ()) {
+        success(overlay.globalZIndex)
+    }
+
+    func setGlobalZIndex(_ overlay: NMFOverlay, rawGlobalZIndex: Any) {
+        overlay.globalZIndex = asInt(rawGlobalZIndex)
+    }
+
+    func getTag(_ overlay: NMFOverlay, success: (String?) -> ()) {
+        success(castOrNull(overlay.userInfo["tag"], caster: asString))
+    }
+
+    func setTag(_ overlay: NMFOverlay, rawTag: String) {
+        overlay.userInfo["tag"] = rawTag
+    }
+
+    func getIsAdded(_ overlay: NMFOverlay, success: (Bool) -> ()) {
+        success(overlay.mapView != nil)
+    }
+
+    func getIsVisible(_ overlay: NMFOverlay, success: (Bool) -> ()) {
+        success(overlay.hidden)
+    }
+
+    func setIsVisible(_ overlay: NMFOverlay, rawIsVisible: Any) {
+        overlay.hidden = asBool(rawIsVisible)
+    }
+
+    func getMinZoom(_ overlay: NMFOverlay, success: (Double) -> ()) {
+        success(overlay.minZoom)
+    }
+
+    func setMinZoom(_ overlay: NMFOverlay, rawMinZoom: Any) {
+        overlay.minZoom = asDouble(rawMinZoom)
+    }
+
+    func getMaxZoom(_ overlay: NMFOverlay, success: (Double) -> ()) {
+        success(overlay.maxZoom)
+    }
+
+    func setMaxZoom(_ overlay: NMFOverlay, rawMaxZoom: Any) {
+        overlay.maxZoom = asDouble(rawMaxZoom)
+    }
+
+    func getIsMinZoomInclusive(_ overlay: NMFOverlay, success: (Bool) -> ()) {
+        success(overlay.isMinZoomInclusive)
+    }
+
+    func setIsMinZoomInclusive(_ overlay: NMFOverlay, rawIsMinZoomInclusive: Any) {
+        overlay.isMinZoomInclusive = asBool(rawIsMinZoomInclusive)
+    }
+
+    func getIsMaxZoomInclusive(_ overlay: NMFOverlay, success: (Bool) -> ()) {
+        success(overlay.isMaxZoomInclusive)
+    }
+
+    func setIsMaxZoomInclusive(_ overlay: NMFOverlay, rawIsMaxZoomInclusive: Any) {
+        overlay.isMaxZoomInclusive = asBool(rawIsMaxZoomInclusive)
+    }
+
+    func performClick(_ overlay: NMFOverlay, success: (Any?) -> ()) {
+        if let touchHandler = overlay.touchHandler {
+            let _ = touchHandler(overlay)
+            success(nil)
+        }
+    }
+
+    /* ----- LocationOverlay handler ----- */
+    func getAnchor(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
+        let anchor = overlay.anchor
+        success(NPoint.fromCGPoint(anchor).toDict())
+    }
+
+    func setAnchor(_ overlay: NMFLocationOverlay, rawNPoint: Any) {
+        overlay.anchor = NPoint.fromDict(rawNPoint).cgPoint
+    }
+
+    func getBearing(_ overlay: NMFLocationOverlay, success: (Double) -> ()) {
+        success(overlay.heading)
+    }
+
+    func setBearing(_ overlay: NMFLocationOverlay, rawBearing: Any) {
+        overlay.heading = asCGFloat(rawBearing)
+    }
+
+    func getCircleColor(_ overlay: NMFLocationOverlay, success: (Int) -> ()) {
+        success(overlay.circleColor.toInt())
+    }
+
+    func setCircleColor(_ overlay: NMFLocationOverlay, rawColor: Any) {
+        overlay.circleColor = asUIColor(rawColor)
+    }
+
+    func getCircleOutlineColor(_ overlay: NMFLocationOverlay, success: (Int) -> ()) {
+        success(overlay.circleOutlineColor.toInt())
+    }
+
+    func setCircleOutlineColor(_ overlay: NMFLocationOverlay, rawColor: Any) {
+        overlay.circleOutlineColor = asUIColor(rawColor)
+    }
+
+    func getCircleOutlineWidth(_ overlay: NMFLocationOverlay, success: (Double) -> ()) {
+        success(overlay.circleOutlineWidth)
+    }
+
+    func setCircleOutlineWidth(_ overlay: NMFLocationOverlay, rawWidth: Any) {
+        overlay.circleOutlineWidth = asCGFloat(rawWidth)
+    }
+
+    func getCircleRadius(_ overlay: NMFLocationOverlay, success: (Double) -> ()) {
+        success(overlay.circleRadius)
+    }
+
+    func setCircleRadius(_ overlay: NMFLocationOverlay, rawRadius: Any) {
+        overlay.circleRadius = asCGFloat(rawRadius)
+    }
+
+    func setIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any) {
+        overlay.icon = NOverlayImage.fromDict(rawNOverlayImage).overlayImage
+    }
+
+    func getIconSize(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
+        success(NSize(
+                width: overlay.iconWidth,
+                height: overlay.iconHeight
+        ).toDict())
+    }
+
+    func setIconSize(_ overlay: NMFLocationOverlay, rawSize: Any) {
+        let size = NSize.fromDict(rawSize)
+        overlay.iconWidth = size.width
+        overlay.iconHeight = size.height
+    }
+
+    func getPosition(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
+        success(overlay.location.toDict())
+    }
+
+    func setPosition(_ overlay: NMFLocationOverlay, rawLatLng: Any) {
+        overlay.location = asLatLng(rawLatLng)
+    }
+
+    func getSubAnchor(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
+        success(NPoint.fromCGPoint(overlay.subAnchor).toDict())
+    }
+
+    func setSubAnchor(_ overlay: NMFLocationOverlay, rawNPoint: Any) {
+        overlay.subAnchor = NPoint.fromDict(rawNPoint).cgPoint
+    }
+
+    func setSubIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any) {
+        overlay.subIcon = NOverlayImage.fromDict(rawNOverlayImage).overlayImage
+    }
+
+    func getSubIconSize(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
+        success(NSize(
+                width: overlay.subIconWidth,
+                height: overlay.subIconHeight
+        ).toDict())
+    }
+
+    func setSubIconSize(_ overlay: NMFLocationOverlay, rawSize: Any) {
+        let size = NSize.fromDict(rawSize)
+        overlay.subIconWidth = size.width
+        overlay.subIconHeight = size.height
+    }
+
+    /* ----- Marker handler ----- */
+    // todo : test
+    func hasOpenInfoWindow(_ marker: NMFMarker, success: (Bool) -> ()) {
+        success(marker.infoWindow != nil)
+    }
+
+    func openInfoWindow(_ marker: NMFMarker, rawInfoWindow: Any, rawAlign: Any, success: (Any?) -> ()) {
+        let nInfoWindow = NInfoWindow.fromJson(rawInfoWindow)
+        let infoWindow = saveOverlayWithAddable(creator: nInfoWindow) as! NMFInfoWindow
+
+        let align = try! asAlign(rawAlign)
+        infoWindow.open(with: marker, alignType: align)
+        success(nil)
+    }
+
+    func setPosition(_ marker: NMFMarker, rawPosition: Any) {
+        marker.position = asLatLng(rawPosition)
+    }
+
+    func setIcon(_ marker: NMFMarker, rawIcon: Any) {
+        marker.iconImage = NOverlayImage.fromDict(rawIcon).overlayImage
+    }
+
+    func setIconTintColor(_ marker: NMFMarker, rawIconTintColor: Any) {
+        marker.iconTintColor = asUIColor(rawIconTintColor)
+    }
+
+    func setAlpha(_ marker: NMFMarker, rawAlpha: Any) {
+        marker.alpha = asCGFloat(rawAlpha)
+    }
+
+    func setAngle(_ marker: NMFMarker, rawAngle: Any) {
+        marker.angle = asCGFloat(rawAngle)
+    }
+
+    func setAnchor(_ marker: NMFMarker, rawNPoint: Any) {
+        marker.anchor = NPoint.fromDict(rawNPoint).cgPoint
+    }
+
+    func setSize(_ marker: NMFMarker, rawNPoint: Any) {
+        let size = NPoint.fromDict(rawNPoint)
+        marker.width = size.x
+        marker.height = size.y
+    }
+
+    func setCaption(_ marker: NMFMarker, rawCaption: Any) {
+        let caption = NOverlayCaption.fromDict(rawCaption)
+        marker.captionText = caption.text
+        marker.captionTextSize = caption.textSize
+        marker.captionColor = caption.color
+        marker.captionHaloColor = caption.haloColor
+        marker.captionMinZoom = caption.minZoom
+        marker.captionMaxZoom = caption.maxZoom
+        marker.captionRequestedWidth = caption.requestWidth
+    }
+
+    func setSubCaption(_ marker: NMFMarker, rawSubCaption: Any) {
+        let caption = NOverlayCaption.fromDict(rawSubCaption)
+        marker.subCaptionText = caption.text
+        marker.subCaptionTextSize = caption.textSize
+        marker.subCaptionColor = caption.color
+        marker.subCaptionHaloColor = caption.haloColor
+        marker.subCaptionMinZoom = caption.minZoom
+        marker.subCaptionMaxZoom = caption.maxZoom
+        marker.subCaptionRequestedWidth = caption.requestWidth
+    }
+
+    func setCaptionAligns(_ marker: NMFMarker, rawCaptionAligns: Any) {
+        marker.captionAligns = asArr(rawCaptionAligns, elementCaster: asAlign)
+    }
+
+    func setCaptionOffset(_ marker: NMFMarker, rawDpOffset: Any) {
+        marker.captionOffset = asCGFloat(rawDpOffset)
+    }
+
+    func setIsCaptionPerspectiveEnabled(_ marker: NMFMarker, rawCaptionPerspectiveEnabled: Any) {
+        marker.captionPerspectiveEnabled = asBool(rawCaptionPerspectiveEnabled)
+    }
+
+    func setIsIconPerspectiveEnabled(_ marker: NMFMarker, rawIconPerspectiveEnabled: Any) {
+        marker.iconPerspectiveEnabled = asBool(rawIconPerspectiveEnabled)
+    }
+
+    func setIsFlat(_ marker: NMFMarker, rawFlat: Any) {
+        marker.isFlat = asBool(rawFlat)
+    }
+
+    func setIsForceShowCaption(_ marker: NMFMarker, rawForceShowCaption: Any) {
+        marker.isForceShowCaption = asBool(rawForceShowCaption)
+    }
+
+    func setIsForceShowIcon(_ marker: NMFMarker, rawForceShowIcon: Any) {
+        marker.isForceShowIcon = asBool(rawForceShowIcon)
+    }
+
+    func setIsHideCollidedCaptions(_ marker: NMFMarker, rawHideCollidedCaptions: Any) {
+        marker.isHideCollidedCaptions = asBool(rawHideCollidedCaptions)
+    }
+
+    func setIsHideCollidedMarkers(_ marker: NMFMarker, rawHideCollidedMarkers: Any) {
+        marker.isHideCollidedMarkers = asBool(rawHideCollidedMarkers)
+    }
+
+    func setIsHideCollidedSymbols(_ marker: NMFMarker, rawHideCollidedSymbols: Any) {
+        marker.isHideCollidedSymbols = asBool(rawHideCollidedSymbols)
+    }
+
+    /* ----- InfoWindow handler ----- */
+    func setText(_ infoWindow: NMFInfoWindow, rawText: Any) {
+        infoWindow.dataSource = NInfoWindow.createTextSource(asString(rawText))
+    }
+
+    func setAnchor(_ infoWindow: NMFInfoWindow, rawNPoint: Any) {
+        infoWindow.anchor = NPoint.fromDict(rawNPoint).cgPoint
+    }
+
+    func setAlpha(_ infoWindow: NMFInfoWindow, rawAlpha: Any) {
+        infoWindow.alpha = asCGFloat(rawAlpha)
+    }
+
+    func setPosition(_ infoWindow: NMFInfoWindow, rawPosition: Any) {
+        infoWindow.position = asLatLng(rawPosition)
+    }
+
+    func setOffsetX(_ infoWindow: NMFInfoWindow, rawOffsetX: Any) {
+        infoWindow.offsetX = asRoundInt(rawFloat: rawOffsetX)
+    }
+
+    func setOffsetY(_ infoWindow: NMFInfoWindow, rawOffsetY: Any) {
+        infoWindow.offsetY = asRoundInt(rawFloat: rawOffsetY)
+    }
+
+    func close(_ infoWindow: NMFInfoWindow) {
+        infoWindow.close()
+    }
+
+    /* ----- Circle Overlay handler ----- */
+    func setCenter(_ circleOverlay: NMFCircleOverlay, rawCenter: Any) {
+        circleOverlay.center = asLatLng(rawCenter)
+    }
+
+    func setRadius(_ circleOverlay: NMFCircleOverlay, rawRadius: Any) {
+        circleOverlay.radius = asDouble(rawRadius)
+    }
+
+    func setColor(_ circleOverlay: NMFCircleOverlay, rawColor: Any) {
+        circleOverlay.fillColor = asUIColor(rawColor)
+    }
+
+    func setOutlineColor(_ circleOverlay: NMFCircleOverlay, rawOutlineColor: Any) {
+        circleOverlay.outlineColor = asUIColor(rawOutlineColor)
+    }
+
+    func setOutlineWidth(_ circleOverlay: NMFCircleOverlay, rawOutlineWidth: Any) {
+        circleOverlay.outlineWidth = asDouble(rawOutlineWidth)
+    }
+
+    func getBounds(_ circleOverlay: NMFCircleOverlay, result: (Dictionary<String, Any>) -> ()) {
+        result(circleOverlay.bounds.toDict())
+    }
+
+    /* ----- Ground Overlay handler ----- */
+    func setBounds(_ groundOverlay: NMFGroundOverlay, rawBounds: Any) {
+        groundOverlay.bounds = asLatLngBounds(rawBounds)
+    }
+
+    func setImage(_ groundOverlay: NMFGroundOverlay, rawNOverlayImage: Any) {
+        groundOverlay.overlayImage = NOverlayImage.fromDict(rawNOverlayImage).overlayImage
+    }
+
+    func setAlpha(_ groundOverlay: NMFGroundOverlay, rawAlpha: Any) {
+        groundOverlay.alpha = asCGFloat(rawAlpha)
+    }
+
+    /* ----- Polygon Overlay handler ----- */
+    func setCoords(_ polygonOverlay: NMFPolygonOverlay, rawCoords: Any) {
+        polygonOverlay.polygon.exteriorRing = asNMGLineString(rawArr: rawCoords)
+    }
+
+    func setColor(_ polygonOverlay: NMFPolygonOverlay, rawColor: Any) {
+        polygonOverlay.fillColor = asUIColor(rawColor)
+    }
+
+    func setHoles(_ polygonOverlay: NMFPolygonOverlay, rawHoles: Any) {
+        let exteriorRing = polygonOverlay.polygon.exteriorRing
+        let willInteriorRing = asArr(rawHoles, elementCaster: asNMGLineString)
+        polygonOverlay.polygon = NMGPolygon(ring: exteriorRing, interiorRings: willInteriorRing)
+    }
+
+    func setOutlineColor(_ polygonOverlay: NMFPolygonOverlay, rawColor: Any) {
+        polygonOverlay.outlineColor = asUIColor(rawColor)
+    }
+
+    func setOutlineWidth(_ polygonOverlay: NMFPolygonOverlay, rawWidthDp: Any) {
+        polygonOverlay.outlineWidth = UInt(asRoundInt(rawFloat: rawWidthDp))
+    }
+
+    func getBounds(_ polygonOverlay: NMFPolygonOverlay, success: (Dictionary<String, Any>) -> ()) {
+        let ring = polygonOverlay.polygon.exteriorRing
+        let bounds = NMGLatLngBounds(latLngs: ring.latLngPoints)
+        success(bounds.toDict())
+    }
+
+    /* ----- Polyline Overlay handler ----- */
+    func setCoords(_ polylineOverlay: NMFPolylineOverlay, rawCoords: Any) {
+        polylineOverlay.line = asNMGLineString(rawArr: rawCoords)
+    }
+
+    func setColor(_ polylineOverlay: NMFPolylineOverlay, rawColor: Any) {
+        polylineOverlay.color = asUIColor(rawColor)
+    }
+
+    func setWidth(_ polylineOverlay: NMFPolylineOverlay, rawWidth: Any) {
+        polylineOverlay.width = asCGFloat(rawWidth)
+    }
+
+    func setLineCap(_ polylineOverlay: NMFPolylineOverlay, rawLineCap: Any) {
+        polylineOverlay.capType = asLineCap(rawLineCap)
+    }
+
+    func setLineJoin(_ polylineOverlay: NMFPolylineOverlay, rawLineJoin: Any) {
+        polylineOverlay.joinType = asLineJoin(rawLineJoin)
+    }
+
+    func setPattern(_ polylineOverlay: NMFPolylineOverlay, patternList: Any) {
+        polylineOverlay.pattern = asArr(patternList) { pattern in
+            NSNumber(value: asRoundInt(rawFloat: pattern))
+        }
+    }
+
+    func getBounds(_ polylineOverlay: NMFPolylineOverlay, success: (Dictionary<String, Any>) -> ()) {
+        let bounds = NMGLatLngBounds(latLngs: polylineOverlay.line.latLngPoints)
+        success(bounds.toDict())
+    }
+
+    /* ----- Path Overlay handler ----- */
+    func setCoords(_ pathOverlay: NMFPath, rawCoords: Any) {
+        pathOverlay.path = asNMGLineString(rawArr: rawCoords)
+    }
+
+    func setWidth(_ pathOverlay: NMFPath, rawWidthDp: Any) {
+        pathOverlay.width = asCGFloat(rawWidthDp)
+    }
+
+    func setColor(_ pathOverlay: NMFPath, rawColor: Any) {
+        pathOverlay.color = asUIColor(rawColor)
+    }
+
+    func setOutlineWidth(_ pathOverlay: NMFPath, rawWidthDp: Any) {
+        pathOverlay.outlineWidth = asCGFloat(rawWidthDp)
+    }
+
+    func setOutlineColor(_ pathOverlay: NMFPath, rawColor: Any) {
+        pathOverlay.outlineColor = asUIColor(rawColor)
+    }
+
+    func setPassedColor(_ pathOverlay: NMFPath, rawColor: Any) {
+        pathOverlay.passedColor = asUIColor(rawColor)
+    }
+
+    func setPassedOutlineColor(_ pathOverlay: NMFPath, rawColor: Any) {
+        pathOverlay.passedOutlineColor = asUIColor(rawColor)
+    }
+
+    func setProgress(_ pathOverlay: NMFPath, rawProgress: Any) {
+        pathOverlay.progress = asDouble(rawProgress)
+    }
+
+    func setPatternImage(_ pathOverlay: NMFPath, rawNOverlayImage: Any) {
+        pathOverlay.patternIcon = NOverlayImage.fromDict(rawNOverlayImage).overlayImage
+    }
+
+    func setPatternInterval(_ pathOverlay: NMFPath, rawInterval: Any) {
+        pathOverlay.patternInterval = UInt(asRoundInt(rawFloat: rawInterval))
+    }
+
+    func setIsHideCollidedCaptions(_ pathOverlay: NMFPath, rawFlag: Any) {
+        pathOverlay.isHideCollidedCaptions = asBool(rawFlag)
+    }
+
+    func setIsHideCollidedMarkers(_ pathOverlay: NMFPath, rawFlag: Any) {
+        pathOverlay.isHideCollidedMarkers = asBool(rawFlag)
+    }
+
+    func setIsHideCollidedSymbols(_ pathOverlay: NMFPath, rawFlag: Any) {
+        pathOverlay.isHideCollidedSymbols = asBool(rawFlag)
+    }
+
+    func getBounds(_ pathOverlay: NMFPath, success: (Dictionary<String, Any>) -> ()) {
+        let bounds = NMGLatLngBounds(latLngs: pathOverlay.path.latLngPoints)
+        success(bounds.toDict())
+    }
+
+    /* ----- Multipart Path Overlay handler ----- */
+
+    func setPaths(_ multipartPathOverlay: NMFMultipartPath, rawPaths: Any) {
+        let nMultipartPaths = asArr(rawPaths, elementCaster: NMultipartPath.fromDict)
+        nMultipartPaths.applyLineAndColor(
+                linePartsFun: { multipartPathOverlay.lineParts = $0 },
+                colorPartsFun: { multipartPathOverlay.colorParts = $0 }
+        )
+    }
+
+    func setWidth(_ multipartPathOverlay: NMFMultipartPath, rawWidthDp: Any) {
+        multipartPathOverlay.width = asCGFloat(rawWidthDp)
+    }
+
+    func setOutlineWidth(_ multipartPathOverlay: NMFMultipartPath, rawWidth: Any) {
+        multipartPathOverlay.outlineWidth = asCGFloat(rawWidth)
+    }
+
+    func setPatternImage(_ multipartPathOverlay: NMFMultipartPath, rawNOverlayImage: Any) {
+        multipartPathOverlay.patternIcon = NOverlayImage.fromDict(rawNOverlayImage).overlayImage
+    }
+
+    func setPatternInterval(_ multipartPathOverlay: NMFMultipartPath, rawInterval: Any) {
+        multipartPathOverlay.patternInterval = UInt(asRoundInt(rawFloat: rawInterval))
+    }
+
+    func setProgress(_ multipartPathOverlay: NMFMultipartPath, rawProgress: Any) {
+        multipartPathOverlay.progress = asDouble(rawProgress)
+    }
+
+    func setIsHideCollidedCaptions(_ multipartPathOverlay: NMFMultipartPath, rawFlag: Any) {
+        multipartPathOverlay.isHideCollidedCaptions = asBool(rawFlag)
+    }
+
+    func setIsHideCollidedMarkers(_ multipartPathOverlay: NMFMultipartPath, rawFlag: Any) {
+        multipartPathOverlay.isHideCollidedMarkers = asBool(rawFlag)
+    }
+
+    func setIsHideCollidedSymbols(_ multipartPathOverlay: NMFMultipartPath, rawFlag: Any) {
+        multipartPathOverlay.isHideCollidedSymbols = asBool(rawFlag)
+    }
+
+    func getBounds(_ multipartPathOverlay: NMFMultipartPath, success: (Dictionary<String, Any>) -> ()) {
+        let bounds = NMGLatLngBounds(latLngs: multipartPathOverlay.lineParts.flatMap {
+            $0.latLngPoints
+        })
+        success(bounds.toDict())
+    }
+
+    /* ----- ArrowHeadPath Overlay handler ----- */
+    func setCoords(_ arrowheadPathOverlay: NMFArrowheadPath, rawCoords: Any) {
+        arrowheadPathOverlay.points = asArr(rawCoords, elementCaster: asLatLng)
+    }
+
+    func setWidth(_ arrowheadPathOverlay: NMFArrowheadPath, rawWidth: Any) {
+        arrowheadPathOverlay.width = asCGFloat(rawWidth)
+    }
+
+    func setColor(_ arrowheadPathOverlay: NMFArrowheadPath, rawColor: Any) {
+        arrowheadPathOverlay.color = asUIColor(rawColor)
+    }
+
+    func setOutlineWidth(_ arrowheadPathOverlay: NMFArrowheadPath, rawWidth: Any) {
+        arrowheadPathOverlay.outlineWidth = asCGFloat(rawWidth)
+    }
+
+    func setOutlineColor(_ arrowheadPathOverlay: NMFArrowheadPath, rawColor: Any) {
+        arrowheadPathOverlay.outlineColor = asUIColor(rawColor)
+    }
+
+    func setElevation(_ arrowheadPathOverlay: NMFArrowheadPath, rawElevation: Any) {
+        arrowheadPathOverlay.elevation = asCGFloat(rawElevation)
+    }
+
+    func setHeadSizeRatio(_ arrowheadPathOverlay: NMFArrowheadPath, rawRatio: Any) {
+        arrowheadPathOverlay.headSizeRatio = asCGFloat(rawRatio)
+    }
+
+    func getBounds(_ arrowheadPathOverlay: NMFArrowheadPath, success: (Dictionary<String, Any>) -> ()) {
+        let bounds = NMGLatLngBounds(latLngs: arrowheadPathOverlay.points)
+        success(bounds.toDict())
+    }
+}

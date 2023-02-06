@@ -51,3 +51,16 @@ struct NMultipartPath {
         )
     }
 }
+
+extension Array<NMultipartPath> {
+    func applyLineAndColor(linePartsFun: (Array<NMGLineString<AnyObject>>) -> Void, colorPartsFun: (Array<NMFPathColor>) -> Void) {
+        var coords: Array<NMGLineString<AnyObject>> = []
+        var colors: Array<NMFPathColor> = []
+        for nPath in self {
+            coords.append(NMGLineString(points: nPath.coords))
+            colors.append(nPath.colorPart)
+        }
+        linePartsFun(coords)
+        colorPartsFun(colors)
+    }
+}

@@ -1,7 +1,7 @@
 import NMapsMap
 
 struct NMarker: AddableOverlay {
-    typealias T = NMFMarker
+    typealias OverlayType = NMFMarker
 
     let info: NOverlayInfo
     let position: NMGLatLng
@@ -24,7 +24,7 @@ struct NMarker: AddableOverlay {
     let isHideCollidedMarkers: Bool
     let isHideCollidedSymbols: Bool
 
-    func createMapOverlay() -> NMFMarker {
+    func createMapOverlay() -> OverlayType {
         let marker = NMFMarker()
         marker.position = position
         if let icon {

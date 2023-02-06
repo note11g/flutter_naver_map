@@ -1,14 +1,14 @@
 import NMapsMap
 
 struct NGroundOverlay: AddableOverlay {
-    typealias T = NMFGroundOverlay
+    typealias OverlayType = NMFGroundOverlay
 
     let info: NOverlayInfo
     let bounds: NMGLatLngBounds
     let image: NOverlayImage
     let alpha: CGFloat
 
-    func createMapOverlay() -> NMFGroundOverlay {
+    func createMapOverlay() -> OverlayType {
         let overlay = NMFGroundOverlay(bounds: bounds, image: image.overlayImage)
         overlay.alpha = alpha
         return overlay

@@ -1,7 +1,7 @@
 import NMapsMap
 
 struct NInfoWindow: AddableOverlay {
-    typealias T = NMFInfoWindow
+    typealias OverlayType = NMFInfoWindow
 
     let info: NOverlayInfo
     let text: String
@@ -11,13 +11,13 @@ struct NInfoWindow: AddableOverlay {
     let offsetX: Double
     let offsetY: Double
 
-    func createMapOverlay() -> NMFInfoWindow {
+    func createMapOverlay() -> OverlayType {
         let infoWindow = NMFInfoWindow()
         infoWindow.dataSource = NInfoWindow.createTextSource(text);
         infoWindow.anchor = anchor.cgPoint
         infoWindow.alpha = alpha
-        infoWindow.offsetX = Int(round(offsetX))
-        infoWindow.offsetY = Int(round(offsetY))
+        infoWindow.offsetX = asRoundInt(rawFloat: offsetX)
+        infoWindow.offsetY = asRoundInt(rawFloat: offsetY)
         if let position = position {
             infoWindow.position = position
         }
@@ -62,7 +62,7 @@ struct NInfoWindow: AddableOverlay {
         )
     }
 
-    private static func createTextSource(_ text: String) -> NMFInfoWindowDefaultTextSource {
+    static func createTextSource(_ text: String) -> NMFInfoWindowDefaultTextSource {
         let textSource = NMFInfoWindowDefaultTextSource.data()
         textSource.title = text
         return textSource

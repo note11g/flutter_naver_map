@@ -1,7 +1,7 @@
 import NMapsMap
 
 struct NPathOverlay: AddableOverlay {
-    typealias T = NMFPath
+    typealias OverlayType = NMFPath
 
     let info: NOverlayInfo
     let coords: Array<NMGLatLng>
@@ -18,7 +18,7 @@ struct NPathOverlay: AddableOverlay {
     let isHideCollidedMarkers: Bool
     let isHideCollidedSymbols: Bool
 
-    func createMapOverlay() -> NMFPath {
+    func createMapOverlay() -> OverlayType {
         let overlay = NMFPath()
         overlay.path = NMGLineString(points: coords)
         overlay.width = width

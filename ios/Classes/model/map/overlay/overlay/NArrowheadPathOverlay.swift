@@ -1,7 +1,7 @@
 import NMapsMap
 
 struct NArrowheadPathOverlay: AddableOverlay {
-    typealias T = NMFArrowheadPath
+    typealias OverlayType = NMFArrowheadPath
 
     let info: NOverlayInfo
     let coords: Array<NMGLatLng>
@@ -12,7 +12,7 @@ struct NArrowheadPathOverlay: AddableOverlay {
     let elevation: CGFloat
     let headSizeRatio: CGFloat
 
-    func createMapOverlay() -> NMFArrowheadPath {
+    func createMapOverlay() -> OverlayType {
         let path = NMFArrowheadPath()
         path.points = coords
         path.width = width

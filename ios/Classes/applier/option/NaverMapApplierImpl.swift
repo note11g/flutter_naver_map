@@ -76,7 +76,7 @@ class NaverMapApplierImpl: NaverMapOptionApplier {
     }
 
     func setPickTolerance(_ rawDp: Any) {
-        mapView.pickTolerance = Int(round(asDouble(rawDp)))
+        mapView.pickTolerance = asRoundInt(rawFloat: rawDp)
     }
 
     func setRotationGesturesEnable(_ rawEnable: Any) {

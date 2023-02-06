@@ -1,7 +1,7 @@
 import NMapsMap
 
 struct NPolygonOverlay: AddableOverlay {
-    typealias T = NMFPolygonOverlay
+    typealias OverlayType = NMFPolygonOverlay
 
     let info: NOverlayInfo
     let coords: Array<NMGLatLng>
@@ -10,7 +10,7 @@ struct NPolygonOverlay: AddableOverlay {
     let outlineColor: UIColor
     let outlineWidth: Double
 
-    func createMapOverlay() -> NMFPolygonOverlay {
+    func createMapOverlay() -> OverlayType {
         let polygon = NMGPolygon(
                 ring: NMGLineString(points: coords),
                 interiorRings: holes.map({ NMGLineString(points: $0) })
@@ -49,9 +49,9 @@ struct NPolygonOverlay: AddableOverlay {
         let polygon = overlay as! NMFPolygonOverlay
         return NPolygonOverlay(
                 info: NOverlayInfo(type: .polygonOverlay, id: id),
-                coords: polygon.polygon.exteriorRing.points.map({ $0.toLatLng() }),
+                coords: polygon.polygon.exteriorRing.latLngPoints,
                 color: polygon.fillColor,
-                holes: polygon.polygon.interiorRings.map({ $0.points.map({ $0.toLatLng() }) }),
+                holes: polygon.polygon.interiorRings.map({ $0.latLngPoints }),
                 outlineColor: polygon.outlineColor,
                 outlineWidth: Double(polygon.outlineWidth)
         )

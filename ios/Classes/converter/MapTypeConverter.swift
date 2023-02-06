@@ -104,6 +104,21 @@ extension NMFIndoorLevel {
     }
 }
 
+func asNMGLineString(rawArr: Any) -> NMGLineString<AnyObject> {
+    let points = asArr(rawArr, elementCaster: asLatLng)
+    return NMGLineString(points: points)
+}
+
+extension NMGLineString<AnyObject> {
+    var latLngPoints: Array<NMGLatLng> {
+        get {
+            (self as! NMGLineString<NMGPointable>).points.map { (point: NMGPointable) in
+                point.toLatLng!()
+            }
+        }
+    }
+}
+
 /*
   --- Enums ---
 */
