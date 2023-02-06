@@ -8,14 +8,14 @@ import io.flutter.plugin.common.MethodChannel
 
 internal interface CircleOverlayHandler : OverlayHandler {
     fun handleCircleOverlay(
-        groundOverlay: CircleOverlay, method: String, arg: Any?, result: MethodChannel.Result,
+        circleOverlay: CircleOverlay, method: String, arg: Any?, result: MethodChannel.Result,
     ) = when (method) {
-        NCircleOverlay.centerName -> setCenter(groundOverlay, arg!!)
-        NCircleOverlay.radiusName -> setRadius(groundOverlay, arg!!)
-        NCircleOverlay.colorName -> setColor(groundOverlay, arg!!)
-        NCircleOverlay.outlineColorName -> setOutlineColor(groundOverlay, arg!!)
-        NCircleOverlay.outlineWidthName -> setOutlineWidth(groundOverlay, arg!!)
-        getterName(NCircleOverlay.boundsName) -> getBounds(groundOverlay, result::success)
+        NCircleOverlay.centerName -> setCenter(circleOverlay, arg!!)
+        NCircleOverlay.radiusName -> setRadius(circleOverlay, arg!!)
+        NCircleOverlay.colorName -> setColor(circleOverlay, arg!!)
+        NCircleOverlay.outlineColorName -> setOutlineColor(circleOverlay, arg!!)
+        NCircleOverlay.outlineWidthName -> setOutlineWidth(circleOverlay, arg!!)
+        getterName(NCircleOverlay.boundsName) -> getBounds(circleOverlay, result::success)
         else -> result.notImplemented()
     }
 
