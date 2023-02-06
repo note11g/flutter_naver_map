@@ -62,21 +62,19 @@ internal class NaverMapController(
         withPadding: Boolean,
         onSuccess: (latLngBounds: Map<String, Any>) -> Unit,
     ) {
-        if (withPadding) naverMap.coveringBounds.toMap().let(onSuccess)
-        else naverMap.contentBounds.toMap().let(onSuccess)
+        val bounds = if (withPadding) naverMap.coveringBounds else naverMap.contentBounds
+        bounds.toMap().let(onSuccess)
     }
 
     override fun getContentRegion(
         withPadding: Boolean, onSuccess: (latLngs: List<Map<String, Any>>) -> Unit,
     ) {
-        if (withPadding) naverMap.coveringRegion.map { it.toMap() }.let(onSuccess)
-        else naverMap.contentRegion.map { it.toMap() }.let(onSuccess)
+        val region = if (withPadding) naverMap.coveringRegion else naverMap.contentRegion
+        region.map { it.toMap() }.let(onSuccess)
     }
 
     override fun getSelectedIndoor(onSuccess: (selectedIndoor: Map<String, Any>?) -> Unit) {
-        val selectedIndoor = naverMap.indoorSelection
-        if (selectedIndoor == null) onSuccess(null)
-        else selectedIndoor.toMap().let(onSuccess)
+        onSuccess(naverMap.indoorSelection?.toMap())
     }
 
     override fun getLocationOverlay(onSuccess: () -> Unit) {
@@ -84,7 +82,7 @@ internal class NaverMapController(
         if (!overlayController.hasOverlay(info)) {
             overlayController.saveOverlay(naverMap.locationOverlay, info)
         }
-        onSuccess.invoke()
+        onSuccess()
     }
 
     override fun screenLocationToLatLng(
@@ -143,7 +141,7 @@ internal class NaverMapController(
 
             addPayload + mapOf("signature" to if (it is Symbol) "symbol" else "overlay")
         }
-        onSuccess.invoke(result)
+        onSuccess(result)
     }
 
     override fun takeSnapshot(
