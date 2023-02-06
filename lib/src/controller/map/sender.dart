@@ -22,11 +22,12 @@ abstract class _NaverMapControlSender {
 
   Future<double> getMeterPerDp({double? latitude, double? zoom});
 
+  /// android only
   Future<bool> isDestroyed();
 
   Future<List<Pickable>> pickAll(NPoint point, {double radius = 0});
 
-  Future<String> takeSnapshot(
+  Future<File> takeSnapshot(
       {bool showControls = true, int compressQuality = 80});
 
   Future<void> setLocationTrackingMode(NLocationTrackingMode mode);

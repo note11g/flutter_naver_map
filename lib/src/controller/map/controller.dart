@@ -103,13 +103,14 @@ class _NaverMapControllerImpl
   }
 
   @override
-  Future<String> takeSnapshot(
+  Future<File> takeSnapshot(
       {bool showControls = true, int compressQuality = 80}) async {
     final rawPath = await invokeMethodWithMessageableArgs("takeSnapshot", {
       "showControls": showControls,
       "compressQuality": compressQuality,
     });
-    return rawPath as String;
+    final path = rawPath as String;
+    return File(path);
   }
 
   @override
