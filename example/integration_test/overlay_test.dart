@@ -1,6 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_naver_map_example/main.dart' as app;
 import 'package:flutter_test/flutter_test.dart';
@@ -214,6 +215,69 @@ void main() {
         getMethod: locationOverlay.getSubIconSize,
         name: "subIconSize",
       );
+    });
+
+    testWidgets('verify addable overlays', (WidgetTester tester) async {
+      await app.mainWithTest(testId);
+      await tester.pumpAndSettle();
+
+      final testPageState = getTestPageState(tester);
+      final controller = await initializeNaverMap(testPageState);
+
+      final nowPosition =
+          await controller.getCameraPosition().then((p) => p.target);
+
+      final positionList = [
+        nowPosition.offsetByMeter(northMeter: 100, eastMeter: 30),
+        nowPosition.offsetByMeter(northMeter: -100, eastMeter: -50),
+        nowPosition.offsetByMeter(northMeter: 60, eastMeter: -50),
+        nowPosition.offsetByMeter(northMeter: -60, eastMeter: 20),
+      ];
+      final img = await NOverlayImage.fromWidget(
+          widget: const FlutterLogo(),
+          size: const NSize(24, 24),
+          context: testPageState.context);
+
+      final overlaySet = <NAddableOverlay>{
+        NMarker(id: "1", position: nowPosition),
+        NInfoWindow.onMap(id: "2", text: "인포윈도우", position: nowPosition),
+        NCircleOverlay(id: "3", center: nowPosition, radius: 100),
+        NPolygonOverlay(id: "4", coords: positionList),
+        NPolylineOverlay(id: "5", coords: positionList),
+        NGroundOverlay(
+            id: "6", bounds: NLatLngBounds.from(positionList), image: img),
+        NPathOverlay(id: "7", coords: positionList),
+        NMultipartPathOverlay(id: "8", paths: [
+          NMultipartPath(coords: positionList),
+        ]),
+        NArrowheadPathOverlay(id: "9", coords: positionList),
+      };
+
+      await controller.addOverlayAll(overlaySet);
+
+      await Future.delayed(const Duration(seconds: 2));
+
+      final nPoint = await controller.latLngToScreenLocation(nowPosition);
+
+      final pickables1 = await controller.pickAll(nPoint, radius: 800);
+      final overlays1 = pickables1.whereType<NOverlay>();
+
+      for (final overlay in overlays1) {
+        print("[pickAll] $overlay");
+      }
+      if (Platform.isAndroid) {
+        // todo : arrowheadPathOverlay is not working on android now.
+        // - see this issue : https://github.com/note11g/flutter_naver_map/issues/34
+        expect(overlays1.length + 1, overlaySet.length);
+      } else {
+        expect(overlays1.length, overlaySet.length);
+      }
+
+      await controller.clearOverlays();
+
+      final pickables2 = await controller.pickAll(nPoint, radius: 800);
+      final overlays2 = pickables2.whereType<NOverlay>();
+      expect(overlays2.length, 0);
     });
   });
 }
