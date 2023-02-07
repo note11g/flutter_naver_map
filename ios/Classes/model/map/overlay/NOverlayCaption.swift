@@ -7,7 +7,7 @@ struct NOverlayCaption {
     let maxZoom: Double
     let requestWidth: Double
 
-    func toDict() -> Dictionary<String, Any> {
+    func toMessageable() -> Dictionary<String, Any> {
         [
             "text": text,
             "textSize": textSize,
@@ -19,7 +19,7 @@ struct NOverlayCaption {
         ]
     }
 
-    static func fromDict(_ v: Any) -> NOverlayCaption {
+    static func fromMessageable(_ v: Any) -> NOverlayCaption {
         let d = asDict(v)
         return NOverlayCaption(
                 text: asString(d["text"]!),

@@ -14,21 +14,21 @@ struct NGroundOverlay: AddableOverlay {
         return overlay
     }
 
-    func toDict() -> Dictionary<String, Any?> {
+    func toMessageable() -> Dictionary<String, Any?> {
         [
-            NGroundOverlay.infoName: info.toDict(),
-            NGroundOverlay.boundsName: bounds.toDict(),
-            NGroundOverlay.imageName: image.toDict(),
+            NGroundOverlay.infoName: info.toMessageable(),
+            NGroundOverlay.boundsName: bounds.toMessageable(),
+            NGroundOverlay.imageName: image.toMessageable(),
             NGroundOverlay.alphaName: alpha
         ]
     }
 
-    static func fromJson(_ v: Any) -> NGroundOverlay {
+    static func fromMessageable(_ v: Any) -> NGroundOverlay {
         let d = asDict(v)
         return NGroundOverlay(
-                info: NOverlayInfo.fromDict(d[infoName]!),
+                info: NOverlayInfo.fromMessageable(d[infoName]!),
                 bounds: asLatLngBounds(d[boundsName]!),
-                image: NOverlayImage.fromDict(d[imageName]!),
+                image: NOverlayImage.fromMessageable(d[imageName]!),
                 alpha: asCGFloat(d[alphaName]!)
         )
     }

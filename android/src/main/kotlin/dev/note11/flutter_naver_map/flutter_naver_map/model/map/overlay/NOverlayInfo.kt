@@ -18,11 +18,11 @@ internal data class NOverlayInfo(
     fun toQueryString(injectMethod: String? = null): String =
         listOf(overlayMapKey, injectMethod ?: method!!).joinToString(SEPARATE_STRING)
 
-    fun toMap(): Map<String, Any> = mapOf("type" to type.toString(), "id" to id)
+    fun toMessageable(): Map<String, Any> = mapOf("type" to type.toString(), "id" to id)
 
     /* ----- fromMessageable ----- */
     companion object {
-        fun fromMap(rawMap: Any): NOverlayInfo = rawMap.asMap().let { map ->
+        fun fromMessageable(rawMap: Any): NOverlayInfo = rawMap.asMap().let { map ->
             NOverlayInfo(
                 type = NOverlayType.fromString(map["type"]!!.toString()),
                 id = map["id"]!!.toString(),

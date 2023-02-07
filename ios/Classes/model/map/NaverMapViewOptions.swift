@@ -4,9 +4,9 @@ struct NaverMapViewOptions {
     private let args: Dictionary<String, Any>
     let consumeSymbolTapEvents: Bool
 
-    static func fromMap(_ args: Dictionary<String, Any>) -> NaverMapViewOptions {
-        let consumeSymbolTapEvents = asBool(args["consumeSymbolTapEvents"]!)
-        return NaverMapViewOptions(args: args, consumeSymbolTapEvents: consumeSymbolTapEvents)
+    static func fromMessageable(_ messageableDict: Dictionary<String, Any>) -> NaverMapViewOptions {
+        let consumeSymbolTapEvents = asBool(messageableDict["consumeSymbolTapEvents"]!)
+        return NaverMapViewOptions(args: messageableDict, consumeSymbolTapEvents: consumeSymbolTapEvents)
     }
 
     func updateWithNaverMapView(naverMap: NMFNaverMapView, isFirst: Bool) {

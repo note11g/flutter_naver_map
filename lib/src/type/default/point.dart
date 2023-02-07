@@ -11,7 +11,7 @@ class NPoint extends Point<double> implements NMessageable {
         "y": y,
       });
 
-  factory NPoint._fromJson(dynamic json) => NPoint(json["x"], json["y"]);
+  factory NPoint._fromMessageable(dynamic m) => NPoint(m["x"], m["y"]);
 
   @override
   String toString() => "NPoint(x: $x, y: $y)";

@@ -9,7 +9,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asInt
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMap
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
@@ -31,9 +31,9 @@ internal data class NCircleOverlay(
         c.outlineWidth = DisplayUtil.dpToPx(outlineWidthDp)
     }
 
-    override fun toMap(): Map<String, Any?> = mapOf(
-        infoName to info.toMap(),
-        centerName to center.toMap(),
+    override fun toMessageable(): Map<String, Any?> = mapOf(
+        infoName to info.toMessageable(),
+        centerName to center.toMessageable(),
         radiusName to radius,
         colorName to color,
         outlineColorName to outlineColor,
@@ -41,9 +41,9 @@ internal data class NCircleOverlay(
     )
 
     companion object {
-        fun fromMap(rawMap: Any): NCircleOverlay = rawMap.asMap().let {
+        fun fromMessageable(rawMap: Any): NCircleOverlay = rawMap.asMap().let {
             NCircleOverlay(
-                info = NOverlayInfo.fromMap(it[infoName]!!),
+                info = NOverlayInfo.fromMessageable(it[infoName]!!),
                 center = it[centerName]!!.asLatLng(),
                 radius = it[radiusName]!!.asDouble(),
                 color = it[colorName]!!.asInt(),

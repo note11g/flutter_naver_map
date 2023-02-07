@@ -10,7 +10,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asList
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMap
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
@@ -32,19 +32,19 @@ internal data class NPolygonOverlay(
         g.outlineWidth = DisplayUtil.dpToPx(outlineWidthDp)
     }
 
-    override fun toMap(): Map<String, Any?> = mapOf(
-        infoName to info.toMap(),
-        coordsName to coords.map { it.toMap() },
+    override fun toMessageable(): Map<String, Any?> = mapOf(
+        infoName to info.toMessageable(),
+        coordsName to coords.map { it.toMessageable() },
         colorName to color,
-        holesName to holes.map { it.map { latLng -> latLng.toMap() } },
+        holesName to holes.map { it.map { latLng -> latLng.toMessageable() } },
         outlineColorName to outlineColor,
         outlineWidthName to outlineWidthDp,
     )
 
     companion object {
-        fun fromMap(rawMap: Any): NPolygonOverlay = rawMap.asMap().let {
+        fun fromMessageable(rawMap: Any): NPolygonOverlay = rawMap.asMap().let {
             NPolygonOverlay(
-                info = NOverlayInfo.fromMap(it[infoName]!!),
+                info = NOverlayInfo.fromMessageable(it[infoName]!!),
                 coords = it[coordsName]!!.asList { latLng -> latLng.asLatLng() },
                 color = it[colorName]!!.asInt(),
                 holes = it[holesName]!!.asList { hole ->

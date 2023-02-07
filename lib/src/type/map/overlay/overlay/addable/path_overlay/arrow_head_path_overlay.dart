@@ -76,19 +76,19 @@ class NArrowHeadPathOverlay extends NAddableOverlay<NArrowHeadPathOverlay> {
   }
 
   Future<NLatLngBounds> getBounds() {
-    return _getAsyncWithCast(_boundsName, NLatLngBounds._fromJson);
+    return _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
   }
 
-  factory NArrowHeadPathOverlay._fromJson(dynamic json) =>
+  factory NArrowHeadPathOverlay._fromMessageable(dynamic m) =>
       NArrowHeadPathOverlay(
-        id: NOverlayInfo._fromJson(json[_infoName]!).id,
-        coords: (json[_coordsName] as List).map(NLatLng._fromJson).toList(),
-        width: json[_widthName],
-        color: Color(json[_colorName]),
-        outlineWidth: json[_outlineWidthName],
-        outlineColor: Color(json[_outlineColorName]),
-        elevation: json[_elevationName],
-        headSizeRatio: json[_headSizeRatioName],
+        id: NOverlayInfo._fromMessageable(m[_infoName]!).id,
+        coords: (m[_coordsName] as List).map(NLatLng._fromMessageable).toList(),
+        width: m[_widthName],
+        color: Color(m[_colorName]),
+        outlineWidth: m[_outlineWidthName],
+        outlineColor: Color(m[_outlineColorName]),
+        elevation: m[_elevationName],
+        headSizeRatio: m[_headSizeRatioName],
       );
 
   @override

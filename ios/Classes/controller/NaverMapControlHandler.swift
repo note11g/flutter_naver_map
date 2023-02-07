@@ -51,14 +51,14 @@ extension NaverMapControlHandler {
     func handle(call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
         case "updateCamera": updateCamera(
-                cameraUpdate: try! NCameraUpdate.fromDict(call.arguments!).cameraUpdate, onSuccess: result
+                cameraUpdate: try! NCameraUpdate.fromMessageable(call.arguments!).cameraUpdate, onSuccess: result
         )
         case "cancelTransitions": cancelTransitions(reason: asInt(call.arguments!), onSuccess: result)
         case "getCameraPosition": getCameraPosition(onSuccess: result)
         case "getContentBounds": getContentBounds(withPadding: asBool(call.arguments!), onSuccess: result)
         case "getContentRegion": getContentRegion(withPadding: asBool(call.arguments!), onSuccess: result)
         case "getLocationOverlay": getLocationOverlay(onSuccess: result)
-        case "screenLocationToLatLng": screenLocationToLatLng(nPoint: NPoint.fromDict(call.arguments!), onSuccess: result)
+        case "screenLocationToLatLng": screenLocationToLatLng(nPoint: NPoint.fromMessageable(call.arguments!), onSuccess: result)
         case "latLngToScreenLocation": latLngToScreenLocation(latLng: asLatLng(call.arguments!), onSuccess: result)
         case "getMeterPerDp":
             let d = asDict(call.arguments!)
@@ -66,7 +66,7 @@ extension NaverMapControlHandler {
         case "isDestroyed": isDestroyed(onSuccess: result)
         case "pickAll":
             let d = asDict(call.arguments!)
-            pickAll(nPoint: NPoint.fromDict(d["point"]!), dpRadius: asDouble(d["radius"]!), onSuccess: result)
+            pickAll(nPoint: NPoint.fromMessageable(d["point"]!), dpRadius: asDouble(d["radius"]!), onSuccess: result)
         case "takeSnapshot":
             let d = asDict(call.arguments!)
             takeSnapshot(showControls: asBool(d["showControls"]!),
@@ -76,7 +76,7 @@ extension NaverMapControlHandler {
         case "setLocationTrackingMode": setLocationTrackingMode(locationTrackingMode: asLocationTrackingMode(call.arguments!), onSuccess: result)
         case "getLocationTrackingMode": getLocationTrackingMode(onSuccess: result)
         case "addOverlayAll": addOverlayAll(rawOverlays: asArr(call.arguments!, elementCaster: asDict), onSuccess: result)
-        case "deleteOverlay": deleteOverlay(overlayInfo: NOverlayInfo.fromDict(call.arguments!), onSuccess: result)
+        case "deleteOverlay": deleteOverlay(overlayInfo: NOverlayInfo.fromMessageable(call.arguments!), onSuccess: result)
         case "clearOverlays": clearOverlays(type: castOrNull(call.arguments, caster: { NOverlayType(rawValue: asString($0))! }), onSuccess: result)
         case "updateOptions": updateOptions(options: asDict(call.arguments!), onSuccess: result)
         default: result(FlutterMethodNotImplemented)

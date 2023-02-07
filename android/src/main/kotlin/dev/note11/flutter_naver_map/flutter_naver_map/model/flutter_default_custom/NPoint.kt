@@ -10,7 +10,7 @@ internal data class NPoint(
     val y: Double,
 ) {
     companion object {
-        fun fromMap(args: Any): NPoint = args.asMap().let { map ->
+        fun fromMessageable(args: Any): NPoint = args.asMap().let { map ->
             NPoint(map["x"]!!.asDouble(), map["y"]!!.asDouble())
         }
 
@@ -34,6 +34,6 @@ internal data class NPoint(
     fun toPointFWithPx(): android.graphics.PointF =
         android.graphics.PointF(DisplayUtil.dpToPxF(x), DisplayUtil.dpToPxF(y))
 
-    fun toMap(): Map<String, Double> = mapOf("x" to x, "y" to y)
+    fun toMessageable(): Map<String, Double> = mapOf("x" to x, "y" to y)
 }
 

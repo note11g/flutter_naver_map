@@ -10,7 +10,7 @@ func asLatLng(_ v: Any) -> NMGLatLng {
 }
 
 extension NMGLatLng {
-    func toDict() -> Dictionary<String, Any> {
+    func toMessageable() -> Dictionary<String, Any> {
         ["lat": lat, "lng": lng]
     }
 }
@@ -24,10 +24,10 @@ func asLatLngBounds(_ v: Any) -> NMGLatLngBounds {
 }
 
 extension NMGLatLngBounds {
-    func toDict() -> Dictionary<String, Any> {
+    func toMessageable() -> Dictionary<String, Any> {
         [
-            "southWest": southWest.toDict(),
-            "northEast": northEast.toDict()
+            "southWest": southWest.toMessageable(),
+            "northEast": northEast.toMessageable()
         ]
     }
 }
@@ -43,9 +43,9 @@ func asCameraPosition(_ v: Any) -> NMFCameraPosition {
 }
 
 extension NMFCameraPosition {
-    func toDict() -> Dictionary<String, Any> {
+    func toMessageable() -> Dictionary<String, Any> {
         [
-            "target": target.toDict(),
+            "target": target.toMessageable(),
             "zoom": zoom,
             "tilt": tilt,
             "bearing": heading
@@ -54,49 +54,49 @@ extension NMFCameraPosition {
 }
 
 extension NMFSymbol {
-    func toDict() -> Dictionary<String, Any> {
+    func toMessageable() -> Dictionary<String, Any> {
         [
             "caption": caption ?? "",
-            "position": position.toDict(),
+            "position": position.toMessageable(),
             "hashCode": hash
         ]
     }
 }
 
 extension NMFIndoorSelection {
-    func toDict() -> Dictionary<String, Any> {
+    func toMessageable() -> Dictionary<String, Any> {
         [
             "levelIndex": levelIndex,
             "zoneIndex": zoneIndex,
-            "region": region.toDict()
+            "region": region.toMessageable()
         ]
     }
 }
 
 extension NMFIndoorRegion {
-    func toDict() -> Dictionary<String, Any> {
+    func toMessageable() -> Dictionary<String, Any> {
         [
             "zones": zones.map { (zone) in
-                zone.toDict()
+                zone.toMessageable()
             },
         ]
     }
 }
 
 extension NMFIndoorZone {
-    func toDict() -> Dictionary<String, Any> {
+    func toMessageable() -> Dictionary<String, Any> {
         [
             "id": zoneId,
             "defaultLevelIndex": defaultLevelIndex,
             "levels": levels.map { (level) in
-                level.toDict()
+                level.toMessageable()
             },
         ]
     }
 }
 
 extension NMFIndoorLevel {
-    func toDict() -> Dictionary<String, Any> {
+    func toMessageable() -> Dictionary<String, Any> {
         [
             "name": name,
             "hashCode": hash

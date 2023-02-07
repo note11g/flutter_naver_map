@@ -16,7 +16,7 @@ data class NSize(
         heightFunc(dpToPx(height))
     }
 
-    fun toMap(): Map<String, Any> {
+    fun toMessageable(): Map<String, Any> {
         return mapOf(
             "width" to width,
             "height" to height
@@ -31,7 +31,7 @@ data class NSize(
             )
         }
 
-        fun fromMap(rawNSize: Any): NSize = rawNSize.asMap().let {
+        fun fromMessageable(rawNSize: Any): NSize = rawNSize.asMap().let {
             return NSize(
                 width = it["width"]!!.asDouble(),
                 height = it["height"]!!.asDouble()

@@ -19,7 +19,7 @@ internal data class NEdgeInsets(
         func.invoke(leftPx, topPx, rightPx, bottomPx)
 
     companion object {
-        fun fromMap(args: Any): NEdgeInsets = args.asMap().let { map ->
+        fun fromMessageable(args: Any): NEdgeInsets = args.asMap().let { map ->
             val left = map["left"]!!.asDouble()
             val top = map["top"]!!.asDouble()
             val right = map["right"]!!.asDouble()

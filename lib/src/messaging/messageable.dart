@@ -4,7 +4,7 @@ abstract class NMessageable {
   NPayload toNPayload();
 
   @override
-  String toString() => "$runtimeType: ${toNPayload().json}";
+  String toString() => "$runtimeType: ${toNPayload().m}";
 }
 
 abstract class NMessageableForEnum {
@@ -12,34 +12,34 @@ abstract class NMessageableForEnum {
 }
 
 class NPayload {
-  final Map<String, dynamic> json;
+  final Map<String, dynamic> m;
 
-  NPayload._(this.json);
+  NPayload._(this.m);
 
-  factory NPayload.make(Map<String, dynamic> json) {
-    _removeNull(json);
-    final convertedJson = _convertMapValueAsMessageable(json);
-    return NPayload._(convertedJson);
+  factory NPayload.make(Map<String, dynamic> m) {
+    _removeNull(m);
+    final convertedm = _convertMapValueAsMessageable(m);
+    return NPayload._(convertedm);
   }
 
-  factory NPayload.makeWithSignature(Map<String, dynamic> json,
+  factory NPayload.makeWithSignature(Map<String, dynamic> m,
           {required String sign}) =>
-      NPayload.make({...json, "sign": sign});
+      NPayload.make({...m, "sign": sign});
 
-  static void _removeNull(Map<String, dynamic> json) =>
-      json.removeWhere((key, value) => value == null);
+  static void _removeNull(Map<String, dynamic> m) =>
+      m.removeWhere((key, value) => value == null);
 
   static Map<String, dynamic> _convertMapValueAsMessageable(
-      Map<String, dynamic> json) {
-    return json
+      Map<String, dynamic> m) {
+    return m
         .map((key, value) => MapEntry(key, convertToMessageable(value)));
   }
 
   static dynamic convertToMessageable(dynamic value) {
     if (value is NMessageable) {
-      return value.toNPayload().json;
+      return value.toNPayload().m;
     } else if (value is NPayload) {
-      return value.json;
+      return value.m;
     } else if (value is NMessageableForEnum) {
       return value.toNPayload();
     } else if (value is List) {
@@ -50,5 +50,5 @@ class NPayload {
   }
 
   @override
-  String toString() => "NPayload{json: $json}";
+  String toString() => "NPayload{m: $m}";
 }

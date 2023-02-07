@@ -16,10 +16,10 @@ struct NMultipartPath {
         )
     }
 
-    func toDict() -> Dictionary<String, Any> {
+    func toMessageable() -> Dictionary<String, Any> {
         [
             "coords": coords.map {
-                $0.toDict()
+                $0.toMessageable()
             },
             "color": color.toInt(),
             "outlineColor": outlineColor.toInt(),
@@ -28,7 +28,7 @@ struct NMultipartPath {
         ]
     }
 
-    static func fromDict(_ v: Any) -> NMultipartPath {
+    static func fromMessageable(_ v: Any) -> NMultipartPath {
         let d = asDict(v)
         return NMultipartPath(
                 coords: asArr(d["coords"]!, elementCaster: asLatLng),

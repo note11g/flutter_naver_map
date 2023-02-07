@@ -127,12 +127,12 @@ class NaverMapApplierImpl(
     }
 
     override fun setLogoMargin(rawEdgeInsets: Any) {
-        val nEdgeInsets = NEdgeInsets.fromMap(rawEdgeInsets)
+        val nEdgeInsets = NEdgeInsets.fromMessageable(rawEdgeInsets)
         nEdgeInsets.use(naverMap.uiSettings::setLogoMargin)
     }
 
     override fun setContentPadding(rawEdgeInsets: Any) {
-        val nEdgeInsets = NEdgeInsets.fromMap(rawEdgeInsets)
+        val nEdgeInsets = NEdgeInsets.fromMessageable(rawEdgeInsets)
         nEdgeInsets.use(naverMap::setContentPadding)
     }
 
@@ -149,7 +149,7 @@ class NaverMapApplierImpl(
     }
 
     override fun setLocale(rawLocale: Any) {
-        val nLocale = NLocale.fromMap(rawLocale)
+        val nLocale = NLocale.fromMessageable(rawLocale)
         naverMap.locale = nLocale?.toLocale()
     }
 

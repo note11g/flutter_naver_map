@@ -15,16 +15,16 @@ class NMultipartPath implements NMessageable {
     this.passedOutlineColor = Colors.black,
   });
 
-  factory NMultipartPath._fromJson(dynamic json) => NMultipartPath(
-        coords: (json["coords"] as List).map(NLatLng._fromJson).toList(),
-        color: Color(json["color"]!),
-        outlineColor: Color(json["outlineColor"]!),
-        passedColor: Color(json["passedColor"]!),
-        passedOutlineColor: Color(json["passedOutlineColor"]!),
+  factory NMultipartPath._fromMessageable(dynamic m) => NMultipartPath(
+        coords: (m["coords"] as List).map(NLatLng._fromMessageable).toList(),
+        color: Color(m["color"]!),
+        outlineColor: Color(m["outlineColor"]!),
+        passedColor: Color(m["passedColor"]!),
+        passedOutlineColor: Color(m["passedOutlineColor"]!),
       );
 
-  static List<NMultipartPath> _fromJsonList(dynamic json) =>
-      (json as List).map(NMultipartPath._fromJson).toList();
+  static List<NMultipartPath> _fromMessageableList(dynamic m) =>
+      (m as List).map(NMultipartPath._fromMessageable).toList();
 
   @override
   NPayload toNPayload() => NPayload.make({

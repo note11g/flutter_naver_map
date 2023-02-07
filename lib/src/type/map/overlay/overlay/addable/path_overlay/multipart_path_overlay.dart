@@ -95,23 +95,23 @@ class NMultiPartPathOverlay extends NAddableOverlay<NMultiPartPathOverlay> {
   }
 
   Future<NLatLngBounds> getBounds() {
-    return _getAsyncWithCast(_boundsName, NLatLngBounds._fromJson);
+    return _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
   }
 
-  factory NMultiPartPathOverlay._fromJson(dynamic json) =>
+  factory NMultiPartPathOverlay._fromMessageable(dynamic m) =>
       NMultiPartPathOverlay(
-        id: NOverlayInfo._fromJson(json[_infoName]!).id,
-        paths: NMultipartPath._fromJsonList(json[_pathsName]!),
-        width: json[_widthName]!,
-        outlineWidth: json[_outlineWidthName]!,
-        patternImage: json[_patternImageName] != null
-            ? NOverlayImage._fromJson(json[_patternImageName])
+        id: NOverlayInfo._fromMessageable(m[_infoName]!).id,
+        paths: NMultipartPath._fromMessageableList(m[_pathsName]!),
+        width: m[_widthName]!,
+        outlineWidth: m[_outlineWidthName]!,
+        patternImage: m[_patternImageName] != null
+            ? NOverlayImage._fromMessageable(m[_patternImageName])
             : null,
-        patternInterval: json[_patternIntervalName]!,
-        progress: json[_progressName]!,
-        isHideCollidedCaptions: json[_isHideCollidedCaptionsName]!,
-        isHideCollidedMarkers: json[_isHideCollidedMarkersName]!,
-        isHideCollidedSymbols: json[_isHideCollidedSymbolsName]!,
+        patternInterval: m[_patternIntervalName]!,
+        progress: m[_progressName]!,
+        isHideCollidedCaptions: m[_isHideCollidedCaptionsName]!,
+        isHideCollidedMarkers: m[_isHideCollidedMarkersName]!,
+        isHideCollidedSymbols: m[_isHideCollidedSymbolsName]!,
       );
 
   @override

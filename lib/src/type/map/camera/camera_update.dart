@@ -95,7 +95,7 @@ class NCameraUpdate implements NMessageable {
   }
 
   @override
-  String toString() => "$runtimeType: ${toNPayload().json}";
+  String toString() => "$runtimeType: ${toNPayload().m}";
 
   @override
   NPayload toNPayload() => NPayload.makeWithSignature({

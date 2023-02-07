@@ -24,11 +24,11 @@ struct NArrowheadPathOverlay: AddableOverlay {
         return path
     }
 
-    func toDict() -> Dictionary<String, Any?> {
+    func toMessageable() -> Dictionary<String, Any?> {
         [
-            NArrowheadPathOverlay.infoName: info.toDict(),
+            NArrowheadPathOverlay.infoName: info.toMessageable(),
             NArrowheadPathOverlay.coordsName: coords.map {
-                $0.toDict()
+                $0.toMessageable()
             },
             NArrowheadPathOverlay.widthName: width,
             NArrowheadPathOverlay.colorName: color.toInt(),
@@ -39,10 +39,10 @@ struct NArrowheadPathOverlay: AddableOverlay {
         ]
     }
 
-    static func fromJson(_ v: Any) -> NArrowheadPathOverlay {
+    static func fromMessageable(_ v: Any) -> NArrowheadPathOverlay {
         let d = asDict(v)
         return NArrowheadPathOverlay(
-                info: NOverlayInfo.fromDict(d[infoName]!),
+                info: NOverlayInfo.fromMessageable(d[infoName]!),
                 coords: asArr(d[coordsName]!, elementCaster: asLatLng),
                 width: asCGFloat(d[widthName]!),
                 color: asUIColor(d[colorName]!),

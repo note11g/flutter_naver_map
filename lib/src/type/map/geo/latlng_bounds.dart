@@ -115,7 +115,7 @@ class NLatLngBounds implements NMessageable {
   int get hashCode => southWest.hashCode ^ northEast.hashCode;
 
   @override
-  String toString() => "$runtimeType: ${toNPayload().json}";
+  String toString() => "$runtimeType: ${toNPayload().m}";
 
   @override
   NPayload toNPayload() => NPayload.make({
@@ -123,9 +123,9 @@ class NLatLngBounds implements NMessageable {
         "northEast": northEast,
       });
 
-  factory NLatLngBounds._fromJson(dynamic json) => NLatLngBounds(
-      southWest: NLatLng._fromJson(json["southWest"]),
-      northEast: NLatLng._fromJson(json["northEast"]));
+  factory NLatLngBounds._fromMessageable(dynamic m) => NLatLngBounds(
+      southWest: NLatLng._fromMessageable(m["southWest"]),
+      northEast: NLatLng._fromMessageable(m["northEast"]));
 
   /*
     --- constant ---

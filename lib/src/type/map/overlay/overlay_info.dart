@@ -29,13 +29,13 @@ class NOverlayInfo implements NMessageable {
 
   /* ----- fromMessageable ----- */
 
-  factory NOverlayInfo._fromJson(dynamic json) => NOverlayInfo._(
-      type: NOverlayType._fromJson(json["type"]), id: json["id"]);
+  factory NOverlayInfo._fromMessageable(dynamic m) => NOverlayInfo._(
+      type: NOverlayType._fromMessageable(m["type"]), id: m["id"]);
 
   factory NOverlayInfo._fromString(String query) {
     final params = query.split(_separateString);
     return NOverlayInfo._withMethod(
-        type: NOverlayType._fromJson(params[0]),
+        type: NOverlayType._fromMessageable(params[0]),
         id: params[1],
         method: (params.length > 2) ? params[2] : null);
   }

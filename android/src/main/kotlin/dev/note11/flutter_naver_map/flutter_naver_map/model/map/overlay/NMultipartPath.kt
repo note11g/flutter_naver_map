@@ -7,7 +7,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asList
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMap
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
 
 data class NMultipartPath(
     val coords: List<LatLng>,
@@ -21,8 +21,8 @@ data class NMultipartPath(
         color, outlineColor, passedColor, passedOutlineColor,
     )
 
-    fun toMap(): Map<String, Any?> = mapOf(
-        "coords" to coords.map { it.toMap() },
+    fun toMessageable(): Map<String, Any?> = mapOf(
+        "coords" to coords.map { it.toMessageable() },
         "color" to color,
         "outlineColor" to outlineColor,
         "passedColor" to passedColor,
@@ -30,7 +30,7 @@ data class NMultipartPath(
     )
 
     companion object {
-        fun fromMap(rawMap: Any): NMultipartPath = rawMap.asMap().let {
+        fun fromMessageable(rawMap: Any): NMultipartPath = rawMap.asMap().let {
             NMultipartPath(
                 coords = it["coords"]!!.asList { l -> l.asLatLng() },
                 color = it["color"]!!.asInt(),

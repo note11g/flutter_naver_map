@@ -30,12 +30,12 @@ enum NLayerGroup implements NMessageableForEnum {
   mountain._("mountain"),
   cadastral._("landparcel");
 
-  final String _jsonValue;
+  final String _mValue;
 
-  const NLayerGroup._(this._jsonValue);
+  const NLayerGroup._(this._mValue);
 
   @override
-  String toNPayload() => _jsonValue;
+  String toNPayload() => _mValue;
 }
 
 enum NLocationTrackingMode implements NMessageableForEnum {
@@ -44,11 +44,11 @@ enum NLocationTrackingMode implements NMessageableForEnum {
   noFollow,
   none;
 
-  factory NLocationTrackingMode._fromJson(dynamic json) {
+  factory NLocationTrackingMode._fromMessageable(dynamic m) {
     for (final value in values) {
-      if (value.toNPayload() == json) return value;
+      if (value.toNPayload() == m) return value;
     }
-    throw NUnknownTypeCastException(unknownValue: json);
+    throw NUnknownTypeCastException(unknownValue: m);
   }
 
   @override
@@ -66,11 +66,11 @@ enum NAlign implements NMessageableForEnum {
   bottomLeft,
   bottomRight;
 
-  factory NAlign._fromJson(dynamic json) {
+  factory NAlign._fromMessageable(dynamic m) {
     for (final value in values) {
-      if (value.toNPayload() == json) return value;
+      if (value.toNPayload() == m) return value;
     }
-    throw NUnknownTypeCastException(unknownValue: json);
+    throw NUnknownTypeCastException(unknownValue: m);
   }
 
   @override
@@ -97,11 +97,11 @@ enum NCameraUpdateReason implements NMessageableForEnum {
 
   const NCameraUpdateReason._(this.code);
 
-  factory NCameraUpdateReason._fromJson(dynamic json) {
+  factory NCameraUpdateReason._fromMessageable(dynamic m) {
     for (final value in values) {
-      if (value.toNPayload() == json) return value;
+      if (value.toNPayload() == m) return value;
     }
-    throw NUnknownTypeCastException(unknownValue: json);
+    throw NUnknownTypeCastException(unknownValue: m);
   }
 
   @override
@@ -124,11 +124,11 @@ enum NOverlayType implements NMessageableForEnum {
 
   const NOverlayType._(this._str);
 
-  factory NOverlayType._fromJson(dynamic json) {
+  factory NOverlayType._fromMessageable(dynamic m) {
     for (final value in values) {
-      if (value.toNPayload() == json) return value;
+      if (value.toNPayload() == m) return value;
     }
-    throw NUnknownTypeCastException(unknownValue: json);
+    throw NUnknownTypeCastException(unknownValue: m);
   }
 
   @override
@@ -143,11 +143,11 @@ enum NLineCap implements NMessageableForEnum {
   round,
   square;
 
-  factory NLineCap._fromJson(dynamic json) {
+  factory NLineCap._fromMessageable(dynamic m) {
     for (final value in values) {
-      if (value.toNPayload() == json) return value;
+      if (value.toNPayload() == m) return value;
     }
-    throw NUnknownTypeCastException(unknownValue: json);
+    throw NUnknownTypeCastException(unknownValue: m);
   }
 
   @override
@@ -159,11 +159,11 @@ enum NLineJoin implements NMessageableForEnum {
   miter,
   round;
 
-  factory NLineJoin._fromJson(dynamic json) {
+  factory NLineJoin._fromMessageable(dynamic m) {
     for (final value in values) {
-      if (value.toNPayload() == json) return value;
+      if (value.toNPayload() == m) return value;
     }
-    throw NUnknownTypeCastException(unknownValue: json);
+    throw NUnknownTypeCastException(unknownValue: m);
   }
 
   @override
@@ -178,11 +178,11 @@ enum _NOverlayImageMode implements NMessageableForEnum {
   temp,
   widget;
 
-  factory _NOverlayImageMode._fromJson(dynamic json) {
+  factory _NOverlayImageMode._fromMessageable(dynamic m) {
     for (final value in values) {
-      if (value.toNPayload() == json) return value;
+      if (value.toNPayload() == m) return value;
     }
-    throw NUnknownTypeCastException(unknownValue: json);
+    throw NUnknownTypeCastException(unknownValue: m);
   }
 
   @override

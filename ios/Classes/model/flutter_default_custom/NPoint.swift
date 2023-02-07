@@ -5,14 +5,14 @@ struct NPoint {
         CGPoint.init(x: x, y: y)
     }
 
-    func toDict() -> Dictionary<String, Any> {
+    func toMessageable() -> Dictionary<String, Any> {
         [
             "x": x,
             "y": y
         ]
     }
 
-    static func fromDict(_ args: Any) -> NPoint {
+    static func fromMessageable(_ args: Any) -> NPoint {
         let d = asDict(args, valueCaster: asDouble)
         return NPoint(x: d["x"]!, y: d["y"]!)
     }

@@ -34,11 +34,11 @@ class NGroundOverlay extends NAddableOverlay<NGroundOverlay> {
     _set(_alphaName, alpha);
   }
 
-  factory NGroundOverlay._fromJson(dynamic json) => NGroundOverlay(
-        id: NOverlayInfo._fromJson(json[_infoName]!).id,
-        bounds: NLatLngBounds._fromJson(json[_boundsName]!),
-        image: NOverlayImage._fromJson(json[_imageName]!),
-        alpha: json[_alphaName]!,
+  factory NGroundOverlay._fromMessageable(dynamic m) => NGroundOverlay(
+        id: NOverlayInfo._fromMessageable(m[_infoName]!).id,
+        bounds: NLatLngBounds._fromMessageable(m[_boundsName]!),
+        image: NOverlayImage._fromMessageable(m[_imageName]!),
+        alpha: m[_alphaName]!,
       );
 
   @override

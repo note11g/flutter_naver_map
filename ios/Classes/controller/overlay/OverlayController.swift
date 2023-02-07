@@ -61,17 +61,11 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
     }
 
     func clearOverlays() {
-        filteredOverlays {
-            $0.type != .locationOverlay
-        }
-                .forEach(deleteOverlay)
+        filteredOverlays({ $0.type != .locationOverlay }).forEach(deleteOverlay)
     }
 
     func clearOverlays(type: NOverlayType) {
-        filteredOverlays {
-            $0.type == type
-        }
-                .forEach(deleteOverlay)
+        filteredOverlays({ $0.type == type }).forEach(deleteOverlay)
     }
 
     private func filteredOverlays(_ predicate: (_ info: NOverlayInfo) -> Bool) -> Dictionary<String, NMFOverlay> {
@@ -239,11 +233,11 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
     /* ----- LocationOverlay handler ----- */
     func getAnchor(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
         let anchor = overlay.anchor
-        success(NPoint.fromCGPoint(anchor).toDict())
+        success(NPoint.fromCGPoint(anchor).toMessageable())
     }
 
     func setAnchor(_ overlay: NMFLocationOverlay, rawNPoint: Any) {
-        overlay.anchor = NPoint.fromDict(rawNPoint).cgPoint
+        overlay.anchor = NPoint.fromMessageable(rawNPoint).cgPoint
     }
 
     func getBearing(_ overlay: NMFLocationOverlay, success: (Double) -> ()) {
@@ -287,24 +281,24 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
     }
 
     func setIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any) {
-        overlay.icon = NOverlayImage.fromDict(rawNOverlayImage).overlayImage
+        overlay.icon = NOverlayImage.fromMessageable(rawNOverlayImage).overlayImage
     }
 
     func getIconSize(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
         success(NSize(
                 width: overlay.iconWidth,
                 height: overlay.iconHeight
-        ).toDict())
+        ).toMessageable())
     }
 
     func setIconSize(_ overlay: NMFLocationOverlay, rawSize: Any) {
-        let size = NSize.fromDict(rawSize)
+        let size = NSize.fromMessageable(rawSize)
         overlay.iconWidth = size.width
         overlay.iconHeight = size.height
     }
 
     func getPosition(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
-        success(overlay.location.toDict())
+        success(overlay.location.toMessageable())
     }
 
     func setPosition(_ overlay: NMFLocationOverlay, rawLatLng: Any) {
@@ -312,38 +306,37 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
     }
 
     func getSubAnchor(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
-        success(NPoint.fromCGPoint(overlay.subAnchor).toDict())
+        success(NPoint.fromCGPoint(overlay.subAnchor).toMessageable())
     }
 
     func setSubAnchor(_ overlay: NMFLocationOverlay, rawNPoint: Any) {
-        overlay.subAnchor = NPoint.fromDict(rawNPoint).cgPoint
+        overlay.subAnchor = NPoint.fromMessageable(rawNPoint).cgPoint
     }
 
     func setSubIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any) {
-        overlay.subIcon = NOverlayImage.fromDict(rawNOverlayImage).overlayImage
+        overlay.subIcon = NOverlayImage.fromMessageable(rawNOverlayImage).overlayImage
     }
 
     func getSubIconSize(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
         success(NSize(
                 width: overlay.subIconWidth,
                 height: overlay.subIconHeight
-        ).toDict())
+        ).toMessageable())
     }
 
     func setSubIconSize(_ overlay: NMFLocationOverlay, rawSize: Any) {
-        let size = NSize.fromDict(rawSize)
+        let size = NSize.fromMessageable(rawSize)
         overlay.subIconWidth = size.width
         overlay.subIconHeight = size.height
     }
 
     /* ----- Marker handler ----- */
-    // todo : test
     func hasOpenInfoWindow(_ marker: NMFMarker, success: (Bool) -> ()) {
         success(marker.infoWindow != nil)
     }
 
     func openInfoWindow(_ marker: NMFMarker, rawInfoWindow: Any, rawAlign: Any, success: (Any?) -> ()) {
-        let nInfoWindow = NInfoWindow.fromJson(rawInfoWindow)
+        let nInfoWindow = NInfoWindow.fromMessageable(rawInfoWindow)
         let infoWindow = saveOverlayWithAddable(creator: nInfoWindow) as! NMFInfoWindow
 
         let align = try! asAlign(rawAlign)
@@ -356,7 +349,7 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
     }
 
     func setIcon(_ marker: NMFMarker, rawIcon: Any) {
-        marker.iconImage = NOverlayImage.fromDict(rawIcon).overlayImage
+        marker.iconImage = NOverlayImage.fromMessageable(rawIcon).overlayImage
     }
 
     func setIconTintColor(_ marker: NMFMarker, rawIconTintColor: Any) {
@@ -372,17 +365,17 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
     }
 
     func setAnchor(_ marker: NMFMarker, rawNPoint: Any) {
-        marker.anchor = NPoint.fromDict(rawNPoint).cgPoint
+        marker.anchor = NPoint.fromMessageable(rawNPoint).cgPoint
     }
 
     func setSize(_ marker: NMFMarker, rawNPoint: Any) {
-        let size = NPoint.fromDict(rawNPoint)
+        let size = NPoint.fromMessageable(rawNPoint)
         marker.width = size.x
         marker.height = size.y
     }
 
     func setCaption(_ marker: NMFMarker, rawCaption: Any) {
-        let caption = NOverlayCaption.fromDict(rawCaption)
+        let caption = NOverlayCaption.fromMessageable(rawCaption)
         marker.captionText = caption.text
         marker.captionTextSize = caption.textSize
         marker.captionColor = caption.color
@@ -393,7 +386,7 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
     }
 
     func setSubCaption(_ marker: NMFMarker, rawSubCaption: Any) {
-        let caption = NOverlayCaption.fromDict(rawSubCaption)
+        let caption = NOverlayCaption.fromMessageable(rawSubCaption)
         marker.subCaptionText = caption.text
         marker.subCaptionTextSize = caption.textSize
         marker.subCaptionColor = caption.color
@@ -449,7 +442,7 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
     }
 
     func setAnchor(_ infoWindow: NMFInfoWindow, rawNPoint: Any) {
-        infoWindow.anchor = NPoint.fromDict(rawNPoint).cgPoint
+        infoWindow.anchor = NPoint.fromMessageable(rawNPoint).cgPoint
     }
 
     func setAlpha(_ infoWindow: NMFInfoWindow, rawAlpha: Any) {
@@ -494,7 +487,7 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
     }
 
     func getBounds(_ circleOverlay: NMFCircleOverlay, result: (Dictionary<String, Any>) -> ()) {
-        result(circleOverlay.bounds.toDict())
+        result(circleOverlay.bounds.toMessageable())
     }
 
     /* ----- Ground Overlay handler ----- */
@@ -503,7 +496,7 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
     }
 
     func setImage(_ groundOverlay: NMFGroundOverlay, rawNOverlayImage: Any) {
-        groundOverlay.overlayImage = NOverlayImage.fromDict(rawNOverlayImage).overlayImage
+        groundOverlay.overlayImage = NOverlayImage.fromMessageable(rawNOverlayImage).overlayImage
     }
 
     func setAlpha(_ groundOverlay: NMFGroundOverlay, rawAlpha: Any) {
@@ -536,7 +529,7 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
     func getBounds(_ polygonOverlay: NMFPolygonOverlay, success: (Dictionary<String, Any>) -> ()) {
         let ring = polygonOverlay.polygon.exteriorRing
         let bounds = NMGLatLngBounds(latLngs: ring.latLngPoints)
-        success(bounds.toDict())
+        success(bounds.toMessageable())
     }
 
     /* ----- Polyline Overlay handler ----- */
@@ -568,7 +561,7 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
 
     func getBounds(_ polylineOverlay: NMFPolylineOverlay, success: (Dictionary<String, Any>) -> ()) {
         let bounds = NMGLatLngBounds(latLngs: polylineOverlay.line.latLngPoints)
-        success(bounds.toDict())
+        success(bounds.toMessageable())
     }
 
     /* ----- Path Overlay handler ----- */
@@ -605,7 +598,7 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
     }
 
     func setPatternImage(_ pathOverlay: NMFPath, rawNOverlayImage: Any) {
-        pathOverlay.patternIcon = NOverlayImage.fromDict(rawNOverlayImage).overlayImage
+        pathOverlay.patternIcon = NOverlayImage.fromMessageable(rawNOverlayImage).overlayImage
     }
 
     func setPatternInterval(_ pathOverlay: NMFPath, rawInterval: Any) {
@@ -626,13 +619,13 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
 
     func getBounds(_ pathOverlay: NMFPath, success: (Dictionary<String, Any>) -> ()) {
         let bounds = NMGLatLngBounds(latLngs: pathOverlay.path.latLngPoints)
-        success(bounds.toDict())
+        success(bounds.toMessageable())
     }
 
     /* ----- Multipart Path Overlay handler ----- */
 
     func setPaths(_ multipartPathOverlay: NMFMultipartPath, rawPaths: Any) {
-        let nMultipartPaths = asArr(rawPaths, elementCaster: NMultipartPath.fromDict)
+        let nMultipartPaths = asArr(rawPaths, elementCaster: NMultipartPath.fromMessageable)
         nMultipartPaths.applyLineAndColor(
                 linePartsFun: { multipartPathOverlay.lineParts = $0 },
                 colorPartsFun: { multipartPathOverlay.colorParts = $0 }
@@ -648,7 +641,7 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
     }
 
     func setPatternImage(_ multipartPathOverlay: NMFMultipartPath, rawNOverlayImage: Any) {
-        multipartPathOverlay.patternIcon = NOverlayImage.fromDict(rawNOverlayImage).overlayImage
+        multipartPathOverlay.patternIcon = NOverlayImage.fromMessageable(rawNOverlayImage).overlayImage
     }
 
     func setPatternInterval(_ multipartPathOverlay: NMFMultipartPath, rawInterval: Any) {
@@ -675,7 +668,7 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
         let bounds = NMGLatLngBounds(latLngs: multipartPathOverlay.lineParts.flatMap {
             $0.latLngPoints
         })
-        success(bounds.toDict())
+        success(bounds.toMessageable())
     }
 
     /* ----- ArrowHeadPath Overlay handler ----- */
@@ -709,6 +702,6 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
 
     func getBounds(_ arrowheadPathOverlay: NMFArrowheadPath, success: (Dictionary<String, Any>) -> ()) {
         let bounds = NMGLatLngBounds(latLngs: arrowheadPathOverlay.points)
-        success(bounds.toDict())
+        success(bounds.toMessageable())
     }
 }

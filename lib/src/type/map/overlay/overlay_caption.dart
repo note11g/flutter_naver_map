@@ -25,14 +25,14 @@ class NOverlayCaption implements NMessageable {
     this.requestWidth = 0,
   });
 
-  factory NOverlayCaption._fromJson(dynamic json) => NOverlayCaption(
-      text: json["text"],
-      textSize: json["textSize"],
-      color: Color(json["color"]),
-      haloColor: Color(json["haloColor"]),
-      minZoom: json["minZoom"],
-      maxZoom: json["maxZoom"],
-      requestWidth: json["requestWidth"],
+  factory NOverlayCaption._fromMessageable(dynamic m) => NOverlayCaption(
+      text: m["text"],
+      textSize: m["textSize"],
+      color: Color(m["color"]),
+      haloColor: Color(m["haloColor"]),
+      minZoom: m["minZoom"],
+      maxZoom: m["maxZoom"],
+      requestWidth: m["requestWidth"],
     );
 
   @override

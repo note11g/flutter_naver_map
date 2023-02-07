@@ -135,26 +135,26 @@ class NPathOverlay extends NAddableOverlay<NPathOverlay> {
   }
 
   Future<NLatLngBounds> getBounds() {
-    return _getAsyncWithCast(_boundsName, NLatLngBounds._fromJson);
+    return _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
   }
 
-  factory NPathOverlay._fromJson(dynamic json) => NPathOverlay(
-        id: NOverlayInfo._fromJson(json[_infoName]!).id,
-        coords: (json[_coordsName] as List).map(NLatLng._fromJson).toList(),
-        width: json[_widthName],
-        color: Color(json[_colorName]),
-        outlineWidth: json[_outlineWidthName],
-        outlineColor: Color(json[_outlineColorName]),
-        passedColor: Color(json[_passedColorName]),
-        passedOutlineColor: Color(json[_passedOutlineColorName]),
-        progress: json[_progressName],
-        patternImage: json[_patternImageName] != null
-            ? NOverlayImage._fromJson(json[_patternImageName])
+  factory NPathOverlay._fromMessageable(dynamic m) => NPathOverlay(
+        id: NOverlayInfo._fromMessageable(m[_infoName]!).id,
+        coords: (m[_coordsName] as List).map(NLatLng._fromMessageable).toList(),
+        width: m[_widthName],
+        color: Color(m[_colorName]),
+        outlineWidth: m[_outlineWidthName],
+        outlineColor: Color(m[_outlineColorName]),
+        passedColor: Color(m[_passedColorName]),
+        passedOutlineColor: Color(m[_passedOutlineColorName]),
+        progress: m[_progressName],
+        patternImage: m[_patternImageName] != null
+            ? NOverlayImage._fromMessageable(m[_patternImageName])
             : null,
-        patternInterval: json[_patternIntervalName],
-        isHideCollidedCaptions: json[_isHideCollidedCaptionsName],
-        isHideCollidedMarkers: json[_isHideCollidedMarkersName],
-        isHideCollidedSymbols: json[_isHideCollidedSymbolsName],
+        patternInterval: m[_patternIntervalName],
+        isHideCollidedCaptions: m[_isHideCollidedCaptionsName],
+        isHideCollidedMarkers: m[_isHideCollidedMarkersName],
+        isHideCollidedSymbols: m[_isHideCollidedSymbolsName],
       );
 
   @override

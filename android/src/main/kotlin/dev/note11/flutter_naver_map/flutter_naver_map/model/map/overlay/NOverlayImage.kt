@@ -25,10 +25,10 @@ internal data class NOverlayImage(
         return OverlayImage.fromAsset(assetPath)
     }
 
-    fun toMap(): Map<String, Any> = mapOf("path" to path, "mode" to mode.toString())
+    fun toMessageable(): Map<String, Any> = mapOf("path" to path, "mode" to mode.toString())
 
     companion object {
-        fun fromMap(args: Any): NOverlayImage = args.asMap().let {
+        fun fromMessageable(args: Any): NOverlayImage = args.asMap().let {
             NOverlayImage(
                 path = it["path"]!!.toString(),
                 mode = NOverlayImageMode.fromString(it["mode"]!!.toString()),

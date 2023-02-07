@@ -66,21 +66,21 @@ class NPolylineOverlay extends NAddableOverlay<NPolylineOverlay> {
   }
 
   Future<NLatLngBounds> getBounds() {
-    return _getAsyncWithCast(_boundsName, NLatLngBounds._fromJson);
+    return _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
   }
 
   /* ----- Factory Constructor ----- */
 
-  factory NPolylineOverlay._fromJson(dynamic json) => NPolylineOverlay(
-        id: NOverlayInfo._fromJson(json[_infoName]!).id,
-        coords: (json[_coordsName] as List)
-            .map((e) => NLatLng._fromJson(e))
+  factory NPolylineOverlay._fromMessageable(dynamic m) => NPolylineOverlay(
+        id: NOverlayInfo._fromMessageable(m[_infoName]!).id,
+        coords: (m[_coordsName] as List)
+            .map((e) => NLatLng._fromMessageable(e))
             .toList(),
-        color: Color(json[_colorName] as int),
-        width: json[_widthName] as double,
-        lineCap: NLineCap._fromJson(json[_lineCapName]!),
-        lineJoin: NLineJoin._fromJson(json[_lineJoinName]!),
-        pattern: (json[_patternName] as List).cast<int>(),
+        color: Color(m[_colorName] as int),
+        width: m[_widthName] as double,
+        lineCap: NLineCap._fromMessageable(m[_lineCapName]!),
+        lineJoin: NLineJoin._fromMessageable(m[_lineJoinName]!),
+        pattern: (m[_patternName] as List).cast<int>(),
       );
 
   @override

@@ -12,22 +12,20 @@ class SdkInitializer: NSObject, NMFAuthManagerDelegate {
 
     private func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         if (call.method == "initialize") {
-            initialize(asDict(call.arguments!), onSuccess: result) { e in
-                result(FlutterError(code: "", message: e.localizedDescription, details: nil))
-            }
+            initialize(asDict(call.arguments!), onSuccess: result)
         }
     }
 
-    private func initialize(_ args: Dictionary<String, Any>, onSuccess: (Any?) -> Void, onFailure: (Error) -> Void) {
+    private func initialize(_ args: Dictionary<String, Any>, onSuccess: (Any?) -> Void) {
         let clientId = castOrNull(args["clientId"], caster: asString)
         let isGov = asBool(args["gov"]!)
         let setAuthFailedListener = asBool(args["setAuthFailedListener"]!)
 
+        if setAuthFailedListener {
+            setOnAuthFailedListener()
+        }
         if let clientId {
             initializeMapSdk(clientId: clientId, isGov: isGov)
-        }
-        if (setAuthFailedListener) {
-            setOnAuthFailedListener()
         }
         onSuccess(nil)
     }

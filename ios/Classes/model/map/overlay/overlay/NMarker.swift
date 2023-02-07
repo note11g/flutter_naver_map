@@ -67,18 +67,18 @@ struct NMarker: AddableOverlay {
         return marker
     }
 
-    func toDict() -> Dictionary<String, Any?> {
+    func toMessageable() -> Dictionary<String, Any?> {
         [
-            NMarker.infoName: info.toDict(),
-            NMarker.positionName: position.toDict(),
-            NMarker.iconName: icon?.toDict(),
+            NMarker.infoName: info.toMessageable(),
+            NMarker.positionName: position.toMessageable(),
+            NMarker.iconName: icon?.toMessageable(),
             NMarker.iconTintColorName: iconTintColor.toInt(),
             NMarker.alphaName: alpha,
             NMarker.angleName: angle,
-            NMarker.anchorName: anchor.toDict(),
-            NMarker.sizeName: size.toDict(),
-            NMarker.captionName: caption?.toDict(),
-            NMarker.subCaptionName: subCaption?.toDict(),
+            NMarker.anchorName: anchor.toMessageable(),
+            NMarker.sizeName: size.toMessageable(),
+            NMarker.captionName: caption?.toMessageable(),
+            NMarker.subCaptionName: subCaption?.toMessageable(),
             NMarker.captionAlignsName: captionAligns.map {
                 $0.toMessageableString()
             },
@@ -94,19 +94,19 @@ struct NMarker: AddableOverlay {
         ]
     }
 
-    static func fromJson(_ v: Any) -> NMarker {
+    static func fromMessageable(_ v: Any) -> NMarker {
         let d = asDict(v)
         return NMarker(
-                info: NOverlayInfo.fromDict(d[NMarker.infoName]!),
+                info: NOverlayInfo.fromMessageable(d[NMarker.infoName]!),
                 position: asLatLng(d[NMarker.positionName]!),
-                icon: castOrNull(d[NMarker.iconName], caster: NOverlayImage.fromDict),
+                icon: castOrNull(d[NMarker.iconName], caster: NOverlayImage.fromMessageable),
                 iconTintColor: asUIColor(d[NMarker.iconTintColorName]!),
                 alpha: asCGFloat(d[NMarker.alphaName]!),
                 angle: asCGFloat(d[NMarker.angleName]!),
-                anchor: NPoint.fromDict(d[NMarker.anchorName]!),
-                size: NSize.fromDict(d[NMarker.sizeName]!),
-                caption: castOrNull(d[NMarker.captionName], caster: NOverlayCaption.fromDict),
-                subCaption: castOrNull(d[NMarker.subCaptionName], caster: NOverlayCaption.fromDict),
+                anchor: NPoint.fromMessageable(d[NMarker.anchorName]!),
+                size: NSize.fromMessageable(d[NMarker.sizeName]!),
+                caption: castOrNull(d[NMarker.captionName], caster: NOverlayCaption.fromMessageable),
+                subCaption: castOrNull(d[NMarker.subCaptionName], caster: NOverlayCaption.fromMessageable),
                 captionAligns: asArr(d[NMarker.captionAlignsName]!, elementCaster: asAlign),
                 captionOffset: asCGFloat(d[NMarker.captionOffsetName]!),
                 isCaptionPerspectiveEnabled: asBool(d[NMarker.isCaptionPerspectiveEnabledName]!),

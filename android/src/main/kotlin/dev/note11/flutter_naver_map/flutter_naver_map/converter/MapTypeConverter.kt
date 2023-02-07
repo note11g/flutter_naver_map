@@ -13,7 +13,6 @@ import com.naver.maps.map.overlay.PolylineOverlay.LineCap
 import com.naver.maps.map.overlay.PolylineOverlay.LineJoin
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NCameraUpdate
 
 internal object MapTypeConverter {
     /*
@@ -24,7 +23,7 @@ internal object MapTypeConverter {
         LatLng(map["lat"] as Double, map["lng"] as Double)
     }
 
-    fun LatLng.toMap(): Map<String, Any> = mapOf(
+    fun LatLng.toMessageable(): Map<String, Any> = mapOf(
         "lat" to latitude,
         "lng" to longitude
     )
@@ -36,9 +35,9 @@ internal object MapTypeConverter {
         )
     }
 
-    fun LatLngBounds.toMap(): Map<String, Any> = mapOf(
-        "southWest" to southWest.toMap(),
-        "northEast" to northEast.toMap()
+    fun LatLngBounds.toMessageable(): Map<String, Any> = mapOf(
+        "southWest" to southWest.toMessageable(),
+        "northEast" to northEast.toMessageable()
     )
 
     fun Any.asCameraPosition(): CameraPosition = asMap().let { map ->
@@ -50,36 +49,36 @@ internal object MapTypeConverter {
         )
     }
 
-    fun CameraPosition.toMap(): Map<String, Any> = mapOf(
-        "target" to target.toMap(),
+    fun CameraPosition.toMessageable(): Map<String, Any> = mapOf(
+        "target" to target.toMessageable(),
         "zoom" to zoom,
         "tilt" to tilt,
         "bearing" to bearing
     )
 
-    fun Symbol.toMap(): Map<String, Any> = mapOf(
+    fun Symbol.toMessageable(): Map<String, Any> = mapOf(
         "caption" to caption,
-        "position" to position.toMap(),
+        "position" to position.toMessageable(),
         "hashCode" to hashCode()
     )
 
-    fun IndoorSelection.toMap(): Map<String, Any> = mapOf(
+    fun IndoorSelection.toMessageable(): Map<String, Any> = mapOf(
         "levelIndex" to levelIndex,
         "zoneIndex" to zoneIndex,
-        "region" to region.toMap()
+        "region" to region.toMessageable()
     )
 
-    fun IndoorRegion.toMap(): Map<String, Any> = mapOf(
-        "zones" to zones.map { zone -> zone.toMap() },
+    fun IndoorRegion.toMessageable(): Map<String, Any> = mapOf(
+        "zones" to zones.map { zone -> zone.toMessageable() },
     )
 
-    fun IndoorZone.toMap(): Map<String, Any> = mapOf(
+    fun IndoorZone.toMessageable(): Map<String, Any> = mapOf(
         "id" to zoneId,
         "defaultLevelIndex" to defultLevelIndex,
-        "levels" to levels.map { level -> level.toMap() },
+        "levels" to levels.map { level -> level.toMessageable() },
     )
 
-    fun IndoorLevel.toMap(): Map<String, Any> = mapOf(
+    fun IndoorLevel.toMessageable(): Map<String, Any> = mapOf(
         "name" to name,
         "hashCode" to hashCode(),
     )

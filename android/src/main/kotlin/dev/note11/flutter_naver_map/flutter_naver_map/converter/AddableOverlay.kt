@@ -20,27 +20,27 @@ internal interface AddableOverlay<T : Overlay> {
     val info: NOverlayInfo
     fun createMapOverlay(): T
 
-    fun toMap(): Map<String, Any?>
+    fun toMessageable(): Map<String, Any?>
 
     companion object {
         /** Used on @see [NaverMapControlHandler.addOverlayAll] */
-        fun fromJson(
+        fun fromMessageable(
             info: NOverlayInfo,
             args: Map<String, Any>,
             context: Context,
         ): AddableOverlay<out Overlay> {
             val creator = when (info.type) {
-                NOverlayType.MARKER -> NMarker::fromMap
+                NOverlayType.MARKER -> NMarker::fromMessageable
                 NOverlayType.INFO_WINDOW -> { rawMap ->
-                    NInfoWindow.fromMap(rawMap, context = context)
+                    NInfoWindow.fromMessageable(rawMap, context = context)
                 }
-                NOverlayType.CIRCLE_OVERLAY -> NCircleOverlay::fromMap
-                NOverlayType.GROUND_OVERLAY -> NGroundOverlay::fromMap
-                NOverlayType.POLYGON_OVERLAY -> NPolygonOverlay::fromMap
-                NOverlayType.POLYLINE_OVERLAY -> NPolylineOverlay::fromMap
-                NOverlayType.PATH_OVERLAY -> NPathOverlay::fromMap
-                NOverlayType.MULTIPART_PATH_OVERLAY -> NMultipartPathOverlay::fromMap
-                NOverlayType.ARROWHEAD_PATH_OVERLAY -> NArrowheadPathOverlay::fromMap
+                NOverlayType.CIRCLE_OVERLAY -> NCircleOverlay::fromMessageable
+                NOverlayType.GROUND_OVERLAY -> NGroundOverlay::fromMessageable
+                NOverlayType.POLYGON_OVERLAY -> NPolygonOverlay::fromMessageable
+                NOverlayType.POLYLINE_OVERLAY -> NPolylineOverlay::fromMessageable
+                NOverlayType.PATH_OVERLAY -> NPathOverlay::fromMessageable
+                NOverlayType.MULTIPART_PATH_OVERLAY -> NMultipartPathOverlay::fromMessageable
+                NOverlayType.ARROWHEAD_PATH_OVERLAY -> NArrowheadPathOverlay::fromMessageable
                 NOverlayType.LOCATION_OVERLAY -> throw IllegalArgumentException("LocationOverlay can not be created from json")
             }
             return creator.invoke(args)
@@ -72,7 +72,7 @@ internal interface AddableOverlay<T : Overlay> {
             id: String,
         ): AddableOverlay<out Overlay> = object : AddableOverlay<LocationOverlay> {
             override val info: NOverlayInfo = NOverlayInfo(NOverlayType.LOCATION_OVERLAY, id)
-            override fun toMap(): Map<String, Any?> = mapOf("info" to info.toMap())
+            override fun toMessageable(): Map<String, Any?> = mapOf("info" to info.toMessageable())
             override fun createMapOverlay(): LocationOverlay = overlay as LocationOverlay
         }
     }

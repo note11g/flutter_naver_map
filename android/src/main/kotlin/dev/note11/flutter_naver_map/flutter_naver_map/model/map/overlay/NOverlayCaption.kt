@@ -34,7 +34,7 @@ internal data class NOverlayCaption(
         requestWidthFunc(DisplayUtil.dpToPx(requestWidth))
     }
 
-    fun toMap(): Map<String, Any> = mapOf(
+    fun toMessageable(): Map<String, Any> = mapOf(
         "text" to text,
         "textSize" to textSize,
         "color" to color,
@@ -45,7 +45,7 @@ internal data class NOverlayCaption(
     )
 
     companion object {
-        fun fromMap(rawMap: Any): NOverlayCaption = rawMap.asMap().let {
+        fun fromMessageable(rawMap: Any): NOverlayCaption = rawMap.asMap().let {
             NOverlayCaption(
                 text = it["text"]!!.toString(),
                 textSize = it["textSize"]!!.asFloat(),

@@ -17,10 +17,10 @@ struct NCircleOverlay: AddableOverlay {
         return overlay
     }
 
-    func toDict() -> Dictionary<String, Any?> {
+    func toMessageable() -> Dictionary<String, Any?> {
         [
-            NCircleOverlay.infoName: info.toDict(),
-            NCircleOverlay.centerName: center.toDict(),
+            NCircleOverlay.infoName: info.toMessageable(),
+            NCircleOverlay.centerName: center.toMessageable(),
             NCircleOverlay.radiusName: radius,
             NCircleOverlay.colorName: color.toInt(),
             NCircleOverlay.outlineColorName: outlineColor.toInt(),
@@ -28,10 +28,10 @@ struct NCircleOverlay: AddableOverlay {
         ]
     }
 
-    static func fromJson(_ v: Any) -> NCircleOverlay {
+    static func fromMessageable(_ v: Any) -> NCircleOverlay {
         let d = asDict(v)
         return NCircleOverlay(
-                info: NOverlayInfo.fromDict(d[infoName]!),
+                info: NOverlayInfo.fromMessageable(d[infoName]!),
                 center: asLatLng(d[centerName]!),
                 radius: asDouble(d[radiusName]!),
                 color: asUIColor(d[colorName]!),

@@ -117,7 +117,7 @@ class NaverMapViewOptions implements NMessageable {
       });
 
   @override
-  String toString() => "$runtimeType: ${toNPayload().json}";
+  String toString() => "$runtimeType: ${toNPayload().m}";
 
   /*
     --- Constants ---

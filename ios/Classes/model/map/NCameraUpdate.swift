@@ -64,7 +64,7 @@ struct NCameraUpdate {
         return p
     }
 
-    static func fromDict(_ v: Any) -> NCameraUpdate {
+    static func fromMessageable(_ v: Any) -> NCameraUpdate {
         let d = asDict(v)
         return NCameraUpdate(
                 signature: asString(d["sign"]!),
@@ -76,8 +76,8 @@ struct NCameraUpdate {
                 bearing: castOrNull(d["bearing"], caster: asDouble),
                 bearingBy: castOrNull(d["bearingBy"], caster: asDouble),
                 bounds: castOrNull(d["bounds"], caster: asLatLngBounds),
-                boundsPadding: castOrNull(d["boundsPadding"], caster: NEdgeInsets.fromDict),
-                pivot: castOrNull(d["pivot"], caster: NPoint.fromDict),
+                boundsPadding: castOrNull(d["boundsPadding"], caster: NEdgeInsets.fromMessageable),
+                pivot: castOrNull(d["pivot"], caster: NPoint.fromMessageable),
                 animation: asCameraAnimation(d["animation"]!),
                 duration: asInt(d["duration"]!)
         )

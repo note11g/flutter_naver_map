@@ -11,11 +11,11 @@ class NSelectedIndoor {
 
   NSelectedIndoor._(this.levelIndex, this.zoneIndex, this.region);
 
-  factory NSelectedIndoor._fromJson(dynamic json) {
+  factory NSelectedIndoor._fromMessageable(dynamic m) {
     return NSelectedIndoor._(
-      json["levelIndex"] as int,
-      json["zoneIndex"] as int,
-      NIndoorRegion._fromJson(json["region"]),
+      m["levelIndex"] as int,
+      m["zoneIndex"] as int,
+      NIndoorRegion._fromMessageable(m["region"]),
     );
   }
 

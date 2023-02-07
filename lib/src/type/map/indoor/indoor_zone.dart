@@ -9,13 +9,13 @@ class NIndoorZone {
 
   NIndoorZone._(this.id, this.defaultLevelIndex, this.levels);
 
-  factory NIndoorZone._fromJson(dynamic json) {
-    final listWithRawLevel = json["levels"] as List;
+  factory NIndoorZone._fromMessageable(dynamic m) {
+    final listWithRawLevel = m["levels"] as List;
     final levels =
-        listWithRawLevel.map((rawLevel) => NIndoorLevel._fromJson(rawLevel));
+        listWithRawLevel.map((rawLevel) => NIndoorLevel._fromMessageable(rawLevel));
     return NIndoorZone._(
-      json["id"],
-      json["defaultLevelIndex"] as int,
+      m["id"],
+      m["defaultLevelIndex"] as int,
       levels.toList(),
     );
   }

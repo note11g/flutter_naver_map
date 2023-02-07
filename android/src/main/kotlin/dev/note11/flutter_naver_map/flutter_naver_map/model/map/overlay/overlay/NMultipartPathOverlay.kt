@@ -47,12 +47,12 @@ internal data class NMultipartPathOverlay(
         mo.isHideCollidedSymbols = isHideCollidedSymbols
     }
 
-    override fun toMap(): Map<String, Any?> = mapOf(
-        infoName to info.toMap(),
-        pathsName to paths.map(NMultipartPath::toMap),
+    override fun toMessageable(): Map<String, Any?> = mapOf(
+        infoName to info.toMessageable(),
+        pathsName to paths.map(NMultipartPath::toMessageable),
         widthName to widthDp,
         outlineWidthName to outlineWidthDp,
-        patternImageName to patternImage?.toMap(),
+        patternImageName to patternImage?.toMessageable(),
         patternIntervalName to patternIntervalDp,
         progressName to progress,
         isHideCollidedCaptionsName to isHideCollidedCaptions,
@@ -61,13 +61,13 @@ internal data class NMultipartPathOverlay(
     )
 
     companion object {
-        fun fromMap(rawMap: Any): NMultipartPathOverlay = rawMap.asMap().let {
+        fun fromMessageable(rawMap: Any): NMultipartPathOverlay = rawMap.asMap().let {
             NMultipartPathOverlay(
-                info = NOverlayInfo.fromMap(it[infoName]!!),
-                paths = it[pathsName]!!.asList(NMultipartPath::fromMap),
+                info = NOverlayInfo.fromMessageable(it[infoName]!!),
+                paths = it[pathsName]!!.asList(NMultipartPath::fromMessageable),
                 widthDp = it[widthName]!!.asDouble(),
                 outlineWidthDp = it[outlineWidthName]!!.asDouble(),
-                patternImage = it[patternImageName]?.let(NOverlayImage::fromMap),
+                patternImage = it[patternImageName]?.let(NOverlayImage::fromMessageable),
                 patternIntervalDp = it[patternIntervalName]!!.asDouble(),
                 progress = it[progressName]!!.asDouble(),
                 isHideCollidedCaptions = it[isHideCollidedCaptionsName]!!.asBoolean(),

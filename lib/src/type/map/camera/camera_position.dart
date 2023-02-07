@@ -12,9 +12,9 @@ class NCameraPosition implements NMessageable {
       this.tilt = 0,
       this.bearing = 0});
 
-  factory NCameraPosition._fromJson(dynamic map) {
+  factory NCameraPosition._fromMessageable(dynamic map) {
     return NCameraPosition(
-      target: NLatLng._fromJson(map["target"]),
+      target: NLatLng._fromMessageable(map["target"]),
       zoom: map["zoom"],
       tilt: map["tilt"],
       bearing: map["bearing"],
@@ -22,7 +22,7 @@ class NCameraPosition implements NMessageable {
   }
 
   @override
-  String toString() => "$runtimeType: ${toNPayload().json}";
+  String toString() => "$runtimeType: ${toNPayload().m}";
 
   @override
   NPayload toNPayload() => NPayload.make({

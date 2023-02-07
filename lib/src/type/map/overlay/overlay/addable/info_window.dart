@@ -94,14 +94,14 @@ class NInfoWindow extends NAddableOverlay<NInfoWindow> {
   }
 
   // only at map
-  factory NInfoWindow._fromJson(dynamic json) => NInfoWindow.onMap(
-        id: NOverlayInfo._fromJson(json[_infoName]).id,
-        text: json[_textName],
-        position: NLatLng._fromJson(json[_positionName]),
-        anchor: NPoint._fromJson(json[_anchorName]),
-        alpha: json[_alphaName],
-        offsetX: json[_offsetXName],
-        offsetY: json[_offsetYName],
+  factory NInfoWindow._fromMessageable(dynamic m) => NInfoWindow.onMap(
+        id: NOverlayInfo._fromMessageable(m[_infoName]).id,
+        text: m[_textName],
+        position: NLatLng._fromMessageable(m[_positionName]),
+        anchor: NPoint._fromMessageable(m[_anchorName]),
+        alpha: m[_alphaName],
+        offsetX: m[_offsetXName],
+        offsetY: m[_offsetYName],
       );
 
   @override

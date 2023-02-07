@@ -36,8 +36,8 @@ internal data class NArrowheadPathOverlay(
         g.headSizeRatio = headSizeRatio
     }
 
-    override fun toMap(): Map<String, Any?> = mapOf(
-        infoName to info.toMap(),
+    override fun toMessageable(): Map<String, Any?> = mapOf(
+        infoName to info.toMessageable(),
         coordsName to coords,
         widthName to widthDp,
         colorName to color,
@@ -48,9 +48,9 @@ internal data class NArrowheadPathOverlay(
     )
 
     companion object {
-        fun fromMap(rawMap: Any): NArrowheadPathOverlay = rawMap.asMap().let {
+        fun fromMessageable(rawMap: Any): NArrowheadPathOverlay = rawMap.asMap().let {
             NArrowheadPathOverlay(
-                info = NOverlayInfo.fromMap(it[infoName]!!),
+                info = NOverlayInfo.fromMessageable(it[infoName]!!),
                 coords = it[coordsName]!!.asList { coord -> coord.asLatLng() },
                 widthDp = it[widthName]!!.asDouble(),
                 color = it[colorName]!!.asInt(),

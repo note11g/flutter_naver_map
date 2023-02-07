@@ -8,7 +8,7 @@ struct NEdgeInsets {
         UIEdgeInsets(top: top, left: left, bottom: bottom, right: right)
     }
 
-    static func fromDict(_ args: Any) -> NEdgeInsets {
+    static func fromMessageable(_ args: Any) -> NEdgeInsets {
         let d = asDict(args, valueCaster: asCGFloat)
         return NEdgeInsets(
                 left: d["left"]!,

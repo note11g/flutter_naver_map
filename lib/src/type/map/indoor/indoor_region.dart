@@ -5,10 +5,10 @@ class NIndoorRegion {
 
   NIndoorRegion._(this.zones);
 
-  factory NIndoorRegion._fromJson(dynamic json) {
-    final listWithRawZone = json["zones"] as List;
+  factory NIndoorRegion._fromMessageable(dynamic m) {
+    final listWithRawZone = m["zones"] as List;
     final zones =
-        listWithRawZone.map((rawZone) => NIndoorZone._fromJson(rawZone));
+        listWithRawZone.map((rawZone) => NIndoorZone._fromMessageable(rawZone));
     return NIndoorRegion._(zones.toList());
   }
 

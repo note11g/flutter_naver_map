@@ -14,7 +14,7 @@ internal data class NLocale(
     }
 
     companion object {
-        fun fromMap(rawMap: Any): NLocale? = rawMap.asMap().let { map ->
+        fun fromMessageable(rawMap: Any): NLocale? = rawMap.asMap().let { map ->
             val languageCode = map["languageCode"].toString()
             if (languageCode == "sys") null
             else NLocale(

@@ -7,7 +7,7 @@ class NSize extends Size implements NMessageable {
   @override
   NPayload toNPayload() => NPayload.make({"width": width, "height": height});
 
-  factory NSize._fromJson(dynamic json) => NSize(json["width"], json["height"]);
+  factory NSize._fromMessageable(dynamic m) => NSize(m["width"], m["height"]);
 
   @override
   String toString() => "NSize(w: $width, h: $height)";

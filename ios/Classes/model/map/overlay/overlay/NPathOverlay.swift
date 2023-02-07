@@ -36,11 +36,11 @@ struct NPathOverlay: AddableOverlay {
         return overlay
     }
 
-    func toDict() -> Dictionary<String, Any?> {
+    func toMessageable() -> Dictionary<String, Any?> {
         [
-            NPathOverlay.infoName: info.toDict(),
+            NPathOverlay.infoName: info.toMessageable(),
             NPathOverlay.coordsName: coords.map {
-                $0.toDict()
+                $0.toMessageable()
             },
             NPathOverlay.widthName: width,
             NPathOverlay.colorName: color.toInt(),
@@ -49,7 +49,7 @@ struct NPathOverlay: AddableOverlay {
             NPathOverlay.passedColorName: passedColor.toInt(),
             NPathOverlay.passedOutlineColorName: passedOutlineColor.toInt(),
             NPathOverlay.progressName: progress,
-            NPathOverlay.patternImageName: patternImage?.toDict(),
+            NPathOverlay.patternImageName: patternImage?.toMessageable(),
             NPathOverlay.patternIntervalName: patternInterval,
             NPathOverlay.isHideCollidedCaptionsName: isHideCollidedCaptions,
             NPathOverlay.isHideCollidedMarkersName: isHideCollidedMarkers,
@@ -57,10 +57,10 @@ struct NPathOverlay: AddableOverlay {
         ]
     }
 
-    static func fromJson(_ v: Any) -> NPathOverlay {
+    static func fromMessageable(_ v: Any) -> NPathOverlay {
         let d = asDict(v)
         return NPathOverlay(
-                info: NOverlayInfo.fromDict(d[infoName]!),
+                info: NOverlayInfo.fromMessageable(d[infoName]!),
                 coords: asArr(d[coordsName]!, elementCaster: asLatLng),
                 width: asCGFloat(d[widthName]!),
                 color: asUIColor(d[colorName]!),
@@ -69,7 +69,7 @@ struct NPathOverlay: AddableOverlay {
                 passedColor: asUIColor(d[passedColorName]!),
                 passedOutlineColor: asUIColor(d[passedOutlineColorName]!),
                 progress: asDouble(d[progressName]!),
-                patternImage: castOrNull(d[patternImageName], caster: NOverlayImage.fromDict),
+                patternImage: castOrNull(d[patternImageName], caster: NOverlayImage.fromMessageable),
                 patternInterval: asDouble(d[patternIntervalName]!),
                 isHideCollidedCaptions: asBool(d[isHideCollidedCaptionsName]!),
                 isHideCollidedMarkers: asBool(d[isHideCollidedMarkersName]!),

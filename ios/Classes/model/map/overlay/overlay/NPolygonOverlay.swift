@@ -22,21 +22,21 @@ struct NPolygonOverlay: AddableOverlay {
         return overlay
     }
 
-    func toDict() -> Dictionary<String, Any?> {
+    func toMessageable() -> Dictionary<String, Any?> {
         [
-            NPolygonOverlay.infoName: info.toDict(),
-            NPolygonOverlay.coordsName: coords.map({ $0.toDict() }),
+            NPolygonOverlay.infoName: info.toMessageable(),
+            NPolygonOverlay.coordsName: coords.map({ $0.toMessageable() }),
             NPolygonOverlay.colorName: color.toInt(),
-            NPolygonOverlay.holesName: holes.map({ $0.map({ $0.toDict() }) }),
+            NPolygonOverlay.holesName: holes.map({ $0.map({ $0.toMessageable() }) }),
             NPolygonOverlay.outlineColorName: outlineColor.toInt(),
             NPolygonOverlay.outlineWidthName: outlineWidth,
         ]
     }
 
-    static func fromJson(_ v: Any) -> NPolygonOverlay {
+    static func fromMessageable(_ v: Any) -> NPolygonOverlay {
         let d = asDict(v)
         return NPolygonOverlay(
-                info: NOverlayInfo.fromDict(d[infoName]!),
+                info: NOverlayInfo.fromMessageable(d[infoName]!),
                 coords: asArr(d[coordsName]!, elementCaster: asLatLng),
                 color: asUIColor(d[colorName]!),
                 holes: asArr(d[holesName]!, elementCaster: { asArr($0, elementCaster: asLatLng) }),

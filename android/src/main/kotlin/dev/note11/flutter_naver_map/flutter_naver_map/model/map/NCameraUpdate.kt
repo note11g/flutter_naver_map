@@ -53,7 +53,7 @@ internal data class NCameraUpdate(
     }
 
     companion object {
-        fun fromMap(args: Any): NCameraUpdate = args.asMap().let { map ->
+        fun fromMessageable(args: Any): NCameraUpdate = args.asMap().let { map ->
             return NCameraUpdate(
                 signature = map["sign"].toString(),
                 target = map["target"]?.asLatLng(),
@@ -64,8 +64,8 @@ internal data class NCameraUpdate(
                 bearing = map["bearing"]?.asDouble(),
                 bearingBy = map["bearingBy"]?.asDouble(),
                 bounds = map["bounds"]?.asLatLngBounds(),
-                boundsPadding = map["boundsPadding"]?.let(NEdgeInsets::fromMap),
-                pivot = map["pivot"]?.let(NPoint::fromMap),
+                boundsPadding = map["boundsPadding"]?.let(NEdgeInsets::fromMessageable),
+                pivot = map["pivot"]?.let(NPoint::fromMessageable),
                 animation = map["animation"]!!.asCameraAnimation(),
                 duration = map["duration"]!!.asLong(),
             )

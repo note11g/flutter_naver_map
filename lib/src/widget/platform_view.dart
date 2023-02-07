@@ -41,7 +41,7 @@ class _PlatformViewCreator {
               id: params.id,
               viewType: viewType,
               layoutDirection: layoutDirection,
-              creationParams: creationParams.json,
+              creationParams: creationParams.m,
               creationParamsCodec: creationParamsCodec,
               onFocus: () => params.onFocusChanged(true));
 
@@ -59,7 +59,7 @@ class _PlatformViewCreator {
         layoutDirection: layoutDirection,
         gestureRecognizers: gestureRecognizers,
         hitTestBehavior: hitTestBehavior,
-        creationParams: creationParams.json,
+        creationParams: creationParams.m,
         creationParamsCodec: creationParamsCodec,
         onPlatformViewCreated: onPlatformViewCreated,
       );

@@ -25,13 +25,13 @@ struct NOverlayInfo {
         [overlayMapKey, (injectMethod ?? method!)].joined(separator: NOverlayInfo.separateString)
     }
 
-    func toDict() -> Dictionary<String, Any> {
+    func toMessageable() -> Dictionary<String, Any> {
         ["type": type.rawValue, "id": id]
     }
 
     /* ----- fromMessageable ----- */
 
-    static func fromDict(_ v: Any) -> NOverlayInfo {
+    static func fromMessageable(_ v: Any) -> NOverlayInfo {
         let d = asDict(v)
         return NOverlayInfo(
                 type: NOverlayType(rawValue: asString(d["type"]!))!,

@@ -7,7 +7,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLngBounds
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMap
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayImage
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
@@ -26,19 +26,19 @@ internal data class NGroundOverlay(
         image.applyToOverlay(g::setImage)
     }
 
-    override fun toMap(): Map<String, Any?> = mapOf(
-        infoName to info.toMap(),
-        boundsName to bounds.toMap(),
-        imageName to image.toMap(),
+    override fun toMessageable(): Map<String, Any?> = mapOf(
+        infoName to info.toMessageable(),
+        boundsName to bounds.toMessageable(),
+        imageName to image.toMessageable(),
         alphaName to alpha,
     )
 
     companion object {
-        fun fromMap(rawMap: Any): NGroundOverlay = rawMap.asMap().let {
+        fun fromMessageable(rawMap: Any): NGroundOverlay = rawMap.asMap().let {
             NGroundOverlay(
-                info = NOverlayInfo.fromMap(it[infoName]!!),
+                info = NOverlayInfo.fromMessageable(it[infoName]!!),
                 bounds = it[boundsName]!!.asLatLngBounds(),
-                image = NOverlayImage.fromMap(it[imageName]!!),
+                image = NOverlayImage.fromMessageable(it[imageName]!!),
                 alpha = it[alphaName]!!.asDouble(),
             )
         }

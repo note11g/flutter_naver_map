@@ -24,24 +24,24 @@ struct NInfoWindow: AddableOverlay {
         return infoWindow
     }
 
-    func toDict() -> Dictionary<String, Any?> {
+    func toMessageable() -> Dictionary<String, Any?> {
         [
-            NInfoWindow.infoName: info.toDict(),
+            NInfoWindow.infoName: info.toMessageable(),
             NInfoWindow.textName: text,
-            NInfoWindow.anchorName: anchor.toDict(),
+            NInfoWindow.anchorName: anchor.toMessageable(),
             NInfoWindow.alphaName: alpha,
-            NInfoWindow.positionName: position?.toDict(),
+            NInfoWindow.positionName: position?.toMessageable(),
             NInfoWindow.offsetXName: offsetX,
             NInfoWindow.offsetYName: offsetY
         ]
     }
 
-    static func fromJson(_ v: Any) -> NInfoWindow {
+    static func fromMessageable(_ v: Any) -> NInfoWindow {
         let d = asDict(v)
         return NInfoWindow(
-                info: NOverlayInfo.fromDict(d[infoName]!),
+                info: NOverlayInfo.fromMessageable(d[infoName]!),
                 text: asString(d[textName]!),
-                anchor: NPoint.fromDict(d[anchorName]!),
+                anchor: NPoint.fromMessageable(d[anchorName]!),
                 alpha: asDouble(d[alphaName]!),
                 position: castOrNull(d[positionName], caster: asLatLng),
                 offsetX: asDouble(d[offsetXName]!),

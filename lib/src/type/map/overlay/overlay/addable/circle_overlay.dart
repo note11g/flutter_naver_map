@@ -56,15 +56,15 @@ class NCircleOverlay extends NAddableOverlay<NCircleOverlay> {
   }
 
   Future<NLatLngBounds> getBounds() =>
-      _getAsyncWithCast(_boundsName, NLatLngBounds._fromJson);
+      _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
 
-  factory NCircleOverlay._fromJson(dynamic json) => NCircleOverlay(
-        id: NOverlayInfo._fromJson(json[_infoName]).id,
-        center: NLatLng._fromJson(json[_centerName]),
-        radius: json[_radiusName],
-        color: Color(json[_colorName]),
-        outlineColor: Color(json[_outlineColorName]),
-        outlineWidth: json[_outlineWidthName],
+  factory NCircleOverlay._fromMessageable(dynamic m) => NCircleOverlay(
+        id: NOverlayInfo._fromMessageable(m[_infoName]).id,
+        center: NLatLng._fromMessageable(m[_centerName]),
+        radius: m[_radiusName],
+        color: Color(m[_colorName]),
+        outlineColor: Color(m[_outlineColorName]),
+        outlineWidth: m[_outlineWidthName],
       );
 
   @override

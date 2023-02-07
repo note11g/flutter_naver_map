@@ -14,7 +14,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLineCap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLineJoin
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMap
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageableString
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
@@ -40,9 +40,9 @@ internal data class NPolylineOverlay(
         g.setPattern(*patternDp.map { DisplayUtil.dpToPx(it.toDouble()) }.toIntArray())
     }
 
-    override fun toMap(): Map<String, Any?> = mapOf(
-        infoName to info.toMap(),
-        coordsName to coords.map { it.toMap() },
+    override fun toMessageable(): Map<String, Any?> = mapOf(
+        infoName to info.toMessageable(),
+        coordsName to coords.map { it.toMessageable() },
         colorName to color,
         widthName to widthDp,
         lineCapName to lineCap.toMessageableString(),
@@ -51,9 +51,9 @@ internal data class NPolylineOverlay(
     )
 
     companion object {
-        fun fromMap(rawMap: Any): NPolylineOverlay = rawMap.asMap().let {
+        fun fromMessageable(rawMap: Any): NPolylineOverlay = rawMap.asMap().let {
             NPolylineOverlay(
-                info = NOverlayInfo.fromMap(it[infoName]!!),
+                info = NOverlayInfo.fromMessageable(it[infoName]!!),
                 coords = it[coordsName]!!.asList { latLng -> latLng.asLatLng() },
                 color = it[colorName]!!.asInt(),
                 widthDp = it[widthName]!!.asDouble(),

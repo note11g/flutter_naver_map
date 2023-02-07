@@ -12,9 +12,9 @@ class NSymbol implements Pickable {
     this.hashCode,
   );
 
-  factory NSymbol._fromJson(dynamic map) => NSymbol._(
+  factory NSymbol._fromMessageable(dynamic map) => NSymbol._(
         map["caption"].toString(),
-        NLatLng._fromJson(map["position"]),
+        NLatLng._fromMessageable(map["position"]),
         map["hashCode"],
       );
 

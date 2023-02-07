@@ -6,7 +6,7 @@ struct NLocale {
         languageCode
     }
 
-    static func fromDict(_ args: Any) -> NLocale? {
+    static func fromMessageable(_ args: Any) -> NLocale? {
         let d = asDict(args)
         let languageCode: String = asString(d["languageCode"]!)
         if languageCode == "sys" {

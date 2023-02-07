@@ -35,15 +35,15 @@ class NOverlayImage implements NMessageable {
     return NOverlayImage._(path: path, mode: _NOverlayImageMode.widget);
   }
 
-  factory NOverlayImage._fromJson(dynamic json) {
+  factory NOverlayImage._fromMessageable(dynamic m) {
     final nOverlayImage = NOverlayImage._(
-      path: json["path"],
-      mode: _NOverlayImageMode._fromJson(json["mode"]),
+      path: m["path"],
+      mode: _NOverlayImageMode._fromMessageable(m["mode"]),
     );
 
     if (nOverlayImage != _none) {
       throw NUnknownTypeCastException(
-          unknownValue: nOverlayImage.toNPayload().json.toString());
+          unknownValue: nOverlayImage.toNPayload().m.toString());
     }
 
     return _none;

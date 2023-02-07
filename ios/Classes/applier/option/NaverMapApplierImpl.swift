@@ -130,11 +130,11 @@ class NaverMapApplierImpl: NaverMapOptionApplier {
     }
 
     func setLogoMargin(_ rawEdgeInsets: Any) {
-        mapView.logoMargin = NEdgeInsets.fromDict(rawEdgeInsets).uiEdgeInsets
+        mapView.logoMargin = NEdgeInsets.fromMessageable(rawEdgeInsets).uiEdgeInsets
     }
 
     func setContentPadding(_ rawEdgeInsets: Any) {
-        mapView.contentInset = NEdgeInsets.fromDict(rawEdgeInsets).uiEdgeInsets
+        mapView.contentInset = NEdgeInsets.fromMessageable(rawEdgeInsets).uiEdgeInsets
     }
 
     func setMinZoom(_ rawLevel: Any) {
@@ -150,7 +150,7 @@ class NaverMapApplierImpl: NaverMapOptionApplier {
     }
 
     func setLocale(_ rawLocale: Any) {
-        mapView.locale = NLocale.fromDict(rawLocale)?.localeStr
+        mapView.locale = NLocale.fromMessageable(rawLocale)?.localeStr
     }
 
     func setUseGLSurfaceView(_ rawUseSurface: Any) {

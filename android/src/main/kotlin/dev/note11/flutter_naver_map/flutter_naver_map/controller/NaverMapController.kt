@@ -11,7 +11,7 @@ import com.naver.maps.map.indoor.IndoorSelection
 import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMap
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageableString
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
@@ -55,7 +55,7 @@ internal class NaverMapController(
     }
 
     override fun getCameraPosition(onSuccess: (cameraPosition: Map<String, Any>) -> Unit) {
-        naverMap.cameraPosition.toMap().let(onSuccess)
+        naverMap.cameraPosition.toMessageable().let(onSuccess)
     }
 
     override fun getContentBounds(
@@ -63,14 +63,14 @@ internal class NaverMapController(
         onSuccess: (latLngBounds: Map<String, Any>) -> Unit,
     ) {
         val bounds = if (withPadding) naverMap.coveringBounds else naverMap.contentBounds
-        bounds.toMap().let(onSuccess)
+        bounds.toMessageable().let(onSuccess)
     }
 
     override fun getContentRegion(
         withPadding: Boolean, onSuccess: (latLngs: List<Map<String, Any>>) -> Unit,
     ) {
         val region = if (withPadding) naverMap.coveringRegion else naverMap.contentRegion
-        region.map { it.toMap() }.let(onSuccess)
+        region.map { it.toMessageable() }.let(onSuccess)
     }
 
     override fun getLocationOverlay(onSuccess: () -> Unit) {
@@ -86,7 +86,7 @@ internal class NaverMapController(
         onSuccess: (latLng: Map<String, Any>) -> Unit,
     ) {
         val latLng = naverMap.projection.fromScreenLocation(nPoint.toPointFWithPx())
-        onSuccess(latLng.toMap())
+        onSuccess(latLng.toMessageable())
     }
 
     override fun latLngToScreenLocation(
@@ -95,7 +95,7 @@ internal class NaverMapController(
     ) {
         val nPoint =
             naverMap.projection.toScreenLocation(latLng).let { NPoint.fromPointFWithPx(it) }
-        onSuccess(nPoint.toMap())
+        onSuccess(nPoint.toMessageable())
     }
 
     override fun getMeterPerDp(
@@ -125,12 +125,12 @@ internal class NaverMapController(
         val pickables = naverMap.pickAll(nPoint.toPointFWithPx(), DisplayUtil.dpToPx(dpRadius))
         val result = pickables.map {
             val addPayload = when (it) {
-                is Symbol -> it.toMap()
+                is Symbol -> it.toMessageable()
                 is Overlay -> {
                     val overlayKey = overlayController.getSavedOverlayKey(it)
                         ?: throw Exception("This overlay isn't added with flutter.")
                     val overlay = AddableOverlay.fromOverlay(it, info = fromString(overlayKey))
-                    overlay.toMap()
+                    overlay.toMessageable()
                 }
                 else -> throw Exception("Unsupported pickable type.")
             }.toMutableMap()
@@ -182,8 +182,8 @@ internal class NaverMapController(
         onSuccess: () -> Unit,
     ) {
         for (rawOverlay in rawOverlays) {
-            val overlayInfo = NOverlayInfo.fromMap(rawOverlay["info"]!!)
-            val creator = AddableOverlay.fromJson(
+            val overlayInfo = NOverlayInfo.fromMessageable(rawOverlay["info"]!!)
+            val creator = AddableOverlay.fromMessageable(
                 info = overlayInfo,
                 args = rawOverlay,
                 context = applicationContext
@@ -210,7 +210,7 @@ internal class NaverMapController(
     }
 
     override fun updateOptions(options: Map<String, Any>, onSuccess: () -> Unit) {
-        naverMapViewOptions = NaverMapViewOptions.updateNaverMapFromMap(naverMap, options)
+        naverMapViewOptions = NaverMapViewOptions.updateNaverMapFromMessageable(naverMap, options)
         onSuccess()
     }
 
@@ -224,14 +224,14 @@ internal class NaverMapController(
     override fun onMapTapped(nPoint: NPoint, latLng: LatLng) {
         channel.invokeMethod(
             "onMapTapped", mapOf(
-                "nPoint" to nPoint.toMap(),
-                "latLng" to latLng.toMap(),
+                "nPoint" to nPoint.toMessageable(),
+                "latLng" to latLng.toMessageable(),
             )
         )
     }
 
     override fun onSymbolTapped(symbol: Symbol): Boolean? {
-        channel.invokeMethod("onSymbolTapped", symbol.toMap())
+        channel.invokeMethod("onSymbolTapped", symbol.toMessageable())
         return naverMapViewOptions?.consumeSymbolTapEvents
     }
 
@@ -249,6 +249,6 @@ internal class NaverMapController(
     }
 
     override fun onSelectedIndoorChanged(selectedIndoor: IndoorSelection?) {
-        channel.invokeMethod("onSelectedIndoorChanged", selectedIndoor?.toMap())
+        channel.invokeMethod("onSelectedIndoorChanged", selectedIndoor?.toMessageable())
     }
 }

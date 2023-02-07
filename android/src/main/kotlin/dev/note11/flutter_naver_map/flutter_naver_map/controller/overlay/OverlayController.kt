@@ -15,7 +15,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLngBounds
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLineCap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLineJoin
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMap
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NSize
@@ -230,11 +230,11 @@ internal class OverlayController(
 
     override fun getAnchor(overlay: LocationOverlay, success: (nPoint: Map<String, Any>) -> Unit) {
         val anchor = overlay.anchor
-        success(NPoint.fromPointF(anchor).toMap())
+        success(NPoint.fromPointF(anchor).toMessageable())
     }
 
     override fun setAnchor(overlay: LocationOverlay, rawNPoint: Any) {
-        val nPoint = NPoint.fromMap(rawNPoint)
+        val nPoint = NPoint.fromMessageable(rawNPoint)
         overlay.anchor = nPoint.toPointF()
     }
 
@@ -279,23 +279,23 @@ internal class OverlayController(
     }
 
     override fun setIcon(overlay: LocationOverlay, rawNOverlayImage: Any) {
-        val nOverlayImage = NOverlayImage.fromMap(rawNOverlayImage.asMap())
+        val nOverlayImage = NOverlayImage.fromMessageable(rawNOverlayImage.asMap())
         nOverlayImage.applyToOverlay(overlay::setIcon)
     }
 
     override fun getIconSize(overlay: LocationOverlay, success: (size: Map<String, Any>) -> Unit) {
-        overlay.run { success(NSize.fromPixelSize(iconWidth, iconHeight).toMap()) }
+        overlay.run { success(NSize.fromPixelSize(iconWidth, iconHeight).toMessageable()) }
     }
 
     override fun setIconSize(overlay: LocationOverlay, rawSize: Any) {
-        NSize.fromMap(rawSize).run { useAsPixelSize(overlay::setIconWidth, overlay::setIconHeight) }
+        NSize.fromMessageable(rawSize).run { useAsPixelSize(overlay::setIconWidth, overlay::setIconHeight) }
     }
 
     override fun getPosition(
         overlay: LocationOverlay,
         success: (latLng: Map<String, Any>) -> Unit,
     ) {
-        success(overlay.position.toMap())
+        success(overlay.position.toMessageable())
     }
 
     override fun setPosition(overlay: LocationOverlay, rawLatLng: Any) {
@@ -307,16 +307,16 @@ internal class OverlayController(
         success: (nPoint: Map<String, Any>) -> Unit,
     ) {
         val subAnchor = overlay.subAnchor
-        success(NPoint.fromPointF(subAnchor).toMap())
+        success(NPoint.fromPointF(subAnchor).toMessageable())
     }
 
     override fun setSubAnchor(overlay: LocationOverlay, rawNPoint: Any) {
-        val nPoint = NPoint.fromMap(rawNPoint)
+        val nPoint = NPoint.fromMessageable(rawNPoint)
         overlay.subAnchor = nPoint.toPointF()
     }
 
     override fun setSubIcon(overlay: LocationOverlay, rawNOverlayImage: Any) {
-        val nOverlayImage = NOverlayImage.fromMap(rawNOverlayImage.asMap())
+        val nOverlayImage = NOverlayImage.fromMessageable(rawNOverlayImage.asMap())
         nOverlayImage.applyToOverlay(overlay::setSubIcon)
     }
 
@@ -324,11 +324,11 @@ internal class OverlayController(
         overlay: LocationOverlay,
         success: (size: Map<String, Any>) -> Unit,
     ) {
-        overlay.run { success(NSize.fromPixelSize(subIconWidth, subIconHeight).toMap()) }
+        overlay.run { success(NSize.fromPixelSize(subIconWidth, subIconHeight).toMessageable()) }
     }
 
     override fun setSubIconSize(overlay: LocationOverlay, rawSize: Any) {
-        NSize.fromMap(rawSize).run {
+        NSize.fromMessageable(rawSize).run {
             useAsPixelSize(overlay::setSubIconWidth, overlay::setSubIconHeight)
         }
     }
@@ -345,7 +345,7 @@ internal class OverlayController(
         rawAlign: Any,
         success: (Any?) -> Unit,
     ) {
-        val nInfoWindow = NInfoWindow.fromMap(rawInfoWindow, context = context)
+        val nInfoWindow = NInfoWindow.fromMessageable(rawInfoWindow, context = context)
         val infoWindow = saveOverlayWithAddable(creator = nInfoWindow)
 
         val align = rawAlign.asAlign()
@@ -358,7 +358,7 @@ internal class OverlayController(
     }
 
     override fun setIcon(marker: Marker, rawIcon: Any) {
-        val nOverlayImage = NOverlayImage.fromMap(rawIcon.asMap())
+        val nOverlayImage = NOverlayImage.fromMessageable(rawIcon.asMap())
         nOverlayImage.applyToOverlay(marker::setIcon)
     }
 
@@ -375,17 +375,17 @@ internal class OverlayController(
     }
 
     override fun setAnchor(marker: Marker, rawNPoint: Any) {
-        val nPoint = NPoint.fromMap(rawNPoint)
+        val nPoint = NPoint.fromMessageable(rawNPoint)
         marker.anchor = nPoint.toPointF()
     }
 
     override fun setSize(marker: Marker, rawNPoint: Any) {
-        val nSize = NSize.fromMap(rawNPoint)
+        val nSize = NSize.fromMessageable(rawNPoint)
         nSize.useAsPixelSize(marker::setWidth, marker::setHeight)
     }
 
     override fun setCaption(marker: Marker, rawCaption: Any) {
-        NOverlayCaption.fromMap(rawCaption).run {
+        NOverlayCaption.fromMessageable(rawCaption).run {
             useWithFunctions(
                 textFunc = marker::setCaptionText,
                 textSizeFunc = marker::setCaptionTextSize,
@@ -399,7 +399,7 @@ internal class OverlayController(
     }
 
     override fun setSubCaption(marker: Marker, rawSubCaption: Any) {
-        NOverlayCaption.fromMap(rawSubCaption).run {
+        NOverlayCaption.fromMessageable(rawSubCaption).run {
             useWithFunctions(
                 textFunc = marker::setSubCaptionText,
                 textSizeFunc = marker::setSubCaptionTextSize,
@@ -459,7 +459,7 @@ internal class OverlayController(
     }
 
     override fun setAnchor(infoWindow: InfoWindow, rawNPoint: Any) {
-        val nPoint = NPoint.fromMap(rawNPoint)
+        val nPoint = NPoint.fromMessageable(rawNPoint)
         infoWindow.anchor = nPoint.toPointF()
     }
 
@@ -509,7 +509,7 @@ internal class OverlayController(
         circleOverlay: CircleOverlay,
         result: (bounds: Map<String, Any>) -> Unit,
     ) {
-        result(circleOverlay.bounds.toMap())
+        result(circleOverlay.bounds.toMessageable())
     }
 
     /* ----- Ground Overlay handler ----- */
@@ -519,7 +519,7 @@ internal class OverlayController(
     }
 
     override fun setImage(groundOverlay: GroundOverlay, rawNOverlayImage: Any) {
-        val nOverlayImage = NOverlayImage.fromMap(rawNOverlayImage)
+        val nOverlayImage = NOverlayImage.fromMessageable(rawNOverlayImage)
         nOverlayImage.applyToOverlay(groundOverlay::setImage)
     }
 
@@ -553,7 +553,7 @@ internal class OverlayController(
         polygonOverlay: PolygonOverlay,
         success: (bounds: Map<String, Any>) -> Unit,
     ) {
-        success(polygonOverlay.bounds.toMap())
+        success(polygonOverlay.bounds.toMessageable())
     }
 
     /* ----- Polyline Overlay handler ----- */
@@ -587,7 +587,7 @@ internal class OverlayController(
         polylineOverlay: PolylineOverlay,
         success: (bounds: Map<String, Any>) -> Unit,
     ) {
-        success(polylineOverlay.bounds.toMap())
+        success(polylineOverlay.bounds.toMessageable())
     }
 
     /* ----- Path Overlay handler ----- */
@@ -625,7 +625,7 @@ internal class OverlayController(
     }
 
     override fun setPatternImage(pathOverlay: PathOverlay, rawNOverlayImage: Any) {
-        val nOverlayImage = NOverlayImage.fromMap(rawNOverlayImage)
+        val nOverlayImage = NOverlayImage.fromMessageable(rawNOverlayImage)
         nOverlayImage.applyToOverlay(pathOverlay::setPatternImage)
     }
 
@@ -646,13 +646,13 @@ internal class OverlayController(
     }
 
     override fun getBounds(pathOverlay: PathOverlay, success: (bounds: Map<String, Any>) -> Unit) {
-        success(pathOverlay.bounds.toMap())
+        success(pathOverlay.bounds.toMessageable())
     }
 
     /* ----- Multipart Path Overlay handler ----- */
 
     override fun setPaths(multipartPathOverlay: MultipartPathOverlay, rawPaths: Any) {
-        val paths = rawPaths.asList(NMultipartPath::fromMap)
+        val paths = rawPaths.asList(NMultipartPath::fromMessageable)
         val coords = mutableListOf<List<LatLng>>()
         val colors = mutableListOf<MultipartPathOverlay.ColorPart>()
         paths.forEach {
@@ -675,7 +675,7 @@ internal class OverlayController(
         multipartPathOverlay: MultipartPathOverlay,
         rawNOverlayImage: Any,
     ) {
-        val nOverlayImage = NOverlayImage.fromMap(rawNOverlayImage)
+        val nOverlayImage = NOverlayImage.fromMessageable(rawNOverlayImage)
         nOverlayImage.applyToOverlay(multipartPathOverlay::setPatternImage)
     }
 
@@ -712,7 +712,7 @@ internal class OverlayController(
         multipartPathOverlay: MultipartPathOverlay,
         success: (bounds: Map<String, Any>) -> Unit,
     ) {
-        success(multipartPathOverlay.bounds.toMap())
+        success(multipartPathOverlay.bounds.toMessageable())
     }
 
     /* ----- ArrowHeadPath Overlay handler ----- */
@@ -749,6 +749,6 @@ internal class OverlayController(
         arrowheadPathOverlay: ArrowheadPathOverlay,
         success: (bounds: Map<String, Any>) -> Unit,
     ) {
-        success(arrowheadPathOverlay.bounds.toMap())
+        success(arrowheadPathOverlay.bounds.toMessageable())
     }
 }

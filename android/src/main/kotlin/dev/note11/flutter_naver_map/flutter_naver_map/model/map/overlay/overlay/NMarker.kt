@@ -13,7 +13,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asAlign
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMap
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageableString
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
@@ -84,17 +84,17 @@ internal data class NMarker(
         m.isHideCollidedSymbols = isHideCollidedSymbols
     }
 
-    override fun toMap(): Map<String, Any?> = mapOf(
-        infoName to info.toMap(),
-        iconName to icon?.toMap(),
-        positionName to position.toMap(),
+    override fun toMessageable(): Map<String, Any?> = mapOf(
+        infoName to info.toMessageable(),
+        iconName to icon?.toMessageable(),
+        positionName to position.toMessageable(),
         iconTintColorName to iconTintColor,
         alphaName to alpha,
         angleName to angle,
-        anchorName to anchor.toMap(),
-        sizeName to size.toMap(),
-        captionName to caption?.toMap(),
-        subCaptionName to subCaption?.toMap(),
+        anchorName to anchor.toMessageable(),
+        sizeName to size.toMessageable(),
+        captionName to caption?.toMessageable(),
+        subCaptionName to subCaption?.toMessageable(),
         captionAlignsName to captionAligns.map { it.toMessageableString() },
         captionOffsetName to captionDpOffset,
         isCaptionPerspectiveEnabledName to isCaptionPerspectiveEnabled,
@@ -108,18 +108,18 @@ internal data class NMarker(
     )
 
     companion object {
-        fun fromMap(rawMap: Any): NMarker = rawMap.asMap().let {
+        fun fromMessageable(rawMap: Any): NMarker = rawMap.asMap().let {
             NMarker(
-                info = NOverlayInfo.fromMap(it[infoName]!!),
+                info = NOverlayInfo.fromMessageable(it[infoName]!!),
                 position = it[positionName]!!.asLatLng(),
-                icon = it[iconName]?.let(NOverlayImage::fromMap),
+                icon = it[iconName]?.let(NOverlayImage::fromMessageable),
                 iconTintColor = it[iconTintColorName]!!.asInt(),
                 alpha = it[alphaName]!!.asFloat(),
                 angle = it[angleName]!!.asFloat(),
-                anchor = NPoint.fromMap(it[anchorName]!!),
-                size = NSize.fromMap(it[sizeName]!!),
-                caption = it[captionName]?.let(NOverlayCaption::fromMap),
-                subCaption = it[subCaptionName]?.let(NOverlayCaption::fromMap),
+                anchor = NPoint.fromMessageable(it[anchorName]!!),
+                size = NSize.fromMessageable(it[sizeName]!!),
+                caption = it[captionName]?.let(NOverlayCaption::fromMessageable),
+                subCaption = it[subCaptionName]?.let(NOverlayCaption::fromMessageable),
                 captionAligns = it[captionAlignsName]!!.asList { raw -> raw.asAlign() },
                 captionDpOffset = it[captionOffsetName]!!.asDouble(),
                 isCaptionPerspectiveEnabled = it[isCaptionPerspectiveEnabledName]!!.asBoolean(),

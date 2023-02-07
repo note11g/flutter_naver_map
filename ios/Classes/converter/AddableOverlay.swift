@@ -7,9 +7,9 @@ protocol AddableOverlay {
 
     func createMapOverlay() -> OverlayType
 
-    func toDict() -> Dictionary<String, Any?>
+    func toMessageable() -> Dictionary<String, Any?>
 
-    static func fromJson(_ v: Any) -> Self
+    static func fromMessageable(_ v: Any) -> Self
 
     static func fromOverlay(_ overlay: NMFOverlay, id: String) -> Self
 }
@@ -18,15 +18,15 @@ func asAddableOverlay(info: NOverlayInfo, json: Any) throws -> any AddableOverla
     let d = asDict(json)
     let creator: (Any) -> any AddableOverlay
     switch info.type {
-    case .marker: creator = NMarker.fromJson
-    case .infoWindow: creator = NInfoWindow.fromJson
-    case .circleOverlay: creator = NCircleOverlay.fromJson
-    case .groundOverlay: creator = NGroundOverlay.fromJson
-    case .polygonOverlay: creator = NPolygonOverlay.fromJson
-    case .polylineOverlay: creator = NPolylineOverlay.fromJson
-    case .pathOverlay: creator = NPathOverlay.fromJson
-    case .multipartPathOverlay: creator = NMultipartPathOverlay.fromJson
-    case .arrowheadPathOverlay: creator = NArrowheadPathOverlay.fromJson
+    case .marker: creator = NMarker.fromMessageable
+    case .infoWindow: creator = NInfoWindow.fromMessageable
+    case .circleOverlay: creator = NCircleOverlay.fromMessageable
+    case .groundOverlay: creator = NGroundOverlay.fromMessageable
+    case .polygonOverlay: creator = NPolygonOverlay.fromMessageable
+    case .polylineOverlay: creator = NPolylineOverlay.fromMessageable
+    case .pathOverlay: creator = NPathOverlay.fromMessageable
+    case .multipartPathOverlay: creator = NMultipartPathOverlay.fromMessageable
+    case .arrowheadPathOverlay: creator = NArrowheadPathOverlay.fromMessageable
     case .locationOverlay: throw NSError()
     }
     return creator(d)

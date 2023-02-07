@@ -25,7 +25,7 @@ internal class NaverMapViewFactory(
         val overlayController = OverlayController(overlayChannel, context)
 
         val convertedArgs = args!!.asMap()
-        val options = NaverMapViewOptions.fromMap(convertedArgs)
+        val options = NaverMapViewOptions.fromMessageable(convertedArgs)
 
         return NaverMapView(
             context = context,

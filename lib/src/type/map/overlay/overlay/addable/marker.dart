@@ -219,34 +219,34 @@ class NMarker extends NAddableOverlay<NMarker> {
     _set(_isHideCollidedSymbolsName, _isHideCollidedSymbols);
   }
 
-  factory NMarker._fromJson(dynamic json) => NMarker(
-        id: NOverlayInfo._fromJson(json[_infoName]).id,
-        position: NLatLng._fromJson(json[_positionName]),
-        icon: json[_iconName] != null
-            ? NOverlayImage._fromJson(json[_iconName])
+  factory NMarker._fromMessageable(dynamic m) => NMarker(
+        id: NOverlayInfo._fromMessageable(m[_infoName]).id,
+        position: NLatLng._fromMessageable(m[_positionName]),
+        icon: m[_iconName] != null
+            ? NOverlayImage._fromMessageable(m[_iconName])
             : null,
-        iconTintColor: Color(json[_iconTintColorName]),
-        alpha: json[_alphaName],
-        angle: json[_angleName],
-        anchor: NPoint._fromJson(json[_anchorName]),
-        size: NSize._fromJson(json[_sizeName]),
-        caption: json[_captionName] != null
-            ? NOverlayCaption._fromJson(json[_captionName])
+        iconTintColor: Color(m[_iconTintColorName]),
+        alpha: m[_alphaName],
+        angle: m[_angleName],
+        anchor: NPoint._fromMessageable(m[_anchorName]),
+        size: NSize._fromMessageable(m[_sizeName]),
+        caption: m[_captionName] != null
+            ? NOverlayCaption._fromMessageable(m[_captionName])
             : null,
-        subCaption: json[_subCaptionName] != null
-            ? NOverlayCaption._fromJson(json[_subCaptionName])
+        subCaption: m[_subCaptionName] != null
+            ? NOverlayCaption._fromMessageable(m[_subCaptionName])
             : null,
         captionAligns:
-            (json[_captionAlignsName] as List).map(NAlign._fromJson).toList(),
-        captionOffset: json[_captionOffsetName],
-        isCaptionPerspectiveEnabled: json[_isCaptionPerspectiveEnabledName],
-        isIconPerspectiveEnabled: json[_isIconPerspectiveEnabledName],
-        isFlat: json[_isFlatName],
-        isForceShowCaption: json[_isForceShowCaptionName],
-        isForceShowIcon: json[_isForceShowIconName],
-        isHideCollidedCaptions: json[_isHideCollidedCaptionsName],
-        isHideCollidedMarkers: json[_isHideCollidedMarkersName],
-        isHideCollidedSymbols: json[_isHideCollidedSymbolsName],
+            (m[_captionAlignsName] as List).map(NAlign._fromMessageable).toList(),
+        captionOffset: m[_captionOffsetName],
+        isCaptionPerspectiveEnabled: m[_isCaptionPerspectiveEnabledName],
+        isIconPerspectiveEnabled: m[_isIconPerspectiveEnabledName],
+        isFlat: m[_isFlatName],
+        isForceShowCaption: m[_isForceShowCaptionName],
+        isForceShowIcon: m[_isForceShowIconName],
+        isHideCollidedCaptions: m[_isHideCollidedCaptionsName],
+        isHideCollidedMarkers: m[_isHideCollidedMarkersName],
+        isHideCollidedSymbols: m[_isHideCollidedSymbolsName],
       );
 
   @override

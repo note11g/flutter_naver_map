@@ -28,26 +28,26 @@ internal data class NaverMapViewOptions(
 
     companion object {
         // factory constructor
-        fun fromMap(
+        fun fromMessageable(
             args: Map<String, Any>,
             convertNaverMapOptions: Boolean = true,
         ): NaverMapViewOptions {
-            val options = if (convertNaverMapOptions) naverMapOptionFromMap(args) else null
+            val options = if (convertNaverMapOptions) naverMapOptionfromMessageable(args) else null
             val consumeSymbolTapEvents = args["consumeSymbolTapEvents"]!!.asBoolean()
 
             return NaverMapViewOptions(options, consumeSymbolTapEvents)
         }
 
-        fun updateNaverMapFromMap(
+        fun updateNaverMapFromMessageable(
             naverMap: NaverMap,
             args: Map<String, Any>,
         ): NaverMapViewOptions {
             val applier = NaverMapApplierImpl(naverMap)
             applier.applyOptions(args)
-            return fromMap(args, false)
+            return fromMessageable(args, false)
         }
 
-        private fun naverMapOptionFromMap(
+        private fun naverMapOptionfromMessageable(
             args: Map<String, Any>,
         ): NaverMapOptions {
             val options = NaverMapOptions().apply {

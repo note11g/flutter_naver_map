@@ -21,17 +21,17 @@ mixin _NaverMapControlHandler {
       case "onMapTapped":
         final args = call.arguments;
         onMapTapped(
-          NPoint._fromJson(args["nPoint"]),
-          NLatLng._fromJson(args["latLng"]),
+          NPoint._fromMessageable(args["nPoint"]),
+          NLatLng._fromMessageable(args["latLng"]),
         );
         break;
       case "onSymbolTapped":
-        onSymbolTapped(NSymbol._fromJson(call.arguments));
+        onSymbolTapped(NSymbol._fromMessageable(call.arguments));
         break;
       case "onCameraChange":
         final args = call.arguments;
         onCameraChange(
-          NCameraUpdateReason._fromJson(call.arguments["reason"]),
+          NCameraUpdateReason._fromMessageable(call.arguments["reason"]),
           args["animated"],
         );
         break;
@@ -40,7 +40,7 @@ mixin _NaverMapControlHandler {
         break;
       case "onSelectedIndoorChanged":
         final selectedIndoor = call.arguments != null
-            ? NSelectedIndoor._fromJson(call.arguments)
+            ? NSelectedIndoor._fromMessageable(call.arguments)
             : null;
         onSelectedIndoorChanged(selectedIndoor);
         break;

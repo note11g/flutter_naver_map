@@ -28,15 +28,15 @@ struct NMultipartPathOverlay: AddableOverlay {
         return overlay
     }
 
-    func toDict() -> Dictionary<String, Any?> {
+    func toMessageable() -> Dictionary<String, Any?> {
         [
-            NMultipartPathOverlay.infoName: info.toDict(),
+            NMultipartPathOverlay.infoName: info.toMessageable(),
             NMultipartPathOverlay.pathsName: paths.map {
-                $0.toDict()
+                $0.toMessageable()
             },
             NMultipartPathOverlay.widthName: width,
             NMultipartPathOverlay.outlineWidthName: outlineWidth,
-            NMultipartPathOverlay.patternImageName: patternImage?.toDict(),
+            NMultipartPathOverlay.patternImageName: patternImage?.toMessageable(),
             NMultipartPathOverlay.patternIntervalName: patternInterval,
             NMultipartPathOverlay.progressName: progress,
             NMultipartPathOverlay.isHideCollidedCaptionsName: isHideCollidedCaptions,
@@ -45,14 +45,14 @@ struct NMultipartPathOverlay: AddableOverlay {
         ]
     }
 
-    static func fromJson(_ v: Any) -> NMultipartPathOverlay {
+    static func fromMessageable(_ v: Any) -> NMultipartPathOverlay {
         let d = asDict(v)
         return NMultipartPathOverlay(
-                info: NOverlayInfo.fromDict(d[infoName]!),
-                paths: asArr(d[pathsName]!, elementCaster: NMultipartPath.fromDict),
+                info: NOverlayInfo.fromMessageable(d[infoName]!),
+                paths: asArr(d[pathsName]!, elementCaster: NMultipartPath.fromMessageable),
                 width: asCGFloat(d[widthName]!),
                 outlineWidth: asCGFloat(d[outlineWidthName]!),
-                patternImage: castOrNull(d[patternImageName], caster: NOverlayImage.fromDict),
+                patternImage: castOrNull(d[patternImageName], caster: NOverlayImage.fromMessageable),
                 patternInterval: asDouble(d[patternIntervalName]!),
                 progress: asCGFloat(d[progressName]!),
                 isHideCollidedCaptions: asBool(d[isHideCollidedCaptionsName]!),

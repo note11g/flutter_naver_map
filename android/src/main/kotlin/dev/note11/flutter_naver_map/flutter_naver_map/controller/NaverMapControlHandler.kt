@@ -25,7 +25,7 @@ private fun MethodChannel.Result.fail(e: Exception) =
 internal interface NaverMapControlHandler {
     fun handle(call: MethodCall, result: MethodChannel.Result) = when (call.method) {
         "updateCamera" -> updateCamera(
-            cameraUpdate = call.arguments.let(NCameraUpdate::fromMap).toCameraUpdate(),
+            cameraUpdate = call.arguments.let(NCameraUpdate::fromMessageable).toCameraUpdate(),
             onSuccess = result::send,
         )
         "cancelTransitions" -> cancelTransitions(
@@ -42,7 +42,7 @@ internal interface NaverMapControlHandler {
         )
         "getLocationOverlay" -> getLocationOverlay(result::send)
         "screenLocationToLatLng" -> screenLocationToLatLng(
-            nPoint = NPoint.fromMap(call.arguments),
+            nPoint = NPoint.fromMessageable(call.arguments),
             onSuccess = result::send,
         )
         "latLngToScreenLocation" -> latLngToScreenLocation(
@@ -59,7 +59,7 @@ internal interface NaverMapControlHandler {
         "isDestroyed" -> isDestroyed(result::send)
         "pickAll" -> call.arguments.asMap().let {
             pickAll(
-                nPoint = NPoint.fromMap(it["point"]!!),
+                nPoint = NPoint.fromMessageable(it["point"]!!),
                 dpRadius = it["radius"]!!.asDouble(),
                 onSuccess = result::send,
             )
@@ -82,7 +82,7 @@ internal interface NaverMapControlHandler {
             onSuccess = result::send,
         )
         "deleteOverlay" -> deleteOverlay(
-            overlayInfo = NOverlayInfo.fromMap(call.arguments),
+            overlayInfo = NOverlayInfo.fromMessageable(call.arguments),
             onSuccess = result::send,
         )
         "clearOverlays" -> clearOverlays(

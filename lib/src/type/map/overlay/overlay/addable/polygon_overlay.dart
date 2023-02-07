@@ -56,21 +56,21 @@ class NPolygonOverlay extends NAddableOverlay<NPolygonOverlay> {
   }
 
   Future<NLatLngBounds> getBounds() {
-    return _getAsyncWithCast(_boundsName, NLatLngBounds._fromJson);
+    return _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
   }
 
   /* ----- Factory Constructor ----- */
 
-  factory NPolygonOverlay._fromJson(dynamic json) => NPolygonOverlay(
-        id: NOverlayInfo._fromJson(json[_infoName]!).id,
+  factory NPolygonOverlay._fromMessageable(dynamic m) => NPolygonOverlay(
+        id: NOverlayInfo._fromMessageable(m[_infoName]!).id,
         coords:
-            (json[_coordsName] as List).map((e) => NLatLng._fromJson(e)).toList(),
-        color: Color(json[_colorName] as int),
-        holes: (json[_holesName] as List)
-            .map((e) => (e as List).map((e) => NLatLng._fromJson(e)).toList())
+            (m[_coordsName] as List).map((e) => NLatLng._fromMessageable(e)).toList(),
+        color: Color(m[_colorName] as int),
+        holes: (m[_holesName] as List)
+            .map((e) => (e as List).map((e) => NLatLng._fromMessageable(e)).toList())
             .toList(),
-        outlineColor: Color(json[_outlineColorName] as int),
-        outlineWidth: json[_outlineWidthName] as double,
+        outlineColor: Color(m[_outlineColorName] as int),
+        outlineWidth: m[_outlineWidthName] as double,
       );
 
   @override

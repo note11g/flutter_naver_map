@@ -28,18 +28,18 @@ class NaverMapController: NaverMapControlSender, NaverMapControlHandler {
     }
 
     func getCameraPosition(onSuccess: @escaping (Dictionary<String, Any>) -> ()) {
-        onSuccess(mapView.cameraPosition.toDict())
+        onSuccess(mapView.cameraPosition.toMessageable())
     }
 
     func getContentBounds(withPadding: Bool, onSuccess: @escaping (Dictionary<String, Any>) -> ()) {
         let bounds = withPadding ? mapView.coveringBounds : mapView.contentBounds
-        onSuccess(bounds.toDict())
+        onSuccess(bounds.toMessageable())
     }
 
     func getContentRegion(withPadding: Bool, onSuccess: @escaping (Array<Dictionary<String, Any>>) -> ()) {
         let region = (withPadding ? mapView.coveringRegion : mapView.contentRegion).exteriorRing
         onSuccess(region.latLngPoints.map {
-            $0.toDict()
+            $0.toMessageable()
         })
     }
 
@@ -53,12 +53,12 @@ class NaverMapController: NaverMapControlSender, NaverMapControlHandler {
 
     func screenLocationToLatLng(nPoint: NPoint, onSuccess: @escaping (Dictionary<String, Any>) -> ()) {
         let latLng = mapView.projection.latlng(from: nPoint.cgPoint)
-        onSuccess(latLng.toDict())
+        onSuccess(latLng.toMessageable())
     }
 
     func latLngToScreenLocation(latLng: NMGLatLng, onSuccess: @escaping (Dictionary<String, Any>) -> ()) {
         let point = mapView.projection.point(from: latLng)
-        onSuccess(NPoint.fromCGPoint(point).toDict())
+        onSuccess(NPoint.fromCGPoint(point).toMessageable())
     }
 
     func getMeterPerDp(lat: Double?, zoom: Double?, onSuccess: @escaping (Double) -> ()) {
@@ -80,11 +80,11 @@ class NaverMapController: NaverMapControlSender, NaverMapControlHandler {
 
             switch pickable {
             case let pickable as NMFSymbol:
-                payload = pickable.toDict()
+                payload = pickable.toMessageable()
             case let pickable as NMFOverlay:
                 let overlayKey = overlayController.getSavedOverlayKey(overlay: pickable)!
                 let nOverlay = try! getAddableOverlayFromOverlay(pickable, info: NOverlayInfo.fromString(overlayKey))
-                payload = nOverlay.toDict()
+                payload = nOverlay.toMessageable()
             default: throw NSError()
             }
 
@@ -132,7 +132,7 @@ class NaverMapController: NaverMapControlSender, NaverMapControlHandler {
 
     func addOverlayAll(rawOverlays: Array<Dictionary<String, Any>>, onSuccess: @escaping (Any?) -> ()) {
         for rawOverlay in rawOverlays {
-            let info = NOverlayInfo.fromDict(rawOverlay["info"]!)
+            let info = NOverlayInfo.fromMessageable(rawOverlay["info"]!)
             let creator = try! asAddableOverlay(info: info, json: rawOverlay)
 
             let overlay = overlayController.saveOverlayWithAddable(creator: creator)
@@ -157,7 +157,7 @@ class NaverMapController: NaverMapControlSender, NaverMapControlHandler {
     }
 
     func updateOptions(options: Dictionary<String, Any>, onSuccess: @escaping (Any?) -> ()) {
-        naverMapViewOptions = NaverMapViewOptions.fromMap(options)
+        naverMapViewOptions = NaverMapViewOptions.fromMessageable(options)
         naverMapViewOptions!.updateWithNaverMapView(naverMap: naverMap, isFirst: false)
         onSuccess(nil)
     }
@@ -171,13 +171,13 @@ class NaverMapController: NaverMapControlSender, NaverMapControlHandler {
 
     func onMapTapped(nPoint: NPoint, latLng: NMGLatLng) {
         channel.invokeMethod("onMapTapped", arguments: [
-            "nPoint": nPoint.toDict(),
-            "latLng": latLng.toDict()
+            "nPoint": nPoint.toMessageable(),
+            "latLng": latLng.toMessageable()
         ])
     }
 
     func onSymbolTapped(symbol: NMFSymbol) -> Bool? {
-        channel.invokeMethod("onSymbolTapped", arguments: symbol.toDict())
+        channel.invokeMethod("onSymbolTapped", arguments: symbol.toMessageable())
         return naverMapViewOptions?.consumeSymbolTapEvents
     }
 
@@ -193,6 +193,6 @@ class NaverMapController: NaverMapControlSender, NaverMapControlHandler {
     }
 
     func onSelectedIndoorChanged(selectedIndoor: NMFIndoorSelection?) {
-        channel.invokeMethod("onSelectedIndoorChanged", arguments: selectedIndoor?.toDict())
+        channel.invokeMethod("onSelectedIndoorChanged", arguments: selectedIndoor?.toMessageable())
     }
 }

@@ -12,7 +12,7 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
   /* ----- Methods ----- */
 
   Future<NPoint> getAnchor() =>
-      _getAsyncWithCast(_anchorName, NPoint._fromJson);
+      _getAsyncWithCast(_anchorName, NPoint._fromMessageable);
 
   void setAnchor(NPoint anchor) => _set(_anchorName, anchor);
 
@@ -45,17 +45,17 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
   void setIcon(NOverlayImage icon) => _set(_iconName, icon);
 
   Future<NSize> getIconSize() =>
-      _getAsyncWithCast(_iconSizeName, NSize._fromJson);
+      _getAsyncWithCast(_iconSizeName, NSize._fromMessageable);
 
   void setIconSize(NSize size) => _set(_iconSizeName, size);
 
   Future<NLatLng> getPosition() =>
-      _getAsyncWithCast(_positionName, NLatLng._fromJson);
+      _getAsyncWithCast(_positionName, NLatLng._fromMessageable);
 
   void setPosition(NLatLng position) => _set(_positionName, position);
 
   Future<NPoint> getSubAnchor() =>
-      _getAsyncWithCast(_subAnchorName, NPoint._fromJson);
+      _getAsyncWithCast(_subAnchorName, NPoint._fromMessageable);
 
   void setSubAnchor(NPoint subAnchor) =>
       _set(_subAnchorName, subAnchor.toNPayload());
@@ -63,7 +63,7 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
   void setSubIcon(NOverlayImage? icon) => _set(_subIconName, icon);
 
   Future<NSize> getSubIconSize() =>
-      _getAsyncWithCast(_subIconSizeName, NSize._fromJson);
+      _getAsyncWithCast(_subIconSizeName, NSize._fromMessageable);
 
   void setSubIconSize(NSize size) => _set(_subIconSizeName, size);
 

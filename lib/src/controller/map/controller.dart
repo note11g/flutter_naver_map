@@ -34,14 +34,14 @@ class _NaverMapControllerImpl
   @override
   Future<NCameraPosition> getCameraPosition() async {
     final rawCameraPosition = await invokeMethod("getCameraPosition");
-    return NCameraPosition._fromJson(rawCameraPosition);
+    return NCameraPosition._fromMessageable(rawCameraPosition);
   }
 
   @override
   Future<NLatLngBounds> getContentBounds({bool withPadding = false}) async {
     final rawLatLngBounds =
         await invokeMethodWithMessageableArgs("getContentBounds", withPadding);
-    return NLatLngBounds._fromJson(rawLatLngBounds);
+    return NLatLngBounds._fromMessageable(rawLatLngBounds);
   }
 
   @override
@@ -50,7 +50,7 @@ class _NaverMapControllerImpl
         await invokeMethodWithMessageableArgs("getContentRegion", withPadding)
             .then((rawList) => rawList as List);
     return listWithRawLatLng
-        .map((rawLatLng) => NLatLng._fromJson(rawLatLng))
+        .map((rawLatLng) => NLatLng._fromMessageable(rawLatLng))
         .toList();
   }
 
@@ -63,13 +63,13 @@ class _NaverMapControllerImpl
   @override
   Future<NLatLng> screenLocationToLatLng(NPoint point) {
     return invokeMethod("screenLocationToLatLng", point)
-        .then((rawLatLng) => NLatLng._fromJson(rawLatLng));
+        .then((rawLatLng) => NLatLng._fromMessageable(rawLatLng));
   }
 
   @override
   Future<NPoint> latLngToScreenLocation(NLatLng latLng) {
     return invokeMethod("latLngToScreenLocation", latLng)
-        .then((rawPoint) => NPoint._fromJson(rawPoint));
+        .then((rawPoint) => NPoint._fromMessageable(rawPoint));
   }
 
   @override
@@ -89,13 +89,13 @@ class _NaverMapControllerImpl
   @override
   Future<List<Pickable>> pickAll(NPoint point, {double radius = 0}) async {
     final rawPickables = await invokeMethodWithMessageableArgs("pickAll", {
-      "point": point.toNPayload().json,
+      "point": point.toNPayload().m,
       "radius": radius,
     }).then((rawList) => rawList as List);
 
     final List<Pickable> result = rawPickables.map((rawPickable) {
       log("rawPickable: $rawPickable");
-      return Pickable._fromJson(rawPickable,
+      return Pickable._fromMessageable(rawPickable,
           overlayController: overlayController);
     }).toList();
 
@@ -122,7 +122,7 @@ class _NaverMapControllerImpl
   Future<NLocationTrackingMode> getLocationTrackingMode() async {
     final rawLocationTrackingMode =
         await invokeMethod("getLocationTrackingMode");
-    return NLocationTrackingMode._fromJson(rawLocationTrackingMode);
+    return NLocationTrackingMode._fromMessageable(rawLocationTrackingMode);
   }
 
   @override

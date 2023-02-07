@@ -22,11 +22,11 @@ struct NPolylineOverlay: AddableOverlay {
         return polyline
     }
 
-    func toDict() -> Dictionary<String, Any?> {
+    func toMessageable() -> Dictionary<String, Any?> {
         [
-            NPolylineOverlay.infoName: info.toDict(),
+            NPolylineOverlay.infoName: info.toMessageable(),
             NPolylineOverlay.coordsName: coords.map {
-                $0.toDict()
+                $0.toMessageable()
             },
             NPolylineOverlay.colorName: color.toInt(),
             NPolylineOverlay.widthName: width,
@@ -38,10 +38,10 @@ struct NPolylineOverlay: AddableOverlay {
         ]
     }
 
-    static func fromJson(_ v: Any) -> NPolylineOverlay {
+    static func fromMessageable(_ v: Any) -> NPolylineOverlay {
         let d = asDict(v)
         return NPolylineOverlay(
-                info: NOverlayInfo.fromDict(d[infoName]!),
+                info: NOverlayInfo.fromMessageable(d[infoName]!),
                 coords: asArr(d[coordsName]!, elementCaster: asLatLng),
                 color: asUIColor(d[colorName]!),
                 width: asDouble(d[widthName]!),

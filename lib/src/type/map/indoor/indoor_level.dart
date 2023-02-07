@@ -7,8 +7,8 @@ class NIndoorLevel {
 
   NIndoorLevel._(this.name, this.hashCode);
 
-  factory NIndoorLevel._fromJson(dynamic json) =>
-      NIndoorLevel._(json["name"], json["hashCode"]);
+  factory NIndoorLevel._fromMessageable(dynamic m) =>
+      NIndoorLevel._(m["name"], m["hashCode"]);
 
   @override
   bool operator ==(Object other) {

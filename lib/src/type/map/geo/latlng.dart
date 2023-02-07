@@ -29,7 +29,7 @@ class NLatLng implements NMessageable {
   */
 
   @override
-  String toString() => "$runtimeType: ${toNPayload().json}";
+  String toString() => "$runtimeType: ${toNPayload().m}";
 
   @override
   bool operator ==(Object other) =>
@@ -45,7 +45,7 @@ class NLatLng implements NMessageable {
   @override
   NPayload toNPayload() => NPayload.make({"lat": latitude, "lng": longitude});
 
-  factory NLatLng._fromJson(dynamic json) => NLatLng(json["lat"], json["lng"]);
+  factory NLatLng._fromMessageable(dynamic m) => NLatLng(m["lat"], m["lng"]);
 
   /*
     --- static constant ---

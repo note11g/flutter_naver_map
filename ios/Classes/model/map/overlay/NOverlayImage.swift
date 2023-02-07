@@ -23,14 +23,14 @@ struct NOverlayImage {
         return img
     }
 
-    func toDict() -> Dictionary<String, Any> {
+    func toMessageable() -> Dictionary<String, Any> {
         [
             "path": path,
             "mode": mode.rawValue
         ]
     }
 
-    static func fromDict(_ v: Any) -> NOverlayImage {
+    static func fromMessageable(_ v: Any) -> NOverlayImage {
         let d = asDict(v)
         return NOverlayImage(
                 path: asString(d["path"]!),
