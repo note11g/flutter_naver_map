@@ -58,7 +58,7 @@ Widget build(BuildContext context) {
 
 ## 이슈
 
-이슈탭에서 Label = 1.0을 이용해서 이슈를 확인 / 등록 하실 수 있습니다.
+이슈탭에서 Label = 1.0을 이용해서 이슈를 확인 / 등록 하실 수 있습니다. [바로가기](https://github.com/note11g/flutter_naver_map/labels/1.0)
 
 ### TODO
 
