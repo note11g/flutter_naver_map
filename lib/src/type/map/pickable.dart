@@ -32,10 +32,10 @@ abstract class Pickable {
           overlay = NPathOverlay._fromMessageable(m);
           break;
         case NOverlayType.multipartPathOverlay:
-          overlay = NMultiPartPathOverlay._fromMessageable(m);
+          overlay = NMultipartPathOverlay._fromMessageable(m);
           break;
         case NOverlayType.arrowheadPathOverlay:
-          overlay = NArrowHeadPathOverlay._fromMessageable(m);
+          overlay = NArrowheadPathOverlay._fromMessageable(m);
           break;
         case NOverlayType.locationOverlay:
           overlay = overlayController.locationOverlay;

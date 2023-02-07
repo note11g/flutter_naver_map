@@ -1,6 +1,6 @@
 part of flutter_naver_map;
 
-class NArrowHeadPathOverlay extends NAddableOverlay<NArrowHeadPathOverlay> {
+class NArrowheadPathOverlay extends NAddableOverlay<NArrowheadPathOverlay> {
   List<NLatLng> get coords => _coords;
   List<NLatLng> _coords;
 
@@ -22,7 +22,7 @@ class NArrowHeadPathOverlay extends NAddableOverlay<NArrowHeadPathOverlay> {
   double get headSizeRatio => _headSizeRatio;
   double _headSizeRatio;
 
-  NArrowHeadPathOverlay({
+  NArrowheadPathOverlay({
     required String id,
     required List<NLatLng> coords,
     double width = 4,
@@ -79,8 +79,8 @@ class NArrowHeadPathOverlay extends NAddableOverlay<NArrowHeadPathOverlay> {
     return _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
   }
 
-  factory NArrowHeadPathOverlay._fromMessageable(dynamic m) =>
-      NArrowHeadPathOverlay(
+  factory NArrowheadPathOverlay._fromMessageable(dynamic m) =>
+      NArrowheadPathOverlay(
         id: NOverlayInfo._fromMessageable(m[_infoName]!).id,
         coords: (m[_coordsName] as List).map(NLatLng._fromMessageable).toList(),
         width: m[_widthName],

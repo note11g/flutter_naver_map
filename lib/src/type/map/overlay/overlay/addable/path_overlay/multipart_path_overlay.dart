@@ -1,6 +1,6 @@
 part of flutter_naver_map;
 
-class NMultiPartPathOverlay extends NAddableOverlay<NMultiPartPathOverlay> {
+class NMultipartPathOverlay extends NAddableOverlay<NMultipartPathOverlay> {
   List<NMultipartPath> get paths => _paths;
   List<NMultipartPath> _paths;
 
@@ -27,7 +27,7 @@ class NMultiPartPathOverlay extends NAddableOverlay<NMultiPartPathOverlay> {
   bool get isHideCollidedSymbols => _isHideCollidedSymbols;
   bool _isHideCollidedSymbols;
 
-  NMultiPartPathOverlay({
+  NMultipartPathOverlay({
     required String id,
     required List<NMultipartPath> paths,
     double width = 4,
@@ -98,8 +98,8 @@ class NMultiPartPathOverlay extends NAddableOverlay<NMultiPartPathOverlay> {
     return _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
   }
 
-  factory NMultiPartPathOverlay._fromMessageable(dynamic m) =>
-      NMultiPartPathOverlay(
+  factory NMultipartPathOverlay._fromMessageable(dynamic m) =>
+      NMultipartPathOverlay(
         id: NOverlayInfo._fromMessageable(m[_infoName]!).id,
         paths: NMultipartPath._fromMessageableList(m[_pathsName]!),
         width: m[_widthName]!,
