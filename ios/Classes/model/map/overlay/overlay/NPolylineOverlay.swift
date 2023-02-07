@@ -57,9 +57,7 @@ internal struct NPolylineOverlay: AddableOverlay {
         let polyline = overlay as! NMFPolylineOverlay
         return NPolylineOverlay(
                 info: NOverlayInfo(type: .polylineOverlay, id: id),
-                coords: polyline.line.points.map {
-                    asLatLng($0)
-                },
+                coords: polyline.line.latLngPoints,
                 color: polyline.color,
                 width: Double(polyline.width),
                 lineCap: polyline.capType,
