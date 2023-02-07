@@ -7,7 +7,7 @@ class NLatLng implements NMessageable {
 
   const NLatLng(this.latitude, this.longitude);
 
-  NLatLng offsetByMeter(double northMeter, double eastMeter) {
+  NLatLng offsetByMeter({double northMeter = 0, double eastMeter = 0}) {
     final latitude = this.latitude + MathUtil.meterToLatitude(northMeter);
     final longitude =
         this.longitude + MathUtil.meterToLongitude(eastMeter, this.latitude);
