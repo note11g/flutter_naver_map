@@ -23,7 +23,9 @@ class NPolygonOverlay extends NAddableOverlay<NPolygonOverlay> {
     List<List<NLatLng>> holes = const [],
     Color outlineColor = Colors.black,
     double outlineWidth = 0,
-  })  : _coords = coords,
+  })  : assert(coords.length >= 3),
+        assert(coords.first == coords.last),
+        _coords = coords,
         _color = color,
         _holes = holes,
         _outlineColor = outlineColor,
@@ -31,6 +33,8 @@ class NPolygonOverlay extends NAddableOverlay<NPolygonOverlay> {
         super(id: id, type: NOverlayType.polygonOverlay);
 
   void setCoords(List<NLatLng> coords) {
+    assert(coords.length >= 3);
+    assert(coords.first == coords.last);
     _coords = coords;
     _set(_coordsName, coords);
   }
@@ -63,11 +67,13 @@ class NPolygonOverlay extends NAddableOverlay<NPolygonOverlay> {
 
   factory NPolygonOverlay._fromMessageable(dynamic m) => NPolygonOverlay(
         id: NOverlayInfo._fromMessageable(m[_infoName]!).id,
-        coords:
-            (m[_coordsName] as List).map((e) => NLatLng._fromMessageable(e)).toList(),
+        coords: (m[_coordsName] as List)
+            .map((e) => NLatLng._fromMessageable(e))
+            .toList(),
         color: Color(m[_colorName] as int),
         holes: (m[_holesName] as List)
-            .map((e) => (e as List).map((e) => NLatLng._fromMessageable(e)).toList())
+            .map((e) =>
+                (e as List).map((e) => NLatLng._fromMessageable(e)).toList())
             .toList(),
         outlineColor: Color(m[_outlineColorName] as int),
         outlineWidth: m[_outlineWidthName] as double,
