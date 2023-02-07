@@ -257,6 +257,8 @@ void main() {
 
       await controller.addOverlayAll(overlaySet);
 
+      await Future.delayed(const Duration(milliseconds: 200));
+
       final nPoint = await controller.latLngToScreenLocation(nowPosition);
       final pickables1 = await controller.pickAll(nPoint, radius: 800);
       final overlays1 = pickables1.whereType<NOverlay>();
