@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
@@ -228,10 +227,12 @@ void main() {
           await controller.getCameraPosition().then((p) => p.target);
 
       final positionList = [
+        nowPosition,
         nowPosition.offsetByMeter(northMeter: 100, eastMeter: 30),
         nowPosition.offsetByMeter(northMeter: -100, eastMeter: -50),
         nowPosition.offsetByMeter(northMeter: 60, eastMeter: -50),
         nowPosition.offsetByMeter(northMeter: -60, eastMeter: 20),
+        nowPosition,
       ];
       final img = await NOverlayImage.fromWidget(
           widget: const FlutterLogo(),
@@ -250,28 +251,21 @@ void main() {
         NMultipartPathOverlay(id: "8", paths: [
           NMultipartPath(coords: positionList),
         ]),
-        NArrowheadPathOverlay(id: "9", coords: positionList),
+        // NArrowheadPathOverlay(id: "9", coords: positionList), // todo : not working on map sdk 3.16.1
+        // - see this issue : https://github.com/note11g/flutter_naver_map/issues/34
       };
 
       await controller.addOverlayAll(overlaySet);
 
-      await Future.delayed(const Duration(seconds: 2));
-
       final nPoint = await controller.latLngToScreenLocation(nowPosition);
-
       final pickables1 = await controller.pickAll(nPoint, radius: 800);
       final overlays1 = pickables1.whereType<NOverlay>();
 
       for (final overlay in overlays1) {
         print("[pickAll] $overlay");
       }
-      if (Platform.isAndroid) {
-        // todo : arrowheadPathOverlay is not working on android now.
-        // - see this issue : https://github.com/note11g/flutter_naver_map/issues/34
-        expect(overlays1.length + 1, overlaySet.length);
-      } else {
-        expect(overlays1.length, overlaySet.length);
-      }
+
+      expect(overlays1.length, overlaySet.length);
 
       await controller.clearOverlays();
 
