@@ -184,11 +184,11 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
     }
 
     func getIsVisible(_ overlay: NMFOverlay, success: (Bool) -> ()) {
-        success(overlay.hidden)
+        success(!overlay.hidden)
     }
 
     func setIsVisible(_ overlay: NMFOverlay, rawIsVisible: Any) {
-        overlay.hidden = asBool(rawIsVisible)
+        overlay.hidden = !asBool(rawIsVisible)
     }
 
     func getMinZoom(_ overlay: NMFOverlay, success: (Double) -> ()) {
