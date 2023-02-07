@@ -12,14 +12,9 @@ Plug-in which shows naver map on flutter project support Android and iOS.
 
 ---
 
-## 1.0.0 개발 관련 공지
-1.0.0 버전의 개발이 진행 중입니다.
+## 1.0.0 Dev Preview
 
-내부 설계 변경 및 새로운 기능 추가 등이 목적입니다.
-
-추가할 신기능 제안을 받고 있습니다. **[여기](https://github.com/note11g/flutter_naver_map/discussions/25)** 에서 제안해주세요!
-
-dev 브랜치에서 미리 보실 수 있습니다.
+새롭게 바뀐 1.0.0을 미리 사용해보실 수 있습니다. [바로가기](https://github.com/note11g/flutter_naver_map/tree/dev_preview)
 
 ---
 
