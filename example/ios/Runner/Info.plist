@@ -27,15 +27,13 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>111</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>111</string>
+    <string>need location permission to show user's currnet location in map</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>need location permission to show user's currnet location in map</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>need location permission to show user's currnet location in map</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>location</string>
-	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

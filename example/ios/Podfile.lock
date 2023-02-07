@@ -3,6 +3,8 @@ PODS:
   - flutter_naver_map (1.0.0):
     - Flutter
     - NMapsMap
+  - geolocator_apple (1.2.0):
+    - Flutter
   - integration_test (0.0.1):
     - Flutter
   - NMapsMap (3.16.0)
@@ -13,6 +15,7 @@ PODS:
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_naver_map (from `.symlinks/plugins/flutter_naver_map/ios`)
+  - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
 
@@ -25,6 +28,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_naver_map:
     :path: ".symlinks/plugins/flutter_naver_map/ios"
+  geolocator_apple:
+    :path: ".symlinks/plugins/geolocator_apple/ios"
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
   path_provider_foundation:
@@ -33,6 +38,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_naver_map: 8b8ad3a217af500abd18bad7483b07de0a955faf
+  geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
   integration_test: a1e7d09bd98eca2fc37aefd79d4f41ad37bdbbe5
   NMapsMap: a2593320fca2bb09e521c05b4dffee4da42e96ed
   path_provider_foundation: 37748e03f12783f9de2cb2c4eadfaa25fe6d4852
