@@ -129,7 +129,7 @@ struct NMarker: AddableOverlay {
                 iconTintColor: marker.iconTintColor,
                 alpha: marker.alpha,
                 angle: marker.angle,
-                anchor: NPoint.fromCGPoint(marker.anchor),
+                anchor: NPoint.fromCGPointWithOutDisplay(marker.anchor),
                 size: NSize(width: marker.width, height: marker.height),
                 caption: NOverlayCaption(
                         text: marker.captionText,

@@ -233,7 +233,7 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
     /* ----- LocationOverlay handler ----- */
     func getAnchor(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
         let anchor = overlay.anchor
-        success(NPoint.fromCGPoint(anchor).toMessageable())
+        success(NPoint.fromCGPointWithOutDisplay(anchor).toMessageable())
     }
 
     func setAnchor(_ overlay: NMFLocationOverlay, rawNPoint: Any) {
@@ -306,7 +306,7 @@ class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOver
     }
 
     func getSubAnchor(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
-        success(NPoint.fromCGPoint(overlay.subAnchor).toMessageable())
+        success(NPoint.fromCGPointWithOutDisplay(overlay.subAnchor).toMessageable())
     }
 
     func setSubAnchor(_ overlay: NMFLocationOverlay, rawNPoint: Any) {

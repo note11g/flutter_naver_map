@@ -58,7 +58,7 @@ class NaverMapController: NaverMapControlSender, NaverMapControlHandler {
 
     func latLngToScreenLocation(latLng: NMGLatLng, onSuccess: @escaping (Dictionary<String, Any>) -> ()) {
         let point = mapView.projection.point(from: latLng)
-        onSuccess(NPoint.fromCGPoint(point).toMessageable())
+        onSuccess(NPoint.fromCGPointWithDisplay(point).toMessageable())
     }
 
     func getMeterPerDp(lat: Double?, zoom: Double?, onSuccess: @escaping (Double) -> ()) {

@@ -12,7 +12,7 @@ class NaverMapViewEventDelegate: NSObject, NMFMapViewTouchDelegate, NMFMapViewCa
     }
 
     func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
-        sender?.onMapTapped(nPoint: NPoint.fromCGPoint(point), latLng: latlng)
+        sender?.onMapTapped(nPoint: NPoint.fromCGPointWithDisplay(point), latLng: latlng)
     }
 
     func mapView(_ mapView: NMFMapView, didTap symbol: NMFSymbol) -> Bool {

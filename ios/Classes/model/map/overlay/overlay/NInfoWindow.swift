@@ -54,7 +54,7 @@ struct NInfoWindow: AddableOverlay {
         return NInfoWindow(
                 info: NOverlayInfo(type: .infoWindow, id: id),
                 text: "",
-                anchor: NPoint.fromCGPoint(infoWindow.anchor),
+                anchor: NPoint.fromCGPointWithOutDisplay(infoWindow.anchor),
                 alpha: infoWindow.alpha,
                 position: infoWindow.position,
                 offsetX: Double(infoWindow.offsetX),
