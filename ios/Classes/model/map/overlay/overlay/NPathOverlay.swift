@@ -1,6 +1,6 @@
 import NMapsMap
 
-struct NPathOverlay: AddableOverlay {
+internal struct NPathOverlay: AddableOverlay {
     typealias OverlayType = NMFPath
 
     let info: NOverlayInfo

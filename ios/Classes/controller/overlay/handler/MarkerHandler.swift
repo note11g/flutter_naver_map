@@ -1,6 +1,6 @@
 import NMapsMap
 
-protocol MarkerHandler: OverlayHandler {
+internal protocol MarkerHandler: OverlayHandler {
     func hasOpenInfoWindow(_ marker: NMFMarker, success: (_ hasOpenInfoWindow: Bool) -> Void)
 
     func openInfoWindow(_ marker: NMFMarker, rawInfoWindow: Any, rawAlign: Any, success: (Any?) -> Void)
@@ -44,7 +44,7 @@ protocol MarkerHandler: OverlayHandler {
     func setIsHideCollidedSymbols(_ marker: NMFMarker, rawHideCollidedSymbols: Any)
 }
 
-extension MarkerHandler {
+internal extension  MarkerHandler {
     func handleMarker(marker: NMFMarker,
                       method: String,
                       args: Any?,

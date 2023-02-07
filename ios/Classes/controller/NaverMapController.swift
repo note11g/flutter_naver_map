@@ -1,6 +1,6 @@
 import NMapsMap
 
-class NaverMapController: NaverMapControlSender, NaverMapControlHandler {
+internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler {
     private let naverMap: NMFNaverMapView!
     private let channel: FlutterMethodChannel
     private let overlayController: OverlayHandler

@@ -26,15 +26,15 @@ public class SwiftFlutterNaverMapPlugin: NSObject, FlutterPlugin {
 
     private static let SEPARATE_STRING = "#"
 
-    public static func createViewMethodChannelName(id: Int64) -> String {
+    internal static func createViewMethodChannelName(id: Int64) -> String {
         "\(MAP_VIEW_TYPE_ID)\(SEPARATE_STRING)\(id)"
     }
 
-    public static func createOverlayMethodChannelName(id: Int64) -> String {
+    internal static func createOverlayMethodChannelName(id: Int64) -> String {
         "\(OVERLAY_CHANNEL_NAME)\(SEPARATE_STRING)\(id)"
     }
 
-    public static func getAssets(path: String) -> String {
+    internal static func getAssets(path: String) -> String {
         registrar.lookupKey(forAsset: path)
     }
 }

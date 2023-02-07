@@ -1,6 +1,6 @@
 import NMapsMap
 
-struct NOverlayImage {
+internal struct NOverlayImage {
     let path: String
     let mode: NOverlayImageMode
 

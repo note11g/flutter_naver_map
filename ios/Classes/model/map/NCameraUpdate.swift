@@ -1,6 +1,6 @@
 import NMapsMap
 
-struct NCameraUpdate {
+internal struct NCameraUpdate {
     let signature: String
     let target: NMGLatLng?
     let zoom: Double?

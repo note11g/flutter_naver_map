@@ -1,6 +1,6 @@
 import NMapsMap
 
-protocol PathOverlayHandler: OverlayHandler {
+internal protocol PathOverlayHandler: OverlayHandler {
     func setCoords(_ pathOverlay: NMFPath, rawCoords: Any)
 
     func setWidth(_ pathOverlay: NMFPath, rawWidthDp: Any)
@@ -30,7 +30,7 @@ protocol PathOverlayHandler: OverlayHandler {
     func getBounds(_ pathOverlay: NMFPath, success: (_ bounds: Dictionary<String, Any>) -> Void)
 }
 
-extension PathOverlayHandler {
+internal extension  PathOverlayHandler {
     func handlePathOverlay(pathOverlay: NMFPath,
                            method: String,
                            args: Any?,

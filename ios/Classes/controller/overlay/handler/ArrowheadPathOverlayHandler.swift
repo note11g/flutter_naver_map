@@ -1,6 +1,6 @@
 import NMapsMap
 
-protocol ArrowheadPathOverlayHandler: OverlayHandler {
+internal protocol ArrowheadPathOverlayHandler: OverlayHandler {
     func setCoords(_ arrowheadPathOverlay: NMFArrowheadPath, rawCoords: Any)
 
     func setWidth(_ arrowheadPathOverlay: NMFArrowheadPath, rawWidth: Any)
@@ -18,7 +18,7 @@ protocol ArrowheadPathOverlayHandler: OverlayHandler {
     func getBounds(_ arrowheadPathOverlay: NMFArrowheadPath, success: (_ bounds: Dictionary<String, Any>) -> Void)
 }
 
-extension ArrowheadPathOverlayHandler {
+internal extension  ArrowheadPathOverlayHandler {
     func handleArrowheadPathOverlay(
             arrowheadPathOverlay: NMFArrowheadPath,
             method: String,

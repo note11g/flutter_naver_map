@@ -1,6 +1,6 @@
 import NMapsMap
 
-protocol NaverMapControlSender {
+internal protocol NaverMapControlSender {
     func onMapReady()
 
     func onMapTapped(nPoint: NPoint, latLng: NMGLatLng)

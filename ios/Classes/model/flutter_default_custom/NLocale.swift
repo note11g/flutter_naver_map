@@ -1,4 +1,4 @@
-struct NLocale {
+internal struct NLocale {
     let languageCode: String
     let countryCode: String?
 

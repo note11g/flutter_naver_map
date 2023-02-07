@@ -1,6 +1,6 @@
 import NMapsMap
 
-class SdkInitializer: NSObject, NMFAuthManagerDelegate {
+internal class SdkInitializer: NSObject, NMFAuthManagerDelegate {
     let channel: FlutterMethodChannel
 
     init(channel: FlutterMethodChannel) {

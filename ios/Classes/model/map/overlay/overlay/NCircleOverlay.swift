@@ -1,6 +1,6 @@
 import NMapsMap
 
-struct NCircleOverlay: AddableOverlay {
+internal struct NCircleOverlay: AddableOverlay {
     typealias OverlayType = NMFCircleOverlay
     let info: NOverlayInfo
     let center: NMGLatLng

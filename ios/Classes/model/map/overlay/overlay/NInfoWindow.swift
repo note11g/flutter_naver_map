@@ -1,6 +1,6 @@
 import NMapsMap
 
-struct NInfoWindow: AddableOverlay {
+internal struct NInfoWindow: AddableOverlay {
     typealias OverlayType = NMFInfoWindow
 
     let info: NOverlayInfo

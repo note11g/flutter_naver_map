@@ -1,6 +1,6 @@
 import NMapsMap
 
-struct NOverlayInfo {
+internal struct NOverlayInfo {
     let type: NOverlayType
     let id: String
     let method: String?

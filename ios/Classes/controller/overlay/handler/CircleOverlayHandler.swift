@@ -1,6 +1,6 @@
 import NMapsMap
 
-protocol CircleOverlayHandler: OverlayHandler {
+internal protocol CircleOverlayHandler: OverlayHandler {
     func setCenter(_ circleOverlay: NMFCircleOverlay, rawCenter: Any)
 
     func setRadius(_ circleOverlay: NMFCircleOverlay, rawRadius: Any)
@@ -14,7 +14,7 @@ protocol CircleOverlayHandler: OverlayHandler {
     func getBounds(_ circleOverlay: NMFCircleOverlay, result: (_ bounds: Dictionary<String, Any>) -> Void)
 }
 
-extension CircleOverlayHandler {
+internal extension  CircleOverlayHandler {
     func handleCircleOverlay(circleOverlay: NMFCircleOverlay,
                              method: String,
                              args: Any?,

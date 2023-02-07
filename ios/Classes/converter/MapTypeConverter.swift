@@ -4,18 +4,18 @@ import NMapsMap
 /*
   --- Objects ---
 */
-func asLatLng(_ v: Any) -> NMGLatLng {
+internal func asLatLng(_ v: Any) -> NMGLatLng {
     let d = asDict(v, valueCaster: asDouble)
     return NMGLatLng(lat: d["lat"]!, lng: d["lng"]!)
 }
 
-extension NMGLatLng {
+internal extension NMGLatLng {
     func toMessageable() -> Dictionary<String, Any> {
         ["lat": lat, "lng": lng]
     }
 }
 
-func asLatLngBounds(_ v: Any) -> NMGLatLngBounds {
+internal func asLatLngBounds(_ v: Any) -> NMGLatLngBounds {
     let d = asDict(v, valueCaster: asLatLng)
     return NMGLatLngBounds.init(
             southWest: d["southWest"]!,
@@ -23,7 +23,7 @@ func asLatLngBounds(_ v: Any) -> NMGLatLngBounds {
     )
 }
 
-extension NMGLatLngBounds {
+internal extension NMGLatLngBounds {
     func toMessageable() -> Dictionary<String, Any> {
         [
             "southWest": southWest.toMessageable(),
@@ -32,7 +32,7 @@ extension NMGLatLngBounds {
     }
 }
 
-func asCameraPosition(_ v: Any) -> NMFCameraPosition {
+internal func asCameraPosition(_ v: Any) -> NMFCameraPosition {
     let d = asDict(v)
     return NMFCameraPosition.init(
             asLatLng(d["target"]!),
@@ -42,7 +42,7 @@ func asCameraPosition(_ v: Any) -> NMFCameraPosition {
     )
 }
 
-extension NMFCameraPosition {
+internal extension NMFCameraPosition {
     func toMessageable() -> Dictionary<String, Any> {
         [
             "target": target.toMessageable(),
@@ -53,7 +53,7 @@ extension NMFCameraPosition {
     }
 }
 
-extension NMFSymbol {
+internal extension NMFSymbol {
     func toMessageable() -> Dictionary<String, Any> {
         [
             "caption": caption ?? "",
@@ -63,7 +63,7 @@ extension NMFSymbol {
     }
 }
 
-extension NMFIndoorSelection {
+internal extension NMFIndoorSelection {
     func toMessageable() -> Dictionary<String, Any> {
         [
             "levelIndex": levelIndex,
@@ -73,7 +73,7 @@ extension NMFIndoorSelection {
     }
 }
 
-extension NMFIndoorRegion {
+internal extension NMFIndoorRegion {
     func toMessageable() -> Dictionary<String, Any> {
         [
             "zones": zones.map { (zone) in
@@ -83,7 +83,7 @@ extension NMFIndoorRegion {
     }
 }
 
-extension NMFIndoorZone {
+internal extension NMFIndoorZone {
     func toMessageable() -> Dictionary<String, Any> {
         [
             "id": zoneId,
@@ -95,7 +95,7 @@ extension NMFIndoorZone {
     }
 }
 
-extension NMFIndoorLevel {
+internal extension NMFIndoorLevel {
     func toMessageable() -> Dictionary<String, Any> {
         [
             "name": name,
@@ -104,12 +104,12 @@ extension NMFIndoorLevel {
     }
 }
 
-func asNMGLineString(rawArr: Any) -> NMGLineString<AnyObject> {
+internal func asNMGLineString(rawArr: Any) -> NMGLineString<AnyObject> {
     let points = asArr(rawArr, elementCaster: asLatLng)
     return NMGLineString(points: points)
 }
 
-extension NMGLineString<AnyObject> {
+internal extension NMGLineString<AnyObject> {
     var latLngPoints: Array<NMGLatLng> {
         (self as! NMGLineString<NMGPointable>).points.map { (point: NMGPointable) in
             point.toLatLng!()
@@ -121,7 +121,7 @@ extension NMGLineString<AnyObject> {
   --- Enums ---
 */
 
-func asCameraAnimation(_ v: Any) -> NMFCameraUpdateAnimation {
+internal func asCameraAnimation(_ v: Any) -> NMFCameraUpdateAnimation {
     switch asString(v) {
     case "easing": return .easeIn
     case "fly": return .fly
@@ -130,7 +130,7 @@ func asCameraAnimation(_ v: Any) -> NMFCameraUpdateAnimation {
     }
 }
 
-func asMapType(_ v: Any) -> NMFMapType {
+internal func asMapType(_ v: Any) -> NMFMapType {
     switch asString(v) {
     case "basic": return .basic
     case "hybrid": return .hybrid
@@ -141,7 +141,7 @@ func asMapType(_ v: Any) -> NMFMapType {
     }
 }
 
-func asLocationTrackingMode(_ v: Any) -> NMFMyPositionMode {
+internal func asLocationTrackingMode(_ v: Any) -> NMFMyPositionMode {
     switch asString(v) {
     case "face": return .compass
     case "follow": return .direction
@@ -150,7 +150,7 @@ func asLocationTrackingMode(_ v: Any) -> NMFMyPositionMode {
     }
 }
 
-extension NMFMyPositionMode {
+internal extension NMFMyPositionMode {
     func toMessageableString() -> String {
         switch self {
         case .compass: return "face"
@@ -162,7 +162,7 @@ extension NMFMyPositionMode {
     }
 }
 
-func asAlign(_ v: Any) throws -> NMFAlignType {
+internal func asAlign(_ v: Any) throws -> NMFAlignType {
     switch asString(v) {
     case "center": return .center
     case "left": return .left
@@ -177,7 +177,7 @@ func asAlign(_ v: Any) throws -> NMFAlignType {
     }
 }
 
-extension NMFAlignType {
+internal extension NMFAlignType {
     func toMessageableString() -> String {
         switch self {
         case .center: return "center"
@@ -194,7 +194,7 @@ extension NMFAlignType {
     }
 }
 
-func asLogoAlign(_ v: Any) -> NMFLogoAlign {
+internal func asLogoAlign(_ v: Any) -> NMFLogoAlign {
     switch asString(v) {
     case "leftBottom": return .leftBottom
     case "rightBottom": return .rightBottom
@@ -204,7 +204,7 @@ func asLogoAlign(_ v: Any) -> NMFLogoAlign {
     }
 }
 
-func asLineCap(_ v: Any) -> NMFOverlayLineCap {
+internal func asLineCap(_ v: Any) -> NMFOverlayLineCap {
     switch asString(v) {
     case "butt": return .butt
     case "round": return .round
@@ -213,7 +213,7 @@ func asLineCap(_ v: Any) -> NMFOverlayLineCap {
     }
 }
 
-extension NMFOverlayLineCap {
+internal extension NMFOverlayLineCap {
     func toMessageableString() -> String {
         switch self {
         case .butt: return "butt"
@@ -224,7 +224,7 @@ extension NMFOverlayLineCap {
     }
 }
 
-func asLineJoin(_ v: Any) -> NMFOverlayLineJoin {
+internal func asLineJoin(_ v: Any) -> NMFOverlayLineJoin {
     switch asString(v) {
     case "bevel": return .bevel
     case "miter": return .miter
@@ -233,7 +233,7 @@ func asLineJoin(_ v: Any) -> NMFOverlayLineJoin {
     }
 }
 
-extension NMFOverlayLineJoin {
+internal extension NMFOverlayLineJoin {
     func toMessageableString() -> String {
         switch self {
         case .bevel: return "bevel"
@@ -248,11 +248,11 @@ extension NMFOverlayLineJoin {
   --- Color ---
 */
 
-func asUIColor(_ v: Any) -> UIColor {
+internal func asUIColor(_ v: Any) -> UIColor {
     UIColor(argb: asInt(v))
 }
 
-extension UIColor {
+internal extension UIColor {
     convenience init(argb: Int) {
         let a = CGFloat((argb >> 24) & 0xff) / 255.0
         let r = CGFloat((argb >> 16) & 0xff) / 255.0

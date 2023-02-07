@@ -1,4 +1,4 @@
-class NaverMapFactory: NSObject, FlutterPlatformViewFactory {
+internal class NaverMapFactory: NSObject, FlutterPlatformViewFactory {
     private let messenger: FlutterBinaryMessenger
 
     init(messenger: FlutterBinaryMessenger) {

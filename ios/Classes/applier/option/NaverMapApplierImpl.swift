@@ -1,6 +1,6 @@
 import NMapsMap
 
-class NaverMapApplierImpl: NaverMapOptionApplier {
+internal class NaverMapApplierImpl: NaverMapOptionApplier {
     private let isFirst: Bool
     private let naverMapView: NMFNaverMapView
     private var mapView: NMFMapView {

@@ -1,6 +1,6 @@
 import NMapsMap
 
-struct NGroundOverlay: AddableOverlay {
+internal struct NGroundOverlay: AddableOverlay {
     typealias OverlayType = NMFGroundOverlay
 
     let info: NOverlayInfo

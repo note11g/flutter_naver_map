@@ -1,6 +1,6 @@
 import NMapsMap
 
-struct NMarker: AddableOverlay {
+internal struct NMarker: AddableOverlay {
     typealias OverlayType = NMFMarker
 
     let info: NOverlayInfo

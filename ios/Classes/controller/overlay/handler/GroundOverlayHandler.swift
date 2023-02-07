@@ -1,6 +1,6 @@
 import NMapsMap
 
-protocol GroundOverlayHandler: OverlayHandler {
+internal protocol GroundOverlayHandler: OverlayHandler {
     func setBounds(_ groundOverlay: NMFGroundOverlay, rawBounds: Any)
 
     func setImage(_ groundOverlay: NMFGroundOverlay, rawNOverlayImage: Any)
@@ -8,7 +8,7 @@ protocol GroundOverlayHandler: OverlayHandler {
     func setAlpha(_ groundOverlay: NMFGroundOverlay, rawAlpha: Any)
 }
 
-extension GroundOverlayHandler {
+internal extension  GroundOverlayHandler {
     func handleGroundOverlay(groundOverlay: NMFGroundOverlay,
                              method: String,
                              args: Any?,

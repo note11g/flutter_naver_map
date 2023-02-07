@@ -1,4 +1,4 @@
-protocol NaverMapOptionApplier {
+internal protocol NaverMapOptionApplier {
     func setInitialCameraPosition(_ rawPosition: Any)
     func setExtent(_ rawLatLngBounds: Any)
     func setMapType(_ rawMapType: Any)

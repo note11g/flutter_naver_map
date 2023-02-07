@@ -1,6 +1,6 @@
 import NMapsMap
 
-struct NPolygonOverlay: AddableOverlay {
+internal struct NPolygonOverlay: AddableOverlay {
     typealias OverlayType = NMFPolygonOverlay
 
     let info: NOverlayInfo

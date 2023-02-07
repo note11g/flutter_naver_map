@@ -1,6 +1,6 @@
 import NMapsMap
 
-protocol InfoWindowHandler: OverlayHandler {
+internal protocol InfoWindowHandler: OverlayHandler {
         func setText(_ infoWindow: NMFInfoWindow, rawText: Any)
 
         func setAnchor(_ infoWindow: NMFInfoWindow, rawNPoint: Any)
@@ -16,7 +16,7 @@ protocol InfoWindowHandler: OverlayHandler {
         func close(_ infoWindow: NMFInfoWindow)
 }
 
-extension InfoWindowHandler {
+internal extension  InfoWindowHandler {
     func handleInfoWindow(infoWindow: NMFInfoWindow,
                              method: String,
                              args: Any?,

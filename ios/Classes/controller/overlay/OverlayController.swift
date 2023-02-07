@@ -1,6 +1,6 @@
 import NMapsMap
 
-class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOverlayHandler, GroundOverlayHandler, InfoWindowHandler, LocationOverlayHandler, MarkerHandler, MultipartPathOverlayHandler, PathOverlayHandler, PolygonOverlayHandler, PolylineOverlayHandler {
+internal class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOverlayHandler, GroundOverlayHandler, InfoWindowHandler, LocationOverlayHandler, MarkerHandler, MultipartPathOverlayHandler, PathOverlayHandler, PolygonOverlayHandler, PolylineOverlayHandler {
 
     private let channel: FlutterMethodChannel
 

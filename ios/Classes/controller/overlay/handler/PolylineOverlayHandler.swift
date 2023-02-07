@@ -1,6 +1,6 @@
 import NMapsMap
 
-protocol PolylineOverlayHandler: OverlayHandler {
+internal protocol PolylineOverlayHandler: OverlayHandler {
     func setCoords(_ polylineOverlay: NMFPolylineOverlay, rawCoords: Any)
 
     func setColor(_ polylineOverlay: NMFPolylineOverlay, rawColor: Any)
@@ -16,7 +16,7 @@ protocol PolylineOverlayHandler: OverlayHandler {
     func getBounds(_ polylineOverlay: NMFPolylineOverlay, success: (_ bounds: Dictionary<String, Any>) -> Void)
 }
 
-extension PolylineOverlayHandler {
+internal extension  PolylineOverlayHandler {
     func handlePolylineOverlay(polylineOverlay: NMFPolylineOverlay,
                                method: String,
                                args: Any?,

@@ -1,6 +1,6 @@
 import NMapsMap
 
-protocol OverlayHandler {
+internal protocol OverlayHandler {
     func hasOverlay(info: NOverlayInfo) -> Bool
 
     func saveOverlay(overlay: NMFOverlay, info: NOverlayInfo)
@@ -70,7 +70,7 @@ private let isMaxZoomInclusiveName = "isMaxZoomInclusive"
 private let performClickName = "performClick"
 let onTapName = "onTap"
 
-extension OverlayHandler {
+internal extension  OverlayHandler {
     func handleOverlay(
             overlay: NMFOverlay,
             method: String,

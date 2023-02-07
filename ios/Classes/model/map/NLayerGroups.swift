@@ -1,6 +1,6 @@
 import NMapsMap
 
-struct NLayerGroups {
+internal struct NLayerGroups {
     let groups: Set<String>
 
     func useWithEnableAndDisableGroups(fun: (_ enableGroups: Set<String>, _ disableGroups: Set<String>) -> Void) {

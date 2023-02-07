@@ -1,4 +1,4 @@
-struct NOverlayCaption {
+internal struct NOverlayCaption {
     let text: String
     let textSize: CGFloat
     let color: UIColor

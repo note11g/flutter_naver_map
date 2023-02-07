@@ -1,6 +1,6 @@
 import NMapsMap
 
-class NaverMapView: NSObject, FlutterPlatformView {
+internal class NaverMapView: NSObject, FlutterPlatformView {
     private let naverMap: NMFNaverMapView!
     private let naverMapViewOptions: NaverMapViewOptions
     private let naverMapControlSender: NaverMapControlSender

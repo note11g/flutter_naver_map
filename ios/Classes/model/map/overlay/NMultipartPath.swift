@@ -1,6 +1,6 @@
 import NMapsMap
 
-struct NMultipartPath {
+internal struct NMultipartPath {
     let coords: Array<NMGLatLng>
     let color: UIColor
     let outlineColor: UIColor
@@ -50,7 +50,7 @@ struct NMultipartPath {
     }
 }
 
-extension Array<NMultipartPath> {
+internal extension  Array<NMultipartPath> {
     func applyLineAndColor(linePartsFun: (Array<NMGLineString<AnyObject>>) -> Void, colorPartsFun: (Array<NMFPathColor>) -> Void) {
         var coords: Array<NMGLineString<AnyObject>> = []
         var colors: Array<NMFPathColor> = []

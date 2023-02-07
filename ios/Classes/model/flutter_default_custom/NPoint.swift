@@ -1,4 +1,4 @@
-struct NPoint {
+internal struct NPoint {
     let x, y: Double
 
     var cgPoint: CGPoint {

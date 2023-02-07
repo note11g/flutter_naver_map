@@ -1,4 +1,4 @@
-extension NaverMapOptionApplier {
+internal extension  NaverMapOptionApplier {
     func applyOptions(args: Dictionary<String, Any>) throws {
         for (funcName, arg) in args {
             let fun = ApplyUtil.optionApplyFuncMap[funcName]?(self)
@@ -11,7 +11,7 @@ extension NaverMapOptionApplier {
     }
 }
 
-class ApplyUtil {
+internal class ApplyUtil {
     static let optionApplyFuncMap: Dictionary<String, (NaverMapOptionApplier) -> (Any) -> Void> = [
         "initialCameraPosition": {
             $0.setInitialCameraPosition

@@ -1,4 +1,4 @@
-struct NSize {
+internal struct NSize {
     let width, height: CGFloat
 
     func use(widthFun: (CGFloat) -> Void, heightFun: (CGFloat) -> Void) {

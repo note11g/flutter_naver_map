@@ -1,6 +1,6 @@
 import NMapsMap
 
-class NaverMapViewEventDelegate: NSObject, NMFMapViewTouchDelegate, NMFMapViewCameraDelegate, NMFIndoorSelectionDelegate {
+internal class NaverMapViewEventDelegate: NSObject, NMFMapViewTouchDelegate, NMFMapViewCameraDelegate, NMFIndoorSelectionDelegate {
     private weak var sender: NaverMapController?
 
     private let initializeConsumeSymbolTapEvents: Bool

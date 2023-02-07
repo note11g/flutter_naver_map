@@ -1,6 +1,6 @@
 import NMapsMap
 
-protocol AddableOverlay {
+internal protocol AddableOverlay {
     associatedtype OverlayType: NMFOverlay
 
     var info: NOverlayInfo { get }

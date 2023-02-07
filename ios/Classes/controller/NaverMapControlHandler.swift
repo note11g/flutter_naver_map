@@ -1,6 +1,6 @@
 import NMapsMap
 
-protocol NaverMapControlHandler {
+internal protocol NaverMapControlHandler {
     func updateCamera(cameraUpdate: NMFCameraUpdate, onSuccess: @escaping (_ isCanceled: Bool) -> Void)
 
     func cancelTransitions(reason: Int, onSuccess: @escaping (Any?) -> Void)
@@ -47,7 +47,7 @@ protocol NaverMapControlHandler {
     func updateOptions(options: Dictionary<String, Any>, onSuccess: @escaping (Any?) -> Void)
 }
 
-extension NaverMapControlHandler {
+internal extension  NaverMapControlHandler {
     func handle(call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
         case "updateCamera": updateCamera(

@@ -1,6 +1,6 @@
 import NMapsMap
 
-protocol LocationOverlayHandler: OverlayHandler {
+internal protocol LocationOverlayHandler: OverlayHandler {
     func getAnchor(_ overlay: NMFLocationOverlay, success: (_ nPoint: Dictionary<String, Any>) -> Void)
 
     func setAnchor(_ overlay: NMFLocationOverlay, rawNPoint: Any)
@@ -59,7 +59,7 @@ private let subAnchorName = "subAnchor"
 private let subIconName = "subIcon"
 private let subIconSizeName = "subIconSize"
 
-extension LocationOverlayHandler {
+internal extension  LocationOverlayHandler {
     func handleLocationOverlay(locationOverlay: NMFLocationOverlay,
                                method: String,
                                args: Any?,

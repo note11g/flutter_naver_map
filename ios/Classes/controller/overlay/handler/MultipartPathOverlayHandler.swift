@@ -1,6 +1,6 @@
 import NMapsMap
 
-protocol MultipartPathOverlayHandler: OverlayHandler {
+internal protocol MultipartPathOverlayHandler: OverlayHandler {
     func setPaths(_ multipartPathOverlay: NMFMultipartPath, rawPaths: Any)
 
     func setWidth(_ multipartPathOverlay: NMFMultipartPath, rawWidthDp: Any)
@@ -22,7 +22,7 @@ protocol MultipartPathOverlayHandler: OverlayHandler {
     func getBounds(_ multipartPathOverlay: NMFMultipartPath, success: (_ bounds: Dictionary<String, Any>) -> Void)
 }
 
-extension MultipartPathOverlayHandler {
+internal extension  MultipartPathOverlayHandler {
     func handleMultipartPathOverlay(multipartPathOverlay: NMFMultipartPath,
                                     method: String,
                                     args: Any?,

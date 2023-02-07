@@ -1,4 +1,4 @@
-struct NEdgeInsets {
+internal struct NEdgeInsets {
     let left: CGFloat
     let top: CGFloat
     let right: CGFloat

@@ -1,6 +1,6 @@
 import NMapsMap
 
-struct NaverMapViewOptions {
+internal struct NaverMapViewOptions {
     private let args: Dictionary<String, Any>
     let consumeSymbolTapEvents: Bool
 
