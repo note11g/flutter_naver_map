@@ -1,5 +1,7 @@
 # flutter_naver_map 1.0 Dev Preview
 
+now version : 1.0.0-dev.2
+
 현재 이슈가 없는 모든 기능을 이용하실 수 있습니다.
 
 플러터 3.0 이상, dart 2.18.4 이상을 사용하셔야 합니다.
@@ -48,6 +50,14 @@ Widget build(BuildContext context) {
 }
 ```
 
+### 내장 위치 추적 기능
+
+내장 위치 추적 기능의 경우, 따로 권한을 요청하는 기능이 존재하지 않습니다.
+
+따라서, 외부 패키지([geolocator](https://pub.dev/packages/geolocator)
+, [https://pub.dev/packages/permission_handler](https://pub.dev/packages/permission_handler)등)를 이용하여
+권한을 요청하시기 바랍니다.
+
 ## 참고사항
 
 이전 버전 (0.10)과 하위 호환성이 보장되지 않습니다.
@@ -58,7 +68,8 @@ Widget build(BuildContext context) {
 
 ## 이슈
 
-이슈탭에서 Label = 1.0을 이용해서 이슈를 확인 / 등록 하실 수 있습니다. [바로가기](https://github.com/note11g/flutter_naver_map/labels/1.0)
+이슈탭에서 Label = 1.0을 이용해서 이슈를 확인 / 등록 하실 수
+있습니다. [바로가기](https://github.com/note11g/flutter_naver_map/labels/1.0)
 
 ### TODO
 

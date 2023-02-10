@@ -15,6 +15,9 @@ import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapControl
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
+import dev.note11.flutter_naver_map.flutter_naver_map.util.NLocationSource
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 
@@ -52,7 +55,7 @@ internal class NaverMapView(
     }
 
     private fun setLocationSource() {
-        naverMap.locationSource = FusedLocationSource(activity, LOCATION_PERMISSION_REQUEST_CODE)
+        naverMap.locationSource = NLocationSource(activity)
     }
 
     private fun setMapTapListener() {
