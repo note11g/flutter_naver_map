@@ -165,7 +165,7 @@ class TestPageState extends State<TestPage> {
     if (permission == LocationPermission.denied) {
       final requestPermission = await Geolocator.requestPermission();
       if (requestPermission == LocationPermission.denied) {
-        // throw Exception("위치 권한이 없습니다.");
+        // 권한이 거절 됨
       }
     }
   }
