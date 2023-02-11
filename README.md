@@ -55,7 +55,7 @@ Widget build(BuildContext context) {
 내장 위치 추적 기능의 경우, 따로 권한을 요청하는 기능이 존재하지 않습니다.
 
 따라서, 외부 패키지([geolocator](https://pub.dev/packages/geolocator)
-, [https://pub.dev/packages/permission_handler](https://pub.dev/packages/permission_handler)등)를 이용하여
+, [permission_handler](https://pub.dev/packages/permission_handler) 등)를 이용하여
 권한을 요청하시기 바랍니다.
 
 ## 참고사항
