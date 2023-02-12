@@ -1,6 +1,6 @@
 part of flutter_naver_map;
 
-class NOverlayImage implements NMessageable {
+class NOverlayImage with NMessageableWithMap {
   final String _path;
   final _NOverlayImageMode _mode;
 
@@ -42,8 +42,7 @@ class NOverlayImage implements NMessageable {
     );
 
     if (nOverlayImage != _none) {
-      throw NUnknownTypeCastException(
-          unknownValue: nOverlayImage.toNPayload().m.toString());
+      throw NUnknownTypeCastException(unknownValue: nOverlayImage.toString());
     }
 
     return _none;

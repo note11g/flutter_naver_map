@@ -1,6 +1,6 @@
 part of flutter_naver_map;
 
-class NOverlayCaption implements NMessageable {
+class NOverlayCaption with NMessageableWithMap {
   final String text;
 
   final double textSize;

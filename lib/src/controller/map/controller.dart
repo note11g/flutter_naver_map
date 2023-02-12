@@ -28,7 +28,7 @@ class _NaverMapControllerImpl
   @override
   Future<void> cancelTransitions(
       {NCameraUpdateReason reason = NCameraUpdateReason.developer}) async {
-    await invokeMethodWithEnum("cancelTransitions", reason);
+    await invokeMethod("cancelTransitions", reason);
   }
 
   @override
@@ -39,19 +39,17 @@ class _NaverMapControllerImpl
 
   @override
   Future<NLatLngBounds> getContentBounds({bool withPadding = false}) async {
-    final rawLatLngBounds =
-        await invokeMethodWithMessageableArgs("getContentBounds", withPadding);
+    final messageable = NMessageable.forOnce(withPadding);
+    final rawLatLngBounds = await invokeMethod("getContentBounds", messageable);
     return NLatLngBounds._fromMessageable(rawLatLngBounds);
   }
 
   @override
   Future<List<NLatLng>> getContentRegion({bool withPadding = false}) async {
-    final listWithRawLatLng =
-        await invokeMethodWithMessageableArgs("getContentRegion", withPadding)
-            .then((rawList) => rawList as List);
-    return listWithRawLatLng
-        .map((rawLatLng) => NLatLng._fromMessageable(rawLatLng))
-        .toList();
+    final messageable = NMessageable.forOnce(withPadding);
+    final rawLatLngs = await invokeMethod("getContentRegion", messageable)
+        .then((rawList) => rawList as List);
+    return rawLatLngs.map(NLatLng._fromMessageable).toList();
   }
 
   @override
@@ -74,42 +72,45 @@ class _NaverMapControllerImpl
 
   @override
   Future<double> getMeterPerDp({double? latitude, double? zoom}) {
-    return invokeMethodWithMessageableArgs("getMeterPerDp", {
+    final messageable = NMessageable.forOnceWithMap({
       "latitude": latitude,
       "zoom": zoom,
-    }).then((value) => value as double);
+    });
+    return invokeMethod("getMeterPerDp", messageable)
+        .then((value) => value as double);
   }
 
   @override
   Future<List<Pickable>> pickAll(NPoint point, {double radius = 0}) async {
-    final rawPickables = await invokeMethodWithMessageableArgs("pickAll", {
-      "point": point.toNPayload().m,
+    final messageable = NMessageable.forOnceWithMap({
+      "point": point,
       "radius": radius,
-    }).then((rawList) => rawList as List);
+    });
+    final rawPickables = await invokeMethod("pickAll", messageable)
+        .then((rawList) => rawList as List);
 
-    final List<Pickable> result = rawPickables.map((rawPickable) {
-      log("rawPickable: $rawPickable");
-      return Pickable._fromMessageable(rawPickable,
-          overlayController: overlayController);
-    }).toList();
-
+    final List<Pickable> result = rawPickables
+        .map((rawPickable) => Pickable._fromMessageable(rawPickable,
+            overlayController: overlayController))
+        .toList();
     return result;
   }
 
   @override
   Future<File> takeSnapshot(
       {bool showControls = true, int compressQuality = 80}) async {
-    final rawPath = await invokeMethodWithMessageableArgs("takeSnapshot", {
+    final messageable = NMessageable.forOnceWithMap({
       "showControls": showControls,
       "compressQuality": compressQuality,
     });
-    final path = rawPath as String;
+    final path = await invokeMethod("takeSnapshot", messageable)
+        .then((raw) => raw as String);
     return File(path);
   }
 
   @override
   Future<void> setLocationTrackingMode(NLocationTrackingMode mode) async {
-    await invokeMethodWithEnum("setLocationTrackingMode", mode);
+    await invokeMethod("setLocationTrackingMode", mode);
   }
 
   @override
@@ -146,7 +147,7 @@ class _NaverMapControllerImpl
   Future<void> clearOverlays({NOverlayType? type}) async {
     assert(type != NOverlayType.locationOverlay);
     overlayController.clear(type);
-    await invokeMethodWithEnum("clearOverlays", type);
+    await invokeMethod("clearOverlays", type);
   }
 
   /*

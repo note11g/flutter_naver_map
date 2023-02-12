@@ -120,8 +120,9 @@ class NMarker extends NAddableOverlay<NMarker> {
     infoWindow._addedOnMap(_overlayController!);
     assert(infoWindow._isAdded);
 
-    final payload = NPayload.make({"infoWindow": infoWindow, "align": align});
-    await _runAsync(_openInfoWindowName, payload);
+    final messageable =
+        NMessageable.forOnceWithMap({"infoWindow": infoWindow, "align": align});
+    await _runAsync(_openInfoWindowName, messageable);
   }
 
   void setPosition(NLatLng value) {

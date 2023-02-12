@@ -1,7 +1,7 @@
 part of flutter_naver_map;
 
 @visibleForTesting
-class NOverlayInfo implements NMessageable {
+class NOverlayInfo with NMessageableWithMap {
   final NOverlayType type;
 
   final String id;
@@ -19,7 +19,7 @@ class NOverlayInfo implements NMessageable {
 
   /* ----- toMessageable ----- */
 
-  String get _overlayKey => [type, id].join(_separateString);
+  String get _overlayKey => [type.payload, id].join(_separateString);
 
   String toQueryString({String? injectMethod}) =>
       [_overlayKey, injectMethod ?? method!].join(_separateString);

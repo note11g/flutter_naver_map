@@ -1,6 +1,6 @@
 part of flutter_naver_map;
 
-class NCameraPosition implements NMessageable {
+class NCameraPosition with NMessageableWithMap {
   final NLatLng target;
   final double zoom;
   final double tilt;
@@ -22,7 +22,7 @@ class NCameraPosition implements NMessageable {
   }
 
   @override
-  String toString() => "$runtimeType: ${toNPayload().m}";
+  String toString() => "$runtimeType: ${toNPayload().map}";
 
   @override
   NPayload toNPayload() => NPayload.make({

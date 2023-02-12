@@ -1,6 +1,6 @@
 part of flutter_naver_map;
 
-class NCameraUpdate implements NMessageable {
+class NCameraUpdate with NMessageableWithMap {
   final NLatLng? _target;
   final double? _zoom;
   final double? _zoomBy;
@@ -95,7 +95,7 @@ class NCameraUpdate implements NMessageable {
   }
 
   @override
-  String toString() => "$runtimeType: ${toNPayload().m}";
+  String toString() => "$runtimeType: ${toNPayload().map}";
 
   @override
   NPayload toNPayload() => NPayload.makeWithSignature({

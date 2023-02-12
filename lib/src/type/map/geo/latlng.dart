@@ -1,6 +1,6 @@
 part of flutter_naver_map;
 
-class NLatLng implements NMessageable {
+class NLatLng with NMessageableWithMap {
   final double latitude;
 
   final double longitude;
@@ -29,7 +29,7 @@ class NLatLng implements NMessageable {
   */
 
   @override
-  String toString() => "$runtimeType: ${toNPayload().m}";
+  String toString() => "$runtimeType: ${toNPayload().map}";
 
   @override
   bool operator ==(Object other) =>

@@ -1,6 +1,6 @@
 part of flutter_naver_map;
 
-class NMultipartPath implements NMessageable {
+class NMultipartPath with NMessageableWithMap {
   final List<NLatLng> coords;
   final Color color;
   final Color outlineColor;

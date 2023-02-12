@@ -1,6 +1,6 @@
 part of flutter_naver_map;
 
-class NSize extends Size implements NMessageable {
+class NSize extends Size with NMessageableWithMap {
   const NSize(super.width, super.height);
   NSize.fromSize(Size size) : this(size.width, size.height);
 

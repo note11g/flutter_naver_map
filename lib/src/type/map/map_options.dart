@@ -1,6 +1,6 @@
 part of flutter_naver_map;
 
-class NaverMapViewOptions implements NMessageable {
+class NaverMapViewOptions with NMessageableWithMap {
   final NCameraPosition? initialCameraPosition;
   final NLatLngBounds? extent;
   final NMapType mapType;
@@ -117,7 +117,7 @@ class NaverMapViewOptions implements NMessageable {
       });
 
   @override
-  String toString() => "$runtimeType: ${toNPayload().m}";
+  String toString() => "$runtimeType: ${toNPayload().map}";
 
   /*
     --- Constants ---

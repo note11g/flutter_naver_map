@@ -27,15 +27,14 @@ abstract class NOverlay<O extends NOverlay<void>> implements Pickable {
     if (!_isAdded) {
       throw NOverlayNotAddedOnMapException("Overlay Not added on Map!");
     }
-    final queryString = info.toQueryString(injectMethod: method);
 
+    final queryString = info.toQueryString(injectMethod: method);
     if (arguments == null) {
       return await _overlayController!.invokeMethod(queryString);
-    } else {
-      final messageableArgs = NPayload.convertToMessageable(arguments);
-      return await _overlayController!
-          .invokeMethodWithMessageableArgs(queryString, messageableArgs);
     }
+    final messageable =
+        NMessageable.forOnce(NPayload.convertToMessageable(arguments!));
+    return await _overlayController!.invokeMethod(queryString, messageable);
   }
 
   void _set(String name, dynamic value) async {

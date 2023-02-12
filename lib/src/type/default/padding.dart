@@ -1,6 +1,6 @@
 part of flutter_naver_map;
 
-class NEdgeInsets extends EdgeInsets implements NMessageable {
+class NEdgeInsets extends EdgeInsets with NMessageableWithMap {
   const NEdgeInsets.fromLTRB(
       double left, double top, double right, double bottom)
       : super.fromLTRB(left, top, right, bottom);

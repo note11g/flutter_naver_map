@@ -23,8 +23,7 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
   Future<Color> getCircleColor() =>
       _getAsyncWithCast(_circleColorName, (rawColor) => Color(rawColor));
 
-  void setCircleColor(Color circleColor) =>
-      _set(_circleColorName, circleColor);
+  void setCircleColor(Color circleColor) => _set(_circleColorName, circleColor);
 
   Future<Color> getCircleOutlineColor() =>
       _getAsyncWithCast(_circleOutlineColorName, (rawColor) => Color(rawColor));
@@ -57,8 +56,7 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
   Future<NPoint> getSubAnchor() =>
       _getAsyncWithCast(_subAnchorName, NPoint._fromMessageable);
 
-  void setSubAnchor(NPoint subAnchor) =>
-      _set(_subAnchorName, subAnchor.toNPayload());
+  void setSubAnchor(NPoint subAnchor) => _set(_subAnchorName, subAnchor);
 
   void setSubIcon(NOverlayImage? icon) => _set(_subIconName, icon);
 
