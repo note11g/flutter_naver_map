@@ -25,7 +25,7 @@ class NOverlayImage implements NMessageable {
 
   static Future<NOverlayImage> fromWidget({
     required Widget widget,
-    required NSize size,
+    required Size size,
     required BuildContext context,
   }) async {
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;

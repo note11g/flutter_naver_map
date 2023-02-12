@@ -33,12 +33,12 @@ class NaverMapViewOptions implements NMessageable {
   final bool locationButtonEnable;
   final bool logoClickEnabled;
   final NLogoAlign logoAlign;
-  final NEdgeInsets? logoMargin;
-  final NEdgeInsets contentPadding;
+  final EdgeInsets? logoMargin;
+  final EdgeInsets contentPadding;
   final double minZoom;
   final double maxZoom;
   final double maxTilt;
-  final NLocale locale;
+  final Locale locale;
   final bool useGLSurfaceView; // initialize time only
 
   const NaverMapViewOptions({
@@ -70,7 +70,7 @@ class NaverMapViewOptions implements NMessageable {
     this.logoClickEnabled = true,
     this.logoAlign = NLogoAlign.leftBottom,
     this.logoMargin,
-    this.contentPadding = NEdgeInsets.zero,
+    this.contentPadding = EdgeInsets.zero,
     this.minZoom = minimumZoom,
     this.maxZoom = maximumZoom,
     this.maxTilt = 63,

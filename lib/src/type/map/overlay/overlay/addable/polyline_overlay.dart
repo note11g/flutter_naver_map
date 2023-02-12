@@ -42,7 +42,7 @@ class NPolylineOverlay extends NAddableOverlay<NPolylineOverlay> {
 
   void setColor(Color color) {
     _color = color;
-    _set(_colorName, color.value);
+    _set(_colorName, color);
   }
 
   void setWidth(double width) {
@@ -87,7 +87,7 @@ class NPolylineOverlay extends NAddableOverlay<NPolylineOverlay> {
   NPayload toNPayload() => NPayload.make({
         _infoName: info,
         _coordsName: coords,
-        _colorName: color.value,
+        _colorName: color,
         _widthName: width,
         _lineCapName: lineCap,
         _lineJoinName: lineJoin,

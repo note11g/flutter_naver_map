@@ -5,8 +5,7 @@ class NPoint extends Point<double> implements NMessageable {
   const NPoint(super.x, super.y);
 
   @override
-  NPayload toNPayload() =>
-      NPayload.make({
+  NPayload toNPayload() => NPayload.make({
         "x": x,
         "y": y,
       });

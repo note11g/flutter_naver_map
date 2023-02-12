@@ -41,7 +41,7 @@ class NPolygonOverlay extends NAddableOverlay<NPolygonOverlay> {
 
   void setColor(Color color) {
     _color = color;
-    _set(_colorName, color.value);
+    _set(_colorName, color);
   }
 
   void setHoles(List<List<NLatLng>> holes) {
@@ -51,7 +51,7 @@ class NPolygonOverlay extends NAddableOverlay<NPolygonOverlay> {
 
   void setOutlineColor(Color outlineColor) {
     _outlineColor = outlineColor;
-    _set(_outlineColorName, outlineColor.value);
+    _set(_outlineColorName, outlineColor);
   }
 
   void setOutlineWidth(double outlineWidth) {
@@ -83,9 +83,9 @@ class NPolygonOverlay extends NAddableOverlay<NPolygonOverlay> {
   NPayload toNPayload() => NPayload.make({
         _infoName: info,
         _coordsName: coords,
-        _colorName: color.value,
+        _colorName: color,
         _holesName: holes,
-        _outlineColorName: outlineColor.value,
+        _outlineColorName: outlineColor,
         _outlineWidthName: outlineWidth,
       });
 

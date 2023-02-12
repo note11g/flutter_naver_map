@@ -81,12 +81,12 @@ class NPathOverlay extends NAddableOverlay<NPathOverlay> {
 
   void setColor(Color color) {
     _color = color;
-    _set(_colorName, color.value);
+    _set(_colorName, color);
   }
 
   void setOutlineColor(Color outlineColor) {
     _outlineColor = outlineColor;
-    _set(_outlineColorName, outlineColor.value);
+    _set(_outlineColorName, outlineColor);
   }
 
   void setOutlineWidth(double outlineWidth) {
@@ -96,12 +96,12 @@ class NPathOverlay extends NAddableOverlay<NPathOverlay> {
 
   void setPassedColor(Color passedColor) {
     _passedColor = passedColor;
-    _set(_passedColorName, passedColor.value);
+    _set(_passedColorName, passedColor);
   }
 
   void setPassedOutlineColor(Color passedOutlineColor) {
     _passedOutlineColor = passedOutlineColor;
-    _set(_passedOutlineColorName, passedOutlineColor.value);
+    _set(_passedOutlineColorName, passedOutlineColor);
   }
 
   void setProgress(double progress) {
@@ -162,11 +162,11 @@ class NPathOverlay extends NAddableOverlay<NPathOverlay> {
         _infoName: info,
         _coordsName: _coords,
         _widthName: _width,
-        _colorName: _color.value,
+        _colorName: _color,
         _outlineWidthName: _outlineWidth,
-        _outlineColorName: _outlineColor.value,
-        _passedColorName: _passedColor.value,
-        _passedOutlineColorName: _passedOutlineColor.value,
+        _outlineColorName: _outlineColor,
+        _passedColorName: _passedColor,
+        _passedOutlineColorName: _passedOutlineColor,
         _progressName: _progress,
         _patternImageName: _patternImage,
         _patternIntervalName: _patternInterval,

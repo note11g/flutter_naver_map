@@ -13,7 +13,7 @@ mixin _NaverMapControlHandler {
 
   void onSelectedIndoorChanged(NSelectedIndoor? selectedIndoor);
 
-  Future<dynamic> handle(MethodCall call)  async {
+  Future<dynamic> handle(MethodCall call) async {
     switch (call.method) {
       case "onMapReady":
         onMapReady();

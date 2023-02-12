@@ -188,7 +188,7 @@ void main() {
       );
 
       await expectWithGetSet(
-        value: const NSize(72, 48),
+        value: const Size(72, 48),
         setMethod: locationOverlay.setIconSize,
         getMethod: locationOverlay.getIconSize,
         name: "iconSize",
@@ -209,7 +209,7 @@ void main() {
       );
 
       await expectWithGetSet(
-        value: const NSize(64, 80),
+        value: const Size(64, 80),
         setMethod: locationOverlay.setSubIconSize,
         getMethod: locationOverlay.getSubIconSize,
         name: "subIconSize",
@@ -236,7 +236,7 @@ void main() {
       ];
       final img = await NOverlayImage.fromWidget(
           widget: const FlutterLogo(),
-          size: const NSize(24, 24),
+          size: const Size(24, 24),
           context: testPageState.context);
 
       final overlaySet = <NAddableOverlay>{

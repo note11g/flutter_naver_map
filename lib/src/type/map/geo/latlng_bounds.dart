@@ -133,4 +133,3 @@ class NLatLngBounds implements NMessageable {
 
   static const NLatLngBounds world = NLatLng.worldCoverage;
 }
-

@@ -31,8 +31,7 @@ class NPayload {
 
   static Map<String, dynamic> _convertMapValueAsMessageable(
       Map<String, dynamic> m) {
-    return m
-        .map((key, value) => MapEntry(key, convertToMessageable(value)));
+    return m.map((key, value) => MapEntry(key, convertToMessageable(value)));
   }
 
   static dynamic convertToMessageable(dynamic value) {
@@ -44,6 +43,20 @@ class NPayload {
       return value.toNPayload();
     } else if (value is List) {
       return value.map((e) => convertToMessageable(e)).toList();
+    } else {
+      return _convertDefaultTypes(value);
+    }
+  }
+
+  static dynamic _convertDefaultTypes(dynamic value) {
+    if (value is Color) {
+      return value.value;
+    } else if (value is Locale) {
+      return NLocale.fromLocale(value);
+    } else if (value is EdgeInsets) {
+      return NEdgeInsets.fromEdgeInsets(value);
+    } else if (value is Size) {
+      return NSize.fromSize(value);
     } else {
       return value;
     }

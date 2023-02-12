@@ -10,7 +10,8 @@ class NaverMap extends StatefulWidget {
   final void Function(NaverMapController controller)? onMapReady;
   final void Function(NPoint point, NLatLng latLng)? onMapTapped;
   final void Function(NSymbol symbol)? onSymbolTapped;
-  final void Function(NCameraUpdateReason reason, bool animated)? onCameraChange;
+  final void Function(NCameraUpdateReason reason, bool animated)?
+      onCameraChange;
   final void Function()? onCameraIdle;
   final void Function(NSelectedIndoor? selectedIndoor)? onSelectedIndoorChanged;
 
@@ -49,7 +50,6 @@ class _NaverMapState extends State<NaverMap> with _NaverMapControlHandler {
     final payload = widget.options.toNPayload();
 
     if (nowViewOptions != widget.options) {
-      print("update options");
       nowViewOptions = widget.options;
       controller._updateOptions(widget.options);
     }

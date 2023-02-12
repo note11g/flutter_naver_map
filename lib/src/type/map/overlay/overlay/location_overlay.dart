@@ -24,13 +24,13 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
       _getAsyncWithCast(_circleColorName, (rawColor) => Color(rawColor));
 
   void setCircleColor(Color circleColor) =>
-      _set(_circleColorName, circleColor.value);
+      _set(_circleColorName, circleColor);
 
   Future<Color> getCircleOutlineColor() =>
       _getAsyncWithCast(_circleOutlineColorName, (rawColor) => Color(rawColor));
 
   void setCircleOutlineColor(Color circleOutlineColor) =>
-      _set(_circleOutlineColorName, circleOutlineColor.value);
+      _set(_circleOutlineColorName, circleOutlineColor);
 
   Future<double> getCircleOutlineWidth() => _getAsync(_circleOutlineWidthName);
 
@@ -44,10 +44,10 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
 
   void setIcon(NOverlayImage icon) => _set(_iconName, icon);
 
-  Future<NSize> getIconSize() =>
+  Future<Size> getIconSize() =>
       _getAsyncWithCast(_iconSizeName, NSize._fromMessageable);
 
-  void setIconSize(NSize size) => _set(_iconSizeName, size);
+  void setIconSize(Size size) => _set(_iconSizeName, size);
 
   Future<NLatLng> getPosition() =>
       _getAsyncWithCast(_positionName, NLatLng._fromMessageable);
@@ -62,10 +62,10 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
 
   void setSubIcon(NOverlayImage? icon) => _set(_subIconName, icon);
 
-  Future<NSize> getSubIconSize() =>
+  Future<Size> getSubIconSize() =>
       _getAsyncWithCast(_subIconSizeName, NSize._fromMessageable);
 
-  void setSubIconSize(NSize size) => _set(_subIconSizeName, size);
+  void setSubIconSize(Size size) => _set(_subIconSizeName, size);
 
   /*
     --- Messaging Name Define ---

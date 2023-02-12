@@ -42,12 +42,12 @@ class NCircleOverlay extends NAddableOverlay<NCircleOverlay> {
 
   void setColor(Color color) {
     _color = color;
-    _set(_colorName, color.value);
+    _set(_colorName, color);
   }
 
   void setOutlineColor(Color outlineColor) {
     _outlineColor = outlineColor;
-    _set(_outlineColorName, outlineColor.value);
+    _set(_outlineColorName, outlineColor);
   }
 
   void setOutlineWidth(double outlineWidth) {
@@ -72,8 +72,8 @@ class NCircleOverlay extends NAddableOverlay<NCircleOverlay> {
         _infoName: info,
         _centerName: center,
         _radiusName: radius,
-        _colorName: color.value,
-        _outlineColorName: outlineColor.value,
+        _colorName: color,
+        _outlineColorName: outlineColor,
         _outlineWidthName: outlineWidth,
       });
 
