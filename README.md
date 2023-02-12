@@ -13,7 +13,7 @@ Naver Cloud Platform 에서 앱을 등록하고, Android / iOS 플랫폼을 등�
 
 ```yaml
 dependencies:
-  flutter_naver_map: ^1.0.0-dev.2
+  flutter_naver_map: ^1.0.0-dev.3
 ```
 
 iOS에서는, 대용량 파일을 받기 위해 [git-lfs](https://git-lfs.github.com/) 설치가 필요합니다.
