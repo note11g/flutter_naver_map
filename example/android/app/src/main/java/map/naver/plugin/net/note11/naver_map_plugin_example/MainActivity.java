@@ -1,4 +1,4 @@
-package map.naver.plugin.net.lbstech.naver_map_plugin_example;
+package map.naver.plugin.net.note11.naver_map_plugin_example;
 
 //import android.Manifest;
 //import android.content.pm.PackageManager;
