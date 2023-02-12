@@ -42,7 +42,7 @@ class NaverMapController(
     private val initialMarkers: List<Any?>,
     private val initialPaths: List<Any?>,
     private val initialCircles: List<Any?>,
-    private val initialPolygons: List<Any?>
+    private val initialPolygons: List<Any?>,
 ) : PlatformView,
     OnMapReadyCallback,
     MethodCallHandler,
@@ -66,7 +66,9 @@ class NaverMapController(
     private lateinit var circleController: NaverCircleController
     private lateinit var polygonController: NaverPolygonController
 
-    init { methodChannel.setMethodCallHandler(this) }
+    init {
+        methodChannel.setMethodCallHandler(this)
+    }
 
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
@@ -94,7 +96,7 @@ class NaverMapController(
             onSymbolClickListener = listeners
             addOnCameraChangeListener(listeners)
             addOnCameraIdleListener(listeners)
-            locationSource = FusedLocationSource(activity, 0xAAFF)
+            locationSource = NLocationSource(activity)
         }
 
         /// 초기 설정값 빈영

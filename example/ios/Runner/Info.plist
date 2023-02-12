@@ -23,7 +23,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NMFClientId</key>
-	<string>uamnqs4a1c</string>
+	<string>[put your client key]</string>
 	<key>NSAllowsArbitraryLoads</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -52,6 +52,8 @@
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 </dict>
 </plist>

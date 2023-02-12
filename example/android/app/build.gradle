@@ -34,7 +34,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "map.naver.plugin.net.lbstech.naver_map_plugin_example"
+        applicationId "map.naver.plugin.net.note11.naver_map_plugin_example"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()

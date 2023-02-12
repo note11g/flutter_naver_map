@@ -1,5 +1,13 @@
 # flutter_naver_map
 
+---
+
+## 1.0.0 Dev Preview
+
+새롭게 바뀐 1.0.0을 미리 사용해보실 수 있습니다. [바로가기](https://github.com/note11g/flutter_naver_map/tree/dev_preview)
+
+---
+
 [![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=4285F4)](https://pub.dev/packages/flutter_naver_map)
 
 **[네이버 지도](https://www.ncloud.com/product/applicationService/maps)** 를 플러터에서 띄울 수 있는 플러그인입니다. 
@@ -9,12 +17,6 @@ Plug-in which shows naver map on flutter project support Android and iOS.
 해당 플러그인은 원작자인 **[LBSTECH](https://www.lbstech.net/)** 의 허가하에,
 **[해당 라이브러리](https://github.com/LBSTECH/naver_map_plugin)** 를 기반으로
 여러 부분을 보완한 라이브러리입니다.
-
----
-
-## 1.0.0 Dev Preview
-
-새롭게 바뀐 1.0.0을 미리 사용해보실 수 있습니다. [바로가기](https://github.com/note11g/flutter_naver_map/tree/dev_preview)
 
 ---
 
