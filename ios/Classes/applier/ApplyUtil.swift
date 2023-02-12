@@ -114,8 +114,5 @@ internal class ApplyUtil {
         "locale": {
             $0.setLocale
         },
-        "useGLSurfaceView": {
-            $0.setUseGLSurfaceView
-        },
     ]
 }

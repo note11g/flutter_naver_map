@@ -152,8 +152,4 @@ internal class NaverMapApplierImpl: NaverMapOptionApplier {
     func setLocale(_ rawLocale: Any) {
         mapView.locale = NLocale.fromMessageable(rawLocale)?.localeStr
     }
-
-    func setUseGLSurfaceView(_ rawUseSurface: Any) {
-        // not support on iOS
-    }
 }

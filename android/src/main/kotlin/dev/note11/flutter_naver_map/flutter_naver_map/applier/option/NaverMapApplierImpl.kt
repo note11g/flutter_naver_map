@@ -152,6 +152,4 @@ class NaverMapApplierImpl(
         val nLocale = NLocale.fromMessageable(rawLocale)
         naverMap.locale = nLocale?.toLocale()
     }
-
-    override fun setUseGLSurfaceView(rawUseSurface: Any) = Unit
 }

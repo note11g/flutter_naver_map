@@ -39,7 +39,6 @@ class NaverMapViewOptions with NMessageableWithMap {
   final double maxZoom;
   final double maxTilt;
   final Locale locale;
-  final bool useGLSurfaceView; // initialize time only
 
   const NaverMapViewOptions({
     this.initialCameraPosition,
@@ -75,7 +74,6 @@ class NaverMapViewOptions with NMessageableWithMap {
     this.maxZoom = maximumZoom,
     this.maxTilt = 63,
     this.locale = NLocale.systemLocale,
-    this.useGLSurfaceView = true, // can cause issue
   });
 
   @override
@@ -113,7 +111,6 @@ class NaverMapViewOptions with NMessageableWithMap {
         "maxZoom": maxZoom,
         "maxTilt": maxTilt,
         "locale": locale,
-        "useGLSurfaceView": useGLSurfaceView,
       });
 
   @override
