@@ -1,12 +1,7 @@
 part of flutter_naver_map;
 
-class NLocale extends Locale implements NMessageable {
+class NLocale extends Locale with NMessageableWithMap {
   const NLocale(super.languageCode);
-
-  const NLocale.fromSubtags({
-    String languageCode = "und",
-    String? countryCode,
-  }) : super.fromSubtags(languageCode: languageCode, countryCode: countryCode);
 
   NLocale.fromLocale(Locale locale) : super(locale.languageCode);
 

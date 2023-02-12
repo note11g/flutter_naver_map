@@ -1,61 +1,41 @@
 part of flutter_naver_map;
 
-enum NCameraAnimation implements NMessageableForEnum {
-  easing,
-  fly,
-  linear,
-  none;
+enum NCameraAnimation with NMessageableWithEnum { easing, fly, linear, none }
 
-  @override
-  String toNPayload() => name;
-}
-
-enum NMapType implements NMessageableForEnum {
+enum NMapType with NMessageableWithEnum {
   basic,
   hybrid,
   navi,
   satellite,
   terrain,
-  none;
-
-  @override
-  String toNPayload() => name;
+  none
 }
 
-enum NLayerGroup implements NMessageableForEnum {
-  building._("building"), // iOS not checked!!
+enum NLayerGroup with NMessageableWithEnum {
+  building._("building"),
   traffic._("ctt"),
   transit._("transit"),
   bicycle._("bike"),
   mountain._("mountain"),
   cadastral._("landparcel");
 
-  final String _mValue;
-
-  const NLayerGroup._(this._mValue);
-
   @override
-  String toNPayload() => _mValue;
+  final String payload;
+
+  const NLayerGroup._(this.payload);
 }
 
-enum NLocationTrackingMode implements NMessageableForEnum {
+enum NLocationTrackingMode with NMessageableWithEnum {
   face,
   follow,
   noFollow,
   none;
 
-  factory NLocationTrackingMode._fromMessageable(dynamic m) {
-    for (final value in values) {
-      if (value.toNPayload() == m) return value;
-    }
-    throw NUnknownTypeCastException(unknownValue: m);
-  }
-
-  @override
-  String toNPayload() => name;
+  factory NLocationTrackingMode._fromMessageable(dynamic m) =>
+      values.firstWhere((value) => value.payload == m);
 }
 
-enum NAlign implements NMessageableForEnum {
+enum NAlign with NMessageableWithEnum {
   center,
   left,
   right,
@@ -66,49 +46,33 @@ enum NAlign implements NMessageableForEnum {
   bottomLeft,
   bottomRight;
 
-  factory NAlign._fromMessageable(dynamic m) {
-    for (final value in values) {
-      if (value.toNPayload() == m) return value;
-    }
-    throw NUnknownTypeCastException(unknownValue: m);
-  }
-
-  @override
-  String toNPayload() => name;
+  factory NAlign._fromMessageable(dynamic m) =>
+      values.firstWhere((value) => value.payload == m);
 }
 
-enum NLogoAlign implements NMessageableForEnum {
+enum NLogoAlign with NMessageableWithEnum {
   leftBottom,
   rightBottom,
   leftTop,
-  rightTop;
-
-  @override
-  String toNPayload() => name;
+  rightTop
 }
 
-enum NCameraUpdateReason implements NMessageableForEnum {
+enum NCameraUpdateReason with NMessageableWithEnum {
   developer._(0),
   gesture._(-1),
   control._(-2),
   location._(-3);
 
-  final int code;
-
-  const NCameraUpdateReason._(this.code);
-
-  factory NCameraUpdateReason._fromMessageable(dynamic m) {
-    for (final value in values) {
-      if (value.toNPayload() == m) return value;
-    }
-    throw NUnknownTypeCastException(unknownValue: m);
-  }
-
   @override
-  int toNPayload() => code;
+  final int payload;
+
+  const NCameraUpdateReason._(this.payload);
+
+  factory NCameraUpdateReason._fromMessageable(dynamic m) =>
+      values.firstWhere((value) => value.payload == m);
 }
 
-enum NOverlayType implements NMessageableForEnum {
+enum NOverlayType with NMessageableWithEnum {
   marker._("ma"),
   infoWindow._("in"),
   circleOverlay._("ci"),
@@ -120,73 +84,46 @@ enum NOverlayType implements NMessageableForEnum {
   arrowheadPathOverlay._("ah"),
   locationOverlay._("lo");
 
-  final String _str;
+  @override
+  final String payload;
 
-  const NOverlayType._(this._str);
+  const NOverlayType._(this.payload);
 
-  factory NOverlayType._fromMessageable(dynamic m) {
-    for (final value in values) {
-      if (value.toNPayload() == m) return value;
-    }
-    throw NUnknownTypeCastException(unknownValue: m);
-  }
+  factory NOverlayType._fromMessageable(dynamic m) =>
+      values.firstWhere((value) => value.payload == m);
 
   @override
-  String toNPayload() => _str;
-
-  @override
-  String toString() => _str;
+  String toString() => "$runtimeType.$name";
 }
 
-enum NLineCap implements NMessageableForEnum {
+enum NLineCap with NMessageableWithEnum {
   butt,
   round,
   square;
 
-  factory NLineCap._fromMessageable(dynamic m) {
-    for (final value in values) {
-      if (value.toNPayload() == m) return value;
-    }
-    throw NUnknownTypeCastException(unknownValue: m);
-  }
-
-  @override
-  String toNPayload() => name;
+  factory NLineCap._fromMessageable(dynamic m) =>
+      values.firstWhere((value) => value.payload == m);
 }
 
-enum NLineJoin implements NMessageableForEnum {
+enum NLineJoin with NMessageableWithEnum {
   bevel,
   miter,
   round;
 
-  factory NLineJoin._fromMessageable(dynamic m) {
-    for (final value in values) {
-      if (value.toNPayload() == m) return value;
-    }
-    throw NUnknownTypeCastException(unknownValue: m);
-  }
-
-  @override
-  String toNPayload() => name;
+  factory NLineJoin._fromMessageable(dynamic m) =>
+      values.firstWhere((value) => value.payload == m);
 }
 
 /* ----- Private ----- */
 
-enum _NOverlayImageMode implements NMessageableForEnum {
+enum _NOverlayImageMode with NMessageableWithEnum {
   asset,
   file,
   temp,
   widget;
 
-  factory _NOverlayImageMode._fromMessageable(dynamic m) {
-    for (final value in values) {
-      if (value.toNPayload() == m) return value;
-    }
-    throw NUnknownTypeCastException(unknownValue: m);
-  }
-
-  @override
-  String toNPayload() => name;
+  factory _NOverlayImageMode._fromMessageable(dynamic m) =>
+      values.firstWhere((value) => value.payload == m);
 
   String toExplainString() =>
       this == _NOverlayImageMode.temp ? "byteArray" : name;

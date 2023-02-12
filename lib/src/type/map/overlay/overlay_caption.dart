@@ -1,6 +1,6 @@
 part of flutter_naver_map;
 
-class NOverlayCaption implements NMessageable {
+class NOverlayCaption with NMessageableWithMap {
   final String text;
 
   final double textSize;
@@ -26,21 +26,21 @@ class NOverlayCaption implements NMessageable {
   });
 
   factory NOverlayCaption._fromMessageable(dynamic m) => NOverlayCaption(
-      text: m["text"],
-      textSize: m["textSize"],
-      color: Color(m["color"]),
-      haloColor: Color(m["haloColor"]),
-      minZoom: m["minZoom"],
-      maxZoom: m["maxZoom"],
-      requestWidth: m["requestWidth"],
-    );
+        text: m["text"],
+        textSize: m["textSize"],
+        color: Color(m["color"]),
+        haloColor: Color(m["haloColor"]),
+        minZoom: m["minZoom"],
+        maxZoom: m["maxZoom"],
+        requestWidth: m["requestWidth"],
+      );
 
   @override
   NPayload toNPayload() => NPayload.make({
         "text": text,
         "textSize": textSize,
-        "color": color.value,
-        "haloColor": haloColor.value,
+        "color": color,
+        "haloColor": haloColor,
         "minZoom": minZoom,
         "maxZoom": maxZoom,
         "requestWidth": requestWidth,

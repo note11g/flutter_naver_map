@@ -18,8 +18,8 @@ class NMarker extends NAddableOverlay<NMarker> {
   NPoint get anchor => _anchor;
   NPoint _anchor;
 
-  NSize get size => _size;
-  NSize _size;
+  Size get size => _size;
+  Size _size;
 
   NOverlayCaption? get caption => _caption;
   NOverlayCaption? _caption;
@@ -65,7 +65,7 @@ class NMarker extends NAddableOverlay<NMarker> {
     double alpha = 1,
     double angle = 0,
     NPoint anchor = defaultAnchor,
-    NSize size = auto,
+    Size size = auto,
     NOverlayCaption? caption,
     NOverlayCaption? subCaption,
     List<NAlign> captionAligns = const [NAlign.bottom],
@@ -104,7 +104,7 @@ class NMarker extends NAddableOverlay<NMarker> {
     --- constant ---
   */
   static const defaultAnchor = NPoint(0.5, 1.0);
-  static const auto = NSize(0, 0);
+  static const auto = Size(0, 0);
 
   /*
     --- method ---
@@ -120,8 +120,9 @@ class NMarker extends NAddableOverlay<NMarker> {
     infoWindow._addedOnMap(_overlayController!);
     assert(infoWindow._isAdded);
 
-    final payload = NPayload.make({"infoWindow": infoWindow, "align": align});
-    await _runAsync(_openInfoWindowName, payload);
+    final messageable =
+        NMessageable.forOnceWithMap({"infoWindow": infoWindow, "align": align});
+    await _runAsync(_openInfoWindowName, messageable);
   }
 
   void setPosition(NLatLng value) {
@@ -136,7 +137,7 @@ class NMarker extends NAddableOverlay<NMarker> {
 
   void setIconTintColor(Color value) {
     _iconTintColor = value;
-    _set(_iconTintColorName, _iconTintColor.value);
+    _set(_iconTintColorName, _iconTintColor);
   }
 
   void setAlpha(double value) {
@@ -154,7 +155,7 @@ class NMarker extends NAddableOverlay<NMarker> {
     _set(_anchorName, _anchor);
   }
 
-  void setSize(NSize value) {
+  void setSize(Size value) {
     _size = value;
     _set(_sizeName, _size);
   }
@@ -236,8 +237,9 @@ class NMarker extends NAddableOverlay<NMarker> {
         subCaption: m[_subCaptionName] != null
             ? NOverlayCaption._fromMessageable(m[_subCaptionName])
             : null,
-        captionAligns:
-            (m[_captionAlignsName] as List).map(NAlign._fromMessageable).toList(),
+        captionAligns: (m[_captionAlignsName] as List)
+            .map(NAlign._fromMessageable)
+            .toList(),
         captionOffset: m[_captionOffsetName],
         isCaptionPerspectiveEnabled: m[_isCaptionPerspectiveEnabledName],
         isIconPerspectiveEnabled: m[_isIconPerspectiveEnabledName],
@@ -254,7 +256,7 @@ class NMarker extends NAddableOverlay<NMarker> {
         _infoName: info,
         _positionName: position,
         _iconName: _icon,
-        _iconTintColorName: _iconTintColor.value,
+        _iconTintColorName: _iconTintColor,
         _alphaName: _alpha,
         _angleName: _angle,
         _anchorName: _anchor,

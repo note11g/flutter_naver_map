@@ -188,7 +188,7 @@ void main() {
       );
 
       await expectWithGetSet(
-        value: const NSize(72, 48),
+        value: const Size(72, 48),
         setMethod: locationOverlay.setIconSize,
         getMethod: locationOverlay.getIconSize,
         name: "iconSize",
@@ -209,7 +209,7 @@ void main() {
       );
 
       await expectWithGetSet(
-        value: const NSize(64, 80),
+        value: const Size(64, 80),
         setMethod: locationOverlay.setSubIconSize,
         getMethod: locationOverlay.getSubIconSize,
         name: "subIconSize",
@@ -236,11 +236,12 @@ void main() {
       ];
       final img = await NOverlayImage.fromWidget(
           widget: const FlutterLogo(),
-          size: const NSize(24, 24),
+          size: const Size(24, 24),
           context: testPageState.context);
 
       final overlaySet = <NAddableOverlay>{
         NMarker(id: "1", position: nowPosition),
+        NMarker(id: "m1", position: nowPosition),
         NInfoWindow.onMap(id: "2", text: "인포윈도우", position: nowPosition),
         NCircleOverlay(id: "3", center: nowPosition, radius: 100),
         NPolygonOverlay(id: "4", coords: positionList),
@@ -260,8 +261,9 @@ void main() {
       await Future.delayed(const Duration(milliseconds: 200));
 
       final nPoint = await controller.latLngToScreenLocation(nowPosition);
-      final pickables1 = await controller.pickAll(nPoint, radius: 800);
-      final overlays1 = pickables1.whereType<NOverlay>();
+      final overlays1 = await controller
+          .pickAll(nPoint, radius: 800)
+          .then((e) => e.whereType<NOverlay>());
 
       for (final overlay in overlays1) {
         print("[pickAll] $overlay");
@@ -269,11 +271,20 @@ void main() {
 
       expect(overlays1.length, overlaySet.length);
 
+      await controller.clearOverlays(type: NOverlayType.marker);
+
+      final overlays2 = await controller
+          .pickAll(nPoint, radius: 800)
+          .then((e) => e.whereType<NOverlay>());
+      expect(overlays2.length,
+          overlaySet.length - overlaySet.whereType<NMarker>().length);
+
       await controller.clearOverlays();
 
-      final pickables2 = await controller.pickAll(nPoint, radius: 800);
-      final overlays2 = pickables2.whereType<NOverlay>();
-      expect(overlays2.length, 0);
+      final overlays3 = await controller
+          .pickAll(nPoint, radius: 800)
+          .then((e) => e.whereType<NOverlay>());
+      expect(overlays3.length, 0);
     });
   });
 }

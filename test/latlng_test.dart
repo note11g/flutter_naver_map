@@ -55,19 +55,19 @@ void main() {
     for (int i = 0; i < 30000; i++) {
       final randomLatLng = createRandomLatLng();
 
-      if(randomLatLng.latitude > maxLatitude) {
+      if (randomLatLng.latitude > maxLatitude) {
         maxLatitude = randomLatLng.latitude;
       }
 
-      if(randomLatLng.longitude > maxLongitude) {
+      if (randomLatLng.longitude > maxLongitude) {
         maxLongitude = randomLatLng.longitude;
       }
 
-      if(randomLatLng.latitude < minLatitude) {
+      if (randomLatLng.latitude < minLatitude) {
         minLatitude = randomLatLng.latitude;
       }
 
-      if(randomLatLng.longitude < minLongitude) {
+      if (randomLatLng.longitude < minLongitude) {
         minLongitude = randomLatLng.longitude;
       }
 

@@ -10,11 +10,13 @@ enum NChannel {
 
   static const separateString = "#";
 
-  MethodChannel createChannel(int id) => MethodChannel("$str$separateString$id");
+  MethodChannel createChannel(int id) =>
+      MethodChannel("$str$separateString$id");
 
   @override
   String toString() => name;
 
   /* ----- Pre-defined Channel ----- */
-  static const MethodChannel sdkChannel = MethodChannel("flutter_naver_map_sdk");
+  static const MethodChannel sdkChannel =
+      MethodChannel("flutter_naver_map_sdk");
 }

@@ -11,8 +11,8 @@ class NIndoorZone {
 
   factory NIndoorZone._fromMessageable(dynamic m) {
     final listWithRawLevel = m["levels"] as List;
-    final levels =
-        listWithRawLevel.map((rawLevel) => NIndoorLevel._fromMessageable(rawLevel));
+    final levels = listWithRawLevel
+        .map((rawLevel) => NIndoorLevel._fromMessageable(rawLevel));
     return NIndoorZone._(
       m["id"],
       m["defaultLevelIndex"] as int,
@@ -23,7 +23,9 @@ class NIndoorZone {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is NIndoorZone && runtimeType == other.runtimeType && id == other.id;
+      other is NIndoorZone &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
 
   @override
   int get hashCode => id.hashCode;

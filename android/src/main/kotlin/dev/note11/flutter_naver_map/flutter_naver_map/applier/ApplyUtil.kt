@@ -55,6 +55,5 @@ internal object ApplyUtil {
             "maxZoom" to { it::setMaxZoom },
             "maxTilt" to { it::setMaxTilt },
             "locale" to { it::setLocale },
-            "useGLSurfaceView" to { it::setUseGLSurfaceView },
         )
 }

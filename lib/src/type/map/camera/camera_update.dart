@@ -1,6 +1,6 @@
 part of flutter_naver_map;
 
-class NCameraUpdate implements NMessageable {
+class NCameraUpdate with NMessageableWithMap {
   final NLatLng? _target;
   final double? _zoom;
   final double? _zoomBy;
@@ -9,7 +9,7 @@ class NCameraUpdate implements NMessageable {
   final double? _bearing;
   final double? _bearingBy;
   final NLatLngBounds? _bounds;
-  final NEdgeInsets? _boundsPadding;
+  final EdgeInsets? _boundsPadding;
   NPoint? _pivot;
   NCameraAnimation _animation = defaultMovingAnimation;
   Duration _duration = defaultMovingDuration;
@@ -25,7 +25,7 @@ class NCameraUpdate implements NMessageable {
     double? bearing,
     double? bearingBy,
     NLatLngBounds? bounds,
-    NEdgeInsets? boundsPadding,
+    EdgeInsets? boundsPadding,
     required String signature,
   })  : _target = target,
         _zoom = zoom,
@@ -81,9 +81,9 @@ class NCameraUpdate implements NMessageable {
   }
 
   factory NCameraUpdate.fitBounds(NLatLngBounds bounds,
-          {NEdgeInsets? nEdgeInsets}) =>
+          {EdgeInsets? padding}) =>
       NCameraUpdate._(
-          bounds: bounds, boundsPadding: nEdgeInsets, signature: "fitBounds");
+          bounds: bounds, boundsPadding: padding, signature: "fitBounds");
 
   void setPivot(NPoint pivot) => _pivot = pivot;
 
@@ -95,7 +95,7 @@ class NCameraUpdate implements NMessageable {
   }
 
   @override
-  String toString() => "$runtimeType: ${toNPayload().m}";
+  String toString() => "$runtimeType: ${toNPayload().map}";
 
   @override
   NPayload toNPayload() => NPayload.makeWithSignature({

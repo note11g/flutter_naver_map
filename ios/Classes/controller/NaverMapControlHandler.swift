@@ -19,8 +19,6 @@ internal protocol NaverMapControlHandler {
 
     func getMeterPerDp(lat: Double?, zoom: Double?, onSuccess: @escaping (_ meterPerDp: Double) -> Void)
 
-    func isDestroyed(onSuccess: @escaping (_ destroyed: Bool) -> Void)
-
     func pickAll(
             nPoint: NPoint,
             dpRadius: Double,
@@ -63,7 +61,6 @@ internal extension  NaverMapControlHandler {
         case "getMeterPerDp":
             let d = asDict(call.arguments!)
             getMeterPerDp(lat: asDouble(d["latitude"]!), zoom: asDouble(d["zoom"]!), onSuccess: result)
-        case "isDestroyed": isDestroyed(onSuccess: result)
         case "pickAll":
             let d = asDict(call.arguments!)
             pickAll(nPoint: NPoint.fromMessageable(d["point"]!), dpRadius: asDouble(d["radius"]!), onSuccess: result)

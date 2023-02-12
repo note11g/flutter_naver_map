@@ -1,3 +1,9 @@
+## 1.0.0-dev.3
+- change using flutter's default type
+- delete NaverMapController.isDestroyed
+- delete NaverMapViewOptions.useGLSurfaceView
+- fix readme
+
 ## 1.0.0-dev.2
 - support play-services-location 21.0.1
 

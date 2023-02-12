@@ -1,7 +1,5 @@
 # flutter_naver_map 1.0 Dev Preview
 
-now version : 1.0.0-dev.2
-
 현재 이슈가 없는 모든 기능을 이용하실 수 있습니다.
 
 플러터 3.0 이상, dart 2.18.4 이상을 사용하셔야 합니다.
@@ -14,11 +12,21 @@ Naver Cloud Platform 에서 앱을 등록하고, Android / iOS 플랫폼을 등�
 그리고, pubspec.yaml에 다음처럼 종속성을 선언합니다.
 
 ```yaml
-  flutter_naver_map:
-    git:
-      url: https://github.com/note11g/flutter_naver_map.git
-      ref: dev_preview
+dependencies:
+  flutter_naver_map: ^1.0.0-dev.3
 ```
+
+iOS에서는, 대용량 파일을 받기 위해 [git-lfs](https://git-lfs.github.com/) 설치가 필요합니다.
+
+터미널을 열고, 다음 커맨드를 실행해주세요.
+
+`$ brew install git-lfs`
+
+그리고 git-lfs을 사용하기 위해 다음의 커맨드를 실행해주세요.
+
+lfs 사용 설정이 안될 경우 Pod를 통한 dependency가 다운로드 되지않습니다.
+
+`$ git lfs install`
 
 사용하기 전, `NaverMapSdk.instance.initialize()` 를 호출하여 초기화를 해주셔야 합니다. (필수)
 clientId는 필수가 아니며, 기존처럼 clientId를 AndroidManifest.xml이나, Info.plist에 넣어주셔도 됩니다.
@@ -73,8 +81,7 @@ Widget build(BuildContext context) {
 
 ### TODO
 
-- [ ] 통합 테스트 작성
-- [ ] 단위테스트 작성
+- [ ] 테스트 작성
 - [ ] 예제 작성
 - [ ] API DOCS 작성
 - [ ] 클러스터링 구현 (추가 패키지로 제공될 예정입니다)

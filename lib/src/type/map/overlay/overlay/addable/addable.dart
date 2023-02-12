@@ -1,7 +1,7 @@
 part of flutter_naver_map;
 
 abstract class NAddableOverlay<O extends NOverlay<void>> extends NOverlay<O>
-    implements NMessageable {
+    with NMessageableWithMap {
   NAddableOverlay({required NOverlayType type, required String id})
       : super(NOverlayInfo._(type: type, id: id));
 

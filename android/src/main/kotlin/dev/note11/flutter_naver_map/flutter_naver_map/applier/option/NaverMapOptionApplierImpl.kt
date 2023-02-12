@@ -156,8 +156,4 @@ class NaverMapOptionApplierImpl(
         val nLocale = NLocale.fromMessageable(rawLocale)
         options.locale(nLocale?.toLocale())
     }
-
-    override fun setUseGLSurfaceView(rawUseSurface: Any) {
-        options.useTextureView(!(rawUseSurface.asBoolean()))
-    }
 }

@@ -31,5 +31,4 @@ internal protocol NaverMapOptionApplier {
     func setMaxZoom(_ rawLevel: Any)
     func setMaxTilt(_ rawTilt: Any)
     func setLocale(_ rawLocale: Any)
-    func setUseGLSurfaceView(_ rawUseSurface: Any)
 }

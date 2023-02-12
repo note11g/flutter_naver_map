@@ -1,6 +1,6 @@
 part of flutter_naver_map;
 
-class NLatLngBounds implements NMessageable {
+class NLatLngBounds with NMessageableWithMap {
   final NLatLng southWest;
   final NLatLng northEast;
 
@@ -115,7 +115,7 @@ class NLatLngBounds implements NMessageable {
   int get hashCode => southWest.hashCode ^ northEast.hashCode;
 
   @override
-  String toString() => "$runtimeType: ${toNPayload().m}";
+  String toString() => "$runtimeType: ${toNPayload().map}";
 
   @override
   NPayload toNPayload() => NPayload.make({
@@ -133,4 +133,3 @@ class NLatLngBounds implements NMessageable {
 
   static const NLatLngBounds world = NLatLng.worldCoverage;
 }
-

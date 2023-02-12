@@ -52,7 +52,7 @@ class NArrowheadPathOverlay extends NAddableOverlay<NArrowheadPathOverlay> {
 
   void setColor(Color color) {
     _color = color;
-    _set(_colorName, color.value);
+    _set(_colorName, color);
   }
 
   void setOutlineWidth(double outlineWidth) {
@@ -62,7 +62,7 @@ class NArrowheadPathOverlay extends NAddableOverlay<NArrowheadPathOverlay> {
 
   void setOutlineColor(Color outlineColor) {
     _outlineColor = outlineColor;
-    _set(_outlineColorName, outlineColor.value);
+    _set(_outlineColorName, outlineColor);
   }
 
   void setElevation(double elevation) {
@@ -96,9 +96,9 @@ class NArrowheadPathOverlay extends NAddableOverlay<NArrowheadPathOverlay> {
         _infoName: info,
         _coordsName: _coords,
         _widthName: _width,
-        _colorName: _color.value,
+        _colorName: _color,
         _outlineWidthName: _outlineWidth,
-        _outlineColorName: _outlineColor.value,
+        _outlineColorName: _outlineColor,
         _elevationName: _elevation,
         _headSizeRatioName: _headSizeRatio,
       });
