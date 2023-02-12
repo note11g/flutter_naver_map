@@ -69,10 +69,6 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
         onSuccess(metersPerDp)
     }
 
-    func isDestroyed(onSuccess: @escaping (Bool) -> ()) {
-        onSuccess(false)
-    }
-
     func pickAll(nPoint: NPoint, dpRadius: Double, onSuccess: @escaping (Array<Dictionary<String, Any?>>) -> ()) {
         let pickables = mapView.pickAll(nPoint.cgPoint, withTolerance: asRoundInt(rawFloat: dpRadius))
         let result = try! pickables.map { pickable in

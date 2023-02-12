@@ -22,9 +22,6 @@ abstract class _NaverMapControlSender {
 
   Future<double> getMeterPerDp({double? latitude, double? zoom});
 
-  /// android only
-  Future<bool> isDestroyed();
-
   Future<List<Pickable>> pickAll(NPoint point, {double radius = 0});
 
   Future<File> takeSnapshot(

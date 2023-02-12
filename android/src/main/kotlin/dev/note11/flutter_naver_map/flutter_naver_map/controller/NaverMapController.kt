@@ -113,10 +113,6 @@ internal class NaverMapController(
         onSuccess(meterPerDp)
     }
 
-    override fun isDestroyed(onSuccess: (destroyed: Boolean) -> Unit) {
-        onSuccess(naverMap.isDestroyed)
-    }
-
     override fun pickAll(
         nPoint: NPoint,
         dpRadius: Double,

@@ -81,12 +81,6 @@ class _NaverMapControllerImpl
   }
 
   @override
-  Future<bool> isDestroyed() async {
-    final result = await invokeMethod("isDestroyed");
-    return result as bool;
-  }
-
-  @override
   Future<List<Pickable>> pickAll(NPoint point, {double radius = 0}) async {
     final rawPickables = await invokeMethodWithMessageableArgs("pickAll", {
       "point": point.toNPayload().m,

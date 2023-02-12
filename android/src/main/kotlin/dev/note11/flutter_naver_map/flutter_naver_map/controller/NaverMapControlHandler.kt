@@ -56,7 +56,6 @@ internal interface NaverMapControlHandler {
                 onSuccess = result::send,
             )
         }
-        "isDestroyed" -> isDestroyed(result::send)
         "pickAll" -> call.arguments.asMap().let {
             pickAll(
                 nPoint = NPoint.fromMessageable(it["point"]!!),
@@ -110,8 +109,6 @@ internal interface NaverMapControlHandler {
     fun latLngToScreenLocation(latLng: LatLng, onSuccess: (nPoint: Map<String, Any>) -> Unit)
 
     fun getMeterPerDp(lat: Double?, zoom: Double?, onSuccess: (meterPerDp: Double) -> Unit)
-
-    fun isDestroyed(onSuccess: (destroyed: Boolean) -> Unit)
 
     fun pickAll(
         nPoint: NPoint,
