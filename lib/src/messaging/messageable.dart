@@ -49,17 +49,19 @@ class NPayload {
   }
 
   static dynamic _convertDefaultTypes(dynamic value) {
-    if (value is Color) {
-      return value.value;
-    } else if (value is Locale) {
-      return NLocale.fromLocale(value);
+    late final NMessageable nMessageable;
+    if (value is Locale) {
+      nMessageable = NLocale.fromLocale(value);
     } else if (value is EdgeInsets) {
-      return NEdgeInsets.fromEdgeInsets(value);
+      nMessageable = NEdgeInsets.fromEdgeInsets(value);
     } else if (value is Size) {
-      return NSize.fromSize(value);
+      nMessageable = NSize.fromSize(value);
+    } else if (value is Color) {
+      return value.value;
     } else {
       return value;
     }
+    return nMessageable.toNPayload().m;
   }
 
   @override
