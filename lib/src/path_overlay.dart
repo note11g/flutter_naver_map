@@ -142,7 +142,7 @@ class PathOverlay {
         'passedColor': passedColor.value,
         'passedOutlineColor': passedOutlineColor.value,
         'patternImage': patternImage?.assetName,
-        'patternImageFromPath' : patternImage?.imageFile?.path,
+        'patternImageFromPath': patternImage?.imageFile?.path,
         'patternInterval': patternInterval,
         'progress': progress,
         'width': width,

@@ -44,7 +44,8 @@ class OverlayImage {
       locale: locale,
       textDirection: textDirection,
       size: size,
-      platform: platform ?? (Platform.isIOS ? TargetPlatform.iOS : TargetPlatform.android),
+      platform: platform ??
+          (Platform.isIOS ? TargetPlatform.iOS : TargetPlatform.android),
     );
     final AssetImage assetImage = AssetImage(assetName);
     final AssetBundleImageKey key = await assetImage.obtainKey(_configuration);

@@ -307,8 +307,9 @@ class _MarkerMapPageState extends State<MarkerMapPage> {
   /// default marker
   void _onMapTapDefault(LatLng latLng) {
     if (_currentMode == MODE_ADD) {
-      for (int i = 1; i <= 2*100000; i++) {
-      final willLatLng = LatLng(latLng.latitude, latLng.longitude + 0.0001 * i);
+      for (int i = 1; i <= 2 * 100000; i++) {
+        final willLatLng =
+            LatLng(latLng.latitude, latLng.longitude + 0.0001 * i);
         _markers.add(Marker(
           markerId: DateTime.now().toIso8601String(),
           position: willLatLng,

@@ -22,26 +22,26 @@ class _TextFieldPageState extends State<TextFieldPage> {
   }
 
   _mapView() => NaverMap(
-    useSurface: kReleaseMode,
-    initLocationTrackingMode: LocationTrackingMode.Follow,
-  );
+        useSurface: kReleaseMode,
+        initLocationTrackingMode: LocationTrackingMode.Follow,
+      );
 
   _textFieldView() => Align(
-    alignment: Alignment.topCenter,
-    child: SafeArea(
-      bottom: false,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(50),
+        alignment: Alignment.topCenter,
+        child: SafeArea(
+          bottom: false,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(50),
+            ),
+            margin: EdgeInsets.all(24),
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+            child: TextField(
+              decoration: InputDecoration.collapsed(hintText: ''),
+              maxLines: 1,
+            ),
+          ),
         ),
-        margin: EdgeInsets.all(24),
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-        child: TextField(
-          decoration: InputDecoration.collapsed(hintText: ''),
-          maxLines: 1,
-        ),
-      ),
-    ),
-  );
+      );
 }

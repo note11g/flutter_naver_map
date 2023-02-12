@@ -70,7 +70,7 @@ class PolygonOverlay {
     this.globalZIndex,
     this.holes,
     this.onTap,
-  })  : assert(coordinates.length >= 3);
+  }) : assert(coordinates.length >= 3);
 
   /// 인자로 넘어오는 속성들이 적용된 새로운 [PolygonOverlay]객체를 생성합니다.
   PolygonOverlay copyWith(

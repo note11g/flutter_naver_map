@@ -1,3 +1,7 @@
+## 0.10.7
+- support play-services-location 21.0.1
+- Fixed an incompatible issue with kotlin versions below 1.7.0.
+
 ## 0.10.6
 - bug fix
 - support widget to OverlayImage

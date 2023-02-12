@@ -9,7 +9,7 @@ class CameraPosition {
     required this.target,
     this.tilt = 0.0,
     this.zoom = 15.0,
-  }) ;
+  });
 
   /// 카메라 회전 각도. 북쪽에서 시계 방향으로의 회전량.
   ///

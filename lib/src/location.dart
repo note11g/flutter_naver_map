@@ -45,7 +45,9 @@ class LatLng {
       final double lng1 = radians(longitude);
       final double lat2 = radians(other.latitude);
       final double lng2 = radians(other.longitude);
-      return 1.2756274e7 * asin(sqrt(pow(sin((lat1 - lat2) / 2.0), 2.0) + cos(lat1) * cos(lat2) * pow(sin((lng1 - lng2) / 2.0), 2.0)));
+      return 1.2756274e7 *
+          asin(sqrt(pow(sin((lat1 - lat2) / 2.0), 2.0) +
+              cos(lat1) * cos(lat2) * pow(sin((lng1 - lng2) / 2.0), 2.0)));
     }
   }
 }
