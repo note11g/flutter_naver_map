@@ -1,9 +1,21 @@
 # flutter_naver_map 1.0 Dev Preview
 
-현재 이슈가 없는 모든 기능을 이용하실 수 있습니다.
+모든 이슈가 해결되었습니다. 문서 작성 후, 1.0.0이 Stable으로 업데이트 될 예정입니다.
 
 플러터 3.0 이상, dart 2.18.4 이상을 사용하셔야 합니다.
 android는 5.1 이상, iOS는 11.0 이상을 지원합니다.
+
+
+### 필독 (iOS)
+1.0.0-dev.3 버전을 사용하셨거나, 이전버전(0.10)을 사용하셨던 분들은,
+iOS에서 네이버맵 구버전으로 빌드될 수 있습니다.
+
+현재 라이브러리에서 사용하는 버전은 3.16.2로, 다음과 같은 명령어 실행이 필요합니다.
+
+``` bash
+cd ios # ios 폴더로 이동
+pod update NMapsMap
+```
 
 ## 간단 시작 가이드
 
@@ -13,7 +25,7 @@ Naver Cloud Platform 에서 앱을 등록하고, Android / iOS 플랫폼을 등�
 
 ```yaml
 dependencies:
-  flutter_naver_map: ^1.0.0-dev.3
+  flutter_naver_map: ^1.0.0-dev.4
 ```
 
 iOS에서는, 대용량 파일을 받기 위해 [git-lfs](https://git-lfs.github.com/) 설치가 필요합니다.
