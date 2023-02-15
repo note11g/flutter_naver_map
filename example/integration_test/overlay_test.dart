@@ -252,7 +252,9 @@ void main() {
         NMultipartPathOverlay(id: "8", paths: [
           NMultipartPath(coords: positionList),
         ]),
-        NArrowheadPathOverlay(id: "9", coords: positionList), // todo : not working on map sdk 3.16.1
+        NArrowheadPathOverlay(
+            id: "9",
+            coords: positionList), // todo : not working on map sdk 3.16.1
         // - see this issue : https://github.com/note11g/flutter_naver_map/issues/34
       };
 
