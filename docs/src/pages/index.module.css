@@ -4,20 +4,51 @@
  */
 
 .heroBanner {
-  padding: 4rem 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+    padding: 4rem 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
 }
 
 @media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
-  }
+    .heroBanner {
+        padding: 2rem;
+    }
 }
 
 .buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: inline-grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
 }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    align-items: stretch;
+    justify-items: stretch;
+}
+
+.gridItem {
+    background-color: #F5F5F5;
+    padding: 1rem;
+    color: black;
+}
+
+@media (min-width: 768px) {
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        align-items: stretch;
+        justify-items: stretch;
+    }
+
+    .gridItem {
+        background-color: #F5F5F5;
+        padding: 1.5rem;
+        color: black;
+    }
+}
+

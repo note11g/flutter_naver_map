@@ -144,6 +144,10 @@ class TestPageState extends State<TestPage> {
         },
       );
 
+  Widget _exampleWidget() => NaverMap(
+        options: NaverMapViewOptions(),
+      );
+
   void showDialogWithImage(BuildContext context, File file) {
     showDialog(
         context: context,
