@@ -81,16 +81,16 @@ internal class ApplyUtil {
                 /** @see NaverMapView.setMapTapListener method */
             }
         },
-        "scaleBarEnabled": {
+        "scaleBarEnable": {
             $0.setScaleBarEnable
         },
-        "indoorLevelPickerEnabled": {
+        "indoorLevelPickerEnable": {
             $0.setIndoorLevelPickerEnable
         },
         "locationButtonEnable": {
             $0.setLocationButtonEnable
         },
-        "logoClickEnabled": {
+        "logoClickEnable": {
             $0.setLogoClickEnable
         },
         "logoAlign": {
