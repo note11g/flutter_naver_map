@@ -175,7 +175,7 @@ internal class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, C
         success(castOrNull(overlay.userInfo["tag"], caster: asString))
     }
 
-    func setTag(_ overlay: NMFOverlay, rawTag: String) {
+    func setTag(_ overlay: NMFOverlay, rawTag: String?) {
         overlay.userInfo["tag"] = rawTag
     }
 

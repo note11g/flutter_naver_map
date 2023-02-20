@@ -38,7 +38,7 @@ internal interface OverlayHandler {
         when (method) {
             zIndexName -> setZIndex(overlay, arg!!)
             globalZIndexName -> setGlobalZIndex(overlay, arg!!)
-            tagName -> setTag(overlay, arg!!.toString())
+            tagName -> setTag(overlay, arg?.toString())
             isVisibleName -> setIsVisible(overlay, arg!!)
             minZoomName -> setMinZoom(overlay, arg!!)
             maxZoomName -> setMaxZoom(overlay, arg!!)
@@ -69,7 +69,7 @@ internal interface OverlayHandler {
 
     fun getTag(overlay: Overlay, success: (tag: String?) -> Unit)
 
-    fun setTag(overlay: Overlay, rawTag: String)
+    fun setTag(overlay: Overlay, rawTag: String?)
 
     fun getIsAdded(overlay: Overlay, success: (isAdded: Boolean) -> Unit)
 

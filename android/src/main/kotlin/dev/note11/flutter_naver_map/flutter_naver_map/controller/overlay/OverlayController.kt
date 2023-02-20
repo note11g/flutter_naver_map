@@ -167,7 +167,7 @@ internal class OverlayController(
         success(overlay.tag?.toString())
     }
 
-    override fun setTag(overlay: Overlay, rawTag: String) {
+    override fun setTag(overlay: Overlay, rawTag: String?) {
         overlay.tag = rawTag
     }
 

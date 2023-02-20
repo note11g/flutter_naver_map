@@ -27,7 +27,7 @@ internal protocol OverlayHandler {
 
     func getTag(_ overlay: NMFOverlay, success: (_ tag: String?) -> Void)
 
-    func setTag(_ overlay: NMFOverlay, rawTag: String)
+    func setTag(_ overlay: NMFOverlay, rawTag: String?)
 
     func getIsAdded(_ overlay: NMFOverlay, success: (_ isAdded: Bool) -> Void)
 
@@ -70,7 +70,7 @@ private let isMaxZoomInclusiveName = "isMaxZoomInclusive"
 private let performClickName = "performClick"
 let onTapName = "onTap"
 
-internal extension  OverlayHandler {
+internal extension OverlayHandler {
     func handleOverlay(
             overlay: NMFOverlay,
             method: String,
@@ -80,7 +80,7 @@ internal extension  OverlayHandler {
         switch method {
         case zIndexName: setZIndex(overlay, rawZIndex: args!)
         case globalZIndexName: setGlobalZIndex(overlay, rawGlobalZIndex: args!)
-        case tagName: setTag(overlay, rawTag: asString(args!))
+        case tagName: setTag(overlay, rawTag: castOrNull(args, caster: asString))
         case isVisibleName: setIsVisible(overlay, rawIsVisible: args!)
         case minZoomName: setMinZoom(overlay, rawMinZoom: args!)
         case maxZoomName: setMaxZoom(overlay, rawMaxZoom: args!)

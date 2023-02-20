@@ -67,7 +67,7 @@ abstract class NOverlay<O extends NOverlay<void>> implements Pickable {
 
   Future<String?> getTag() => _getAsync(_tagName);
 
-  void setTag(String tag) => _set(_tagName, tag);
+  void setTag(String? tag) => _set(_tagName, tag);
 
   Future<bool> getIsAdded() => _getAsync(_isAddedName);
 
