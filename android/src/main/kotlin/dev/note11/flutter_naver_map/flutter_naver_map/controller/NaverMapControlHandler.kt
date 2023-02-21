@@ -13,7 +13,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NCameraUpdate
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
@@ -102,7 +102,7 @@ internal interface NaverMapControlHandler {
 
     fun getContentRegion(withPadding: Boolean, onSuccess: (latLngs: List<Map<String, Any>>) -> Unit)
 
-    fun getLocationOverlay(onSuccess: () -> Unit)
+    fun getLocationOverlay(onSuccess: (Map<String, Any?>) -> Unit)
 
     fun screenLocationToLatLng(nPoint: NPoint, onSuccess: (latLng: Map<String, Any>) -> Unit)
 

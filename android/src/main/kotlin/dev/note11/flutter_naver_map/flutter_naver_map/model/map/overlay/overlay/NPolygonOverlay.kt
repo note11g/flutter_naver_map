@@ -2,7 +2,6 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 
 import androidx.annotation.ColorInt
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.PolygonOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
@@ -10,9 +9,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asList
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
-import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 
 internal data class NPolygonOverlay(
@@ -24,6 +21,8 @@ internal data class NPolygonOverlay(
     val outlineWidthDp: Double,
 ) : AddableOverlay<PolygonOverlay> {
 
+
+
     override fun createMapOverlay(): PolygonOverlay = PolygonOverlay().also { g ->
         g.coords = coords
         g.color = color
@@ -31,15 +30,6 @@ internal data class NPolygonOverlay(
         g.outlineColor = outlineColor
         g.outlineWidth = DisplayUtil.dpToPx(outlineWidthDp)
     }
-
-    override fun toMessageable(): Map<String, Any?> = mapOf(
-        infoName to info.toMessageable(),
-        coordsName to coords.map { it.toMessageable() },
-        colorName to color,
-        holesName to holes.map { it.map { latLng -> latLng.toMessageable() } },
-        outlineColorName to outlineColor,
-        outlineWidthName to outlineWidthDp,
-    )
 
     companion object {
         fun fromMessageable(rawMap: Any): NPolygonOverlay = rawMap.asMap().let {
@@ -52,20 +42,6 @@ internal data class NPolygonOverlay(
                 },
                 outlineColor = it[outlineColorName]!!.asInt(),
                 outlineWidthDp = it[outlineWidthName]!!.asDouble(),
-            )
-        }
-
-        fun fromPolygonOverlay(
-            polygonOverlay: Overlay,
-            id: String,
-        ): NPolygonOverlay = (polygonOverlay as PolygonOverlay).run {
-            NPolygonOverlay(
-                info = NOverlayInfo(NOverlayType.POLYGON_OVERLAY, id),
-                coords = coords,
-                color = color,
-                holes = holes,
-                outlineColor = outlineColor,
-                outlineWidthDp = DisplayUtil.pxToDp(outlineWidth),
             )
         }
 

@@ -3,16 +3,14 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.MultipartPathOverlay
 import com.naver.maps.map.overlay.MultipartPathOverlay.ColorPart
-import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asBoolean
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asList
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
-import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NMultipartPath
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayImage
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 
 internal data class NMultipartPathOverlay(
@@ -27,6 +25,7 @@ internal data class NMultipartPathOverlay(
     val isHideCollidedMarkers: Boolean,
     val isHideCollidedSymbols: Boolean,
 ) : AddableOverlay<MultipartPathOverlay> {
+
 
     override fun createMapOverlay(): MultipartPathOverlay = MultipartPathOverlay().also { mo ->
         val coords = mutableListOf<List<LatLng>>()
@@ -47,19 +46,6 @@ internal data class NMultipartPathOverlay(
         mo.isHideCollidedSymbols = isHideCollidedSymbols
     }
 
-    override fun toMessageable(): Map<String, Any?> = mapOf(
-        infoName to info.toMessageable(),
-        pathsName to paths.map(NMultipartPath::toMessageable),
-        widthName to widthDp,
-        outlineWidthName to outlineWidthDp,
-        patternImageName to patternImage?.toMessageable(),
-        patternIntervalName to patternIntervalDp,
-        progressName to progress,
-        isHideCollidedCaptionsName to isHideCollidedCaptions,
-        isHideCollidedMarkersName to isHideCollidedMarkers,
-        isHideCollidedSymbolsName to isHideCollidedSymbols,
-    )
-
     companion object {
         fun fromMessageable(rawMap: Any): NMultipartPathOverlay = rawMap.asMap().let {
             NMultipartPathOverlay(
@@ -73,26 +59,6 @@ internal data class NMultipartPathOverlay(
                 isHideCollidedCaptions = it[isHideCollidedCaptionsName]!!.asBoolean(),
                 isHideCollidedMarkers = it[isHideCollidedMarkersName]!!.asBoolean(),
                 isHideCollidedSymbols = it[isHideCollidedSymbolsName]!!.asBoolean(),
-            )
-        }
-
-        fun fromMultipartPathOverlay(
-            multipartPathOverlay: Overlay,
-            id: String,
-        ): NMultipartPathOverlay = (multipartPathOverlay as MultipartPathOverlay).run {
-            NMultipartPathOverlay(
-                info = NOverlayInfo(NOverlayType.MULTIPART_PATH_OVERLAY, id),
-                paths = colorParts.mapIndexed { i, colorPart ->
-                    NMultipartPath.fromCoordsAndColorParts(coordParts[i], colorPart)
-                },
-                widthDp = DisplayUtil.pxToDp(width),
-                outlineWidthDp = DisplayUtil.pxToDp(outlineWidth),
-                patternImage = NOverlayImage.none,
-                patternIntervalDp = DisplayUtil.pxToDp(patternInterval),
-                progress = progress,
-                isHideCollidedCaptions = isHideCollidedCaptions,
-                isHideCollidedMarkers = isHideCollidedMarkers,
-                isHideCollidedSymbols = isHideCollidedSymbols,
             )
         }
 

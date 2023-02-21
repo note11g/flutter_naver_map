@@ -3,17 +3,13 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import android.content.Context
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.InfoWindow
-import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
-import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil.dpToPx
-import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil.pxToDp
 
 internal data class NInfoWindow(
     override val info: NOverlayInfo,
@@ -26,6 +22,7 @@ internal data class NInfoWindow(
     private val context: Context?,
 ) : AddableOverlay<InfoWindow> {
 
+
     override fun createMapOverlay(): InfoWindow = InfoWindow().also { m ->
         m.adapter = createTextAdapter(text, context!!)
         m.anchor = anchor.toPointF()
@@ -34,16 +31,6 @@ internal data class NInfoWindow(
         m.offsetX = dpToPx(offsetXDp)
         m.offsetY = dpToPx(offsetYDp)
     }
-
-    override fun toMessageable(): Map<String, Any?> = mapOf(
-        infoName to info.toMessageable(),
-        textName to text,
-        anchorName to anchor.toMessageable(),
-        alphaName to alpha,
-        positionName to position?.toMessageable(),
-        offsetXName to offsetXDp,
-        offsetYName to offsetYDp,
-    )
 
     companion object {
         fun fromMessageable(rawMap: Any, context: Context): NInfoWindow = rawMap.asMap().let {
@@ -56,22 +43,6 @@ internal data class NInfoWindow(
                 offsetXDp = it[offsetXName]!!.asDouble(),
                 offsetYDp = it[offsetYName]!!.asDouble(),
                 context = context,
-            )
-        }
-
-        fun fromInfoWindow(
-            infoWindow: Overlay,
-            id: String,
-        ): NInfoWindow = (infoWindow as InfoWindow).run {
-            NInfoWindow(
-                info = NOverlayInfo(NOverlayType.INFO_WINDOW, id),
-                text = "",
-                anchor = NPoint.fromPointF(anchor),
-                alpha = alpha.toDouble(),
-                position = position,
-                offsetXDp = pxToDp(offsetX),
-                offsetYDp = pxToDp(offsetY),
-                context = null,
             )
         }
 

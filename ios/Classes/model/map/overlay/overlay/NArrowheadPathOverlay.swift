@@ -2,6 +2,7 @@ import NMapsMap
 
 internal struct NArrowheadPathOverlay: AddableOverlay {
     typealias OverlayType = NMFArrowheadPath
+    var overlayPayload: Dictionary<String, Any?> = [:]
 
     let info: NOverlayInfo
     let coords: Array<NMGLatLng>
@@ -24,21 +25,6 @@ internal struct NArrowheadPathOverlay: AddableOverlay {
         return path
     }
 
-    func toMessageable() -> Dictionary<String, Any?> {
-        [
-            NArrowheadPathOverlay.infoName: info.toMessageable(),
-            NArrowheadPathOverlay.coordsName: coords.map {
-                $0.toMessageable()
-            },
-            NArrowheadPathOverlay.widthName: width,
-            NArrowheadPathOverlay.colorName: color.toInt(),
-            NArrowheadPathOverlay.outlineWidthName: outlineWidth,
-            NArrowheadPathOverlay.outlineColorName: outlineColor.toInt(),
-            NArrowheadPathOverlay.elevationName: elevation,
-            NArrowheadPathOverlay.headSizeRatioName: headSizeRatio,
-        ]
-    }
-
     static func fromMessageable(_ v: Any) -> NArrowheadPathOverlay {
         let d = asDict(v)
         return NArrowheadPathOverlay(
@@ -50,20 +36,6 @@ internal struct NArrowheadPathOverlay: AddableOverlay {
                 outlineColor: asUIColor(d[outlineColorName]!),
                 elevation: asCGFloat(d[elevationName]!),
                 headSizeRatio: asCGFloat(d[headSizeRatioName]!)
-        )
-    }
-
-    static func fromOverlay(_ overlay: NMFOverlay, id: String) -> NArrowheadPathOverlay {
-        let path = overlay as! NMFArrowheadPath
-        return NArrowheadPathOverlay(
-                info: NOverlayInfo(type: .arrowheadPathOverlay, id: id),
-                coords: path.points,
-                width: path.width,
-                color: path.color,
-                outlineWidth: path.outlineWidth,
-                outlineColor: path.outlineColor,
-                elevation: path.elevation,
-                headSizeRatio: path.headSizeRatio
         )
     }
 

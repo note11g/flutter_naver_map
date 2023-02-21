@@ -14,10 +14,7 @@ class NIndoorZone {
     final levels = listWithRawLevel
         .map((rawLevel) => NIndoorLevel._fromMessageable(rawLevel));
     return NIndoorZone._(
-      m["id"],
-      m["defaultLevelIndex"] as int,
-      levels.toList(),
-    );
+        m["id"], m["defaultLevelIndex"] as int, levels.toList());
   }
 
   @override

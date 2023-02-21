@@ -1,8 +1,8 @@
 part of flutter_naver_map;
 
 class NPolylineOverlay extends NAddableOverlay<NPolylineOverlay> {
-  List<NLatLng> get coords => _coords;
-  List<NLatLng> _coords;
+  List<NLatLng> get coords => _coords.toList();
+  Iterable<NLatLng> _coords;
 
   Color get color => _color;
   Color _color;
@@ -16,17 +16,21 @@ class NPolylineOverlay extends NAddableOverlay<NPolylineOverlay> {
   NLineJoin get lineJoin => _lineJoin;
   NLineJoin _lineJoin;
 
-  List<int> get pattern => _pattern;
-  List<int> _pattern; // dp(pt)이므로, Android 는 px로 변환 과정에서 오차가 발생할 수 있음.
+  List<int> get pattern => _pattern.toList();
+  Iterable<int> _pattern; // dp(pt)이므로, Android 는 px로 변환 과정에서 오차가 발생할 수 있음.
+
+  @override
+  // ignore: prefer_final_fields
+  int _globalZIndex = -200000;
 
   NPolylineOverlay({
     required String id,
-    required List<NLatLng> coords,
+    required Iterable<NLatLng> coords,
     Color color = Colors.white,
     double width = 2,
     NLineCap lineCap = NLineCap.butt,
     NLineJoin lineJoin = NLineJoin.miter,
-    List<int> pattern = const [],
+    Iterable<int> pattern = const [],
   })  : _coords = coords,
         _color = color,
         _width = width,
@@ -35,7 +39,7 @@ class NPolylineOverlay extends NAddableOverlay<NPolylineOverlay> {
         _pattern = pattern,
         super(id: id, type: NOverlayType.polylineOverlay);
 
-  void setCoords(List<NLatLng> coords) {
+  void setCoords(Iterable<NLatLng> coords) {
     _coords = coords;
     _set(_coordsName, coords);
   }
@@ -60,7 +64,7 @@ class NPolylineOverlay extends NAddableOverlay<NPolylineOverlay> {
     _set(_lineJoinName, lineJoin);
   }
 
-  void setPattern(List<int> pattern) {
+  void setPattern(Iterable<int> pattern) {
     _pattern = pattern;
     _set(_patternName, pattern);
   }
@@ -68,20 +72,6 @@ class NPolylineOverlay extends NAddableOverlay<NPolylineOverlay> {
   Future<NLatLngBounds> getBounds() {
     return _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
   }
-
-  /* ----- Factory Constructor ----- */
-
-  factory NPolylineOverlay._fromMessageable(dynamic m) => NPolylineOverlay(
-        id: NOverlayInfo._fromMessageable(m[_infoName]!).id,
-        coords: (m[_coordsName] as List)
-            .map((e) => NLatLng._fromMessageable(e))
-            .toList(),
-        color: Color(m[_colorName] as int),
-        width: m[_widthName] as double,
-        lineCap: NLineCap._fromMessageable(m[_lineCapName]!),
-        lineJoin: NLineJoin._fromMessageable(m[_lineJoinName]!),
-        pattern: (m[_patternName] as List).cast<int>(),
-      );
 
   @override
   NPayload toNPayload() => NPayload.make({

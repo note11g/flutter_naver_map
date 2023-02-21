@@ -2,6 +2,7 @@ import NMapsMap
 
 internal struct NMarker: AddableOverlay {
     typealias OverlayType = NMFMarker
+    var overlayPayload: Dictionary<String, Any?> = [:]
 
     let info: NOverlayInfo
     let position: NMGLatLng
@@ -67,33 +68,6 @@ internal struct NMarker: AddableOverlay {
         return marker
     }
 
-    func toMessageable() -> Dictionary<String, Any?> {
-        [
-            NMarker.infoName: info.toMessageable(),
-            NMarker.positionName: position.toMessageable(),
-            NMarker.iconName: icon?.toMessageable(),
-            NMarker.iconTintColorName: iconTintColor.toInt(),
-            NMarker.alphaName: alpha,
-            NMarker.angleName: angle,
-            NMarker.anchorName: anchor.toMessageable(),
-            NMarker.sizeName: size.toMessageable(),
-            NMarker.captionName: caption?.toMessageable(),
-            NMarker.subCaptionName: subCaption?.toMessageable(),
-            NMarker.captionAlignsName: captionAligns.map {
-                $0.toMessageableString()
-            },
-            NMarker.captionOffsetName: captionOffset,
-            NMarker.isCaptionPerspectiveEnabledName: isCaptionPerspectiveEnabled,
-            NMarker.isIconPerspectiveEnabledName: isIconPerspectiveEnabled,
-            NMarker.isFlatName: isFlat,
-            NMarker.isForceShowCaptionName: isForceShowCaption,
-            NMarker.isForceShowIconName: isForceShowIcon,
-            NMarker.isHideCollidedCaptionsName: isHideCollidedCaptions,
-            NMarker.isHideCollidedMarkersName: isHideCollidedMarkers,
-            NMarker.isHideCollidedSymbolsName: isHideCollidedSymbols,
-        ]
-    }
-
     static func fromMessageable(_ v: Any) -> NMarker {
         let d = asDict(v)
         return NMarker(
@@ -117,48 +91,6 @@ internal struct NMarker: AddableOverlay {
                 isHideCollidedCaptions: asBool(d[NMarker.isHideCollidedCaptionsName]!),
                 isHideCollidedMarkers: asBool(d[NMarker.isHideCollidedMarkersName]!),
                 isHideCollidedSymbols: asBool(d[NMarker.isHideCollidedSymbolsName]!)
-        )
-    }
-
-    static func fromOverlay(_ overlay: NMFOverlay, id: String) -> NMarker {
-        let marker = overlay as! NMFMarker
-        return NMarker(
-                info: NOverlayInfo(type: .marker, id: id),
-                position: marker.position,
-                icon: NOverlayImage.none,
-                iconTintColor: marker.iconTintColor,
-                alpha: marker.alpha,
-                angle: marker.angle,
-                anchor: NPoint.fromCGPointWithOutDisplay(marker.anchor),
-                size: NSize(width: marker.width, height: marker.height),
-                caption: NOverlayCaption(
-                        text: marker.captionText,
-                        textSize: marker.captionTextSize,
-                        color: marker.captionColor,
-                        haloColor: marker.captionHaloColor,
-                        minZoom: marker.minZoom,
-                        maxZoom: marker.maxZoom,
-                        requestWidth: marker.captionRequestedWidth
-                ),
-                subCaption: NOverlayCaption(
-                        text: marker.subCaptionText,
-                        textSize: marker.subCaptionTextSize,
-                        color: marker.subCaptionColor,
-                        haloColor: marker.subCaptionHaloColor,
-                        minZoom: marker.subCaptionMinZoom,
-                        maxZoom: marker.subCaptionMaxZoom,
-                        requestWidth: marker.subCaptionRequestedWidth
-                ),
-                captionAligns: marker.captionAligns,
-                captionOffset: marker.captionOffset,
-                isCaptionPerspectiveEnabled: marker.captionPerspectiveEnabled,
-                isIconPerspectiveEnabled: marker.iconPerspectiveEnabled,
-                isFlat: marker.isFlat,
-                isForceShowCaption: marker.isForceShowCaption,
-                isForceShowIcon: marker.isForceShowIcon,
-                isHideCollidedCaptions: marker.isHideCollidedCaptions,
-                isHideCollidedMarkers: marker.isHideCollidedMarkers,
-                isHideCollidedSymbols: marker.isHideCollidedSymbols
         )
     }
 

@@ -11,33 +11,35 @@ internal class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, C
 
     /* ----- overlay storage ----- */
 
-    private var overlays: Dictionary<String, NMFOverlay> = [:]
+    private var overlays: Dictionary<NOverlayInfo, NMFOverlay> = [:]
+
+    func saveOverlay(overlay: NMFOverlay, info: NOverlayInfo) {
+        info.saveAtOverlay(overlay)
+        detachOverlay(info: info)
+        let query = NOverlayQuery(info: info, methodName: onTapName).query
+        overlay.touchHandler = { [weak self] overlay in
+            self?.channel.invokeMethod(query, arguments: nil)
+            return true
+        }
+        overlays[info] = overlay
+    }
 
     func hasOverlay(info: NOverlayInfo) -> Bool {
         overlays.contains { (key, _) in
-            key == info.overlayMapKey
+            key == info
         }
-    }
-
-    func saveOverlay(overlay: NMFOverlay, info: NOverlayInfo) {
-        detachOverlay(info: info)
-        overlay.touchHandler = { [weak self] overlay in
-            self?.channel.invokeMethod(info.toQueryString(injectMethod: onTapName), arguments: nil)
-            return true
-        }
-        overlays[info.overlayMapKey] = overlay
     }
 
     private func getOverlay(info: NOverlayInfo) -> NMFOverlay? {
-        overlays[info.overlayMapKey]
+        overlays[info]
     }
 
     func deleteOverlay(info: NOverlayInfo) {
         detachOverlay(info: info)
-        overlays.removeValue(forKey: info.overlayMapKey)
+        overlays.removeValue(forKey: info)
     }
 
-    func deleteOverlay(_ key: String, _ value: NMFOverlay) {
+    func deleteOverlay(_ key: NOverlayInfo, _ value: NMFOverlay) {
         detachOverlay(value)
         overlays.removeValue(forKey: key)
     }
@@ -68,27 +70,17 @@ internal class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, C
         filteredOverlays({ $0.type == type }).forEach(deleteOverlay)
     }
 
-    private func filteredOverlays(_ predicate: (_ info: NOverlayInfo) -> Bool) -> Dictionary<String, NMFOverlay> {
+    private func filteredOverlays(_ predicate: (_ info: NOverlayInfo) -> Bool) -> Dictionary<NOverlayInfo, NMFOverlay> {
         overlays.filter { key, value in
-            let info = NOverlayInfo.fromString(key)
-            return predicate(info)
+            predicate(key)
         }
-    }
-
-    func getSavedOverlayKey(overlay: NMFOverlay) -> String? {
-        for (key, value) in overlays {
-            if value == overlay {
-                return key
-            }
-        }
-        return nil
     }
 
     /* ----- handler ----- */
 
     private func handler(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        let queryInfo = NOverlayInfo.fromString(call.method)
-        let overlay = queryInfo.getOverlay(overlays: overlays)
+        let query = NOverlayQuery.fromQuery(call.method)
+        let overlay = getOverlay(info: query.info)
 
         guard let overlay else {
             result(FlutterError(code: "overlay_not_found", message: "overlay not found", details: nil))
@@ -96,61 +88,23 @@ internal class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, C
         }
 
         let isInvokedOnCommonOverlay =
-                handleOverlay(overlay: overlay, method: queryInfo.method!, args: call.arguments, result: result)
+                handleOverlay(overlay: overlay, method: query.methodName, args: call.arguments, result: result)
 
         if !isInvokedOnCommonOverlay {
-            switch queryInfo.type {
-            case .marker: handleMarker(
-                    marker: overlay as! NMFMarker,
-                    method: queryInfo.method!,
-                    args: call.arguments,
-                    result: result)
-            case .infoWindow: handleInfoWindow(
-                    infoWindow: overlay as! NMFInfoWindow,
-                    method: queryInfo.method!,
-                    args: call.arguments,
-                    result: result)
-            case .circleOverlay: handleCircleOverlay(
-                    circleOverlay: overlay as! NMFCircleOverlay,
-                    method: queryInfo.method!,
-                    args: call.arguments,
-                    result: result)
-            case .groundOverlay: handleGroundOverlay(
-                    groundOverlay: overlay as! NMFGroundOverlay,
-                    method: queryInfo.method!,
-                    args: call.arguments,
-                    result: result)
-            case .polygonOverlay: handlePolygonOverlay(
-                    polygonOverlay: overlay as! NMFPolygonOverlay,
-                    method: queryInfo.method!,
-                    args: call.arguments,
-                    result: result)
-            case .polylineOverlay: handlePolylineOverlay(
-                    polylineOverlay: overlay as! NMFPolylineOverlay,
-                    method: queryInfo.method!,
-                    args: call.arguments,
-                    result: result)
-            case .pathOverlay: handlePathOverlay(
-                    pathOverlay: overlay as! NMFPath,
-                    method: queryInfo.method!,
-                    args: call.arguments,
-                    result: result)
-            case .multipartPathOverlay: handleMultipartPathOverlay(
-                    multipartPathOverlay: overlay as! NMFMultipartPath,
-                    method: queryInfo.method!,
-                    args: call.arguments,
-                    result: result)
-            case .arrowheadPathOverlay: handleArrowheadPathOverlay(
-                    arrowheadPathOverlay: overlay as! NMFArrowheadPath,
-                    method: queryInfo.method!,
-                    args: call.arguments,
-                    result: result)
-            case .locationOverlay: handleLocationOverlay(
-                    locationOverlay: overlay as! NMFLocationOverlay,
-                    method: queryInfo.method!,
-                    args: call.arguments,
-                    result: result)
+            var overlayHandleFunc: (NMFOverlay, String, Any?, @escaping FlutterResult) -> ()
+            switch query.info.type {
+            case .marker: overlayHandleFunc = handleMarker
+            case .infoWindow: overlayHandleFunc = handleInfoWindow
+            case .circleOverlay: overlayHandleFunc = handleCircleOverlay
+            case .groundOverlay: overlayHandleFunc = handleGroundOverlay
+            case .polygonOverlay:overlayHandleFunc = handlePolygonOverlay
+            case .polylineOverlay: overlayHandleFunc = handlePolylineOverlay
+            case .pathOverlay: overlayHandleFunc = handlePathOverlay
+            case .multipartPathOverlay: overlayHandleFunc = handleMultipartPathOverlay
+            case .arrowheadPathOverlay:overlayHandleFunc = handleArrowheadPathOverlay
+            case .locationOverlay: overlayHandleFunc = handleLocationOverlay
             }
+            overlayHandleFunc(overlay, query.methodName, call.arguments, result)
         }
     }
 
@@ -163,60 +117,24 @@ internal class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, C
         overlay.zIndex = asInt(rawZIndex)
     }
 
-    func getGlobalZIndex(_ overlay: NMFOverlay, success: (Int) -> ()) {
-        success(overlay.globalZIndex)
-    }
-
     func setGlobalZIndex(_ overlay: NMFOverlay, rawGlobalZIndex: Any) {
         overlay.globalZIndex = asInt(rawGlobalZIndex)
-    }
-
-    func getTag(_ overlay: NMFOverlay, success: (String?) -> ()) {
-        success(castOrNull(overlay.userInfo["tag"], caster: asString))
-    }
-
-    func setTag(_ overlay: NMFOverlay, rawTag: String?) {
-        overlay.userInfo["tag"] = rawTag
-    }
-
-    func getIsAdded(_ overlay: NMFOverlay, success: (Bool) -> ()) {
-        success(overlay.mapView != nil)
-    }
-
-    func getIsVisible(_ overlay: NMFOverlay, success: (Bool) -> ()) {
-        success(!overlay.hidden)
     }
 
     func setIsVisible(_ overlay: NMFOverlay, rawIsVisible: Any) {
         overlay.hidden = !asBool(rawIsVisible)
     }
 
-    func getMinZoom(_ overlay: NMFOverlay, success: (Double) -> ()) {
-        success(overlay.minZoom)
-    }
-
     func setMinZoom(_ overlay: NMFOverlay, rawMinZoom: Any) {
         overlay.minZoom = asDouble(rawMinZoom)
-    }
-
-    func getMaxZoom(_ overlay: NMFOverlay, success: (Double) -> ()) {
-        success(overlay.maxZoom)
     }
 
     func setMaxZoom(_ overlay: NMFOverlay, rawMaxZoom: Any) {
         overlay.maxZoom = asDouble(rawMaxZoom)
     }
 
-    func getIsMinZoomInclusive(_ overlay: NMFOverlay, success: (Bool) -> ()) {
-        success(overlay.isMinZoomInclusive)
-    }
-
     func setIsMinZoomInclusive(_ overlay: NMFOverlay, rawIsMinZoomInclusive: Any) {
         overlay.isMinZoomInclusive = asBool(rawIsMinZoomInclusive)
-    }
-
-    func getIsMaxZoomInclusive(_ overlay: NMFOverlay, success: (Bool) -> ()) {
-        success(overlay.isMaxZoomInclusive)
     }
 
     func setIsMaxZoomInclusive(_ overlay: NMFOverlay, rawIsMaxZoomInclusive: Any) {
@@ -231,10 +149,6 @@ internal class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, C
     }
 
     /* ----- LocationOverlay handler ----- */
-    func getAnchor(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
-        let anchor = overlay.anchor
-        success(NPoint.fromCGPointWithOutDisplay(anchor).toMessageable())
-    }
 
     func setAnchor(_ overlay: NMFLocationOverlay, rawNPoint: Any) {
         overlay.anchor = NPoint.fromMessageable(rawNPoint).cgPoint
@@ -248,32 +162,16 @@ internal class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, C
         overlay.heading = asCGFloat(rawBearing)
     }
 
-    func getCircleColor(_ overlay: NMFLocationOverlay, success: (Int) -> ()) {
-        success(overlay.circleColor.toInt())
-    }
-
     func setCircleColor(_ overlay: NMFLocationOverlay, rawColor: Any) {
         overlay.circleColor = asUIColor(rawColor)
-    }
-
-    func getCircleOutlineColor(_ overlay: NMFLocationOverlay, success: (Int) -> ()) {
-        success(overlay.circleOutlineColor.toInt())
     }
 
     func setCircleOutlineColor(_ overlay: NMFLocationOverlay, rawColor: Any) {
         overlay.circleOutlineColor = asUIColor(rawColor)
     }
 
-    func getCircleOutlineWidth(_ overlay: NMFLocationOverlay, success: (Double) -> ()) {
-        success(overlay.circleOutlineWidth)
-    }
-
     func setCircleOutlineWidth(_ overlay: NMFLocationOverlay, rawWidth: Any) {
         overlay.circleOutlineWidth = asCGFloat(rawWidth)
-    }
-
-    func getCircleRadius(_ overlay: NMFLocationOverlay, success: (Double) -> ()) {
-        success(overlay.circleRadius)
     }
 
     func setCircleRadius(_ overlay: NMFLocationOverlay, rawRadius: Any) {
@@ -282,13 +180,6 @@ internal class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, C
 
     func setIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any) {
         overlay.icon = NOverlayImage.fromMessageable(rawNOverlayImage).overlayImage
-    }
-
-    func getIconSize(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
-        success(NSize(
-                width: overlay.iconWidth,
-                height: overlay.iconHeight
-        ).toMessageable())
     }
 
     func setIconSize(_ overlay: NMFLocationOverlay, rawSize: Any) {
@@ -305,23 +196,12 @@ internal class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, C
         overlay.location = asLatLng(rawLatLng)
     }
 
-    func getSubAnchor(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
-        success(NPoint.fromCGPointWithOutDisplay(overlay.subAnchor).toMessageable())
-    }
-
     func setSubAnchor(_ overlay: NMFLocationOverlay, rawNPoint: Any) {
         overlay.subAnchor = NPoint.fromMessageable(rawNPoint).cgPoint
     }
 
     func setSubIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any) {
         overlay.subIcon = NOverlayImage.fromMessageable(rawNOverlayImage).overlayImage
-    }
-
-    func getSubIconSize(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
-        success(NSize(
-                width: overlay.subIconWidth,
-                height: overlay.subIconHeight
-        ).toMessageable())
     }
 
     func setSubIconSize(_ overlay: NMFLocationOverlay, rawSize: Any) {

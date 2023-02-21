@@ -2,6 +2,7 @@ import NMapsMap
 
 internal struct NPolylineOverlay: AddableOverlay {
     typealias OverlayType = NMFPolylineOverlay
+    var overlayPayload: Dictionary<String, Any?> = [:]
 
     let info: NOverlayInfo
     let coords: Array<NMGLatLng>
@@ -22,22 +23,6 @@ internal struct NPolylineOverlay: AddableOverlay {
         return polyline
     }
 
-    func toMessageable() -> Dictionary<String, Any?> {
-        [
-            NPolylineOverlay.infoName: info.toMessageable(),
-            NPolylineOverlay.coordsName: coords.map {
-                $0.toMessageable()
-            },
-            NPolylineOverlay.colorName: color.toInt(),
-            NPolylineOverlay.widthName: width,
-            NPolylineOverlay.lineCapName: lineCap.toMessageableString(),
-            NPolylineOverlay.lineJoinName: lineJoin.toMessageableString(),
-            NPolylineOverlay.patternName: pattern.map {
-                $0.intValue
-            },
-        ]
-    }
-
     static func fromMessageable(_ v: Any) -> NPolylineOverlay {
         let d = asDict(v)
         return NPolylineOverlay(
@@ -50,19 +35,6 @@ internal struct NPolylineOverlay: AddableOverlay {
                 pattern: asArr(d[patternName]!) {
                     NSNumber(value: asRoundInt(rawFloat: $0))
                 }
-        )
-    }
-
-    static func fromOverlay(_ overlay: NMFOverlay, id: String) -> NPolylineOverlay {
-        let polyline = overlay as! NMFPolylineOverlay
-        return NPolylineOverlay(
-                info: NOverlayInfo(type: .polylineOverlay, id: id),
-                coords: polyline.line.latLngPoints,
-                color: polyline.color,
-                width: Double(polyline.width),
-                lineCap: polyline.capType,
-                lineJoin: polyline.joinType,
-                pattern: polyline.pattern
         )
     }
 

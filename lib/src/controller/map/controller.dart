@@ -54,8 +54,11 @@ class _NaverMapControllerImpl
 
   @override
   Future<NLocationOverlay> getLocationOverlay() async {
-    await invokeMethod("getLocationOverlay");
-    return overlayController.locationOverlay;
+    final rawLocationOverlay = await invokeMethod("getLocationOverlay");
+    overlayController.locationOverlay ??=
+        NLocationOverlay._fromMessageable(rawLocationOverlay)
+          .._addedOnMap(overlayController);
+    return overlayController.locationOverlay!;
   }
 
   @override
@@ -81,19 +84,16 @@ class _NaverMapControllerImpl
   }
 
   @override
-  Future<List<Pickable>> pickAll(NPoint point, {double radius = 0}) async {
-    final messageable = NMessageable.forOnceWithMap({
-      "point": point,
-      "radius": radius,
-    });
-    final rawPickables = await invokeMethod("pickAll", messageable)
-        .then((rawList) => rawList as List);
+  Future<List<NPickableInfo>> pickAll(NPoint point, {double radius = 0}) async {
+    final messageable =
+        NMessageable.forOnceWithMap({"point": point, "radius": radius});
 
-    final List<Pickable> result = rawPickables
-        .map((rawPickable) => Pickable._fromMessageable(rawPickable,
-            overlayController: overlayController))
-        .toList();
-    return result;
+    final rawList =
+        await invokeMethod("pickAll", messageable).then((raw) => raw as List);
+    final pickableInfoList =
+        rawList.map(NPickableInfo._fromMessageable).toList();
+
+    return pickableInfoList;
   }
 
   @override
@@ -130,17 +130,14 @@ class _NaverMapControllerImpl
     for (final overlay in overlays) {
       overlay._addedOnMap(overlayController);
     }
-    await invokeMethodWithList("addOverlayAll", overlays.toList());
+    await invokeMethodWithIterable("addOverlayAll", overlays);
   }
 
   @override
-  Future<void> deleteOverlay(
-      {required NOverlayType type, required String id}) async {
-    assert(type != NOverlayType.locationOverlay);
-
-    final overlayInfo = NOverlayInfo._(type: type, id: id);
-    await invokeMethod("deleteOverlay", overlayInfo);
-    overlayController.disposeWithInfo(overlayInfo);
+  Future<void> deleteOverlay(NOverlayInfo info) async {
+    assert(info.type != NOverlayType.locationOverlay);
+    await invokeMethod("deleteOverlay", info);
+    overlayController.disposeWithInfo(info);
   }
 
   @override

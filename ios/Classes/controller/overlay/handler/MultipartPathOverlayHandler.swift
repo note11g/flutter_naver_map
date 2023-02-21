@@ -23,10 +23,11 @@ internal protocol MultipartPathOverlayHandler: OverlayHandler {
 }
 
 internal extension  MultipartPathOverlayHandler {
-    func handleMultipartPathOverlay(multipartPathOverlay: NMFMultipartPath,
+    func handleMultipartPathOverlay(multipartPathOverlay: NMFOverlay,
                                     method: String,
                                     args: Any?,
                                     result: @escaping FlutterResult) {
+        let multipartPathOverlay = multipartPathOverlay as! NMFMultipartPath
         switch method {
         case NMultipartPathOverlay.pathsName: setPaths(multipartPathOverlay, rawPaths: args!)
         case NMultipartPathOverlay.widthName: setWidth(multipartPathOverlay, rawWidthDp: args!)

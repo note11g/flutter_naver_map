@@ -21,7 +21,7 @@ class NLatLngBounds with NMessageableWithMap {
 
   const NLatLngBounds({required this.southWest, required this.northEast});
 
-  factory NLatLngBounds.from(List<NLatLng> points) {
+  factory NLatLngBounds.from(Iterable<NLatLng> points) {
     if (points.isEmpty) {
       throw ArgumentError("Cannot create LatLngBounds with an empty list");
     } else {

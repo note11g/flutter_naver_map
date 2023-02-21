@@ -20,10 +20,11 @@ internal protocol ArrowheadPathOverlayHandler: OverlayHandler {
 
 internal extension  ArrowheadPathOverlayHandler {
     func handleArrowheadPathOverlay(
-            arrowheadPathOverlay: NMFArrowheadPath,
+            arrowheadPathOverlay: NMFOverlay,
             method: String,
             args: Any?,
             result: @escaping FlutterResult) {
+        let arrowheadPathOverlay = arrowheadPathOverlay as! NMFArrowheadPath
         switch method {
         case NArrowheadPathOverlay.coordsName: setCoords(arrowheadPathOverlay, rawCoords: args!)
         case NArrowheadPathOverlay.widthName: setWidth(arrowheadPathOverlay, rawWidth: args!)

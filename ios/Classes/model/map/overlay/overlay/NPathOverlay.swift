@@ -2,6 +2,7 @@ import NMapsMap
 
 internal struct NPathOverlay: AddableOverlay {
     typealias OverlayType = NMFPath
+    var overlayPayload: Dictionary<String, Any?> = [:]
 
     let info: NOverlayInfo
     let coords: Array<NMGLatLng>
@@ -36,27 +37,6 @@ internal struct NPathOverlay: AddableOverlay {
         return overlay
     }
 
-    func toMessageable() -> Dictionary<String, Any?> {
-        [
-            NPathOverlay.infoName: info.toMessageable(),
-            NPathOverlay.coordsName: coords.map {
-                $0.toMessageable()
-            },
-            NPathOverlay.widthName: width,
-            NPathOverlay.colorName: color.toInt(),
-            NPathOverlay.outlineWidthName: outlineWidth,
-            NPathOverlay.outlineColorName: outlineColor.toInt(),
-            NPathOverlay.passedColorName: passedColor.toInt(),
-            NPathOverlay.passedOutlineColorName: passedOutlineColor.toInt(),
-            NPathOverlay.progressName: progress,
-            NPathOverlay.patternImageName: patternImage?.toMessageable(),
-            NPathOverlay.patternIntervalName: patternInterval,
-            NPathOverlay.isHideCollidedCaptionsName: isHideCollidedCaptions,
-            NPathOverlay.isHideCollidedMarkersName: isHideCollidedMarkers,
-            NPathOverlay.isHideCollidedSymbolsName: isHideCollidedSymbols,
-        ]
-    }
-
     static func fromMessageable(_ v: Any) -> NPathOverlay {
         let d = asDict(v)
         return NPathOverlay(
@@ -74,28 +54,6 @@ internal struct NPathOverlay: AddableOverlay {
                 isHideCollidedCaptions: asBool(d[isHideCollidedCaptionsName]!),
                 isHideCollidedMarkers: asBool(d[isHideCollidedMarkersName]!),
                 isHideCollidedSymbols: asBool(d[isHideCollidedSymbolsName]!)
-        )
-    }
-
-    static func fromOverlay(_ overlay: NMFOverlay, id: String) -> NPathOverlay {
-        let path = overlay as! NMFPath
-        return NPathOverlay(
-                info: NOverlayInfo(type: .pathOverlay, id: id),
-                coords: path.path.points.map {
-                    $0.toLatLng()
-                },
-                width: path.width,
-                color: path.color,
-                outlineWidth: path.outlineWidth,
-                outlineColor: path.outlineColor,
-                passedColor: path.passedColor,
-                passedOutlineColor: path.passedOutlineColor,
-                progress: path.progress,
-                patternImage: NOverlayImage.none,
-                patternInterval: Double(path.patternInterval),
-                isHideCollidedCaptions: path.isHideCollidedCaptions,
-                isHideCollidedMarkers: path.isHideCollidedMarkers,
-                isHideCollidedSymbols: path.isHideCollidedSymbols
         )
     }
 

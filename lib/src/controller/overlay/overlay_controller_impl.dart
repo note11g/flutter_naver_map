@@ -6,25 +6,21 @@ class _NOverlayControllerImpl extends _NOverlayController {
   @override
   final MethodChannel channel;
 
-  @override
-  final NLocationOverlay locationOverlay = NLocationOverlay._();
-
-  NOverlayInfo get _locationOverlayInfo => locationOverlay.info;
+  NOverlayInfo get _locationOverlayInfo =>
+      NLocationOverlay._locationOverlayInfo;
 
   _NOverlayControllerImpl(this.channel) {
     channel.setMethodCallHandler(_handleMethodCall);
-    locationOverlay._addedOnMap(this);
   }
 
   Future<void> _handleMethodCall(MethodCall call) async {
-    final info = NOverlayInfo._fromString(call.method);
-    assert(info.method != null);
+    final query = _NOverlayQuery.fromQuery(call.method);
 
-    log("_handleMethodCall: $info", name: "_OverlayControllerImpl");
+    log("_handleMethodCall: ${query.info}", name: "_OverlayControllerImpl");
 
     try {
-      final func = overlayFunctionMap[info]!;
-      func.call(info.method!);
+      final func = overlayFunctionMap[query.info]!;
+      func.call(query.methodName);
     } catch (e) {
       log("error!", error: e, name: "_OverlayControllerImpl");
     }

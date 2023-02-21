@@ -2,7 +2,6 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 
 import androidx.annotation.ColorInt
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.PathOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asBoolean
@@ -11,10 +10,8 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asList
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
-import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayImage
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 
 internal data class NPathOverlay(
@@ -34,6 +31,7 @@ internal data class NPathOverlay(
     val isHideCollidedSymbols: Boolean,
 ) : AddableOverlay<PathOverlay> {
 
+
     override fun createMapOverlay(): PathOverlay = PathOverlay().also { g ->
         g.coords = coords
         g.width = DisplayUtil.dpToPx(widthDp)
@@ -49,23 +47,6 @@ internal data class NPathOverlay(
         g.isHideCollidedMarkers = isHideCollidedMarkers
         g.isHideCollidedSymbols = isHideCollidedSymbols
     }
-
-    override fun toMessageable(): Map<String, Any?> = mapOf(
-        infoName to info.toMessageable(),
-        coordsName to coords.map { it.toMessageable() },
-        widthName to widthDp,
-        colorName to color,
-        outlineColorName to outlineColor,
-        outlineWidthName to outlineWidthDp,
-        passedColorName to passedColor,
-        passedOutlineColorName to passedOutlineColor,
-        progressName to progress,
-        patternImageName to patternImage?.toMessageable(),
-        patternIntervalName to patternIntervalDp,
-        isHideCollidedCaptionsName to isHideCollidedCaptions,
-        isHideCollidedMarkersName to isHideCollidedMarkers,
-        isHideCollidedSymbolsName to isHideCollidedSymbols,
-    )
 
     companion object {
         fun fromMessageable(rawMap: Any): NPathOverlay = rawMap.asMap().let {
@@ -84,28 +65,6 @@ internal data class NPathOverlay(
                 isHideCollidedCaptions = it[isHideCollidedCaptionsName]!!.asBoolean(),
                 isHideCollidedMarkers = it[isHideCollidedMarkersName]!!.asBoolean(),
                 isHideCollidedSymbols = it[isHideCollidedSymbolsName]!!.asBoolean(),
-            )
-        }
-
-        fun fromPathOverlay(
-            pathOverlay: Overlay,
-            id: String,
-        ): NPathOverlay = (pathOverlay as PathOverlay).run {
-            NPathOverlay(
-                info = NOverlayInfo(NOverlayType.PATH_OVERLAY, id),
-                coords = coords,
-                widthDp = DisplayUtil.pxToDp(width),
-                color = color,
-                outlineColor = outlineColor,
-                outlineWidthDp = DisplayUtil.pxToDp(outlineWidth),
-                passedColor = passedColor,
-                passedOutlineColor = passedOutlineColor,
-                progress = progress,
-                patternImage = NOverlayImage.none,
-                patternIntervalDp = DisplayUtil.pxToDp(patternInterval),
-                isHideCollidedCaptions = isHideCollidedCaptions,
-                isHideCollidedMarkers = isHideCollidedMarkers,
-                isHideCollidedSymbols = isHideCollidedSymbols,
             )
         }
 

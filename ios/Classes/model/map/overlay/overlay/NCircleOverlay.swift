@@ -2,6 +2,8 @@ import NMapsMap
 
 internal struct NCircleOverlay: AddableOverlay {
     typealias OverlayType = NMFCircleOverlay
+    var overlayPayload: Dictionary<String, Any?> = [:]
+
     let info: NOverlayInfo
     let center: NMGLatLng
     let radius: Double
@@ -17,17 +19,6 @@ internal struct NCircleOverlay: AddableOverlay {
         return overlay
     }
 
-    func toMessageable() -> Dictionary<String, Any?> {
-        [
-            NCircleOverlay.infoName: info.toMessageable(),
-            NCircleOverlay.centerName: center.toMessageable(),
-            NCircleOverlay.radiusName: radius,
-            NCircleOverlay.colorName: color.toInt(),
-            NCircleOverlay.outlineColorName: outlineColor.toInt(),
-            NCircleOverlay.outlineWidthName: outlineWidth
-        ]
-    }
-
     static func fromMessageable(_ v: Any) -> NCircleOverlay {
         let d = asDict(v)
         return NCircleOverlay(
@@ -37,18 +28,6 @@ internal struct NCircleOverlay: AddableOverlay {
                 color: asUIColor(d[colorName]!),
                 outlineColor: asUIColor(d[outlineColorName]!),
                 outlineWidth: asDouble(d[outlineWidthName]!)
-        )
-    }
-
-    static func fromOverlay(_ overlay: NMFOverlay, id: String) -> NCircleOverlay {
-        let o = overlay as! NMFCircleOverlay
-        return NCircleOverlay(
-                info: NOverlayInfo(type: .circleOverlay, id: id),
-                center: o.center,
-                radius: o.radius,
-                color: o.fillColor,
-                outlineColor: o.outlineColor,
-                outlineWidth: o.outlineWidth
         )
     }
 

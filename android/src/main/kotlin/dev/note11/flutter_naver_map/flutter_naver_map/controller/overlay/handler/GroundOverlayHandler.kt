@@ -1,18 +1,21 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.handler
 
 import com.naver.maps.map.overlay.GroundOverlay
+import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NGroundOverlay
 import io.flutter.plugin.common.MethodChannel
 
 internal interface GroundOverlayHandler : OverlayHandler {
     fun handleGroundOverlay(
-        groundOverlay: GroundOverlay, method: String, arg: Any?, result: MethodChannel.Result,
-    ) = when (method) {
-        NGroundOverlay.boundsName -> setBounds(groundOverlay, arg!!)
-        NGroundOverlay.imageName -> setImage(groundOverlay, arg!!)
-        NGroundOverlay.alphaName -> setAlpha(groundOverlay, arg!!)
-        else -> result.notImplemented()
+        groundOverlay: Overlay, method: String, arg: Any?, result: MethodChannel.Result,
+    ) = (groundOverlay as GroundOverlay).let { g ->
+        when (method) {
+            NGroundOverlay.boundsName -> setBounds(g, arg!!)
+            NGroundOverlay.imageName -> setImage(g, arg!!)
+            NGroundOverlay.alphaName -> setAlpha(g, arg!!)
+            else -> result.notImplemented()
+        }
     }
 
     fun setBounds(groundOverlay: GroundOverlay, rawBounds: Any)

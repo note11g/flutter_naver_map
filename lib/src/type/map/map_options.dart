@@ -12,7 +12,7 @@ class NaverMapViewOptions with NMessageableWithMap {
   final bool nightModeEnable;
 
   final bool indoorEnable;
-  final List<NLayerGroup> activeLayerGroups;
+  final Iterable<NLayerGroup> activeLayerGroups;
   final double buildingHeight;
   final double lightness;
   final double symbolScale;

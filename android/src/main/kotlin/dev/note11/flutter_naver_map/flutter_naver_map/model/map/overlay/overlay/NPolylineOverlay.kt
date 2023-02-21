@@ -2,7 +2,6 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 
 import androidx.annotation.ColorInt
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.PolylineOverlay
 import com.naver.maps.map.overlay.PolylineOverlay.LineCap
 import com.naver.maps.map.overlay.PolylineOverlay.LineJoin
@@ -14,12 +13,8 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLineCap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLineJoin
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageableString
-import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
-import kotlin.math.roundToInt
 
 internal data class NPolylineOverlay(
     override val info: NOverlayInfo,
@@ -31,6 +26,8 @@ internal data class NPolylineOverlay(
     val patternDp: List<Int>,
 ) : AddableOverlay<PolylineOverlay> {
 
+
+
     override fun createMapOverlay(): PolylineOverlay = PolylineOverlay().also { g ->
         g.coords = coords
         g.color = color
@@ -39,16 +36,6 @@ internal data class NPolylineOverlay(
         g.joinType = lineJoin
         g.setPattern(*patternDp.map { DisplayUtil.dpToPx(it.toDouble()) }.toIntArray())
     }
-
-    override fun toMessageable(): Map<String, Any?> = mapOf(
-        infoName to info.toMessageable(),
-        coordsName to coords.map { it.toMessageable() },
-        colorName to color,
-        widthName to widthDp,
-        lineCapName to lineCap.toMessageableString(),
-        lineJoinName to lineJoin.toMessageableString(),
-        patternName to patternDp.map { DisplayUtil.pxToDp(it).roundToInt() },
-    )
 
     companion object {
         fun fromMessageable(rawMap: Any): NPolylineOverlay = rawMap.asMap().let {
@@ -60,21 +47,6 @@ internal data class NPolylineOverlay(
                 lineCap = it[lineCapName]!!.asLineCap(),
                 lineJoin = it[lineJoinName]!!.asLineJoin(),
                 patternDp = it[patternName]!!.asList { p -> p.asInt() },
-            )
-        }
-
-        fun fromPolylineOverlay(
-            polylineOverlay: Overlay,
-            id: String,
-        ): NPolylineOverlay = (polylineOverlay as PolylineOverlay).run {
-            NPolylineOverlay(
-                info = NOverlayInfo(NOverlayType.POLYLINE_OVERLAY, id),
-                coords = coords,
-                color = color,
-                widthDp = DisplayUtil.pxToDp(width),
-                lineCap = capType,
-                lineJoin = joinType,
-                patternDp = pattern.map { DisplayUtil.pxToDp(it).roundToInt() }
             )
         }
 

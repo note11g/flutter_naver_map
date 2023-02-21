@@ -9,6 +9,10 @@ class NGroundOverlay extends NAddableOverlay<NGroundOverlay> {
   double get alpha => _alpha;
   double _alpha;
 
+  @override
+  // ignore: prefer_final_fields
+  int _globalZIndex = -300000;
+
   NGroundOverlay({
     required String id,
     required NLatLngBounds bounds,
@@ -33,13 +37,6 @@ class NGroundOverlay extends NAddableOverlay<NGroundOverlay> {
     _alpha = alpha;
     _set(_alphaName, alpha);
   }
-
-  factory NGroundOverlay._fromMessageable(dynamic m) => NGroundOverlay(
-        id: NOverlayInfo._fromMessageable(m[_infoName]!).id,
-        bounds: NLatLngBounds._fromMessageable(m[_boundsName]!),
-        image: NOverlayImage._fromMessageable(m[_imageName]!),
-        alpha: m[_alphaName]!,
-      );
 
   @override
   NPayload toNPayload() => NPayload.make({

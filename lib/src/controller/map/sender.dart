@@ -22,7 +22,7 @@ abstract class _NaverMapControlSender {
 
   Future<double> getMeterPerDp({double? latitude, double? zoom});
 
-  Future<List<Pickable>> pickAll(NPoint point, {double radius = 0});
+  Future<List<NPickableInfo>> pickAll(NPoint point, {double radius = 0});
 
   Future<File> takeSnapshot(
       {bool showControls = true, int compressQuality = 80});
@@ -35,7 +35,7 @@ abstract class _NaverMapControlSender {
 
   Future<void> addOverlayAll(Set<NAddableOverlay> overlays);
 
-  Future<void> deleteOverlay({required NOverlayType type, required String id});
+  Future<void> deleteOverlay(NOverlayInfo info);
 
   Future<void> clearOverlays({NOverlayType? type});
 

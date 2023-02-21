@@ -44,11 +44,12 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     }
 
     func getLocationOverlay(onSuccess: @escaping (Any?) -> ()) {
+        let overlay = mapView.locationOverlay
         let info = NOverlayInfo.locationOverlayInfo
         if (!overlayController.hasOverlay(info: info)) {
-            overlayController.saveOverlay(overlay: mapView.locationOverlay, info: info)
+            overlayController.saveOverlay(overlay: overlay, info: info)
         }
-        onSuccess(nil)
+        onSuccess(overlay.toMessageable())
     }
 
     func screenLocationToLatLng(nPoint: NPoint, onSuccess: @escaping (Dictionary<String, Any>) -> ()) {
@@ -71,23 +72,13 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
 
     func pickAll(nPoint: NPoint, dpRadius: Double, onSuccess: @escaping (Array<Dictionary<String, Any?>>) -> ()) {
         let pickables = mapView.pickAll(nPoint.cgPoint, withTolerance: asRoundInt(rawFloat: dpRadius))
-        let result = try! pickables.map { pickable in
-            var payload: Dictionary<String, Any?>
 
-            switch pickable {
-            case let pickable as NMFSymbol:
-                payload = pickable.toMessageable()
-            case let pickable as NMFOverlay:
-                let overlayKey = overlayController.getSavedOverlayKey(overlay: pickable)!
-                let nOverlay = try! getAddableOverlayFromOverlay(pickable, info: NOverlayInfo.fromString(overlayKey))
-                payload = nOverlay.toMessageable()
-            default: throw NSError()
-            }
-
-            payload["signature"] = (pickable is NMFSymbol) ? "symbol" : "overlay"
-            return payload
+        let messageableResult: Array<Dictionary<String, Any?>> = pickables.filter({ !($0 is NMFLocationOverlay) }).map {
+            let info = NOverlayInfo.fromPickable(pickable: $0)
+            return info.toSignedMessageable()
         }
-        onSuccess(result)
+
+        onSuccess(messageableResult)
     }
 
     func takeSnapshot(showControls: Bool,
@@ -129,7 +120,7 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     func addOverlayAll(rawOverlays: Array<Dictionary<String, Any>>, onSuccess: @escaping (Any?) -> ()) {
         for rawOverlay in rawOverlays {
             let info = NOverlayInfo.fromMessageable(rawOverlay["info"]!)
-            let creator = try! asAddableOverlay(info: info, json: rawOverlay)
+            let creator = try! asAddableOverlayFromMessageable(info: info, json: rawOverlay)
 
             let overlay = overlayController.saveOverlayWithAddable(creator: creator)
             overlay.mapView = mapView
@@ -173,7 +164,8 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     }
 
     func onSymbolTapped(symbol: NMFSymbol) -> Bool? {
-        channel.invokeMethod("onSymbolTapped", arguments: symbol.toMessageable())
+        let symbolInfo = NSymbolInfo(symbol: symbol)
+        channel.invokeMethod("onSymbolTapped", arguments: symbolInfo.toMessageable())
         return naverMapViewOptions?.consumeSymbolTapEvents
     }
 

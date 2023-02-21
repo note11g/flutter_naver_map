@@ -1,8 +1,8 @@
 part of flutter_naver_map;
 
 class NMultipartPathOverlay extends NAddableOverlay<NMultipartPathOverlay> {
-  List<NMultipartPath> get paths => _paths;
-  List<NMultipartPath> _paths;
+  List<NMultipartPath> get paths => _paths.toList();
+  Iterable<NMultipartPath> _paths;
 
   double get width => _width;
   double _width;
@@ -27,9 +27,13 @@ class NMultipartPathOverlay extends NAddableOverlay<NMultipartPathOverlay> {
   bool get isHideCollidedSymbols => _isHideCollidedSymbols;
   bool _isHideCollidedSymbols;
 
+  @override
+  // ignore: prefer_final_fields
+  int _globalZIndex = -100000;
+
   NMultipartPathOverlay({
     required String id,
-    required List<NMultipartPath> paths,
+    required Iterable<NMultipartPath> paths,
     double width = 4,
     double outlineWidth = 1,
     NOverlayImage? patternImage,
@@ -49,7 +53,7 @@ class NMultipartPathOverlay extends NAddableOverlay<NMultipartPathOverlay> {
         _isHideCollidedSymbols = isHideCollidedSymbols,
         super(id: id, type: NOverlayType.multipartPathOverlay);
 
-  void setPaths(List<NMultipartPath> paths) {
+  void setPaths(Iterable<NMultipartPath> paths) {
     _paths = paths;
     _set(_pathsName, paths);
   }
@@ -97,22 +101,6 @@ class NMultipartPathOverlay extends NAddableOverlay<NMultipartPathOverlay> {
   Future<NLatLngBounds> getBounds() {
     return _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
   }
-
-  factory NMultipartPathOverlay._fromMessageable(dynamic m) =>
-      NMultipartPathOverlay(
-        id: NOverlayInfo._fromMessageable(m[_infoName]!).id,
-        paths: NMultipartPath._fromMessageableList(m[_pathsName]!),
-        width: m[_widthName]!,
-        outlineWidth: m[_outlineWidthName]!,
-        patternImage: m[_patternImageName] != null
-            ? NOverlayImage._fromMessageable(m[_patternImageName])
-            : null,
-        patternInterval: m[_patternIntervalName]!,
-        progress: m[_progressName]!,
-        isHideCollidedCaptions: m[_isHideCollidedCaptionsName]!,
-        isHideCollidedMarkers: m[_isHideCollidedMarkersName]!,
-        isHideCollidedSymbols: m[_isHideCollidedSymbolsName]!,
-      );
 
   @override
   NPayload toNPayload() => NPayload.make({

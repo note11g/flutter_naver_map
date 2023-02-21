@@ -1,25 +1,16 @@
 part of flutter_naver_map;
 
-abstract class NOverlay<O extends NOverlay<void>> implements Pickable {
+abstract class NOverlay<O extends NOverlay<void>> {
   NOverlay(this.info);
 
-  @visibleForTesting
   final NOverlayInfo info;
-
-  NOverlayType get type => info.type;
-
-  String get id => info.id;
 
   bool get _isAdded => _overlayController != null;
 
   _NOverlayController? _overlayController;
 
-  /// [addFunc] 는 setOnTapListener 등의 함수를 추가할 지 여부를 결정합니다.
-  /// [addFunc] 는 기본 true 이며, 지도에서 가져오는 경우(pickAll)에서는 false 로 설정하여,
-  /// 오버레이들을 가져오더라도 onTapListener를 잃지 않도록 합니다.
-  void _addedOnMap(_NOverlayController controller, {bool addFunc = true}) {
-    log("_addedOnMap", name: "NOverlay");
-    if (addFunc) controller.add(info, this);
+  void _addedOnMap(_NOverlayController controller) {
+    controller.add(info, this);
     _overlayController = controller;
   }
 
@@ -28,21 +19,19 @@ abstract class NOverlay<O extends NOverlay<void>> implements Pickable {
       throw NOverlayNotAddedOnMapException("Overlay Not added on Map!");
     }
 
-    final queryString = info.toQueryString(injectMethod: method);
+    final query = _NOverlayQuery(info, methodName: method).query;
+
     if (arguments == null) {
-      return await _overlayController!.invokeMethod(queryString);
+      return await _overlayController!.invokeMethod(query);
     }
     final messageable =
         NMessageable.forOnce(NPayload.convertToMessageable(arguments!));
-    return await _overlayController!.invokeMethod(queryString, messageable);
+    return await _overlayController!.invokeMethod(query, messageable);
   }
 
   void _set(String name, dynamic value) async {
+    if (!_isAdded) return;
     await _invokeMethod(name, value);
-  }
-
-  Future<T> _getAsync<T>(String name) {
-    return _invokeMethod("get$name").then((value) => value as T);
   }
 
   Future<T> _getAsyncWithCast<T>(String name, T Function(dynamic) cast) {
@@ -56,44 +45,79 @@ abstract class NOverlay<O extends NOverlay<void>> implements Pickable {
     --- methods ---
   */
 
-  Future<int> getZIndex() => _getAsync(_zIndexName);
+  int get zIndex => _zIndex;
+  int _zIndex = 0;
 
-  void setZIndex(int zIndex) => _set(_zIndexName, zIndex);
+  /// globalZIndex has different initial values for each overlay type.
+  int get _globalZIndex;
 
-  Future<int> getGlobalZIndex() => _getAsync(_globalZIndexName);
+  set _globalZIndex(int value);
 
-  void setGlobalZIndex(int globalZIndex) =>
-      _set(_globalZIndexName, globalZIndex);
+  int get globalZIndex => _globalZIndex;
 
-  Future<String?> getTag() => _getAsync(_tagName);
+  bool get isVisible => _isVisible;
+  bool _isVisible = true;
 
-  void setTag(String? tag) => _set(_tagName, tag);
+  double get minZoom => _minZoom;
+  double _minZoom = NaverMapViewOptions.minimumZoom;
 
-  Future<bool> getIsAdded() => _getAsync(_isAddedName);
+  double get maxZoom => _maxZoom;
+  double _maxZoom = NaverMapViewOptions.maximumZoom;
 
-  Future<bool> getIsVisible() => _getAsync(_isVisibleName);
+  bool get isMinZoomInclusive => _isMinZoomInclusive;
+  bool _isMinZoomInclusive = true;
 
-  void setIsVisible(bool isVisible) => _set(_isVisibleName, isVisible);
+  bool get isMaxZoomInclusive => _isMaxZoomInclusive;
+  bool _isMaxZoomInclusive = true;
 
-  Future<double> getMinZoom() => _getAsync(_minZoomName);
+  void setZIndex(int zIndex) {
+    _zIndex = zIndex;
+    _set(_zIndexName, zIndex);
+  }
 
-  void setMinZoom(double minZoom) => _set(_minZoomName, minZoom);
+  void setGlobalZIndex(int globalZIndex) {
+    _globalZIndex = globalZIndex;
+    _set(_globalZIndexName, globalZIndex);
+  }
 
-  Future<double> getMaxZoom() => _getAsync(_maxZoomName);
+  void setIsVisible(bool isVisible) {
+    _isVisible = isVisible;
+    _set(_isVisibleName, isVisible);
+  }
 
-  void setMaxZoom(double maxZoom) => _set(_maxZoomName, maxZoom);
+  void setMinZoom(double minZoom) {
+    _minZoom = minZoom;
+    _set(_minZoomName, minZoom);
+  }
 
-  Future<bool> getIsMinZoomInclusive() => _getAsync(_isMinZoomInclusiveName);
+  void setMaxZoom(double maxZoom) {
+    _maxZoom = maxZoom;
+    _set(_maxZoomName, maxZoom);
+  }
 
-  void setIsMinZoomInclusive(bool isMinZoomInclusive) =>
-      _set(_isMinZoomInclusiveName, isMinZoomInclusive);
+  void setIsMinZoomInclusive(bool isMinZoomInclusive) {
+    _isMinZoomInclusive = isMinZoomInclusive;
+    _set(_isMinZoomInclusiveName, isMinZoomInclusive);
+  }
 
-  Future<bool> getIsMaxZoomInclusive() => _getAsync(_isMaxZoomInclusiveName);
-
-  void setIsMaxZoomInclusive(bool isMaxZoomInclusive) =>
-      _set(_isMaxZoomInclusiveName, isMaxZoomInclusive);
+  void setIsMaxZoomInclusive(bool isMaxZoomInclusive) {
+    _isMaxZoomInclusive = isMaxZoomInclusive;
+    _set(_isMaxZoomInclusiveName, isMaxZoomInclusive);
+  }
 
   Future<void> performClick() => _runAsync(_performClickName);
+
+  /* ----- fromMessageable ----- */
+
+  void _applyFromMessageable(dynamic m) {
+    _zIndex = m[_zIndexName]!;
+    _globalZIndex = m[_globalZIndexName]!;
+    _isVisible = m[_isVisibleName]!;
+    _minZoom = m[_minZoomName]!;
+    _maxZoom = m[_maxZoomName]!;
+    _isMinZoomInclusive = m[_isMinZoomInclusiveName]!;
+    _isMaxZoomInclusive = m[_isMaxZoomInclusiveName]!;
+  }
 
   /* ----- Handle ----- */
 
@@ -129,8 +153,6 @@ abstract class NOverlay<O extends NOverlay<void>> implements Pickable {
 
   static const _zIndexName = "zIndex";
   static const _globalZIndexName = "globalZIndex";
-  static const _tagName = "tag";
-  static const _isAddedName = "isAdded";
   static const _isVisibleName = "isVisible";
   static const _minZoomName = "minZoom";
   static const _maxZoomName = "maxZoom";
