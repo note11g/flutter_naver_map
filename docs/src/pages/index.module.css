@@ -28,6 +28,7 @@
     gap: 1rem;
     align-items: stretch;
     justify-items: stretch;
+    margin-bottom: 2rem;
 }
 
 .gridItem {
@@ -43,6 +44,7 @@
         gap: 1rem;
         align-items: stretch;
         justify-items: stretch;
+        margin-bottom: 2rem;
     }
 
     .gridItem {

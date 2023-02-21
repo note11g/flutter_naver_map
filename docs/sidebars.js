@@ -15,10 +15,29 @@ const sidebars = {
         {
             type: "category",
             label: "핵심 구성요소",
-            // link: {
-            //     type: "generated-index"
-            // },
-            items: ['element/widget', 'element/controller', 'element/overlay', 'element/coord', 'element/camera', 'element/event',]
+            items: [
+                'element/widget',
+                'element/controller',
+                {
+                    type: "category",
+                    label: "오버레이",
+                    link: {
+                        id: "element/overlay/overlay",
+                        type: "doc",
+                    },
+                    items: [
+                        'element/overlay/marker',
+                        'element/overlay/info_window',
+                        'element/overlay/shape_overlay',
+                        'element/overlay/ground_overlay',
+                        'element/overlay/path_overlay',
+                        'element/overlay/location_overlay',
+                    ],
+                },
+                'element/coord',
+                'element/camera',
+                'element/event'
+            ],
         }
     ]
 };

@@ -26,7 +26,7 @@ export const LiteModeSupported = () => (
 ```dart
 NaverMap(
     options: const NaverMapViewOptions(), // 지도 옵션을 설정할 수 있습니다.
-    forceGesture: false, // 지도에 터치 이벤트를 강제로 전달할지 여부를 설정합니다.
+    forceGesture: false, // 지도에 전달되는 제스처 이벤트의 우선순위를 가장 높게 설정할지 여부를 지정합니다.
     onMapReady: (controller) {},
     onMapTapped: (point, latLng) {},
     onSymbolTapped: (symbol) {},
@@ -45,7 +45,7 @@ NaverMap(
 ## NaverMapViewOptions
 
 :::tip
-`NaverMapViewOptions`에는  [오버레이](./overlay.md), [좌표](./coord.md), [카메라](./camera.md), [이벤트](./event.md) 구성요소가 사용됩니다.
+`NaverMapViewOptions`에는  [오버레이](overlay/overlay.md), [좌표](./coord.md), [카메라](./camera.md), [이벤트](./event.md) 구성요소가 사용됩니다.
 
 먼저, 해당 요소들의 설명을 보고 오시면, 이해가 쉬울 것입니다.
 :::
