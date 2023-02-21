@@ -2,6 +2,7 @@ import NMapsMap
 
 internal struct NPolygonOverlay: AddableOverlay {
     typealias OverlayType = NMFPolygonOverlay
+    var overlayPayload: Dictionary<String, Any?> = [:]
 
     let info: NOverlayInfo
     let coords: Array<NMGLatLng>
@@ -22,17 +23,6 @@ internal struct NPolygonOverlay: AddableOverlay {
         return overlay
     }
 
-    func toMessageable() -> Dictionary<String, Any?> {
-        [
-            NPolygonOverlay.infoName: info.toMessageable(),
-            NPolygonOverlay.coordsName: coords.map({ $0.toMessageable() }),
-            NPolygonOverlay.colorName: color.toInt(),
-            NPolygonOverlay.holesName: holes.map({ $0.map({ $0.toMessageable() }) }),
-            NPolygonOverlay.outlineColorName: outlineColor.toInt(),
-            NPolygonOverlay.outlineWidthName: outlineWidth,
-        ]
-    }
-
     static func fromMessageable(_ v: Any) -> NPolygonOverlay {
         let d = asDict(v)
         return NPolygonOverlay(
@@ -42,18 +32,6 @@ internal struct NPolygonOverlay: AddableOverlay {
                 holes: asArr(d[holesName]!, elementCaster: { asArr($0, elementCaster: asLatLng) }),
                 outlineColor: asUIColor(d[outlineColorName]!),
                 outlineWidth: asDouble(d[outlineWidthName]!)
-        )
-    }
-
-    static func fromOverlay(_ overlay: NMFOverlay, id: String) -> NPolygonOverlay {
-        let polygon = overlay as! NMFPolygonOverlay
-        return NPolygonOverlay(
-                info: NOverlayInfo(type: .polygonOverlay, id: id),
-                coords: polygon.polygon.exteriorRing.latLngPoints,
-                color: polygon.fillColor,
-                holes: polygon.polygon.interiorRings.map({ $0.latLngPoints }),
-                outlineColor: polygon.outlineColor,
-                outlineWidth: Double(polygon.outlineWidth)
         )
     }
 

@@ -1,6 +1,7 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.handler
 
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NMarker
@@ -8,32 +9,34 @@ import io.flutter.plugin.common.MethodChannel
 
 internal interface MarkerHandler : OverlayHandler {
     fun handleMarker(
-        marker: Marker, method: String, arg: Any?, result: MethodChannel.Result,
-    ) = when (method) {
-        NMarker.hasOpenInfoWindowName -> hasOpenInfoWindow(marker, result::success)
-        NMarker.openInfoWindowName -> arg!!.asMap().let {
-            openInfoWindow(marker, it["infoWindow"]!!, it["align"]!!, result::success)
+        marker: Overlay, method: String, arg: Any?, result: MethodChannel.Result,
+    ) = (marker as Marker).let { m ->
+        when (method) {
+            NMarker.hasOpenInfoWindowName -> hasOpenInfoWindow(m, result::success)
+            NMarker.openInfoWindowName -> arg!!.asMap().let {
+                openInfoWindow(m, it["infoWindow"]!!, it["align"]!!, result::success)
+            }
+            NMarker.positionName -> setPosition(m, arg!!)
+            NMarker.iconName -> setIcon(m, arg!!)
+            NMarker.iconTintColorName -> setIconTintColor(m, arg!!)
+            NMarker.alphaName -> setAlpha(m, arg!!)
+            NMarker.angleName -> setAngle(m, arg!!)
+            NMarker.anchorName -> setAnchor(m, arg!!)
+            NMarker.sizeName -> setSize(m, arg!!)
+            NMarker.captionName -> setCaption(m, arg!!)
+            NMarker.subCaptionName -> setSubCaption(m, arg!!)
+            NMarker.captionAlignsName -> setCaptionAligns(m, arg!!)
+            NMarker.captionOffsetName -> setCaptionOffset(m, arg!!)
+            NMarker.isCaptionPerspectiveEnabledName -> setIsCaptionPerspectiveEnabled(m, arg!!)
+            NMarker.isIconPerspectiveEnabledName -> setIsIconPerspectiveEnabled(m, arg!!)
+            NMarker.isFlatName -> setIsFlat(m, arg!!)
+            NMarker.isForceShowCaptionName -> setIsForceShowCaption(m, arg!!)
+            NMarker.isForceShowIconName -> setIsForceShowIcon(m, arg!!)
+            NMarker.isHideCollidedCaptionsName -> setIsHideCollidedCaptions(m, arg!!)
+            NMarker.isHideCollidedMarkersName -> setIsHideCollidedMarkers(m, arg!!)
+            NMarker.isHideCollidedSymbolsName -> setIsHideCollidedSymbols(m, arg!!)
+            else -> result.notImplemented()
         }
-        NMarker.positionName -> setPosition(marker, arg!!)
-        NMarker.iconName -> setIcon(marker, arg!!)
-        NMarker.iconTintColorName -> setIconTintColor(marker, arg!!)
-        NMarker.alphaName -> setAlpha(marker, arg!!)
-        NMarker.angleName -> setAngle(marker, arg!!)
-        NMarker.anchorName -> setAnchor(marker, arg!!)
-        NMarker.sizeName -> setSize(marker, arg!!)
-        NMarker.captionName -> setCaption(marker, arg!!)
-        NMarker.subCaptionName -> setSubCaption(marker, arg!!)
-        NMarker.captionAlignsName -> setCaptionAligns(marker, arg!!)
-        NMarker.captionOffsetName -> setCaptionOffset(marker, arg!!)
-        NMarker.isCaptionPerspectiveEnabledName -> setIsCaptionPerspectiveEnabled(marker, arg!!)
-        NMarker.isIconPerspectiveEnabledName -> setIsIconPerspectiveEnabled(marker, arg!!)
-        NMarker.isFlatName -> setIsFlat(marker, arg!!)
-        NMarker.isForceShowCaptionName -> setIsForceShowCaption(marker, arg!!)
-        NMarker.isForceShowIconName -> setIsForceShowIcon(marker, arg!!)
-        NMarker.isHideCollidedCaptionsName -> setIsHideCollidedCaptions(marker, arg!!)
-        NMarker.isHideCollidedMarkersName -> setIsHideCollidedMarkers(marker, arg!!)
-        NMarker.isHideCollidedSymbolsName -> setIsHideCollidedSymbols(marker, arg!!)
-        else -> result.notImplemented()
     }
 
     fun hasOpenInfoWindow(marker: Marker, success: (hasOpenInfoWindow: Boolean) -> Unit)

@@ -1,6 +1,11 @@
 # flutter_naver_map 1.0 Dev Preview
 
-모든 이슈가 해결되었습니다. 문서 작성 후, 1.0.0이 Stable으로 업데이트 될 예정입니다.
+Spec 변경이 진행중입니다. (dev.5)
+Stable 버전이 나올 때까지, Spec 변경이 있을 수 있습니다.
+
+버전 릴리즈 일정이 바뀐 점, 양해 부탁드립니다.
+
+---
 
 플러터 3.0 이상, dart 2.18.4 이상을 사용하셔야 합니다.
 android는 5.1 이상, iOS는 11.0 이상을 지원합니다.
@@ -25,7 +30,7 @@ Naver Cloud Platform 에서 앱을 등록하고, Android / iOS 플랫폼을 등�
 
 ```yaml
 dependencies:
-  flutter_naver_map: ^1.0.0-dev.4
+  flutter_naver_map: ^1.0.0-dev.5
 ```
 
 iOS에서는, 대용량 파일을 받기 위해 [git-lfs](https://git-lfs.github.com/) 설치가 필요합니다.
@@ -93,7 +98,7 @@ Widget build(BuildContext context) {
 
 ### TODO
 
-- [ ] 테스트 작성
+- [ ] API DOCS 작성 (작성중)
 - [ ] 예제 작성
-- [ ] API DOCS 작성
+- [ ] 테스트 작성
 - [ ] 클러스터링 구현 (추가 패키지로 제공될 예정입니다)

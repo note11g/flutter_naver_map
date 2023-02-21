@@ -17,10 +17,11 @@ internal protocol InfoWindowHandler: OverlayHandler {
 }
 
 internal extension  InfoWindowHandler {
-    func handleInfoWindow(infoWindow: NMFInfoWindow,
+    func handleInfoWindow(infoWindow: NMFOverlay,
                              method: String,
                              args: Any?,
                              result: @escaping FlutterResult) {
+        let infoWindow = infoWindow as! NMFInfoWindow
         switch method {
         case NInfoWindow.textName: setText(infoWindow, rawText: args!)
         case NInfoWindow.anchorName: setAnchor(infoWindow, rawNPoint: args!)

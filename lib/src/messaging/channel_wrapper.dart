@@ -7,8 +7,9 @@ mixin NChannelWrapper {
     return channel.invokeMethod<T>(funcName, arg?.payload);
   }
 
-  Future<T?> invokeMethodWithList<T>(String funcName, List<NMessageable> list) {
-    final payload = list.map((item) => item.payload).toList();
-    return channel.invokeMethod<T>(funcName, payload);
+  Future<T?> invokeMethodWithIterable<T>(
+      String funcName, Iterable<NMessageable> list) {
+    final payload = list.map((item) => item.payload);
+    return channel.invokeMethod<T>(funcName, payload.toList());
   }
 }

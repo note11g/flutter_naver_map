@@ -9,10 +9,11 @@ internal protocol GroundOverlayHandler: OverlayHandler {
 }
 
 internal extension  GroundOverlayHandler {
-    func handleGroundOverlay(groundOverlay: NMFGroundOverlay,
+    func handleGroundOverlay(groundOverlay: NMFOverlay,
                              method: String,
                              args: Any?,
                              result: @escaping FlutterResult) {
+        let groundOverlay = groundOverlay as! NMFGroundOverlay
         switch method {
         case NGroundOverlay.boundsName: setBounds(groundOverlay, rawBounds: args!)
         case NGroundOverlay.imageName: setImage(groundOverlay, rawNOverlayImage: args!)

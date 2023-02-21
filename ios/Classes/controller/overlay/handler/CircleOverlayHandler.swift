@@ -15,10 +15,11 @@ internal protocol CircleOverlayHandler: OverlayHandler {
 }
 
 internal extension  CircleOverlayHandler {
-    func handleCircleOverlay(circleOverlay: NMFCircleOverlay,
+    func handleCircleOverlay(circleOverlay: NMFOverlay,
                              method: String,
                              args: Any?,
                              result: @escaping FlutterResult) {
+        let circleOverlay = circleOverlay as! NMFCircleOverlay
         switch method {
         case NCircleOverlay.centerName: setCenter(circleOverlay, rawCenter: args!)
         case NCircleOverlay.radiusName: setRadius(circleOverlay, rawRadius: args!)

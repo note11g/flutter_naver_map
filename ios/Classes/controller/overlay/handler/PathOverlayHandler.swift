@@ -31,10 +31,11 @@ internal protocol PathOverlayHandler: OverlayHandler {
 }
 
 internal extension  PathOverlayHandler {
-    func handlePathOverlay(pathOverlay: NMFPath,
+    func handlePathOverlay(pathOverlay: NMFOverlay,
                            method: String,
                            args: Any?,
                            result: @escaping FlutterResult) {
+        let pathOverlay = pathOverlay as! NMFPath
         switch method {
         case NPathOverlay.coordsName: setCoords(pathOverlay, rawCoords: args!)
         case NPathOverlay.widthName: setWidth(pathOverlay, rawWidthDp: args!)

@@ -1,8 +1,8 @@
 part of flutter_naver_map;
 
 class NArrowheadPathOverlay extends NAddableOverlay<NArrowheadPathOverlay> {
-  List<NLatLng> get coords => _coords;
-  List<NLatLng> _coords;
+  List<NLatLng> get coords => _coords.toList();
+  Iterable<NLatLng> _coords;
 
   double get width => _width;
   double _width;
@@ -22,9 +22,13 @@ class NArrowheadPathOverlay extends NAddableOverlay<NArrowheadPathOverlay> {
   double get headSizeRatio => _headSizeRatio;
   double _headSizeRatio;
 
+  @override
+  // ignore: prefer_final_fields
+  int _globalZIndex = 100000;
+
   NArrowheadPathOverlay({
     required String id,
-    required List<NLatLng> coords,
+    required Iterable<NLatLng> coords,
     double width = 4,
     Color color = Colors.white,
     double outlineWidth = 0,
@@ -40,7 +44,7 @@ class NArrowheadPathOverlay extends NAddableOverlay<NArrowheadPathOverlay> {
         _headSizeRatio = headSizeRatio,
         super(id: id, type: NOverlayType.arrowheadPathOverlay);
 
-  void setCoords(List<NLatLng> coords) {
+  void setCoords(Iterable<NLatLng> coords) {
     _coords = coords;
     _set(_coordsName, coords);
   }
@@ -78,18 +82,6 @@ class NArrowheadPathOverlay extends NAddableOverlay<NArrowheadPathOverlay> {
   Future<NLatLngBounds> getBounds() {
     return _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
   }
-
-  factory NArrowheadPathOverlay._fromMessageable(dynamic m) =>
-      NArrowheadPathOverlay(
-        id: NOverlayInfo._fromMessageable(m[_infoName]!).id,
-        coords: (m[_coordsName] as List).map(NLatLng._fromMessageable).toList(),
-        width: m[_widthName],
-        color: Color(m[_colorName]),
-        outlineWidth: m[_outlineWidthName],
-        outlineColor: Color(m[_outlineColorName]),
-        elevation: m[_elevationName],
-        headSizeRatio: m[_headSizeRatioName],
-      );
 
   @override
   NPayload toNPayload() => NPayload.make({

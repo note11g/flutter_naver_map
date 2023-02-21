@@ -5,7 +5,7 @@ mixin _NaverMapControlHandler {
 
   void onMapTapped(NPoint point, NLatLng latLng);
 
-  void onSymbolTapped(NSymbol symbol);
+  void onSymbolTapped(NSymbolInfo symbol);
 
   void onCameraChange(NCameraUpdateReason reason, bool animated);
 
@@ -26,7 +26,7 @@ mixin _NaverMapControlHandler {
         );
         break;
       case "onSymbolTapped":
-        onSymbolTapped(NSymbol._fromMessageable(call.arguments));
+        onSymbolTapped(NSymbolInfo._fromMessageable(call.arguments));
         break;
       case "onCameraChange":
         final args = call.arguments;

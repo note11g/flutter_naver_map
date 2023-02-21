@@ -21,6 +21,10 @@ class NInfoWindow extends NAddableOverlay<NInfoWindow> {
   double get offsetY => _offsetY;
   double _offsetY;
 
+  @override
+  // ignore: prefer_final_fields
+  int _globalZIndex = 400000;
+
   NInfoWindow.onMarker({
     required String id,
     required String text,
@@ -92,17 +96,6 @@ class NInfoWindow extends NAddableOverlay<NInfoWindow> {
     _runAsync(_closeName);
     _overlayController!.disposeWithInfo(info);
   }
-
-  // only at map
-  factory NInfoWindow._fromMessageable(dynamic m) => NInfoWindow.onMap(
-        id: NOverlayInfo._fromMessageable(m[_infoName]).id,
-        text: m[_textName],
-        position: NLatLng._fromMessageable(m[_positionName]),
-        anchor: NPoint._fromMessageable(m[_anchorName]),
-        alpha: m[_alphaName],
-        offsetX: m[_offsetXName],
-        offsetY: m[_offsetYName],
-      );
 
   @override
   NPayload toNPayload() => NPayload.make({

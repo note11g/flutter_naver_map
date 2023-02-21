@@ -2,6 +2,7 @@ import NMapsMap
 
 internal struct NGroundOverlay: AddableOverlay {
     typealias OverlayType = NMFGroundOverlay
+    var overlayPayload: Dictionary<String, Any?> = [:]
 
     let info: NOverlayInfo
     let bounds: NMGLatLngBounds
@@ -14,15 +15,6 @@ internal struct NGroundOverlay: AddableOverlay {
         return overlay
     }
 
-    func toMessageable() -> Dictionary<String, Any?> {
-        [
-            NGroundOverlay.infoName: info.toMessageable(),
-            NGroundOverlay.boundsName: bounds.toMessageable(),
-            NGroundOverlay.imageName: image.toMessageable(),
-            NGroundOverlay.alphaName: alpha
-        ]
-    }
-
     static func fromMessageable(_ v: Any) -> NGroundOverlay {
         let d = asDict(v)
         return NGroundOverlay(
@@ -30,16 +22,6 @@ internal struct NGroundOverlay: AddableOverlay {
                 bounds: asLatLngBounds(d[boundsName]!),
                 image: NOverlayImage.fromMessageable(d[imageName]!),
                 alpha: asCGFloat(d[alphaName]!)
-        )
-    }
-
-    static func fromOverlay(_ overlay: NMFOverlay, id: String) -> NGroundOverlay {
-        let o = overlay as! NMFGroundOverlay
-        return NGroundOverlay(
-                info: NOverlayInfo(type: .groundOverlay, id: id),
-                bounds: o.bounds,
-                image: NOverlayImage.none,
-                alpha: o.alpha
         )
     }
 

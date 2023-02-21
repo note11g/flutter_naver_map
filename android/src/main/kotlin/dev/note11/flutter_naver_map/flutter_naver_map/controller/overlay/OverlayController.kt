@@ -1,6 +1,7 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay
 
 import android.content.Context
+import android.util.Log
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.*
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.handler.*
@@ -19,13 +20,13 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NSize
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayQuery
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NMultipartPath
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayCaption
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayImage
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NInfoWindow
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil.dpToPx
-import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil.pxToDp
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
@@ -42,28 +43,29 @@ internal class OverlayController(
 
     /* ----- overlay storage ----- */
 
-    private val overlays: MutableMap<String, Overlay> = mutableMapOf()
-
-    override fun hasOverlay(info: NOverlayInfo): Boolean = overlays.containsKey(info.overlayMapKey)
+    private val overlays: MutableMap<NOverlayInfo, Overlay> = mutableMapOf()
 
     override fun saveOverlay(overlay: Overlay, info: NOverlayInfo) {
+        info.saveAtOverlay(overlay)
         detachOverlay(info)
-        overlays[info.overlayMapKey] = overlay.apply {
-            setOnClickListener {
-                channel.invokeMethod(info.toQueryString(OverlayHandler.onTapName), null)
-                true
-            }
+        val query = NOverlayQuery(info, methodName = OverlayHandler.onTapName).query
+        overlay.setOnClickListener {
+            channel.invokeMethod(query, null)
+            return@setOnClickListener true
         }
+        overlays[info] = overlay
     }
 
-    private fun getOverlay(info: NOverlayInfo): Overlay? = overlays[info.overlayMapKey]
+    override fun hasOverlay(info: NOverlayInfo): Boolean = overlays.containsKey(info)
+
+    private fun getOverlay(info: NOverlayInfo): Overlay? = overlays[info]
 
     override fun deleteOverlay(info: NOverlayInfo) {
         detachOverlay(info)
-        overlays.remove(info.overlayMapKey)
+        overlays.remove(info)
     }
 
-    private fun deleteOverlay(mapEntry: Map.Entry<String, Overlay>) {
+    private fun deleteOverlay(mapEntry: Map.Entry<NOverlayInfo, Overlay>) {
         detachOverlay(mapEntry.value)
         overlays.remove(mapEntry.key)
     }
@@ -87,134 +89,62 @@ internal class OverlayController(
         filteredOverlays { it.type == type }.forEach(::deleteOverlay)
     }
 
-    private fun filteredOverlays(predicate: (info: NOverlayInfo) -> Boolean): Map<String, Overlay> =
-        overlays.filter {
-            val info = NOverlayInfo.fromString(it.key)
-            predicate.invoke(info)
-        }
+    private fun filteredOverlays(predicate: (info: NOverlayInfo) -> Boolean)
+            : Map<NOverlayInfo, Overlay> = overlays.filter { predicate.invoke(it.key) }
 
-    override fun getSavedOverlayKey(overlay: Overlay): String? {
-        overlays.forEach { (key, value) ->
-            if (value == overlay) return@getSavedOverlayKey key
-        }
-        return null
-    }
 
     /* ----- handler ----- */
 
     private fun handler(call: MethodCall, result: MethodChannel.Result) {
-        val queryInfo = NOverlayInfo.fromString(call.method)
-        val overlay = queryInfo.getOverlay(overlays)
+        val query = NOverlayQuery.fromQuery(call.method)
+        val overlay = getOverlay(query.info)
 
         requireNotNull(overlay) { "overlay can't found because it's null" }
 
         val isInvokedOnCommonOverlay =
-            handleOverlay(overlay, queryInfo.method!!, call.arguments, result)
+            handleOverlay(overlay, query.methodName, call.arguments, result)
 
-        if (!isInvokedOnCommonOverlay) when (queryInfo.type) {
-            NOverlayType.MARKER -> handleMarker(
-                overlay as Marker, queryInfo.method, call.arguments, result
-            )
-            NOverlayType.INFO_WINDOW -> handleInfoWindow(
-                overlay as InfoWindow, queryInfo.method, call.arguments, result
-            )
-            NOverlayType.CIRCLE_OVERLAY -> handleCircleOverlay(
-                overlay as CircleOverlay, queryInfo.method, call.arguments, result
-            )
-            NOverlayType.GROUND_OVERLAY -> handleGroundOverlay(
-                overlay as GroundOverlay, queryInfo.method, call.arguments, result
-            )
-            NOverlayType.POLYGON_OVERLAY -> handlePolygonOverlay(
-                overlay as PolygonOverlay, queryInfo.method, call.arguments, result
-            )
-            NOverlayType.POLYLINE_OVERLAY -> handlePolylineOverlay(
-                overlay as PolylineOverlay, queryInfo.method, call.arguments, result
-            )
-            NOverlayType.PATH_OVERLAY -> handlePathOverlay(
-                overlay as PathOverlay, queryInfo.method, call.arguments, result
-            )
-            NOverlayType.MULTIPART_PATH_OVERLAY -> handleMultipartPathOverlay(
-                overlay as MultipartPathOverlay, queryInfo.method, call.arguments, result
-            )
-            NOverlayType.ARROWHEAD_PATH_OVERLAY -> handleArrowheadPathOverlay(
-                overlay as ArrowheadPathOverlay, queryInfo.method, call.arguments, result
-            )
-            NOverlayType.LOCATION_OVERLAY -> handleLocationOverlay(
-                overlay as LocationOverlay, queryInfo.method, call.arguments, result
-            )
+        if (!isInvokedOnCommonOverlay) {
+            val overlayHandleFunc = when (query.info.type) {
+                NOverlayType.MARKER -> this::handleMarker
+                NOverlayType.INFO_WINDOW -> this::handleInfoWindow
+                NOverlayType.CIRCLE_OVERLAY -> this::handleCircleOverlay
+                NOverlayType.GROUND_OVERLAY -> this::handleGroundOverlay
+                NOverlayType.POLYGON_OVERLAY -> this::handlePolygonOverlay
+                NOverlayType.POLYLINE_OVERLAY -> this::handlePolylineOverlay
+                NOverlayType.PATH_OVERLAY -> this::handlePathOverlay
+                NOverlayType.MULTIPART_PATH_OVERLAY -> this::handleMultipartPathOverlay
+                NOverlayType.ARROWHEAD_PATH_OVERLAY -> this::handleArrowheadPathOverlay
+                NOverlayType.LOCATION_OVERLAY -> this::handleLocationOverlay
+            }
+            overlayHandleFunc(overlay, query.methodName, call.arguments, result)
         }
     }
 
     /* ----- All Overlay handler ----- */
 
-    override fun getZIndex(overlay: Overlay, success: (zIndex: Int) -> Unit) {
-        success(overlay.zIndex)
-    }
-
     override fun setZIndex(overlay: Overlay, rawZIndex: Any) {
         overlay.zIndex = rawZIndex.asInt()
-    }
-
-    override fun getGlobalZIndex(overlay: Overlay, success: (globalZIndex: Int) -> Unit) {
-        success(overlay.globalZIndex)
     }
 
     override fun setGlobalZIndex(overlay: Overlay, rawGlobalZIndex: Any) {
         overlay.globalZIndex = rawGlobalZIndex.asInt()
     }
 
-    override fun getTag(overlay: Overlay, success: (tag: String?) -> Unit) {
-        success(overlay.tag?.toString())
-    }
-
-    override fun setTag(overlay: Overlay, rawTag: String) {
-        overlay.tag = rawTag
-    }
-
-    override fun getIsAdded(overlay: Overlay, success: (isAdded: Boolean) -> Unit) {
-        success(overlay.isAdded)
-    }
-
-    override fun getIsVisible(overlay: Overlay, success: (isVisible: Boolean) -> Unit) {
-        success(overlay.isVisible)
-    }
-
     override fun setIsVisible(overlay: Overlay, rawIsVisible: Any) {
         overlay.isVisible = rawIsVisible.asBoolean()
-    }
-
-    override fun getMinZoom(overlay: Overlay, success: (minZoom: Double) -> Unit) {
-        success(overlay.minZoom)
     }
 
     override fun setMinZoom(overlay: Overlay, rawMinZoom: Any) {
         overlay.minZoom = rawMinZoom.asDouble()
     }
 
-    override fun getMaxZoom(overlay: Overlay, success: (maxZoom: Double) -> Unit) {
-        success(overlay.maxZoom)
-    }
-
     override fun setMaxZoom(overlay: Overlay, rawMaxZoom: Any) {
         overlay.maxZoom = rawMaxZoom.asDouble()
     }
 
-    override fun getIsMinZoomInclusive(
-        overlay: Overlay,
-        success: (isMinZoomInclusive: Boolean) -> Unit,
-    ) {
-        success(overlay.isMinZoomInclusive)
-    }
-
     override fun setIsMinZoomInclusive(overlay: Overlay, rawIsMinZoomInclusive: Any) {
         overlay.isMinZoomInclusive = rawIsMinZoomInclusive.asBoolean()
-    }
-
-    override fun getIsMaxZoomInclusive(
-        overlay: Overlay,
-        success: (isMaxZoomInclusive: Boolean) -> Unit,
-    ) {
-        success(overlay.isMaxZoomInclusive)
     }
 
     override fun setIsMaxZoomInclusive(overlay: Overlay, rawIsMaxZoomInclusive: Any) {
@@ -228,10 +158,6 @@ internal class OverlayController(
 
     /* ----- LocationOverlay handler ----- */
 
-    override fun getAnchor(overlay: LocationOverlay, success: (nPoint: Map<String, Any>) -> Unit) {
-        val anchor = overlay.anchor
-        success(NPoint.fromPointF(anchor).toMessageable())
-    }
 
     override fun setAnchor(overlay: LocationOverlay, rawNPoint: Any) {
         val nPoint = NPoint.fromMessageable(rawNPoint)
@@ -246,32 +172,16 @@ internal class OverlayController(
         overlay.bearing = rawBearing.asFloat()
     }
 
-    override fun getCircleColor(overlay: LocationOverlay, success: (color: Int) -> Unit) {
-        success(overlay.circleColor)
-    }
-
     override fun setCircleColor(overlay: LocationOverlay, rawColor: Any) {
         overlay.circleColor = rawColor.asInt()
-    }
-
-    override fun getCircleOutlineColor(overlay: LocationOverlay, success: (color: Int) -> Unit) {
-        overlay.circleOutlineColor.let(success)
     }
 
     override fun setCircleOutlineColor(overlay: LocationOverlay, rawColor: Any) {
         overlay.circleOutlineColor = rawColor.asInt()
     }
 
-    override fun getCircleOutlineWidth(overlay: LocationOverlay, success: (width: Double) -> Unit) {
-        pxToDp(overlay.circleOutlineWidth).let(success)
-    }
-
     override fun setCircleOutlineWidth(overlay: LocationOverlay, rawWidth: Any) {
         overlay.circleOutlineWidth = dpToPx(rawWidth.asDouble())
-    }
-
-    override fun getCircleRadius(overlay: LocationOverlay, success: (width: Double) -> Unit) {
-        pxToDp(overlay.circleRadius).let(success)
     }
 
     override fun setCircleRadius(overlay: LocationOverlay, rawRadius: Any) {
@@ -283,12 +193,9 @@ internal class OverlayController(
         nOverlayImage.applyToOverlay(overlay::setIcon)
     }
 
-    override fun getIconSize(overlay: LocationOverlay, success: (size: Map<String, Any>) -> Unit) {
-        overlay.run { success(NSize.fromPixelSize(iconWidth, iconHeight).toMessageable()) }
-    }
-
     override fun setIconSize(overlay: LocationOverlay, rawSize: Any) {
-        NSize.fromMessageable(rawSize).run { useAsPixelSize(overlay::setIconWidth, overlay::setIconHeight) }
+        NSize.fromMessageable(rawSize)
+            .run { useAsPixelSize(overlay::setIconWidth, overlay::setIconHeight) }
     }
 
     override fun getPosition(
@@ -302,14 +209,6 @@ internal class OverlayController(
         overlay.position = rawLatLng.asLatLng()
     }
 
-    override fun getSubAnchor(
-        overlay: LocationOverlay,
-        success: (nPoint: Map<String, Any>) -> Unit,
-    ) {
-        val subAnchor = overlay.subAnchor
-        success(NPoint.fromPointF(subAnchor).toMessageable())
-    }
-
     override fun setSubAnchor(overlay: LocationOverlay, rawNPoint: Any) {
         val nPoint = NPoint.fromMessageable(rawNPoint)
         overlay.subAnchor = nPoint.toPointF()
@@ -318,13 +217,6 @@ internal class OverlayController(
     override fun setSubIcon(overlay: LocationOverlay, rawNOverlayImage: Any) {
         val nOverlayImage = NOverlayImage.fromMessageable(rawNOverlayImage.asMap())
         nOverlayImage.applyToOverlay(overlay::setSubIcon)
-    }
-
-    override fun getSubIconSize(
-        overlay: LocationOverlay,
-        success: (size: Map<String, Any>) -> Unit,
-    ) {
-        overlay.run { success(NSize.fromPixelSize(subIconWidth, subIconHeight).toMessageable()) }
     }
 
     override fun setSubIconSize(overlay: LocationOverlay, rawSize: Any) {

@@ -96,11 +96,13 @@ part 'src/type/map/overlay/overlay_caption.dart';
 
 part 'src/type/map/overlay/overlay_image.dart';
 
-part 'src/type/map/overlay/overlay_info.dart';
+part 'src/type/map/info/overlay_query.dart';
 
-part 'src/type/map/pickable.dart';
+part 'src/type/map/info/overlay_info.dart';
 
-part 'src/type/map/symbol.dart';
+part 'src/type/map/info/pickable_info.dart';
+
+part 'src/type/map/info/symbol_info.dart';
 /*
   --- widget ---
 */

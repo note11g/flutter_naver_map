@@ -90,33 +90,26 @@ class TestPageState extends State<TestPage> {
                 child: _naverMapSection())),
         floatingActionButton: FloatingActionButton(
             onPressed: () async {
-              final nowPosition = await _mapController
-                  .getCameraPosition()
-                  .then((p) => p.target);
-
-              print("now position: $nowPosition");
-
-              final positionList = [
-                nowPosition,
-                nowPosition.offsetByMeter(northMeter: 100, eastMeter: 30),
-                nowPosition.offsetByMeter(northMeter: -100, eastMeter: -50),
-                nowPosition.offsetByMeter(northMeter: 60, eastMeter: -50),
+              const latLngList = [
+                NLatLng(37.497175, 127.027926), // 강남
+                NLatLng(37.484147, 127.034631), // 양재
+                NLatLng(37.470023, 127.038573), // 양재 시민의 숲
+                NLatLng(37.447211, 127.055664), // 청계산 입구
+                NLatLng(37.394761, 127.111217), // 판교
+                NLatLng(37.367381, 127.108847), // 정자
               ];
 
-              final nArrowHeadPath = NArrowheadPathOverlay(
-                  id: "9",
-                  coords: positionList,
-                  color: Colors.red,
-                  width: 10,
-                  outlineWidth: 5,
-                  outlineColor: Colors.blue);
+              final markerList = latLngList.map(
+                  (point) => NMarker(id: point.toString(), position: point));
 
-              nArrowHeadPath.setOnTapListener((overlay) {
-                print("onTapListener: $overlay");
-                overlay.setColor(Colors.green);
-              });
+              final latLngBounds = NLatLngBounds.from(latLngList);
 
-              _mapController.addOverlay(nArrowHeadPath);
+              _mapController.addOverlayAll(markerList.toSet());
+
+              final cameraUpdate = NCameraUpdate.fitBounds(latLngBounds,
+                  padding: const EdgeInsets.all(120));
+
+              await _mapController.updateCamera(cameraUpdate);
             },
             child: const Icon(Icons.clear_rounded)));
   }

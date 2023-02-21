@@ -17,10 +17,11 @@ internal protocol PolylineOverlayHandler: OverlayHandler {
 }
 
 internal extension  PolylineOverlayHandler {
-    func handlePolylineOverlay(polylineOverlay: NMFPolylineOverlay,
+    func handlePolylineOverlay(polylineOverlay: NMFOverlay,
                                method: String,
                                args: Any?,
                                result: @escaping FlutterResult) {
+        let polylineOverlay = polylineOverlay as! NMFPolylineOverlay
         switch method {
         case NPolylineOverlay.coordsName: setCoords(polylineOverlay, rawCoords: args!)
         case NPolylineOverlay.colorName: setColor(polylineOverlay, rawColor: args!)

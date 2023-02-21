@@ -44,11 +44,12 @@ internal protocol MarkerHandler: OverlayHandler {
     func setIsHideCollidedSymbols(_ marker: NMFMarker, rawHideCollidedSymbols: Any)
 }
 
-internal extension  MarkerHandler {
-    func handleMarker(marker: NMFMarker,
+internal extension MarkerHandler {
+    func handleMarker(marker: NMFOverlay,
                       method: String,
                       args: Any?,
                       result: @escaping FlutterResult) {
+        let marker = marker as! NMFMarker
         switch method {
         case NMarker.hasOpenInfoWindowName: hasOpenInfoWindow(marker, success: result)
         case NMarker.openInfoWindowName:

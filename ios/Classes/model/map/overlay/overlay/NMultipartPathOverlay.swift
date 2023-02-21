@@ -2,6 +2,7 @@ import NMapsMap
 
 internal struct NMultipartPathOverlay: AddableOverlay {
     typealias OverlayType = NMFMultipartPath
+    var overlayPayload: Dictionary<String, Any?> = [:]
 
     let info: NOverlayInfo
     let paths: Array<NMultipartPath>
@@ -28,23 +29,6 @@ internal struct NMultipartPathOverlay: AddableOverlay {
         return overlay
     }
 
-    func toMessageable() -> Dictionary<String, Any?> {
-        [
-            NMultipartPathOverlay.infoName: info.toMessageable(),
-            NMultipartPathOverlay.pathsName: paths.map {
-                $0.toMessageable()
-            },
-            NMultipartPathOverlay.widthName: width,
-            NMultipartPathOverlay.outlineWidthName: outlineWidth,
-            NMultipartPathOverlay.patternImageName: patternImage?.toMessageable(),
-            NMultipartPathOverlay.patternIntervalName: patternInterval,
-            NMultipartPathOverlay.progressName: progress,
-            NMultipartPathOverlay.isHideCollidedCaptionsName: isHideCollidedCaptions,
-            NMultipartPathOverlay.isHideCollidedMarkersName: isHideCollidedMarkers,
-            NMultipartPathOverlay.isHideCollidedSymbolsName: isHideCollidedSymbols,
-        ]
-    }
-
     static func fromMessageable(_ v: Any) -> NMultipartPathOverlay {
         let d = asDict(v)
         return NMultipartPathOverlay(
@@ -58,30 +42,6 @@ internal struct NMultipartPathOverlay: AddableOverlay {
                 isHideCollidedCaptions: asBool(d[isHideCollidedCaptionsName]!),
                 isHideCollidedMarkers: asBool(d[isHideCollidedMarkersName]!),
                 isHideCollidedSymbols: asBool(d[isHideCollidedSymbolsName]!)
-        )
-    }
-
-    static func fromOverlay(_ overlay: NMFOverlay, id: String) -> NMultipartPathOverlay {
-        let overlay = overlay as! NMFMultipartPath
-        var path: Array<NMultipartPath> = []
-        for (i, line) in overlay.lineParts.enumerated() {
-            path.append(NMultipartPath.fromCoordsAndColorParts(
-                    coords: line.latLngPoints,
-                    colorPart: overlay.colorParts[i]
-            ))
-        }
-
-        return NMultipartPathOverlay(
-                info: NOverlayInfo(type: .multipartPathOverlay, id: id),
-                paths: path,
-                width: overlay.width,
-                outlineWidth: overlay.outlineWidth,
-                patternImage: NOverlayImage.none,
-                patternInterval: Double(overlay.patternInterval),
-                progress: overlay.progress,
-                isHideCollidedCaptions: overlay.isHideCollidedCaptions,
-                isHideCollidedMarkers: overlay.isHideCollidedMarkers,
-                isHideCollidedSymbols: overlay.isHideCollidedSymbols
         )
     }
 

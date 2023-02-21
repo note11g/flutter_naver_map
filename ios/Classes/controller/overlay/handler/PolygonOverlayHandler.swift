@@ -15,10 +15,11 @@ internal protocol PolygonOverlayHandler: OverlayHandler {
 }
 
 internal extension  PolygonOverlayHandler {
-    func handlePolygonOverlay(polygonOverlay: NMFPolygonOverlay,
+    func handlePolygonOverlay(polygonOverlay: NMFOverlay,
                               method: String,
                               args: Any?,
                               result: @escaping FlutterResult) {
+        let polygonOverlay = polygonOverlay as! NMFPolygonOverlay
         switch method {
         case NPolygonOverlay.coordsName: setCoords(polygonOverlay, rawCoords: args!)
         case NPolygonOverlay.colorName: setColor(polygonOverlay, rawColor: args!)

@@ -4,8 +4,11 @@ import android.content.Context
 import com.naver.maps.map.overlay.LocationOverlay
 import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapControlHandler
+import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
+import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NSize
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NArrowheadPathOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NCircleOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NGroundOverlay
@@ -15,12 +18,12 @@ import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NPathOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NPolygonOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NPolylineOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 
 internal interface AddableOverlay<T : Overlay> {
     val info: NOverlayInfo
-    fun createMapOverlay(): T
 
-    fun toMessageable(): Map<String, Any?>
+    fun createMapOverlay(): T
 
     companion object {
         /** Used on @see [NaverMapControlHandler.addOverlayAll] */
@@ -43,37 +46,42 @@ internal interface AddableOverlay<T : Overlay> {
                 NOverlayType.ARROWHEAD_PATH_OVERLAY -> NArrowheadPathOverlay::fromMessageable
                 NOverlayType.LOCATION_OVERLAY -> throw IllegalArgumentException("LocationOverlay can not be created from json")
             }
+
             return creator.invoke(args)
         }
 
+        fun LocationOverlay.toMessageable(): Map<String, Any?> = mapOf(
+            "info" to NOverlayInfo.locationOverlayInfo.toMessageable(),
+            anchorName to NPoint.fromPointF(anchor).toMessageable(),
+            circleColorName to circleColor,
+            circleOutlineColorName to circleOutlineColor,
+            circleOutlineWidthName to DisplayUtil.pxToDp(circleOutlineWidth),
+            circleRadiusName to DisplayUtil.pxToDp(circleRadius),
+            iconSizeName to NSize.fromPixelSize(iconWidth, iconHeight).toMessageable(),
+            subAnchorName to NPoint.fromPointF(subAnchor).toMessageable(),
+            subIconSizeName to NSize.fromPixelSize(subIconWidth, subIconHeight)
+                .toMessageable(),
+        ) + overlayToMessageable(this)
 
-        /** Used on @see [NaverMapControlHandler.pickAll] */
-        fun fromOverlay(
-            overlay: Overlay,
-            info: NOverlayInfo,
-        ): AddableOverlay<out Overlay> {
-            val creator = when (info.type) {
-                NOverlayType.MARKER -> NMarker::fromMarker
-                NOverlayType.INFO_WINDOW -> NInfoWindow::fromInfoWindow
-                NOverlayType.CIRCLE_OVERLAY -> NCircleOverlay::fromCircleOverlay
-                NOverlayType.GROUND_OVERLAY -> NGroundOverlay::fromGroundOverlay
-                NOverlayType.POLYGON_OVERLAY -> NPolygonOverlay::fromPolygonOverlay
-                NOverlayType.POLYLINE_OVERLAY -> NPolylineOverlay::fromPolylineOverlay
-                NOverlayType.PATH_OVERLAY -> NPathOverlay::fromPathOverlay
-                NOverlayType.MULTIPART_PATH_OVERLAY -> NMultipartPathOverlay::fromMultipartPathOverlay
-                NOverlayType.ARROWHEAD_PATH_OVERLAY -> NArrowheadPathOverlay::fromArrowheadPathOverlay
-                NOverlayType.LOCATION_OVERLAY -> ::makeLocationOverlayCreator
-            }
-            return creator.invoke(overlay, info.id)
-        }
-
-        private fun makeLocationOverlayCreator(
-            overlay: Overlay,
-            id: String,
-        ): AddableOverlay<out Overlay> = object : AddableOverlay<LocationOverlay> {
-            override val info: NOverlayInfo = NOverlayInfo(NOverlayType.LOCATION_OVERLAY, id)
-            override fun toMessageable(): Map<String, Any?> = mapOf("info" to info.toMessageable())
-            override fun createMapOverlay(): LocationOverlay = overlay as LocationOverlay
-        }
+        private const val anchorName = "anchor"
+        private const val circleColorName = "circleColor"
+        private const val circleOutlineColorName = "circleOutlineColor"
+        private const val circleOutlineWidthName = "circleOutlineWidth"
+        private const val circleRadiusName = "circleRadius"
+        private const val iconSizeName = "iconSize"
+        private const val subAnchorName = "subAnchor"
+        private const val subIconSizeName = "subIconSize"
     }
+}
+
+private fun overlayToMessageable(overlay: Overlay): Map<String, Any?> = overlay.run {
+    mapOf(
+        OverlayHandler.zIndexName to zIndex,
+        OverlayHandler.globalZIndexName to globalZIndex,
+        OverlayHandler.isVisibleName to isVisible,
+        OverlayHandler.minZoomName to minZoom,
+        OverlayHandler.maxZoomName to maxZoom,
+        OverlayHandler.isMinZoomInclusiveName to isMinZoomInclusive,
+        OverlayHandler.isMaxZoomInclusiveName to isMaxZoomInclusive,
+    )
 }

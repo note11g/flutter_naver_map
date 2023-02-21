@@ -1,0 +1,56 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.heroBanner {
+    padding: 4rem 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 996px) {
+    .heroBanner {
+        padding: 2rem;
+    }
+}
+
+.buttons {
+    display: inline-grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    align-items: stretch;
+    justify-items: stretch;
+    margin-bottom: 2rem;
+}
+
+.gridItem {
+    background-color: #F5F5F5;
+    padding: 1rem;
+    color: black;
+}
+
+@media (min-width: 768px) {
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        align-items: stretch;
+        justify-items: stretch;
+        margin-bottom: 2rem;
+    }
+
+    .gridItem {
+        background-color: #F5F5F5;
+        padding: 1.5rem;
+        color: black;
+    }
+}
+

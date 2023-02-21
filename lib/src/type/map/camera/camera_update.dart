@@ -87,11 +87,9 @@ class NCameraUpdate with NMessageableWithMap {
 
   void setPivot(NPoint pivot) => _pivot = pivot;
 
-  void setAnimation(
-      {NCameraAnimation animation = defaultMovingAnimation,
-      Duration duration = defaultMovingDuration}) {
-    _animation = animation;
-    _duration = duration;
+  void setAnimation({NCameraAnimation? animation, Duration? duration}) {
+    if (animation != null) _animation = animation;
+    if (duration != null) _duration = duration;
   }
 
   @override

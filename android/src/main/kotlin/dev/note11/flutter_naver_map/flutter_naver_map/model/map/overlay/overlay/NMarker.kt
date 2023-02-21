@@ -3,7 +3,6 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.Align
 import com.naver.maps.map.overlay.Marker
-import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asBoolean
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
@@ -13,16 +12,12 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asAlign
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageableString
-import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NSize
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayCaption
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayImage
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil.dpToPx
-import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil.pxToDp
 
 internal data class NMarker(
     override val info: NOverlayInfo,
@@ -84,29 +79,6 @@ internal data class NMarker(
         m.isHideCollidedSymbols = isHideCollidedSymbols
     }
 
-    override fun toMessageable(): Map<String, Any?> = mapOf(
-        infoName to info.toMessageable(),
-        iconName to icon?.toMessageable(),
-        positionName to position.toMessageable(),
-        iconTintColorName to iconTintColor,
-        alphaName to alpha,
-        angleName to angle,
-        anchorName to anchor.toMessageable(),
-        sizeName to size.toMessageable(),
-        captionName to caption?.toMessageable(),
-        subCaptionName to subCaption?.toMessageable(),
-        captionAlignsName to captionAligns.map { it.toMessageableString() },
-        captionOffsetName to captionDpOffset,
-        isCaptionPerspectiveEnabledName to isCaptionPerspectiveEnabled,
-        isIconPerspectiveEnabledName to isIconPerspectiveEnabled,
-        isFlatName to isFlat,
-        isForceShowCaptionName to isForceShowCaption,
-        isForceShowIconName to isForceShowIcon,
-        isHideCollidedCaptionsName to isHideCollidedCaptions,
-        isHideCollidedMarkersName to isHideCollidedMarkers,
-        isHideCollidedSymbolsName to isHideCollidedSymbols,
-    )
-
     companion object {
         fun fromMessageable(rawMap: Any): NMarker = rawMap.asMap().let {
             NMarker(
@@ -130,47 +102,6 @@ internal data class NMarker(
                 isHideCollidedCaptions = it[isHideCollidedCaptionsName]!!.asBoolean(),
                 isHideCollidedMarkers = it[isHideCollidedMarkersName]!!.asBoolean(),
                 isHideCollidedSymbols = it[isHideCollidedSymbolsName]!!.asBoolean(),
-            )
-        }
-
-        fun fromMarker(marker: Overlay, id: String): NMarker = (marker as Marker).run {
-            NMarker(
-                info = NOverlayInfo(NOverlayType.MARKER, id),
-                position = position,
-                icon = NOverlayImage.none,
-                iconTintColor = iconTintColor,
-                alpha = alpha,
-                angle = angle,
-                anchor = NPoint.fromPointF(anchor),
-                size = NSize.fromPixelSize(width, height),
-                caption = NOverlayCaption(
-                    text = captionText,
-                    textSize = captionTextSize,
-                    color = captionColor,
-                    haloColor = captionHaloColor,
-                    minZoom = captionMinZoom,
-                    maxZoom = captionMaxZoom,
-                    requestWidth = pxToDp(captionRequestedWidth),
-                ),
-                subCaption = NOverlayCaption(
-                    text = subCaptionText,
-                    textSize = subCaptionTextSize,
-                    color = subCaptionColor,
-                    haloColor = subCaptionHaloColor,
-                    minZoom = subCaptionMinZoom,
-                    maxZoom = subCaptionMaxZoom,
-                    requestWidth = pxToDp(subCaptionRequestedWidth),
-                ),
-                captionAligns = captionAligns.toList(),
-                captionDpOffset = pxToDp(captionOffset),
-                isCaptionPerspectiveEnabled = isCaptionPerspectiveEnabled,
-                isIconPerspectiveEnabled = isIconPerspectiveEnabled,
-                isFlat = isFlat,
-                isForceShowCaption = isForceShowCaption,
-                isForceShowIcon = isForceShowIcon,
-                isHideCollidedCaptions = isHideCollidedCaptions,
-                isHideCollidedMarkers = isHideCollidedMarkers,
-                isHideCollidedSymbols = isHideCollidedSymbols,
             )
         }
 

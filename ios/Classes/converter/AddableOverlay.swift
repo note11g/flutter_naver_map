@@ -7,14 +7,10 @@ internal protocol AddableOverlay {
 
     func createMapOverlay() -> OverlayType
 
-    func toMessageable() -> Dictionary<String, Any?>
-
     static func fromMessageable(_ v: Any) -> Self
-
-    static func fromOverlay(_ overlay: NMFOverlay, id: String) -> Self
 }
 
-func asAddableOverlay(info: NOverlayInfo, json: Any) throws -> any AddableOverlay {
+func asAddableOverlayFromMessageable(info: NOverlayInfo, json: Any) throws -> any AddableOverlay {
     let d = asDict(json)
     let creator: (Any) -> any AddableOverlay
     switch info.type {
@@ -32,19 +28,41 @@ func asAddableOverlay(info: NOverlayInfo, json: Any) throws -> any AddableOverla
     return creator(d)
 }
 
-func getAddableOverlayFromOverlay(_ overlay: NMFOverlay, info: NOverlayInfo) throws -> any AddableOverlay {
-    let creator: (NMFOverlay, String) -> any AddableOverlay
-    switch info.type {
-    case .marker: creator = NMarker.fromOverlay
-    case .infoWindow: creator = NInfoWindow.fromOverlay
-    case .circleOverlay: creator = NCircleOverlay.fromOverlay
-    case .groundOverlay: creator = NGroundOverlay.fromOverlay
-    case .polygonOverlay: creator = NPolygonOverlay.fromOverlay
-    case .polylineOverlay: creator = NPolylineOverlay.fromOverlay
-    case .pathOverlay: creator = NPathOverlay.fromOverlay
-    case .multipartPathOverlay: creator = NMultipartPathOverlay.fromOverlay
-    case .arrowheadPathOverlay: creator = NArrowheadPathOverlay.fromOverlay
-    case .locationOverlay: throw NSError()
+extension NMFLocationOverlay {
+    func toMessageable() -> Dictionary<String, Any?> {
+        [
+            "info": NOverlayInfo.locationOverlayInfo.toMessageable(),
+            Self.anchorName: NPoint.fromCGPointWithOutDisplay(anchor).toMessageable(),
+            Self.circleColorName: circleColor.toInt(),
+            Self.circleOutlineColorName: circleOutlineColor.toInt(),
+            Self.circleOutlineWidthName: circleOutlineWidth,
+            Self.circleRadiusName: circleRadius,
+            Self.iconSizeName: NSize(width: iconWidth, height: iconHeight).toMessageable(),
+            Self.positionName: location.toMessageable(),
+            Self.subAnchorName: NPoint.fromCGPointWithOutDisplay(subAnchor).toMessageable(),
+            Self.subIconSizeName: NSize(width: subIconWidth, height: subIconHeight).toMessageable(),
+        ].merging(overlayToMessageable(self), uniquingKeysWith: { $1 })
     }
-    return creator(overlay, info.id)
+
+    private static let anchorName = "anchor"
+    private static let circleColorName = "circleColor"
+    private static let circleOutlineColorName = "circleOutlineColor"
+    private static let circleOutlineWidthName = "circleOutlineWidth"
+    private static let circleRadiusName = "circleRadius"
+    private static let iconSizeName = "iconSize"
+    private static let positionName = "position"
+    private static let subAnchorName = "subAnchor"
+    private static let subIconSizeName = "subIconSize"
+}
+
+private func overlayToMessageable(_ overlay: NMFOverlay) -> Dictionary<String, Any?> {
+    [
+        zIndexName: overlay.zIndex,
+        globalZIndexName: overlay.globalZIndex,
+        isVisibleName: !overlay.hidden,
+        minZoomName: overlay.minZoom,
+        maxZoomName: overlay.maxZoom,
+        isMinZoomInclusiveName: overlay.isMinZoomInclusive,
+        isMaxZoomInclusiveName: overlay.isMaxZoomInclusive,
+    ]
 }

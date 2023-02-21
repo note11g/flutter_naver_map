@@ -1,7 +1,7 @@
 part of flutter_naver_map;
 
 class NMultipartPath with NMessageableWithMap {
-  final List<NLatLng> coords;
+  final Iterable<NLatLng> coords;
   final Color color;
   final Color outlineColor;
   final Color passedColor;
@@ -16,15 +16,15 @@ class NMultipartPath with NMessageableWithMap {
   });
 
   factory NMultipartPath._fromMessageable(dynamic m) => NMultipartPath(
-        coords: (m["coords"] as List).map(NLatLng._fromMessageable).toList(),
+        coords: (m["coords"] as List).map(NLatLng._fromMessageable),
         color: Color(m["color"]!),
         outlineColor: Color(m["outlineColor"]!),
         passedColor: Color(m["passedColor"]!),
         passedOutlineColor: Color(m["passedOutlineColor"]!),
       );
 
-  static List<NMultipartPath> _fromMessageableList(dynamic m) =>
-      (m as List).map(NMultipartPath._fromMessageable).toList();
+  static Iterable<NMultipartPath> _fromMessageableIterable(dynamic m) =>
+      (m as List).map(NMultipartPath._fromMessageable);
 
   @override
   NPayload toNPayload() => NPayload.make({

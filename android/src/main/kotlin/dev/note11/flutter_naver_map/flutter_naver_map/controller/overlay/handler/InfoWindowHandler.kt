@@ -1,22 +1,25 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.handler
 
 import com.naver.maps.map.overlay.InfoWindow
+import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NInfoWindow
 import io.flutter.plugin.common.MethodChannel
 
 internal interface InfoWindowHandler : OverlayHandler {
     fun handleInfoWindow(
-        infoWindow: InfoWindow, method: String, arg: Any?, result: MethodChannel.Result,
-    ) = when (method) {
-        NInfoWindow.textName -> setText(infoWindow, arg!!)
-        NInfoWindow.anchorName -> setAnchor(infoWindow, arg!!)
-        NInfoWindow.alphaName -> setAlpha(infoWindow, arg!!)
-        NInfoWindow.positionName -> setPosition(infoWindow, arg!!)
-        NInfoWindow.offsetXName -> setOffsetX(infoWindow, arg!!)
-        NInfoWindow.offsetYName -> setOffsetY(infoWindow, arg!!)
-        NInfoWindow.closeName -> close(infoWindow)
-        else -> result.notImplemented()
+        infoWindow: Overlay, method: String, arg: Any?, result: MethodChannel.Result,
+    ) = (infoWindow as InfoWindow).let { i ->
+        when (method) {
+            NInfoWindow.textName -> setText(i, arg!!)
+            NInfoWindow.anchorName -> setAnchor(i, arg!!)
+            NInfoWindow.alphaName -> setAlpha(i, arg!!)
+            NInfoWindow.positionName -> setPosition(i, arg!!)
+            NInfoWindow.offsetXName -> setOffsetX(i, arg!!)
+            NInfoWindow.offsetYName -> setOffsetY(i, arg!!)
+            NInfoWindow.closeName -> close(i)
+            else -> result.notImplemented()
+        }
     }
 
     fun setText(infoWindow: InfoWindow, rawText: Any)

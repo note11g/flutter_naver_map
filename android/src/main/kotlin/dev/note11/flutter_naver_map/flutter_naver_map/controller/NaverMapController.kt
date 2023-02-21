@@ -8,16 +8,18 @@ import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.Symbol
 import com.naver.maps.map.indoor.IndoorSelection
-import com.naver.maps.map.overlay.Overlay
+import com.naver.maps.map.overlay.LocationOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay.Companion.toMessageable
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageableString
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo.Companion.fromString
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NPickableInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NSymbolInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
@@ -73,12 +75,13 @@ internal class NaverMapController(
         region.map { it.toMessageable() }.let(onSuccess)
     }
 
-    override fun getLocationOverlay(onSuccess: () -> Unit) {
+    override fun getLocationOverlay(onSuccess: (Map<String, Any?>) -> Unit) {
+        val overlay = naverMap.locationOverlay
         val info = NOverlayInfo.locationOverlayInfo
         if (!overlayController.hasOverlay(info)) {
-            overlayController.saveOverlay(naverMap.locationOverlay, info)
+            overlayController.saveOverlay(overlay, info)
         }
-        onSuccess()
+        onSuccess(overlay.toMessageable())
     }
 
     override fun screenLocationToLatLng(
@@ -119,21 +122,13 @@ internal class NaverMapController(
         onSuccess: (pickables: List<Map<String, Any?>>) -> Unit,
     ) {
         val pickables = naverMap.pickAll(nPoint.toPointFWithPx(), DisplayUtil.dpToPx(dpRadius))
-        val result = pickables.map {
-            val addPayload = when (it) {
-                is Symbol -> it.toMessageable()
-                is Overlay -> {
-                    val overlayKey = overlayController.getSavedOverlayKey(it)
-                        ?: throw Exception("This overlay isn't added with flutter.")
-                    val overlay = AddableOverlay.fromOverlay(it, info = fromString(overlayKey))
-                    overlay.toMessageable()
-                }
-                else -> throw Exception("Unsupported pickable type.")
-            }.toMutableMap()
 
-            addPayload + mapOf("signature" to if (it is Symbol) "symbol" else "overlay")
+        val messageableResult = pickables.filter { it !is LocationOverlay }.map {
+            val info = NPickableInfo.fromPickable(it)
+            info.toSignedMessageable()
         }
-        onSuccess(result)
+
+        onSuccess(messageableResult)
     }
 
     override fun takeSnapshot(
@@ -180,9 +175,7 @@ internal class NaverMapController(
         for (rawOverlay in rawOverlays) {
             val overlayInfo = NOverlayInfo.fromMessageable(rawOverlay["info"]!!)
             val creator = AddableOverlay.fromMessageable(
-                info = overlayInfo,
-                args = rawOverlay,
-                context = applicationContext
+                info = overlayInfo, args = rawOverlay, context = applicationContext
             )
 
             val overlay = overlayController.saveOverlayWithAddable(creator)
@@ -227,7 +220,8 @@ internal class NaverMapController(
     }
 
     override fun onSymbolTapped(symbol: Symbol): Boolean? {
-        channel.invokeMethod("onSymbolTapped", symbol.toMessageable())
+        val symbolInfo = NSymbolInfo(symbol)
+        channel.invokeMethod("onSymbolTapped", symbolInfo.toMessageable())
         return naverMapViewOptions?.consumeSymbolTapEvents
     }
 

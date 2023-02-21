@@ -1,8 +1,8 @@
 part of flutter_naver_map;
 
 class NPathOverlay extends NAddableOverlay<NPathOverlay> {
-  List<NLatLng> get coords => _coords;
-  List<NLatLng> _coords;
+  List<NLatLng> get coords => _coords.toList();
+  Iterable<NLatLng> _coords;
 
   double get width => _width;
   double _width;
@@ -39,9 +39,13 @@ class NPathOverlay extends NAddableOverlay<NPathOverlay> {
   bool get isHideCollidedSymbols => _isHideCollidedSymbols;
   bool _isHideCollidedSymbols;
 
+  @override
+  // ignore: prefer_final_fields
+  int _globalZIndex = -100000;
+
   NPathOverlay({
     required String id,
-    required List<NLatLng> coords,
+    required Iterable<NLatLng> coords,
     double width = 4,
     Color color = Colors.white,
     double outlineWidth = 1,
@@ -69,7 +73,7 @@ class NPathOverlay extends NAddableOverlay<NPathOverlay> {
         _isHideCollidedSymbols = isHideCollidedSymbols,
         super(id: id, type: NOverlayType.pathOverlay);
 
-  void setCoords(List<NLatLng> coords) {
+  void setCoords(Iterable<NLatLng> coords) {
     _coords = coords;
     _set(_coordsName, coords);
   }
@@ -137,25 +141,6 @@ class NPathOverlay extends NAddableOverlay<NPathOverlay> {
   Future<NLatLngBounds> getBounds() {
     return _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
   }
-
-  factory NPathOverlay._fromMessageable(dynamic m) => NPathOverlay(
-        id: NOverlayInfo._fromMessageable(m[_infoName]!).id,
-        coords: (m[_coordsName] as List).map(NLatLng._fromMessageable).toList(),
-        width: m[_widthName],
-        color: Color(m[_colorName]),
-        outlineWidth: m[_outlineWidthName],
-        outlineColor: Color(m[_outlineColorName]),
-        passedColor: Color(m[_passedColorName]),
-        passedOutlineColor: Color(m[_passedOutlineColorName]),
-        progress: m[_progressName],
-        patternImage: m[_patternImageName] != null
-            ? NOverlayImage._fromMessageable(m[_patternImageName])
-            : null,
-        patternInterval: m[_patternIntervalName],
-        isHideCollidedCaptions: m[_isHideCollidedCaptionsName],
-        isHideCollidedMarkers: m[_isHideCollidedMarkersName],
-        isHideCollidedSymbols: m[_isHideCollidedSymbolsName],
-      );
 
   @override
   NPayload toNPayload() => NPayload.make({

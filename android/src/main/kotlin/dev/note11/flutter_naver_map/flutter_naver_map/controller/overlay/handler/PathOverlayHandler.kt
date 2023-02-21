@@ -1,5 +1,6 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.handler
 
+import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.PathOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler.Companion.getterName
@@ -8,23 +9,25 @@ import io.flutter.plugin.common.MethodChannel
 
 internal interface PathOverlayHandler : OverlayHandler {
     fun handlePathOverlay(
-        pathOverlay: PathOverlay, method: String, arg: Any?, result: MethodChannel.Result,
-    ) = when (method) {
-        NPathOverlay.coordsName -> setCoords(pathOverlay, arg!!)
-        NPathOverlay.widthName -> setWidth(pathOverlay, arg!!)
-        NPathOverlay.colorName -> setColor(pathOverlay, arg!!)
-        NPathOverlay.outlineWidthName -> setOutlineWidth(pathOverlay, arg!!)
-        NPathOverlay.outlineColorName -> setOutlineColor(pathOverlay, arg!!)
-        NPathOverlay.passedColorName -> setPassedColor(pathOverlay, arg!!)
-        NPathOverlay.passedOutlineColorName -> setPassedOutlineColor(pathOverlay, arg!!)
-        NPathOverlay.progressName -> setProgress(pathOverlay, arg!!)
-        NPathOverlay.patternImageName -> setPatternImage(pathOverlay, arg!!)
-        NPathOverlay.patternIntervalName -> setPatternInterval(pathOverlay, arg!!)
-        NPathOverlay.isHideCollidedCaptionsName -> setIsHideCollidedCaptions(pathOverlay, arg!!)
-        NPathOverlay.isHideCollidedMarkersName -> setIsHideCollidedMarkers(pathOverlay, arg!!)
-        NPathOverlay.isHideCollidedSymbolsName -> setIsHideCollidedSymbols(pathOverlay, arg!!)
-        getterName(NPathOverlay.boundsName) -> getBounds(pathOverlay, result::success)
-        else -> result.notImplemented()
+        pathOverlay: Overlay, method: String, arg: Any?, result: MethodChannel.Result,
+    ) = (pathOverlay as PathOverlay).let { p ->
+        when (method) {
+            NPathOverlay.coordsName -> setCoords(p, arg!!)
+            NPathOverlay.widthName -> setWidth(p, arg!!)
+            NPathOverlay.colorName -> setColor(p, arg!!)
+            NPathOverlay.outlineWidthName -> setOutlineWidth(p, arg!!)
+            NPathOverlay.outlineColorName -> setOutlineColor(p, arg!!)
+            NPathOverlay.passedColorName -> setPassedColor(p, arg!!)
+            NPathOverlay.passedOutlineColorName -> setPassedOutlineColor(p, arg!!)
+            NPathOverlay.progressName -> setProgress(p, arg!!)
+            NPathOverlay.patternImageName -> setPatternImage(p, arg!!)
+            NPathOverlay.patternIntervalName -> setPatternInterval(p, arg!!)
+            NPathOverlay.isHideCollidedCaptionsName -> setIsHideCollidedCaptions(p, arg!!)
+            NPathOverlay.isHideCollidedMarkersName -> setIsHideCollidedMarkers(p, arg!!)
+            NPathOverlay.isHideCollidedSymbolsName -> setIsHideCollidedSymbols(p, arg!!)
+            getterName(NPathOverlay.boundsName) -> getBounds(p, result::success)
+            else -> result.notImplemented()
+        }
     }
 
     fun setCoords(pathOverlay: PathOverlay, rawCoords: Any)

@@ -3,15 +3,12 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import androidx.annotation.ColorInt
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.CircleOverlay
-import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asInt
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
-import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 
 internal data class NCircleOverlay(
@@ -31,15 +28,6 @@ internal data class NCircleOverlay(
         c.outlineWidth = DisplayUtil.dpToPx(outlineWidthDp)
     }
 
-    override fun toMessageable(): Map<String, Any?> = mapOf(
-        infoName to info.toMessageable(),
-        centerName to center.toMessageable(),
-        radiusName to radius,
-        colorName to color,
-        outlineColorName to outlineColor,
-        outlineWidthName to outlineWidthDp,
-    )
-
     companion object {
         fun fromMessageable(rawMap: Any): NCircleOverlay = rawMap.asMap().let {
             NCircleOverlay(
@@ -49,20 +37,6 @@ internal data class NCircleOverlay(
                 color = it[colorName]!!.asInt(),
                 outlineColor = it[outlineColorName]!!.asInt(),
                 outlineWidthDp = it[outlineWidthName]!!.asDouble(),
-            )
-        }
-
-        fun fromCircleOverlay(
-            circleOverlay: Overlay,
-            id: String,
-        ): NCircleOverlay = (circleOverlay as CircleOverlay).run {
-            NCircleOverlay(
-                info = NOverlayInfo(NOverlayType.CIRCLE_OVERLAY, id),
-                center = center,
-                radius = radius,
-                color = color,
-                outlineColor = outlineColor,
-                outlineWidthDp = DisplayUtil.pxToDp(outlineWidth),
             )
         }
 

@@ -27,8 +27,8 @@ class NMarker extends NAddableOverlay<NMarker> {
   NOverlayCaption? get subCaption => _subCaption;
   NOverlayCaption? _subCaption;
 
-  List<NAlign> get captionAligns => _captionAligns;
-  List<NAlign> _captionAligns;
+  List<NAlign> get captionAligns => _captionAligns.toList();
+  Iterable<NAlign> _captionAligns;
 
   double get captionOffset => _captionOffset;
   double _captionOffset;
@@ -57,6 +57,10 @@ class NMarker extends NAddableOverlay<NMarker> {
   bool get isHideCollidedSymbols => _isHideCollidedSymbols;
   bool _isHideCollidedSymbols;
 
+  @override
+  // ignore: prefer_final_fields
+  int _globalZIndex = 200000;
+
   NMarker({
     required String id,
     required NLatLng position,
@@ -65,10 +69,10 @@ class NMarker extends NAddableOverlay<NMarker> {
     double alpha = 1,
     double angle = 0,
     NPoint anchor = defaultAnchor,
-    Size size = auto,
+    Size size = autoSize,
     NOverlayCaption? caption,
     NOverlayCaption? subCaption,
-    List<NAlign> captionAligns = const [NAlign.bottom],
+    Iterable<NAlign> captionAligns = const [NAlign.bottom],
     double captionOffset = 0,
     bool isCaptionPerspectiveEnabled = false,
     bool isIconPerspectiveEnabled = false,
@@ -104,7 +108,7 @@ class NMarker extends NAddableOverlay<NMarker> {
     --- constant ---
   */
   static const defaultAnchor = NPoint(0.5, 1.0);
-  static const auto = Size(0, 0);
+  static const autoSize = Size(0, 0);
 
   /*
     --- method ---
@@ -170,7 +174,7 @@ class NMarker extends NAddableOverlay<NMarker> {
     _set(_subCaptionName, _subCaption);
   }
 
-  void setCaptionAligns(List<NAlign> value) {
+  void setCaptionAligns(Iterable<NAlign> value) {
     _captionAligns = value;
     _set(_captionAlignsName, _captionAligns);
   }
@@ -219,37 +223,6 @@ class NMarker extends NAddableOverlay<NMarker> {
     _isHideCollidedSymbols = value;
     _set(_isHideCollidedSymbolsName, _isHideCollidedSymbols);
   }
-
-  factory NMarker._fromMessageable(dynamic m) => NMarker(
-        id: NOverlayInfo._fromMessageable(m[_infoName]).id,
-        position: NLatLng._fromMessageable(m[_positionName]),
-        icon: m[_iconName] != null
-            ? NOverlayImage._fromMessageable(m[_iconName])
-            : null,
-        iconTintColor: Color(m[_iconTintColorName]),
-        alpha: m[_alphaName],
-        angle: m[_angleName],
-        anchor: NPoint._fromMessageable(m[_anchorName]),
-        size: NSize._fromMessageable(m[_sizeName]),
-        caption: m[_captionName] != null
-            ? NOverlayCaption._fromMessageable(m[_captionName])
-            : null,
-        subCaption: m[_subCaptionName] != null
-            ? NOverlayCaption._fromMessageable(m[_subCaptionName])
-            : null,
-        captionAligns: (m[_captionAlignsName] as List)
-            .map(NAlign._fromMessageable)
-            .toList(),
-        captionOffset: m[_captionOffsetName],
-        isCaptionPerspectiveEnabled: m[_isCaptionPerspectiveEnabledName],
-        isIconPerspectiveEnabled: m[_isIconPerspectiveEnabledName],
-        isFlat: m[_isFlatName],
-        isForceShowCaption: m[_isForceShowCaptionName],
-        isForceShowIcon: m[_isForceShowIconName],
-        isHideCollidedCaptions: m[_isHideCollidedCaptionsName],
-        isHideCollidedMarkers: m[_isHideCollidedMarkersName],
-        isHideCollidedSymbols: m[_isHideCollidedSymbolsName],
-      );
 
   @override
   NPayload toNPayload() => NPayload.make({

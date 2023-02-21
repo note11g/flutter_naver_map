@@ -3,7 +3,6 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import androidx.annotation.ColorInt
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.ArrowheadPathOverlay
-import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asFloat
@@ -11,9 +10,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asList
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
-import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 
 internal data class NArrowheadPathOverlay(
@@ -37,16 +34,6 @@ internal data class NArrowheadPathOverlay(
         g.headSizeRatio = headSizeRatio
     }
 
-    override fun toMessageable(): Map<String, Any?> = mapOf(
-        infoName to info.toMessageable(),
-        coordsName to coords.map { it.toMessageable() },
-        widthName to widthDp,
-        colorName to color,
-        outlineWidthName to outlineWidthDp,
-        outlineColorName to outlineColor,
-        elevationName to elevationDp,
-        headSizeRatioName to headSizeRatio,
-    )
 
     companion object {
         fun fromMessageable(rawMap: Any): NArrowheadPathOverlay = rawMap.asMap().let {
@@ -61,22 +48,6 @@ internal data class NArrowheadPathOverlay(
                 headSizeRatio = it[headSizeRatioName]!!.asFloat(),
             )
         }
-
-        fun fromArrowheadPathOverlay(
-            arrowheadPathOverlay: Overlay, id: String,
-        ): NArrowheadPathOverlay = (arrowheadPathOverlay as ArrowheadPathOverlay).run {
-            NArrowheadPathOverlay(
-                info = NOverlayInfo(NOverlayType.ARROWHEAD_PATH_OVERLAY, id),
-                coords = coords,
-                widthDp = DisplayUtil.pxToDp(width),
-                color = color,
-                outlineWidthDp = DisplayUtil.pxToDp(outlineWidth),
-                outlineColor = outlineColor,
-                elevationDp = DisplayUtil.pxToDp(elevation),
-                headSizeRatio = headSizeRatio,
-            )
-        }
-
 
         /*
             --- Messaging Name Define ---

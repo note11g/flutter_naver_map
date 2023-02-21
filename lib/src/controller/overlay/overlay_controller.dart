@@ -1,7 +1,7 @@
 part of flutter_naver_map;
 
 abstract class _NOverlayController with NChannelWrapper {
-  NLocationOverlay get locationOverlay;
+  NLocationOverlay? locationOverlay;
 
   void add(NOverlayInfo info, NOverlay overlay);
 

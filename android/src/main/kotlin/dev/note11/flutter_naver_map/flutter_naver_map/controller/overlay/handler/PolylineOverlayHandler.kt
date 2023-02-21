@@ -1,5 +1,6 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.handler
 
+import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.PolylineOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler.Companion.getterName
@@ -8,16 +9,18 @@ import io.flutter.plugin.common.MethodChannel
 
 internal interface PolylineOverlayHandler : OverlayHandler {
     fun handlePolylineOverlay(
-        polylineOverlay: PolylineOverlay, method: String, arg: Any?, result: MethodChannel.Result,
-    ) = when (method) {
-        NPolylineOverlay.coordsName -> setCoords(polylineOverlay, arg!!)
-        NPolylineOverlay.colorName -> setColor(polylineOverlay, arg!!)
-        NPolylineOverlay.widthName -> setWidth(polylineOverlay, arg!!)
-        NPolylineOverlay.lineCapName -> setLineCap(polylineOverlay, arg!!)
-        NPolylineOverlay.lineJoinName -> setLineJoin(polylineOverlay, arg!!)
-        NPolylineOverlay.patternName -> setPattern(polylineOverlay, arg!!)
-        getterName(NPolylineOverlay.boundsName) -> getBounds(polylineOverlay, result::success)
-        else -> result.notImplemented()
+        polylineOverlay: Overlay, method: String, arg: Any?, result: MethodChannel.Result,
+    ) = (polylineOverlay as PolylineOverlay).let { p ->
+        when (method) {
+            NPolylineOverlay.coordsName -> setCoords(p, arg!!)
+            NPolylineOverlay.colorName -> setColor(p, arg!!)
+            NPolylineOverlay.widthName -> setWidth(p, arg!!)
+            NPolylineOverlay.lineCapName -> setLineCap(p, arg!!)
+            NPolylineOverlay.lineJoinName -> setLineJoin(p, arg!!)
+            NPolylineOverlay.patternName -> setPattern(p, arg!!)
+            getterName(NPolylineOverlay.boundsName) -> getBounds(p, result::success)
+            else -> result.notImplemented()
+        }
     }
 
     fun setCoords(polylineOverlay: PolylineOverlay, rawCoords: Any)

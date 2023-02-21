@@ -56,12 +56,6 @@ internal object MapTypeConverter {
         "bearing" to bearing
     )
 
-    fun Symbol.toMessageable(): Map<String, Any> = mapOf(
-        "caption" to caption,
-        "position" to position.toMessageable(),
-        "hashCode" to hashCode()
-    )
-
     fun IndoorSelection.toMessageable(): Map<String, Any> = mapOf(
         "levelIndex" to levelIndex,
         "zoneIndex" to zoneIndex,

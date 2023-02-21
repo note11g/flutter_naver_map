@@ -2,6 +2,7 @@ import NMapsMap
 
 internal struct NInfoWindow: AddableOverlay {
     typealias OverlayType = NMFInfoWindow
+    var overlayPayload: Dictionary<String, Any?> = [:]
 
     let info: NOverlayInfo
     let text: String
@@ -24,18 +25,6 @@ internal struct NInfoWindow: AddableOverlay {
         return infoWindow
     }
 
-    func toMessageable() -> Dictionary<String, Any?> {
-        [
-            NInfoWindow.infoName: info.toMessageable(),
-            NInfoWindow.textName: text,
-            NInfoWindow.anchorName: anchor.toMessageable(),
-            NInfoWindow.alphaName: alpha,
-            NInfoWindow.positionName: position?.toMessageable(),
-            NInfoWindow.offsetXName: offsetX,
-            NInfoWindow.offsetYName: offsetY
-        ]
-    }
-
     static func fromMessageable(_ v: Any) -> NInfoWindow {
         let d = asDict(v)
         return NInfoWindow(
@@ -46,19 +35,6 @@ internal struct NInfoWindow: AddableOverlay {
                 position: castOrNull(d[positionName], caster: asLatLng),
                 offsetX: asDouble(d[offsetXName]!),
                 offsetY: asDouble(d[offsetYName]!)
-        )
-    }
-
-    static func fromOverlay(_ overlay: NMFOverlay, id: String) -> NInfoWindow {
-        let infoWindow = overlay as! NMFInfoWindow
-        return NInfoWindow(
-                info: NOverlayInfo(type: .infoWindow, id: id),
-                text: "",
-                anchor: NPoint.fromCGPointWithOutDisplay(infoWindow.anchor),
-                alpha: infoWindow.alpha,
-                position: infoWindow.position,
-                offsetX: Double(infoWindow.offsetX),
-                offsetY: Double(infoWindow.offsetY)
         )
     }
 

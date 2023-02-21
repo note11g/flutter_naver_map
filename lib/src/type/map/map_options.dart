@@ -12,7 +12,7 @@ class NaverMapViewOptions with NMessageableWithMap {
   final bool nightModeEnable;
 
   final bool indoorEnable;
-  final List<NLayerGroup> activeLayerGroups;
+  final Iterable<NLayerGroup> activeLayerGroups;
   final double buildingHeight;
   final double lightness;
   final double symbolScale;
@@ -28,10 +28,10 @@ class NaverMapViewOptions with NMessageableWithMap {
   final double zoomGesturesFriction;
   final double rotationGesturesFriction;
   final bool consumeSymbolTapEvents;
-  final bool scaleBarEnabled;
-  final bool indoorLevelPickerEnabled;
+  final bool scaleBarEnable;
+  final bool indoorLevelPickerEnable;
   final bool locationButtonEnable;
-  final bool logoClickEnabled;
+  final bool logoClickEnable;
   final NLogoAlign logoAlign;
   final EdgeInsets? logoMargin;
   final EdgeInsets contentPadding;
@@ -63,10 +63,10 @@ class NaverMapViewOptions with NMessageableWithMap {
     this.zoomGesturesFriction = defaultGestureFriction,
     this.rotationGesturesFriction = defaultGestureFriction,
     this.consumeSymbolTapEvents = true,
-    this.scaleBarEnabled = true,
-    this.indoorLevelPickerEnabled = true,
+    this.scaleBarEnable = true,
+    this.indoorLevelPickerEnable = true,
     this.locationButtonEnable = false,
-    this.logoClickEnabled = true,
+    this.logoClickEnable = true,
     this.logoAlign = NLogoAlign.leftBottom,
     this.logoMargin,
     this.contentPadding = EdgeInsets.zero,
@@ -100,10 +100,10 @@ class NaverMapViewOptions with NMessageableWithMap {
         "zoomGesturesFriction": zoomGesturesFriction,
         "rotationGesturesFriction": rotationGesturesFriction,
         "consumeSymbolTapEvents": consumeSymbolTapEvents,
-        "scaleBarEnabled": scaleBarEnabled,
-        "indoorLevelPickerEnabled": indoorLevelPickerEnabled,
+        "scaleBarEnable": scaleBarEnable,
+        "indoorLevelPickerEnable": indoorLevelPickerEnable,
         "locationButtonEnable": locationButtonEnable,
-        "logoClickEnabled": logoClickEnabled,
+        "logoClickEnable": logoClickEnable,
         "logoAlign": logoAlign,
         "logoMargin": logoMargin,
         "contentPadding": contentPadding,

@@ -1,5 +1,6 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.handler
 
+import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.PolygonOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler.Companion.getterName
@@ -8,15 +9,17 @@ import io.flutter.plugin.common.MethodChannel
 
 internal interface PolygonOverlayHandler : OverlayHandler {
     fun handlePolygonOverlay(
-        polygonOverlay: PolygonOverlay, method: String, arg: Any?, result: MethodChannel.Result,
-    ) = when (method) {
-        NPolygonOverlay.coordsName -> setCoords(polygonOverlay, arg!!)
-        NPolygonOverlay.colorName -> setColor(polygonOverlay, arg!!)
-        NPolygonOverlay.holesName -> setHoles(polygonOverlay, arg!!)
-        NPolygonOverlay.outlineColorName -> setOutlineColor(polygonOverlay, arg!!)
-        NPolygonOverlay.outlineWidthName -> setOutlineWidth(polygonOverlay, arg!!)
-        getterName(NPolygonOverlay.boundsName) -> getBounds(polygonOverlay, result::success)
-        else -> result.notImplemented()
+        polygonOverlay: Overlay, method: String, arg: Any?, result: MethodChannel.Result,
+    ) = (polygonOverlay as PolygonOverlay).let { p ->
+        when (method) {
+            NPolygonOverlay.coordsName -> setCoords(p, arg!!)
+            NPolygonOverlay.colorName -> setColor(p, arg!!)
+            NPolygonOverlay.holesName -> setHoles(p, arg!!)
+            NPolygonOverlay.outlineColorName -> setOutlineColor(p, arg!!)
+            NPolygonOverlay.outlineWidthName -> setOutlineWidth(p, arg!!)
+            getterName(NPolygonOverlay.boundsName) -> getBounds(p, result::success)
+            else -> result.notImplemented()
+        }
     }
 
     fun setCoords(polygonOverlay: PolygonOverlay, rawCoords: Any)

@@ -5,11 +5,11 @@ class NaverMap extends StatefulWidget {
   final bool forceGesture;
 
   /*
-    --- Listener ---
+    --- Events ---
   */
   final void Function(NaverMapController controller)? onMapReady;
   final void Function(NPoint point, NLatLng latLng)? onMapTapped;
-  final void Function(NSymbol symbol)? onSymbolTapped;
+  final void Function(NSymbolInfo symbolInfo)? onSymbolTapped;
   final void Function(NCameraUpdateReason reason, bool animated)?
       onCameraChange;
   final void Function()? onCameraIdle;
@@ -91,7 +91,8 @@ class _NaverMapState extends State<NaverMap> with _NaverMapControlHandler {
       widget.onMapTapped?.call(point, latLng);
 
   @override
-  void onSymbolTapped(NSymbol symbol) => widget.onSymbolTapped?.call(symbol);
+  void onSymbolTapped(NSymbolInfo symbol) =>
+      widget.onSymbolTapped?.call(symbol);
 
   @override
   void onCameraChange(NCameraUpdateReason reason, bool animated) =>

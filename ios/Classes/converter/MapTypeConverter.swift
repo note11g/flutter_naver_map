@@ -53,16 +53,6 @@ internal extension NMFCameraPosition {
     }
 }
 
-internal extension NMFSymbol {
-    func toMessageable() -> Dictionary<String, Any> {
-        [
-            "caption": caption ?? "",
-            "position": position.toMessageable(),
-            "hashCode": hash
-        ]
-    }
-}
-
 internal extension NMFIndoorSelection {
     func toMessageable() -> Dictionary<String, Any> {
         [
@@ -123,7 +113,7 @@ internal extension NMGLineString<AnyObject> {
 
 internal func asCameraAnimation(_ v: Any) -> NMFCameraUpdateAnimation {
     switch asString(v) {
-    case "easing": return .easeIn
+    case "easing": return .easeOut
     case "fly": return .fly
     case "linear": return .linear
     default: return .none

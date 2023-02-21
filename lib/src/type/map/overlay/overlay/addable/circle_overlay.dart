@@ -16,6 +16,10 @@ class NCircleOverlay extends NAddableOverlay<NCircleOverlay> {
   double get outlineWidth => _outlineWidth;
   double _outlineWidth;
 
+  @override
+  // ignore: prefer_final_fields
+  int _globalZIndex = -200000;
+
   NCircleOverlay({
     required String id,
     required NLatLng center,
@@ -57,15 +61,6 @@ class NCircleOverlay extends NAddableOverlay<NCircleOverlay> {
 
   Future<NLatLngBounds> getBounds() =>
       _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
-
-  factory NCircleOverlay._fromMessageable(dynamic m) => NCircleOverlay(
-        id: NOverlayInfo._fromMessageable(m[_infoName]).id,
-        center: NLatLng._fromMessageable(m[_centerName]),
-        radius: m[_radiusName],
-        color: Color(m[_colorName]),
-        outlineColor: Color(m[_outlineColorName]),
-        outlineWidth: m[_outlineWidthName],
-      );
 
   @override
   NPayload toNPayload() => NPayload.make({
