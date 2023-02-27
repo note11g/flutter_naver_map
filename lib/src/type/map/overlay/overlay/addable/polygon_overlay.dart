@@ -75,6 +75,7 @@ class NPolygonOverlay extends NAddableOverlay<NPolygonOverlay> {
         _holesName: holes,
         _outlineColorName: outlineColor,
         _outlineWidthName: outlineWidth,
+        ..._commonMap,
       });
 
   /*

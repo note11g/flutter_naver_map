@@ -70,6 +70,7 @@ class NCircleOverlay extends NAddableOverlay<NCircleOverlay> {
         _colorName: color,
         _outlineColorName: outlineColor,
         _outlineWidthName: outlineWidth,
+        ..._commonMap,
       });
 
   /*

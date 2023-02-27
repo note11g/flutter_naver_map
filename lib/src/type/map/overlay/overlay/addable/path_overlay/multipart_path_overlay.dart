@@ -114,6 +114,7 @@ class NMultipartPathOverlay extends NAddableOverlay<NMultipartPathOverlay> {
         _isHideCollidedCaptionsName: _isHideCollidedCaptions,
         _isHideCollidedMarkersName: _isHideCollidedMarkers,
         _isHideCollidedSymbolsName: _isHideCollidedSymbols,
+        ..._commonMap,
       });
 
   /*

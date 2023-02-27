@@ -106,6 +106,7 @@ class NInfoWindow extends NAddableOverlay<NInfoWindow> {
         _positionName: _position,
         _offsetXName: _offsetX,
         _offsetYName: _offsetY,
+        ..._commonMap,
       });
 
   /* ------ Constant ----- */
