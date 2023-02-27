@@ -49,7 +49,7 @@ mapController.addOverlay(marker1);
 mapController.addOverlayAll({marker2, circle}); // Set<NOverlay> 타입을 인자로 받습니다.
 
 // 특정 id를 가진 지도에서 제거
-mapController.deleteOverlay(type: NOverlayType.marker, id: '2');
+mapController.deleteOverlay(NOverlayInfo(type: NOverlayType.marker, id: '2'));
 // 혹은 특정 종류의 오버레이만 제거
 mapController.clearOverlays(type: NOverlayType.circleOverlay);
 // 혹은 모든 오버레이 제거
