@@ -246,6 +246,7 @@ class NMarker extends NAddableOverlay<NMarker> {
         _isHideCollidedCaptionsName: _isHideCollidedCaptions,
         _isHideCollidedMarkersName: _isHideCollidedMarkers,
         _isHideCollidedSymbolsName: _isHideCollidedSymbols,
+        ..._commonMap,
       });
 
   /*

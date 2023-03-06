@@ -15,17 +15,6 @@ class NMultipartPath with NMessageableWithMap {
     this.passedOutlineColor = Colors.black,
   });
 
-  factory NMultipartPath._fromMessageable(dynamic m) => NMultipartPath(
-        coords: (m["coords"] as List).map(NLatLng._fromMessageable),
-        color: Color(m["color"]!),
-        outlineColor: Color(m["outlineColor"]!),
-        passedColor: Color(m["passedColor"]!),
-        passedOutlineColor: Color(m["passedOutlineColor"]!),
-      );
-
-  static Iterable<NMultipartPath> _fromMessageableIterable(dynamic m) =>
-      (m as List).map(NMultipartPath._fromMessageable);
-
   @override
   NPayload toNPayload() => NPayload.make({
         "coords": coords,

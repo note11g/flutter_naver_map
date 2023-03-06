@@ -44,6 +44,7 @@ class NGroundOverlay extends NAddableOverlay<NGroundOverlay> {
         _boundsName: _bounds,
         _imageName: _image,
         _alphaName: _alpha,
+        ..._commonMap,
       });
 
   /*

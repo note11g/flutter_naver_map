@@ -45,9 +45,6 @@ enum NAlign with NMessageableWithEnum {
   topRight,
   bottomLeft,
   bottomRight;
-
-  factory NAlign._fromMessageable(dynamic m) =>
-      values.firstWhere((value) => value.payload == m);
 }
 
 enum NLogoAlign with NMessageableWithEnum {
@@ -100,18 +97,12 @@ enum NLineCap with NMessageableWithEnum {
   butt,
   round,
   square;
-
-  factory NLineCap._fromMessageable(dynamic m) =>
-      values.firstWhere((value) => value.payload == m);
 }
 
 enum NLineJoin with NMessageableWithEnum {
   bevel,
   miter,
   round;
-
-  factory NLineJoin._fromMessageable(dynamic m) =>
-      values.firstWhere((value) => value.payload == m);
 }
 
 /* ----- Private ----- */

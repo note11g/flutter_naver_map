@@ -158,6 +158,7 @@ class NPathOverlay extends NAddableOverlay<NPathOverlay> {
         _isHideCollidedCaptionsName: _isHideCollidedCaptions,
         _isHideCollidedMarkersName: _isHideCollidedMarkers,
         _isHideCollidedSymbolsName: _isHideCollidedSymbols,
+        ..._commonMap,
       });
 
   /*

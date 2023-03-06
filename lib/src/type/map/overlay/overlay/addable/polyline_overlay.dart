@@ -82,6 +82,7 @@ class NPolylineOverlay extends NAddableOverlay<NPolylineOverlay> {
         _lineCapName: lineCap,
         _lineJoinName: lineJoin,
         _patternName: pattern,
+        ..._commonMap,
       });
 
   /*

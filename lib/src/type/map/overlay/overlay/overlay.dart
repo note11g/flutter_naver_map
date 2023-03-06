@@ -21,11 +21,9 @@ abstract class NOverlay<O extends NOverlay<void>> {
 
     final query = _NOverlayQuery(info, methodName: method).query;
 
-    if (arguments == null) {
-      return await _overlayController!.invokeMethod(query);
-    }
-    final messageable =
-        NMessageable.forOnce(NPayload.convertToMessageable(arguments!));
+    final messageable = arguments != null
+        ? NMessageable.forOnce(NPayload.convertToMessageable(arguments!))
+        : null;
     return await _overlayController!.invokeMethod(query, messageable);
   }
 
@@ -106,6 +104,16 @@ abstract class NOverlay<O extends NOverlay<void>> {
   }
 
   Future<void> performClick() => _runAsync(_performClickName);
+
+  Map<String, dynamic> get _commonMap => {
+    _zIndexName: _zIndex,
+    _globalZIndexName: _globalZIndex,
+    _isVisibleName: _isVisible,
+    _minZoomName: _minZoom,
+    _maxZoomName: _maxZoom,
+    _isMinZoomInclusiveName: _isMinZoomInclusive,
+    _isMaxZoomInclusiveName: _isMaxZoomInclusive,
+  };
 
   /* ----- fromMessageable ----- */
 

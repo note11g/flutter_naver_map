@@ -93,6 +93,7 @@ class NArrowheadPathOverlay extends NAddableOverlay<NArrowheadPathOverlay> {
         _outlineColorName: _outlineColor,
         _elevationName: _elevation,
         _headSizeRatioName: _headSizeRatio,
+        ..._commonMap,
       });
 
   /*
