@@ -25,16 +25,6 @@ class NOverlayCaption with NMessageableWithMap {
     this.requestWidth = 0,
   });
 
-  factory NOverlayCaption._fromMessageable(dynamic m) => NOverlayCaption(
-        text: m["text"],
-        textSize: m["textSize"],
-        color: Color(m["color"]),
-        haloColor: Color(m["haloColor"]),
-        minZoom: m["minZoom"],
-        maxZoom: m["maxZoom"],
-        requestWidth: m["requestWidth"],
-      );
-
   @override
   NPayload toNPayload() => NPayload.make({
         "text": text,

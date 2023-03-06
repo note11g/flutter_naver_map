@@ -106,14 +106,14 @@ abstract class NOverlay<O extends NOverlay<void>> {
   Future<void> performClick() => _runAsync(_performClickName);
 
   Map<String, dynamic> get _commonMap => {
-    _zIndexName: _zIndex,
-    _globalZIndexName: _globalZIndex,
-    _isVisibleName: _isVisible,
-    _minZoomName: _minZoom,
-    _maxZoomName: _maxZoom,
-    _isMinZoomInclusiveName: _isMinZoomInclusive,
-    _isMaxZoomInclusiveName: _isMaxZoomInclusive,
-  };
+        _zIndexName: _zIndex,
+        _globalZIndexName: _globalZIndex,
+        _isVisibleName: _isVisible,
+        _minZoomName: _minZoom,
+        _maxZoomName: _maxZoom,
+        _isMinZoomInclusiveName: _isMinZoomInclusive,
+        _isMaxZoomInclusiveName: _isMaxZoomInclusive,
+      };
 
   /* ----- fromMessageable ----- */
 

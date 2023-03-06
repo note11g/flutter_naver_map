@@ -35,21 +35,6 @@ class NOverlayImage with NMessageableWithMap {
     return NOverlayImage._(path: path, mode: _NOverlayImageMode.widget);
   }
 
-  factory NOverlayImage._fromMessageable(dynamic m) {
-    final nOverlayImage = NOverlayImage._(
-      path: m["path"],
-      mode: _NOverlayImageMode._fromMessageable(m["mode"]),
-    );
-
-    if (nOverlayImage != _none) {
-      throw NUnknownTypeCastException(unknownValue: nOverlayImage.toString());
-    }
-
-    return _none;
-  }
-
-  static const _none = NOverlayImage._(path: "", mode: _NOverlayImageMode.temp);
-
   @override
   NPayload toNPayload() => NPayload.make({
         "path": _path,
