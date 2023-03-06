@@ -122,7 +122,7 @@ internal class NaverMapApplierImpl: NaverMapOptionApplier {
     }
 
     func setLogoClickEnable(_ rawEnable: Any) {
-        mapView.logoInteractionEnabled = asBool(true)
+        mapView.logoInteractionEnabled = asBool(rawEnable)
     }
 
     func setLogoAlign(_ rawAlign: Any) {
