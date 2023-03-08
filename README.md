@@ -1,6 +1,6 @@
 # flutter_naver_map 1.0 Dev Preview
 
-NaverMap SDK for Flutter (1.0-dev.7) 
+NaverMap SDK for Flutter (1.0-dev.8) 
 
 플러터 3.0 이상, dart 2.18.4 이상을 사용하셔야 합니다.
 android는 5.1 이상, iOS는 11.0 이상을 지원합니다.
@@ -25,7 +25,7 @@ Naver Cloud Platform 에서 앱을 등록하고, Android / iOS 플랫폼을 등�
 
 ```yaml
 dependencies:
-  flutter_naver_map: ^1.0.0-dev.7
+  flutter_naver_map: ^1.0.0-dev.8
 ```
 
 iOS에서는, 대용량 파일을 받기 위해 [git-lfs](https://git-lfs.github.com/) 설치가 필요합니다.

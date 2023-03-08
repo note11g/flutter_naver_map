@@ -2,6 +2,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.controller
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationTrackingMode
@@ -9,6 +10,7 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.Symbol
 import com.naver.maps.map.indoor.IndoorSelection
 import com.naver.maps.map.overlay.LocationOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayController
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay.Companion.toMessageable
@@ -240,5 +242,14 @@ internal class NaverMapController(
 
     override fun onSelectedIndoorChanged(selectedIndoor: IndoorSelection?) {
         channel.invokeMethod("onSelectedIndoorChanged", selectedIndoor?.toMessageable())
+    }
+
+    /*
+      --- remove ---
+    */
+
+    fun remove() {
+        channel.setMethodCallHandler(null)
+        (overlayController as OverlayController).remove()
     }
 }
