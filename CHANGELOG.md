@@ -1,3 +1,6 @@
+## 1.0.0-dev.8
+- fix Android Memory Leak issue ([#47](https://github.com/note11g/flutter_naver_map/issues/47))
+
 ## 1.0.0-dev.7
 - fix iOS Memory Leak issue ([#47](https://github.com/note11g/flutter_naver_map/issues/47))
 

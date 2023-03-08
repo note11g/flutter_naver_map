@@ -113,9 +113,6 @@ enum _NOverlayImageMode with NMessageableWithEnum {
   temp,
   widget;
 
-  factory _NOverlayImageMode._fromMessageable(dynamic m) =>
-      values.firstWhere((value) => value.payload == m);
-
   String toExplainString() =>
       this == _NOverlayImageMode.temp ? "byteArray" : name;
 }
