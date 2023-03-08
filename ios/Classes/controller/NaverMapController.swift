@@ -183,4 +183,13 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     func onSelectedIndoorChanged(selectedIndoor: NMFIndoorSelection?) {
         channel.invokeMethod("onSelectedIndoorChanged", arguments: selectedIndoor?.toMessageable())
     }
+
+    /*
+      --- deinit ---
+    */
+
+    func removeChannel() {
+        channel.setMethodCallHandler(nil)
+        (overlayController as! OverlayController).removeChannel()
+    }
 }

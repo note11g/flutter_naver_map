@@ -4,6 +4,7 @@ internal class NaverMapFactory: NSObject, FlutterPlatformViewFactory {
     init(messenger: FlutterBinaryMessenger) {
         self.messenger = messenger
         super.init()
+        setHttpConnectionMaximum()
     }
 
     func create(
@@ -23,5 +24,9 @@ internal class NaverMapFactory: NSObject, FlutterPlatformViewFactory {
 
     func createArgsCodec() -> FlutterMessageCodec & NSObjectProtocol {
         FlutterStandardMessageCodec.sharedInstance()
+    }
+
+    private func setHttpConnectionMaximum() {
+        URLSession.shared.configuration.httpMaximumConnectionsPerHost = 8
     }
 }

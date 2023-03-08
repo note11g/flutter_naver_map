@@ -17,7 +17,6 @@ internal class NaverMapView: NSObject, FlutterPlatformView {
     }
 
     private func onMapReady() {
-        setHttpConnectionMaximum()
         setMapTapListener()
         naverMapControlSender.onMapReady()
     }
@@ -32,8 +31,8 @@ internal class NaverMapView: NSObject, FlutterPlatformView {
         naverMap
     }
 
-    private func setHttpConnectionMaximum() {
-        URLSession.shared.configuration.httpMaximumConnectionsPerHost = 8
+    deinit {
+        (naverMapControlSender as! NaverMapController).removeChannel()
     }
 }
 
