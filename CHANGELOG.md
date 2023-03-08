@@ -1,3 +1,6 @@
+## 1.0.0-dev.7
+- fix iOS Memory Leak issue ([#47](https://github.com/note11g/flutter_naver_map/issues/47))
+
 ## 1.0.0-dev.6
 - fix bugs ([#45](https://github.com/note11g/flutter_naver_map/issues/45), [Unreported bug](https://github.com/note11g/flutter_naver_map/commit/b7c93bcf0dbabd838773014bc16b8e8d5be50170))
 

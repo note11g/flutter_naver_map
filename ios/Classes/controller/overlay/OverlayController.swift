@@ -584,4 +584,12 @@ internal class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, C
         let bounds = NMGLatLngBounds(latLngs: arrowheadPathOverlay.points)
         success(bounds.toMessageable())
     }
+
+    /*
+        --- deinit ---
+    */
+
+    func removeChannel() {
+        channel.setMethodCallHandler(nil)
+    }
 }

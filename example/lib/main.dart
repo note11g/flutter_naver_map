@@ -34,8 +34,6 @@ class FNMapPage extends StatefulWidget {
 class _FNMapPageState extends State<FNMapPage> {
   @override
   Widget build(BuildContext context) {
-    return NaverMap(
-
-    );
+    return NaverMap();
   }
 }
