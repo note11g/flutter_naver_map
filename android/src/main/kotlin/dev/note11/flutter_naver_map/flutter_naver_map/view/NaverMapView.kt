@@ -81,9 +81,15 @@ internal class NaverMapView(
     }
 
     override fun dispose() {
-        Log.i("FlutterNaverMap", "네이버맵 disposed!!!!!!!")
         unRegisterLifecycleCallback()
-        mapView.onDestroy()
+
+        mapView.run {
+            onPause()
+            onStop()
+            onDestroy()
+        }
+
+        (naverMapControlSender as NaverMapController).remove()
     }
 
     // Using AppCompat Theme.
@@ -94,26 +100,22 @@ internal class NaverMapView(
 
     private fun registerLifecycleCallback() {
         activity.application.registerActivityLifecycleCallbacks(this)
-        Log.i("FlutterNaverMap", "네이버맵 registerLifecycleCallback!!!!!!!")
     }
 
     private fun unRegisterLifecycleCallback() {
         activity.application.unregisterActivityLifecycleCallbacks(this)
-        Log.i("FlutterNaverMap", "네이버맵 unRegisterLifecycleCallback!!!!!!!")
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         if (activity != this.activity) return
 
         mapView.onCreate(savedInstanceState)
-        Log.i("FlutterNaverMap", "네이버맵 onActivityCreated!!!!!!!")
     }
 
     override fun onActivityStarted(activity: Activity) {
         if (activity != this.activity) return
 
         mapView.onStart()
-        Log.i("FlutterNaverMap", "네이버맵 onActivityStarted!!!!!")
     }
 
     override fun onActivityResumed(activity: Activity) {
@@ -121,7 +123,6 @@ internal class NaverMapView(
 
         reloadMap()
         mapView.onResume()
-        Log.i("FlutterNaverMap", "네이버맵 onActivityResumed!!!!!!!")
     }
 
     private fun reloadMap() {
@@ -136,21 +137,18 @@ internal class NaverMapView(
         if (activity != this.activity) return
 
         mapView.onPause()
-        Log.i("FlutterNaverMap", "네이버맵 onActivityPaused!!!!!")
     }
 
     override fun onActivityStopped(activity: Activity) {
         if (activity != this.activity) return
 
         mapView.onStop()
-        Log.i("FlutterNaverMap", "네이버맵 onActivityStopped!!!!!!!")
     }
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
         if (activity != this.activity) return
 
         mapView.onSaveInstanceState(outState)
-        Log.i("FlutterNaverMap", "네이버맵 onActivitySaveInstanceState!!!!!")
     }
 
     override fun onActivityDestroyed(activity: Activity) {
@@ -158,10 +156,5 @@ internal class NaverMapView(
 
         mapView.onDestroy()
         unRegisterLifecycleCallback()
-        Log.i("FlutterNaverMap", "네이버맵 onActivityDestroyed!!!!!!!")
-    }
-
-    companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 9898
     }
 }

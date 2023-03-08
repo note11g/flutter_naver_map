@@ -643,4 +643,12 @@ internal class OverlayController(
     ) {
         success(arrowheadPathOverlay.bounds.toMessageable())
     }
+
+    /*
+      --- remove ---
+    */
+
+    fun remove() {
+        channel.setMethodCallHandler(null)
+    }
 }
