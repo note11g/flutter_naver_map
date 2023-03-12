@@ -3,9 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - dev_preview
     paths:
-      - /docs/**
+      - /doc/**
 
 jobs:
   deploy:
