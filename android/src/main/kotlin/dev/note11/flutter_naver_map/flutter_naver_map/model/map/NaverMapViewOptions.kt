@@ -32,7 +32,7 @@ internal data class NaverMapViewOptions(
             args: Map<String, Any>,
             convertNaverMapOptions: Boolean = true,
         ): NaverMapViewOptions {
-            val options = if (convertNaverMapOptions) naverMapOptionfromMessageable(args) else null
+            val options = if (convertNaverMapOptions) naverMapOptionFromMessageable(args) else null
             val consumeSymbolTapEvents = args["consumeSymbolTapEvents"]!!.asBoolean()
 
             return NaverMapViewOptions(options, consumeSymbolTapEvents)
@@ -47,7 +47,7 @@ internal data class NaverMapViewOptions(
             return fromMessageable(args, false)
         }
 
-        private fun naverMapOptionfromMessageable(
+        private fun naverMapOptionFromMessageable(
             args: Map<String, Any>,
         ): NaverMapOptions {
             val options = NaverMapOptions().apply {

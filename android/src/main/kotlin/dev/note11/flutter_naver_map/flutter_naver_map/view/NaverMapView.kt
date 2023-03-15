@@ -4,20 +4,17 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
-import com.naver.maps.map.util.FusedLocationSource
 import dev.note11.flutter_naver_map.flutter_naver_map.R
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapControlSender
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapController
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
 import dev.note11.flutter_naver_map.flutter_naver_map.util.NLocationSource
-import io.flutter.embedding.android.FlutterActivity
-import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 
@@ -33,9 +30,24 @@ internal class NaverMapView(
     private lateinit var naverMap: NaverMap
     private lateinit var naverMapControlSender: NaverMapControlSender
     private val mapView = MapView(context, naverMapViewOptions.naverMapOptions).apply {
+        setTempMethodCallHandler()
         getMapAsync { naverMap ->
             this@NaverMapView.naverMap = naverMap
             onMapReady()
+        }
+    }
+    private var rawNaverMapOptionTempCache: Any? = null
+
+    init {
+        setActivityThemeAppCompat()
+        registerLifecycleCallback()
+    }
+
+    private fun setTempMethodCallHandler() {
+        channel.setMethodCallHandler { call, _ ->
+            if (call.method == "updateOptions") { // todo : test
+                rawNaverMapOptionTempCache = call.arguments
+            }
         }
     }
 
@@ -51,7 +63,9 @@ internal class NaverMapView(
     private fun initializeMapController() {
         naverMapControlSender = NaverMapController(
             naverMap, channel, activity.applicationContext, overlayController
-        )
+        ).apply {
+            rawNaverMapOptionTempCache?.let { updateOptions(it.asMap()) {} }
+        }
     }
 
     private fun setLocationSource() {
@@ -74,11 +88,6 @@ internal class NaverMapView(
     }
 
     override fun getView(): View = mapView
-
-    init {
-        setActivityThemeAppCompat()
-        registerLifecycleCallback()
-    }
 
     override fun dispose() {
         unRegisterLifecycleCallback()

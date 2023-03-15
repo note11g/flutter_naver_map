@@ -125,4 +125,83 @@ class NaverMapViewOptions with NMessageableWithMap {
   static const defaultPickTolerance = 2.0;
   static const minimumZoom = 0.0;
   static const maximumZoom = 21.0;
+
+  /*
+    --- Equal ---
+  */
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is NaverMapViewOptions &&
+          runtimeType == other.runtimeType &&
+          initialCameraPosition == other.initialCameraPosition &&
+          extent == other.extent &&
+          mapType == other.mapType &&
+          liteModeEnable == other.liteModeEnable &&
+          nightModeEnable == other.nightModeEnable &&
+          indoorEnable == other.indoorEnable &&
+          activeLayerGroups == other.activeLayerGroups &&
+          buildingHeight == other.buildingHeight &&
+          lightness == other.lightness &&
+          symbolScale == other.symbolScale &&
+          symbolPerspectiveRatio == other.symbolPerspectiveRatio &&
+          indoorFocusRadius == other.indoorFocusRadius &&
+          pickTolerance == other.pickTolerance &&
+          rotationGesturesEnable == other.rotationGesturesEnable &&
+          scrollGesturesEnable == other.scrollGesturesEnable &&
+          tiltGesturesEnable == other.tiltGesturesEnable &&
+          zoomGesturesEnable == other.zoomGesturesEnable &&
+          stopGesturesEnable == other.stopGesturesEnable &&
+          scrollGesturesFriction == other.scrollGesturesFriction &&
+          zoomGesturesFriction == other.zoomGesturesFriction &&
+          rotationGesturesFriction == other.rotationGesturesFriction &&
+          consumeSymbolTapEvents == other.consumeSymbolTapEvents &&
+          scaleBarEnable == other.scaleBarEnable &&
+          indoorLevelPickerEnable == other.indoorLevelPickerEnable &&
+          locationButtonEnable == other.locationButtonEnable &&
+          logoClickEnable == other.logoClickEnable &&
+          logoAlign == other.logoAlign &&
+          logoMargin == other.logoMargin &&
+          contentPadding == other.contentPadding &&
+          minZoom == other.minZoom &&
+          maxZoom == other.maxZoom &&
+          maxTilt == other.maxTilt &&
+          locale == other.locale;
+
+  @override
+  int get hashCode =>
+      initialCameraPosition.hashCode ^
+      extent.hashCode ^
+      mapType.hashCode ^
+      liteModeEnable.hashCode ^
+      nightModeEnable.hashCode ^
+      indoorEnable.hashCode ^
+      activeLayerGroups.hashCode ^
+      buildingHeight.hashCode ^
+      lightness.hashCode ^
+      symbolScale.hashCode ^
+      symbolPerspectiveRatio.hashCode ^
+      indoorFocusRadius.hashCode ^
+      pickTolerance.hashCode ^
+      rotationGesturesEnable.hashCode ^
+      scrollGesturesEnable.hashCode ^
+      tiltGesturesEnable.hashCode ^
+      zoomGesturesEnable.hashCode ^
+      stopGesturesEnable.hashCode ^
+      scrollGesturesFriction.hashCode ^
+      zoomGesturesFriction.hashCode ^
+      rotationGesturesFriction.hashCode ^
+      consumeSymbolTapEvents.hashCode ^
+      scaleBarEnable.hashCode ^
+      indoorLevelPickerEnable.hashCode ^
+      locationButtonEnable.hashCode ^
+      logoClickEnable.hashCode ^
+      logoAlign.hashCode ^
+      logoMargin.hashCode ^
+      contentPadding.hashCode ^
+      minZoom.hashCode ^
+      maxZoom.hashCode ^
+      maxTilt.hashCode ^
+      locale.hashCode;
 }

@@ -34,14 +34,8 @@ class NaverMap extends StatefulWidget {
 class _NaverMapState extends State<NaverMap> with _NaverMapControlHandler {
   late final MethodChannel methodChannel;
   late final NaverMapController controller;
-  late NaverMapViewOptions nowViewOptions;
+  late NaverMapViewOptions nowViewOptions = widget.options;
   final mapSdk = NaverMapSdk.instance;
-
-  @override
-  void initState() {
-    nowViewOptions = widget.options;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +45,7 @@ class _NaverMapState extends State<NaverMap> with _NaverMapControlHandler {
 
     if (nowViewOptions != widget.options) {
       nowViewOptions = widget.options;
-      controller._updateOptions(widget.options);
+      controller._updateOptions(nowViewOptions);
     }
 
     return _PlatformViewCreator.createPlatformView(
