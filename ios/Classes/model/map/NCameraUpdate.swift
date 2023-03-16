@@ -27,7 +27,7 @@ internal struct NCameraUpdate {
             default: throw NSError()
             }
 
-            if let pivot {
+            if let pivot = pivot {
                 cameraUpdate.pivot = pivot.cgPoint
             }
 
@@ -40,25 +40,25 @@ internal struct NCameraUpdate {
 
     private var params: NMFCameraUpdateParams {
         let p = NMFCameraUpdateParams()
-        if let target {
+        if let target = target {
             p.scroll(to: target)
         }
-        if let zoom {
+        if let zoom = zoom {
             p.zoom(to: zoom)
         }
-        if let zoomBy {
+        if let zoomBy = zoomBy {
             p.zoom(by: zoomBy)
         }
-        if let tilt {
+        if let tilt = tilt {
             p.tilt(to: tilt)
         }
-        if let tiltBy {
+        if let tiltBy = tiltBy {
             p.tilt(by: tiltBy)
         }
-        if let bearing {
+        if let bearing = bearing {
             p.rotate(by: bearing)
         }
-        if let bearingBy {
+        if let bearingBy = bearingBy {
             p.rotate(by: bearingBy)
         }
         return p

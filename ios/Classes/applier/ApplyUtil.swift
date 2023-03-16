@@ -2,7 +2,7 @@ internal extension  NaverMapOptionApplier {
     func applyOptions(args: Dictionary<String, Any>) throws {
         for (funcName, arg) in args {
             let fun = ApplyUtil.optionApplyFuncMap[funcName]?(self)
-            if let fun {
+            if let fun = fun {
                 fun(arg)
             } else {
                 throw NSError()

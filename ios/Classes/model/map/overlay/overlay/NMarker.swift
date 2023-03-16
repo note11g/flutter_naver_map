@@ -28,7 +28,7 @@ internal struct NMarker: AddableOverlay {
     func createMapOverlay() -> OverlayType {
         let marker = NMFMarker()
         marker.position = position
-        if let icon {
+        if let icon = icon {
             marker.iconImage = icon.overlayImage
         }
         marker.iconTintColor = iconTintColor
@@ -37,7 +37,7 @@ internal struct NMarker: AddableOverlay {
         marker.anchor = anchor.cgPoint
         marker.width = size.width
         marker.height = size.height
-        if let caption {
+        if let caption = caption {
             marker.captionText = caption.text
             marker.captionTextSize = caption.textSize
             marker.captionColor = caption.color
@@ -46,7 +46,7 @@ internal struct NMarker: AddableOverlay {
             marker.captionMaxZoom = caption.maxZoom
             marker.captionRequestedWidth = caption.requestWidth
         }
-        if let subCaption {
+        if let subCaption = subCaption {
             marker.subCaptionText = subCaption.text
             marker.subCaptionTextSize = subCaption.textSize
             marker.subCaptionColor = subCaption.color
