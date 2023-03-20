@@ -116,6 +116,84 @@ class NaverMapViewOptions with NMessageableWithMap {
   @override
   String toString() => "$runtimeType: ${toNPayload().map}";
 
+  NaverMapViewOptions copyWith({
+    NCameraPosition? initialCameraPosition,
+    NLatLngBounds? extent,
+    NMapType? mapType,
+    bool? liteModeEnable,
+    bool? nightModeEnable,
+    bool? indoorEnable,
+    Iterable<NLayerGroup>? activeLayerGroups,
+    double? buildingHeight,
+    double? lightness,
+    double? symbolScale,
+    double? symbolPerspectiveRatio,
+    double? indoorFocusRadius,
+    double? pickTolerance,
+    bool? rotationGesturesEnable,
+    bool? scrollGesturesEnable,
+    bool? tiltGesturesEnable,
+    bool? zoomGesturesEnable,
+    bool? stopGesturesEnable,
+    double? scrollGesturesFriction,
+    double? zoomGesturesFriction,
+    double? rotationGesturesFriction,
+    bool? consumeSymbolTapEvents,
+    bool? scaleBarEnable,
+    bool? indoorLevelPickerEnable,
+    bool? locationButtonEnable,
+    bool? logoClickEnable,
+    NLogoAlign? logoAlign,
+    EdgeInsets? logoMargin,
+    EdgeInsets? contentPadding,
+    double? minZoom,
+    double? maxZoom,
+    double? maxTilt,
+    Locale? locale,
+  }) =>
+      NaverMapViewOptions(
+        initialCameraPosition:
+            initialCameraPosition ?? this.initialCameraPosition,
+        extent: extent ?? this.extent,
+        mapType: mapType ?? this.mapType,
+        liteModeEnable: liteModeEnable ?? this.liteModeEnable,
+        nightModeEnable: nightModeEnable ?? this.nightModeEnable,
+        indoorEnable: indoorEnable ?? this.indoorEnable,
+        activeLayerGroups: activeLayerGroups ?? this.activeLayerGroups,
+        buildingHeight: buildingHeight ?? this.buildingHeight,
+        lightness: lightness ?? this.lightness,
+        symbolScale: symbolScale ?? this.symbolScale,
+        symbolPerspectiveRatio:
+            symbolPerspectiveRatio ?? this.symbolPerspectiveRatio,
+        indoorFocusRadius: indoorFocusRadius ?? this.indoorFocusRadius,
+        pickTolerance: pickTolerance ?? this.pickTolerance,
+        rotationGesturesEnable:
+            rotationGesturesEnable ?? this.rotationGesturesEnable,
+        scrollGesturesEnable: scrollGesturesEnable ?? this.scrollGesturesEnable,
+        tiltGesturesEnable: tiltGesturesEnable ?? this.tiltGesturesEnable,
+        zoomGesturesEnable: zoomGesturesEnable ?? this.zoomGesturesEnable,
+        stopGesturesEnable: stopGesturesEnable ?? this.stopGesturesEnable,
+        scrollGesturesFriction:
+            scrollGesturesFriction ?? this.scrollGesturesFriction,
+        zoomGesturesFriction: zoomGesturesFriction ?? this.zoomGesturesFriction,
+        rotationGesturesFriction:
+            rotationGesturesFriction ?? this.rotationGesturesFriction,
+        consumeSymbolTapEvents:
+            consumeSymbolTapEvents ?? this.consumeSymbolTapEvents,
+        scaleBarEnable: scaleBarEnable ?? this.scaleBarEnable,
+        indoorLevelPickerEnable:
+            indoorLevelPickerEnable ?? this.indoorLevelPickerEnable,
+        locationButtonEnable: locationButtonEnable ?? this.locationButtonEnable,
+        logoClickEnable: logoClickEnable ?? this.logoClickEnable,
+        logoAlign: logoAlign ?? this.logoAlign,
+        logoMargin: logoMargin ?? this.logoMargin,
+        contentPadding: contentPadding ?? this.contentPadding,
+        minZoom: minZoom ?? this.minZoom,
+        maxZoom: maxZoom ?? this.maxZoom,
+        maxTilt: maxTilt ?? this.maxTilt,
+        locale: locale ?? this.locale,
+      );
+
   /*
     --- Constants ---
   */
