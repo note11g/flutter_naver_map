@@ -199,7 +199,7 @@ class NaverMapViewOptions with NMessageableWithMap {
   */
 
   static const defaultGestureFriction = -1.0;
-  static const defaultIndoorFocusDp = 55.0;
+  static const defaultIndoorFocusDp = 56.0;
   static const defaultPickTolerance = 2.0;
   static const minimumZoom = 0.0;
   static const maximumZoom = 21.0;
