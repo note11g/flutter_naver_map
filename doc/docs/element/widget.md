@@ -157,7 +157,7 @@ NaverMapViewOptions(
 ```dart
 NaverMapViewOptions(
   indoorEnable: true,
-  indoorFocusRadius: 30, // default is 55
+  indoorFocusRadius: 30, // default is 56
 )
 ```
 
@@ -228,9 +228,9 @@ NaverMapViewOptions(
 
 지도 유형에 따라 지원되는 정보 레이어가 다르며, 지도 유형에 따라 지원하지 않는 레이어는 무시됩니다.
 
-| basic | navi                      | satellite                                                                | hybrid, terrain                                             |
-|-------|---------------------------|--------------------------------------------------------------------------|-------------------------------------------------------------|
-| 모두 지원 | `building`,<br/>`traffic` | `traffic`,<br/>`transit`,<br/>`bicycle`,<br/>`mountain`,<br/>`cadastral` | 모두 지원.<br/>(단, `building` 레이어는<br/>건물 주소, 입구 등에 대한 심벌만 노출됨) |
+| basic | navi                      | satellite                                        | hybrid, terrain                                            |
+|-------|---------------------------|--------------------------------------------------|------------------------------------------------------------|
+| 모두 지원 | `building`,<br/>`traffic` | 모두 지원<br/>(단, `building` 레이어는<br/>아파트 동 정보만 노출됨) | 모두 지원<br/>(단, `building` 레이어는<br/>건물 주소, 입구 등에 대한 심벌만 노출됨) |
 
 다음은 건물 레이어와 대중교통 레이어를 노출하는 예제입니다.
 
@@ -269,6 +269,8 @@ NaverMapViewOptions(
 터치 이벤트를 소비하면, 심볼의 터치 이벤트는 발생하지만 지도의 터치 이벤트는 발생하지 않습니다.
 소비하지 않으면, 심볼의 터치 이벤트와 지도의 터치 이벤트가 모두 발생합니다.
 
+기본 값은 `true`입니다. 
+
 ---
 
 ### 제스처 (Gestures)
@@ -297,15 +299,13 @@ NaverMapViewOptions(
 
 스크롤, 줌, 회전 제스처가 마찰 계수 지정을 지원합니다.
 
-기본값은 각각 다르기에, 기본값을 의미하는 `defaultGestureFriction`을 지정하면 기본값이 적용됩니다.
-
 다음은 제스처의 마찰을 가장 뻑뻑하게 지정하는 예제입니다.
 
 ```dart
 NaverMapViewOptions(
-  scrollGesturesFriction: 1.0,
-  zoomGesturesFriction: 1.0,
-  rotationGesturesFriction: 1.0,
+  scrollGesturesFriction: 1.0, // default is 0.088
+  zoomGesturesFriction: 1.0, // default is 0.12375
+  rotationGesturesFriction: 1.0, // default is 0.19333
 )
 ```
 
@@ -350,6 +350,8 @@ NaverMapViewOptions(
 ### 언어 지정
 
 지도에 표시되는 언어를 지정할 수 있습니다.
+
+**한국어, 영어, 일본어, 중국어**를 지원합니다.
 
 다음은 지도에 표시되는 언어를 영어로 지정하는 예제입니다.
 
