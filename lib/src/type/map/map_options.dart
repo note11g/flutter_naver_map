@@ -59,9 +59,9 @@ class NaverMapViewOptions with NMessageableWithMap {
     this.tiltGesturesEnable = true,
     this.zoomGesturesEnable = true,
     this.stopGesturesEnable = true,
-    this.scrollGesturesFriction = defaultGestureFriction,
-    this.zoomGesturesFriction = defaultGestureFriction,
-    this.rotationGesturesFriction = defaultGestureFriction,
+    this.scrollGesturesFriction = defaultScrollGesturesFriction,
+    this.zoomGesturesFriction = defaultZoomGesturesFriction,
+    this.rotationGesturesFriction = defaultRotationGesturesFriction,
     this.consumeSymbolTapEvents = true,
     this.scaleBarEnable = true,
     this.indoorLevelPickerEnable = true,
@@ -198,11 +198,13 @@ class NaverMapViewOptions with NMessageableWithMap {
     --- Constants ---
   */
 
-  static const defaultGestureFriction = -1.0;
   static const defaultIndoorFocusDp = 56.0;
   static const defaultPickTolerance = 2.0;
   static const minimumZoom = 0.0;
   static const maximumZoom = 21.0;
+  static const defaultScrollGesturesFriction = 0.088;
+  static const defaultZoomGesturesFriction = 0.12375;
+  static const defaultRotationGesturesFriction = 0.19333;
 
   /*
     --- Equal ---
