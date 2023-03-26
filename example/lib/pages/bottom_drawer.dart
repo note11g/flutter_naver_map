@@ -10,12 +10,14 @@ class ExampleAppBottomDrawer {
   final Function(double height) onDrawerHeightChanged;
   final Function() rebuild;
   final List<MapFunctionItem> pages;
+  final void Function()? onPageDispose;
 
   ExampleAppBottomDrawer({
     required this.context,
     required this.onDrawerHeightChanged,
     required this.rebuild,
     required this.pages,
+    this.onPageDispose,
   });
 
   ColorScheme get colorTheme => getColorTheme(context);
@@ -31,12 +33,18 @@ class ExampleAppBottomDrawer {
 
   bool get hasPage => nowItem != null;
 
-  static MapFunctionItem makeDefault(
-          {required String title,
-          required String description,
-          required Widget Function(bool canScroll) page}) =>
+  static MapFunctionItem makeDefault({
+    required String title,
+    required String description,
+    required Widget Function(bool canScroll) page,
+    bool isScrollPage = true,
+  }) =>
       MapFunctionItem(
-          title: title, description: description, page: page, onTap: null);
+          title: title,
+          description: description,
+          page: page,
+          onTap: null,
+          isScrollPage: isScrollPage);
 
   void go(MapFunctionItem item) {
     nowItem = item;
@@ -45,6 +53,7 @@ class ExampleAppBottomDrawer {
 
   void back() {
     nowItem = null;
+    onPageDispose?.call();
     rebuildDrawerAndPage();
   }
 
@@ -54,7 +63,7 @@ class ExampleAppBottomDrawer {
   }
 
   BottomDrawer get bottomDrawer => BottomDrawer(
-      height: 200,
+      height: nowItem?.isScrollPage == false ? null : 200,
       expandedHeight: 480,
       handleSectionHeight: 20,
       handleColor: colorTheme.secondary,

@@ -28,11 +28,11 @@ internal class NaverMapViewFactory(
         val options = NaverMapViewOptions.fromMessageable(convertedArgs)
 
         return NaverMapView(
-            context = context,
             activity = activity,
             naverMapViewOptions = options,
             channel = channel,
-            overlayController = overlayController
+            overlayController = overlayController,
+            viewId = viewId
         )
     }
 }

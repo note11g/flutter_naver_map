@@ -24,6 +24,11 @@ class ExampleAppTheme {
             fontWeight: FontWeight.w600,
             color: Colors.white,
             letterSpacing: 0),
+        labelLarge: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+            letterSpacing: 0),
       ));
 
   static final darkThemeData = ThemeData(
@@ -47,6 +52,11 @@ class ExampleAppTheme {
         labelSmall: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
+            color: Colors.white,
+            letterSpacing: 0),
+        labelLarge: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
             color: Colors.white,
             letterSpacing: 0),
       ));

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:flutter_naver_map_example/pages/examples/overlay_example.dart';
 
 import 'pages/bottom_drawer.dart';
 import 'pages/new_window_page.dart';
@@ -107,6 +108,7 @@ class _FNMapPageState extends State<FNMapPage> {
       context: context,
       onDrawerHeightChanged: (height) => setState(() => drawerHeight = height),
       rebuild: () => setState(() {}),
+      // onPageDispose: () {},
       pages: pages);
 
   late final List<MapFunctionItem> pages = [
@@ -114,16 +116,17 @@ class _FNMapPageState extends State<FNMapPage> {
         title: "NaverMapViewOptions 변경",
         description: "지도의 옵션을 변경할 수 있어요",
         page: (canScroll) => NaverMapViewOptionsExample(
-              canScroll: canScroll,
-              options: options,
-              onOptionsChanged: (changed) {
-                if (changed != options) setState(() => options = changed);
-              },
-            )),
+            canScroll: canScroll,
+            options: options,
+            onOptionsChanged: (changed) {
+              if (changed != options) setState(() => options = changed);
+            })),
     ExampleAppBottomDrawer.makeDefault(
         title: "오버레이 추가 / 제거",
         description: "마커, 경로 등의 각종 오버레이들을 추가하고 제거할 수 있어요",
-        page: (canScroll) => _overlayTestPage()),
+        isScrollPage: false,
+        page: (canScroll) => NOverlayExample(
+            isClosed: !canScroll, mapController: mapController)),
     ExampleAppBottomDrawer.makeDefault(
         title: "카메라 이동",
         description: "지도에 보이는 영역을 카메라를 이동하여 바꿀 수 있어요",
@@ -143,16 +146,6 @@ class _FNMapPageState extends State<FNMapPage> {
           MaterialPageRoute(builder: (context) => const NewWindowTestPage())),
     ),
   ];
-
-  Widget _overlayTestPage() {
-    return Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(children: const [
-          // todo
-          Text("Add Overlay1"),
-          Text("오버레이를 추가하거나 제거할 수 있어요"),
-        ]));
-  }
 
   Widget _cameraMoveTestPage() {
     return Padding(

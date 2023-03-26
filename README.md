@@ -1,12 +1,14 @@
 # flutter_naver_map 1.0 Dev Preview
 
-NaverMap SDK for Flutter (1.0-dev.8) 
+NaverMap SDK for Flutter (1.0-dev.8)
 
 플러터 3.0 이상, dart 2.18.4 이상을 사용하셔야 합니다.
 android는 5.1 이상, iOS는 11.0 이상을 지원합니다.
 
+**1.0은 0.10.x와 [호환되지 않습니다](#참고사항).**
 
 ### 필독 (iOS)
+
 1.0.0-dev.3 버전을 사용하셨거나, 이전버전(0.10)을 사용하셨던 분들은,
 iOS에서 네이버맵 구버전으로 빌드될 수 있습니다.
 
@@ -74,8 +76,8 @@ Widget build(BuildContext context) {
 
 내장 위치 추적 기능의 경우, 따로 권한을 요청하는 기능이 존재하지 않습니다.
 
-따라서, 외부 패키지([geolocator](https://pub.dev/packages/geolocator)
-, [permission_handler](https://pub.dev/packages/permission_handler) 등)를 이용하여
+따라서, 외부 패키지([permission_handler](https://pub.dev/packages/permission_handler)
+, [geolocator](https://pub.dev/packages/geolocator) 등)를 이용하여
 권한을 요청하시기 바랍니다.
 
 ## 참고사항

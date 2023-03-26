@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import '../../design/custom_widget.dart';
-import '../../design/theme.dart';
 import '../../util/location_util.dart';
 import '../../util/alert_util.dart';
 
@@ -12,7 +10,7 @@ class NaverMapViewOptionsExample extends StatelessWidget {
   final Function(NaverMapViewOptions options) onOptionsChanged;
   final bool canScroll;
 
-  NaverMapViewOptionsExample({
+  const NaverMapViewOptionsExample({
     Key? key,
     required this.options,
     required this.onOptionsChanged,
@@ -52,56 +50,44 @@ class NaverMapViewOptionsExample extends StatelessWidget {
   /// 야간 모드는 지도 유형이 navi인 경우만 가능합니다.
   bool get nightModeAvailable => options.mapType == NMapType.navi;
 
-  final refreshController = RefreshController();
-
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        child: SmartRefresher(
-      controller: refreshController,
-      onRefresh: () =>
-          Future.delayed(const Duration(milliseconds: 300)).then((value) {
-        clearOptions();
-        refreshController.refreshToIdle();
-      }),
-      header: const ClassicHeader(
-        refreshingText: "초기화가 완료되었습니다",
-        releaseText: "옵션 초기화",
-        idleText: "옵션을 모두 초기화하려면 계속해서 당겨주세요",
-      ),
+        child: ReLoader(
+      text: "옵션을 모두",
+      reload: clearOptions,
       child: CustomScrollView(
           primary: true,
           physics: canScroll
               ? const BouncingScrollPhysics()
               : const NeverScrollableScrollPhysics(),
           slivers: [
-            sliverColumn([
-              _settingItem("지도 유형",
-                  methodName: "mapType",
-                  selector: EasyDropdown(
+            SliverColumn([
+              SelectorWithTitle("지도 유형",
+                  description: ".mapType",
+                  selector: (context) => EasyDropdown(
                       items: NMapType.values,
                       value: options.mapType,
-                      onChanged: (v) => options = options.copyWith(mapType: v)),
-                  context: context),
-              _settingItem("로고 위치",
-                  methodName: "logoAlign",
-                  selector: EasyDropdown(
+                      onChanged: (v) =>
+                          options = options.copyWith(mapType: v))),
+              SelectorWithTitle("로고 위치",
+                  description: ".logoAlign",
+                  selector: (context) => EasyDropdown(
                       items: NLogoAlign.values,
                       value: options.logoAlign,
                       onChanged: (v) =>
-                          options = options.copyWith(logoAlign: v)),
-                  context: context)
+                          options = options.copyWith(logoAlign: v)))
             ]),
             sliverMultiSwitcherGrid([
               TextSwitcher(
                   title: "축척 바",
-                  methodName: "scaleBarEnable",
+                  description: ".scaleBarEnable",
                   value: options.scaleBarEnable,
                   onChanged: (v) =>
                       options = options.copyWith(scaleBarEnable: v)),
               TextSwitcher(
                   title: "내 위치 버튼",
-                  methodName: "locationButtonEnable",
+                  description: ".locationButtonEnable",
                   value: options.locationButtonEnable,
                   onChanged: (enable) {
                     void buttonEnable(bool v) =>
@@ -116,138 +102,131 @@ class NaverMapViewOptionsExample extends StatelessWidget {
               if (indoorAvailable)
                 TextSwitcher(
                     title: "실내 지도",
-                    methodName: "indoorEnable",
+                    description: ".indoorEnable",
                     value: options.indoorEnable,
                     onChanged: (v) =>
                         options = options.copyWith(indoorEnable: v)),
               if (indoorAvailable)
                 TextSwitcher(
                     title: "실내 지도 레벨 피커",
-                    methodName: "indoorLevelPickerEnable",
+                    description: ".indoorLevelPickerEnable",
                     value: options.indoorLevelPickerEnable,
                     onChanged: (v) =>
                         options = options.copyWith(indoorLevelPickerEnable: v)),
               if (liteModeAvailable)
                 TextSwitcher(
                     title: "경량 모드",
-                    methodName: "liteModeEnable",
+                    description: ".liteModeEnable",
                     value: options.liteModeEnable,
                     onChanged: (v) =>
                         options = options.copyWith(liteModeEnable: v)),
               if (nightModeAvailable)
                 TextSwitcher(
                     title: "야간 모드",
-                    methodName: "nightModeEnable",
+                    description: ".nightModeEnable",
                     value: options.nightModeEnable,
                     onChanged: (v) =>
                         options = options.copyWith(nightModeEnable: v)),
             ]),
-            sliverColumn([
+            SliverColumn([
               if (options.indoorEnable)
-                _settingItem("실내 지도 유지 반경",
-                    methodName: "indoorFocusRadius",
-                    context: context,
-                    selector: EasySlider(
+                SelectorWithTitle("실내 지도 유지 반경",
+                    description: ".indoorFocusRadius",
+                    selector: (context) => EasySlider(
                         value: options.indoorFocusRadius,
                         onChanged: (v) =>
                             options = options.copyWith(indoorFocusRadius: v))),
-              _settingItem("지도 명도",
-                  methodName: "lightness",
-                  context: context,
-                  selector: EasySlider(
+              SelectorWithTitle("지도 명도",
+                  description: ".lightness",
+                  selector: (context) => EasySlider(
                       min: -1,
                       max: 1,
                       floatingPoint: 1,
                       value: options.lightness,
                       onChanged: (v) =>
                           options = options.copyWith(lightness: v))),
-              _settingItem("건물 3D 높이",
-                  methodName: "lightness",
-                  context: context,
-                  selector: EasySlider(
+              SelectorWithTitle("건물 3D 높이",
+                  description: ".lightness",
+                  selector: (context) => EasySlider(
                       max: 1,
                       floatingPoint: 1,
                       value: options.buildingHeight,
                       onChanged: (v) =>
                           options = options.copyWith(buildingHeight: v))),
-              _settingItem("심볼 크기",
-                  methodName: "symbolScale",
-                  context: context,
-                  selector: EasySlider(
+              SelectorWithTitle("심볼 크기",
+                  description: ".symbolScale",
+                  selector: (context) => EasySlider(
                       max: 2,
                       floatingPoint: 1,
                       value: options.symbolScale,
                       onChanged: (v) =>
                           options = options.copyWith(symbolScale: v))),
-              _settingItem("심볼 원근 계수",
-                  methodName: "symbolPerspectiveRatio",
-                  context: context,
-                  selector: EasySlider(
+              SelectorWithTitle("심볼 원근 계수",
+                  description: ".symbolPerspectiveRatio",
+                  selector: (context) => EasySlider(
                       max: 1,
                       floatingPoint: 1,
                       value: options.symbolPerspectiveRatio,
                       onChanged: (v) => options =
                           options.copyWith(symbolPerspectiveRatio: v))),
             ]),
-            sliverTitle("제스처 제어", context: context),
+            const SliverTitle("제스처 제어"),
             sliverMultiSwitcherGrid([
               TextSwitcher(
                   title: "스크롤 제스처",
-                  methodName: "scrollGesturesEnable",
+                  description: ".scrollGesturesEnable",
                   value: options.scrollGesturesEnable,
                   onChanged: (v) =>
                       options = options.copyWith(scrollGesturesEnable: v)),
               TextSwitcher(
                   title: "줌 제스처",
-                  methodName: "zoomGesturesEnable",
+                  description: ".zoomGesturesEnable",
                   value: options.zoomGesturesEnable,
                   onChanged: (v) =>
                       options = options.copyWith(zoomGesturesEnable: v)),
               TextSwitcher(
                   title: "회전 제스처",
-                  methodName: "rotationGesturesEnable",
+                  description: ".rotationGesturesEnable",
                   value: options.rotationGesturesEnable,
                   onChanged: (v) =>
                       options = options.copyWith(rotationGesturesEnable: v)),
               TextSwitcher(
                   title: "기울임 제스처",
-                  methodName: "tiltGesturesEnable",
+                  description: ".tiltGesturesEnable",
                   value: options.tiltGesturesEnable,
                   onChanged: (v) =>
                       options = options.copyWith(tiltGesturesEnable: v)),
               TextSwitcher(
                   title: "멈춤 제스처",
-                  methodName: "stopGesturesEnable",
+                  description: ".stopGesturesEnable",
                   value: options.stopGesturesEnable,
                   onChanged: (v) =>
                       options = options.copyWith(stopGesturesEnable: v)),
               TextSwitcher(
                   title: "심볼 터치 소비",
-                  methodName: "consumeSymbolTapEvents",
+                  description: ".consumeSymbolTapEvents",
                   value: options.consumeSymbolTapEvents,
                   onChanged: (v) =>
                       options = options.copyWith(consumeSymbolTapEvents: v)),
               TextSwitcher(
                   title: "로고 클릭",
-                  methodName: "logoClickEnable",
+                  description: ".logoClickEnable",
                   value: options.logoClickEnable,
                   onChanged: (v) =>
                       options = options.copyWith(logoClickEnable: v)),
             ]),
-            sliverColumn([
-              _settingItem("오버레이 및 심볼\n터치 반경",
-                  methodName: "pickTolerance",
-                  context: context,
-                  selector: EasySlider(
+            SliverColumn([
+              SelectorWithTitle("오버레이 및 심볼\n터치 반경",
+                  description: ".pickTolerance",
+                  selector: (context) => EasySlider(
                       max: 8,
                       divisions: 8,
                       value: options.pickTolerance,
                       onChanged: (v) =>
                           options = options.copyWith(pickTolerance: v))),
-              _settingItem("스크롤 마찰 계수",
-                  methodName: "scrollGesturesFriction",
-                  context: context,
-                  selector: EasySlider(
+              SelectorWithTitle("스크롤 마찰 계수",
+                  description: ".scrollGesturesFriction",
+                  selector: (context) => EasySlider(
                       max: 1,
                       divisions: null,
                       floatingPoint: 3,
@@ -256,10 +235,9 @@ class NaverMapViewOptionsExample extends StatelessWidget {
                           NaverMapViewOptions.defaultScrollGesturesFriction,
                       onChanged: (v) => options =
                           options.copyWith(scrollGesturesFriction: v))),
-              _settingItem("줌 마찰 계수",
-                  methodName: "zoomGesturesFriction",
-                  context: context,
-                  selector: EasySlider(
+              SelectorWithTitle("줌 마찰 계수",
+                  description: ".zoomGesturesFriction",
+                  selector: (context) => EasySlider(
                       max: 1,
                       divisions: null,
                       floatingPoint: 3,
@@ -268,10 +246,9 @@ class NaverMapViewOptionsExample extends StatelessWidget {
                           NaverMapViewOptions.defaultZoomGesturesFriction,
                       onChanged: (v) =>
                           options = options.copyWith(zoomGesturesFriction: v))),
-              _settingItem("회전 마찰 계수",
-                  methodName: "rotationGesturesFriction",
-                  context: context,
-                  selector: EasySlider(
+              SelectorWithTitle("회전 마찰 계수",
+                  description: ".rotationGesturesFriction",
+                  selector: (context) => EasySlider(
                       max: 1,
                       divisions: null,
                       floatingPoint: 3,
@@ -281,8 +258,7 @@ class NaverMapViewOptionsExample extends StatelessWidget {
                       onChanged: (v) => options =
                           options.copyWith(rotationGesturesFriction: v))),
             ]),
-            sliverTitle("표시할 정보 레이어",
-                description: ".activeLayerGroups", context: context),
+            const SliverTitle("표시할 정보 레이어", description: ".activeLayerGroups"),
             sliverMultiSwitcherGrid([
               layerGroupTextSwitcher("건물", NLayerGroup.building),
               layerGroupTextSwitcher("교통정보", NLayerGroup.traffic),
@@ -295,62 +271,36 @@ class NaverMapViewOptionsExample extends StatelessWidget {
               layerGroupTextSwitcher("지적편집도", NLayerGroup.cadastral,
                   enable: options.mapType != NMapType.navi),
             ], small: true),
-            sliverTitle("이동 제한", context: context),
-            sliverColumn([
-              _settingItem("최소 줌 제한",
-                  methodName: "minZoom",
-                  context: context,
-                  selector: EasySlider(
+            const SliverTitle("이동 제한"),
+            SliverColumn([
+              SelectorWithTitle("최소 줌 제한",
+                  description: ".minZoom",
+                  selector: (context) => EasySlider(
                       max: 21,
                       divisions: 21,
                       value: options.minZoom,
                       onChanged: (v) =>
                           options = options.copyWith(minZoom: v))),
-              _settingItem("최대 줌 제한",
-                  methodName: "maxZoom",
-                  context: context,
-                  selector: EasySlider(
+              SelectorWithTitle("최대 줌 제한",
+                  description: ".maxZoom",
+                  selector: (context) => EasySlider(
                       max: 21,
                       divisions: 21,
                       value: options.maxZoom,
                       onChanged: (v) =>
                           options = options.copyWith(maxZoom: v))),
-              _settingItem("최대 기울임 제한",
-                  methodName: "maxTilt",
-                  context: context,
-                  selector: EasySlider(
+              SelectorWithTitle("최대 기울임 제한",
+                  description: ".maxTilt",
+                  selector: (context) => EasySlider(
                       max: 63,
                       divisions: 63,
                       value: options.maxTilt,
                       onChanged: (v) =>
                           options = options.copyWith(maxTilt: v))),
             ]),
-            SliverPadding(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).padding.bottom)),
+            const SliverBottomPadding(),
           ]),
     ));
-  }
-
-  Widget _settingItem(String title,
-      {required String methodName,
-      required EasySelectorWidget selector,
-      required BuildContext context}) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
-        child: Row(children: [
-          Expanded(
-              flex: 1,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title, style: getTextTheme(context).titleMedium),
-                    const SizedBox(height: 2),
-                    Text(".$methodName",
-                        style: getTextTheme(context).bodySmall),
-                  ])),
-          Expanded(flex: selector.expand ? 2 : 0, child: selector)
-        ]));
   }
 
   Widget sliverMultiSwitcherGrid(List<TextSwitcher> switchers,
@@ -366,10 +316,6 @@ class NaverMapViewOptionsExample extends StatelessWidget {
         ));
   }
 
-  bool layerGroupContains(NLayerGroup layer) {
-    return options.activeLayerGroups.contains(layer);
-  }
-
   void layerGroupChange(bool enable, {required NLayerGroup layer}) {
     options = options.copyWith(
         activeLayerGroups: enable
@@ -381,32 +327,14 @@ class NaverMapViewOptionsExample extends StatelessWidget {
       {bool enable = true}) {
     return TextSwitcher(
         title: title,
-        methodName: layer.name,
+        description: layer.name,
         enable: enable && options.mapType != NMapType.none,
         value: layerGroupContains(layer),
         onChanged: (enable) => layerGroupChange(enable, layer: layer));
   }
 
-  SliverPadding sliverTitle(String title,
-      {String? description, required BuildContext context}) {
-    return SliverPadding(
-        padding: const EdgeInsets.only(left: 24, top: 12),
-        sliver: SliverToBoxAdapter(
-            child: Row(
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                children: [
-              Text(title, style: getTextTheme(context).titleMedium),
-              if (description != null) const SizedBox(width: 4),
-              if (description != null)
-                Text(description, style: getTextTheme(context).bodySmall),
-            ])));
-  }
-
-  SliverToBoxAdapter sliverColumn(List<Widget> children) {
-    return SliverToBoxAdapter(
-      child: Column(children: children),
-    );
+  bool layerGroupContains(NLayerGroup layer) {
+    return options.activeLayerGroups.contains(layer);
   }
 
   void requestLocationPermission(BuildContext context,

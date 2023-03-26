@@ -12,12 +12,15 @@ class MapFunctionItem {
   final Widget Function(bool canScroll)? page;
   final MapFunctionItemOnBack? onBack;
 
+  final bool? isScrollPage;
+
   MapFunctionItem({
     required this.title,
     this.description,
     this.page,
     required this.onTap,
     this.onBack,
+    this.isScrollPage,
   });
 
   bool get needItemOnTap => onTap == null;
@@ -56,18 +59,16 @@ class MapFunctionItem {
 
   Widget getPageWidget(BuildContext context, {bool canScroll = true}) {
     assert(page != null);
-    return Material(
-        color: Colors.transparent,
-        child: Column(children: [
-          Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            IconButton(
-                onPressed: onBack,
-                padding: const EdgeInsets.all(16),
-                icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20)),
-            Text(title, style: getTextTheme(context).titleLarge),
-          ]),
-          page!(canScroll)
-        ]));
+    return Column(children: [
+      Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        IconButton(
+            onPressed: onBack,
+            padding: const EdgeInsets.all(16),
+            icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20)),
+        Text(title, style: getTextTheme(context).titleLarge),
+      ]),
+      page!(canScroll)
+    ]);
   }
 
   MapFunctionItem copyWith({
@@ -76,6 +77,7 @@ class MapFunctionItem {
     MapFunctionItemOnTap? onTap,
     Widget Function(bool canScroll)? page,
     MapFunctionItemOnBack? onBack,
+    bool? isScrollPage,
   }) {
     return MapFunctionItem(
       title: title ?? this.title,
@@ -83,6 +85,7 @@ class MapFunctionItem {
       onTap: onTap ?? this.onTap,
       page: page ?? this.page,
       onBack: onBack ?? this.onBack,
+      isScrollPage: isScrollPage ?? this.isScrollPage,
     );
   }
 }

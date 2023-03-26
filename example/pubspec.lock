@@ -90,10 +90,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_bottom_drawer
-      sha256: "71d2e0ae64004e1f19a803eef47c3f7bd7e8ad45870d6ed4b715269f3824c2ea"
+      sha256: "7e128d80fc5d8e5f5d0a1054bd39fda2f5843e2d6af7c16b90a17ea511bb5092"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.4"
+    version: "0.0.6"
   flutter_driver:
     dependency: transitive
     description: flutter
