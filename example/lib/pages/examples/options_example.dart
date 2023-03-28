@@ -146,7 +146,7 @@ class NaverMapViewOptionsExample extends StatelessWidget {
                       onChanged: (v) =>
                           options = options.copyWith(lightness: v))),
               SelectorWithTitle("건물 3D 높이",
-                  description: ".lightness",
+                  description: ".buildingHeight",
                   selector: (context) => EasySlider(
                       max: 1,
                       floatingPoint: 1,
