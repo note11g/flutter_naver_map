@@ -24,7 +24,6 @@ internal class NaverMapView(
     private val naverMapViewOptions: NaverMapViewOptions,
     private val channel: MethodChannel,
     private val overlayController: OverlayHandler,
-    private val viewId: Int,
 ) : PlatformView, Application.ActivityLifecycleCallbacks, ComponentCallbacks {
 
     private lateinit var naverMap: NaverMap
