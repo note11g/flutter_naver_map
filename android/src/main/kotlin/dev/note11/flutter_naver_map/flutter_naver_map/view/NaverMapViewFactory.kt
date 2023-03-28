@@ -32,7 +32,6 @@ internal class NaverMapViewFactory(
             naverMapViewOptions = options,
             channel = channel,
             overlayController = overlayController,
-            viewId = viewId
         )
     }
 }
