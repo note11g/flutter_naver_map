@@ -34,6 +34,7 @@ class NaverMap extends StatefulWidget {
 class _NaverMapState extends State<NaverMap> with _NaverMapControlHandler {
   late final MethodChannel methodChannel;
   late final NaverMapController controller;
+  final controllerCompleter = Completer<void>();
   late NaverMapViewOptions nowViewOptions = widget.options;
   final mapSdk = NaverMapSdk.instance;
 
@@ -41,17 +42,21 @@ class _NaverMapState extends State<NaverMap> with _NaverMapControlHandler {
   Widget build(BuildContext context) {
     assert(mapSdk._isInitialized);
 
-    final payload = widget.options.toNPayload();
-
-    if (nowViewOptions != widget.options) {
+    if (mounted && nowViewOptions != widget.options) {
       nowViewOptions = widget.options;
-      controller._updateOptions(nowViewOptions);
+
+      void updateOptionClosure([void _]) =>
+          controller._updateOptions(nowViewOptions);
+
+      controllerCompleter.isCompleted
+          ? updateOptionClosure()
+          : controllerCompleter.future.then(updateOptionClosure);
     }
 
     return _PlatformViewCreator.createPlatformView(
       viewType: NChannel.naverMapNativeView.str,
       gestureRecognizers: _createGestureRecognizers(widget.forceGesture),
-      creationParams: payload,
+      creationParams: widget.options.toNPayload(),
       onPlatformViewCreated: _onPlatformViewCreated,
       androidSdkVersion: mapSdk._androidSdkVersion,
     );
@@ -60,6 +65,7 @@ class _NaverMapState extends State<NaverMap> with _NaverMapControlHandler {
   void _onPlatformViewCreated(int id) {
     methodChannel = NChannel.naverMapNativeView.createChannel(id);
     controller = NaverMapController.createController(methodChannel, viewId: id);
+    controllerCompleter.complete();
     methodChannel.setMethodCallHandler(handle);
   }
 
