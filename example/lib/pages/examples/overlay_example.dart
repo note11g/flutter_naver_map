@@ -39,9 +39,7 @@ class _NOverlayExampleState extends State<NOverlayExample> {
   OverlayEntry? entry;
 
   void addFlutterFloatingOverlay(NPoint point) {
-    // final p;
     final screenSize = MediaQuery.of(context).size;
-    final x = (point.x) - 12;
 
     entry = OverlayEntry(builder: (context) {
       return Positioned.fill(
@@ -52,29 +50,18 @@ class _NOverlayExampleState extends State<NOverlayExample> {
               },
               child: Stack(children: [
                 Positioned(
-                    left: x,
+                    left: (point.x) - 28,
                     top: point.y,
                     child: Balloon(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        children: [
-                          Text("마커를 클릭하셨습니다."),
-                          Text("이 오버레이는 Flutter 위젯으로 생성되었습니다."),
-                        ],
-                      ),
-                      //     Material(
-                      //       borderRadius: BorderRadius.circular(8),
-                      //       color: getColorTheme(context).background,
-                      //       child: Container(
-                      //         padding: const EdgeInsets.all(8),
-                      //   child: Column(
-                      //     children: [
-                      //       Text("마커를 클릭하셨습니다."),
-                      //       Text("이 오버레이는 Flutter 위젯으로 생성되었습니다."),
-                      //     ],
-                      //   ),
-                      // ),
-                    )),
+                        size: const Size(200, 400),
+                        padding: const EdgeInsets.all(8),
+                        child: Container(
+                          // color: Colors.grey,
+                          child: Column(children: const [
+                            Text("마커를 클릭하셨습니다."),
+                            Text("이 오버레이는 Flutter 위젯으로 생성되었습니다."),
+                          ]),
+                        )))
               ])));
     });
     Overlay.of(context).insert(entry!);
@@ -89,7 +76,7 @@ class _NOverlayExampleState extends State<NOverlayExample> {
   Widget build(BuildContext context) {
     return Column(children: [
       const SimpleTitle("화면 중앙에 오버레이가 생성됩니다.",
-          description: "오버레이를 클릭하면 속성을 변경할 수도 있어요.",
+          description: "생성된 오버레이를 터치하면 속성을 변경할 수 있어요.",
           direction: Axis.vertical,
           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24)),
       SelectorWithTitle("오버레이 유형",
@@ -102,30 +89,30 @@ class _NOverlayExampleState extends State<NOverlayExample> {
               onChanged: (v) => setState(() => willCreateOverlayType = v))),
       SimpleButton(
           text: "${getOverlayKoreanName(willCreateOverlayType)} 생성",
-          margin: const EdgeInsets.fromLTRB(24, 12, 24, 8),
+          margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           action: attachOverlay),
       if (!widget.isClosed)
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-          child: Row(children: [
-            Expanded(
-              child: SimpleButton(
-                  text: "${getOverlayKoreanName(willCreateOverlayType)}만 모두 지우기",
-                  color: Colors.orange,
-                  margin: EdgeInsets.zero,
-                  action: () =>
-                      mapController.clearOverlays(type: willCreateOverlayType)),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: SimpleButton(
-                  text: "모두 지우기",
-                  color: Colors.red,
-                  margin: EdgeInsets.zero,
-                  action: () => mapController.clearOverlays()),
-            ),
-          ]),
-        ),
+            padding: const EdgeInsets.fromLTRB(24, 0, 24, 12),
+            child: Row(children: [
+              Expanded(
+                child: SimpleButton(
+                    text:
+                        "${getOverlayKoreanName(willCreateOverlayType)}만 모두 지우기",
+                    color: Colors.orange,
+                    margin: EdgeInsets.zero,
+                    action: () => mapController.clearOverlays(
+                        type: willCreateOverlayType)),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: SimpleButton(
+                    text: "모두 지우기",
+                    color: Colors.red,
+                    margin: EdgeInsets.zero,
+                    action: () => mapController.clearOverlays()),
+              )
+            ])),
       const BottomPadding(),
     ]);
   }
@@ -162,5 +149,11 @@ class _NOverlayExampleState extends State<NOverlayExample> {
       case NOverlayType.locationOverlay:
         throw Exception("locationOverlay is not supported");
     }
+  }
+
+  @override
+  void dispose() {
+    removeFlutterFloatingOverlay();
+    super.dispose();
   }
 }

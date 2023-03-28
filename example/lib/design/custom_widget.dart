@@ -433,11 +433,13 @@ class SliverBottomPadding extends StatelessWidget {
 }
 
 class Balloon extends StatelessWidget {
+  final Size? size;
   final EdgeInsets padding;
   final Widget child;
 
   const Balloon({
     Key? key,
+    this.size,
     required this.padding,
     required this.child,
   }) : super(key: key);
@@ -446,14 +448,17 @@ class Balloon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       type: MaterialType.transparency,
-      child: CustomPaint(
-        painter: BalloonPainter(
-          backgroundColor: Colors.pink,
-        ),
-        child: Container(
-          alignment: Alignment.bottomCenter,
-          padding: padding,
-          child: child,
+      child: SizedBox.fromSize(
+        size: size,
+        child: CustomPaint(
+          // size: size ?? Size.zero,
+          painter: BalloonPainter(backgroundColor: Colors.pink),
+          child: Container(
+            // color: Colors.green,
+            alignment: Alignment.bottomCenter,
+            padding: padding,
+            child: child,
+          ),
         ),
       ),
     );
@@ -467,37 +472,48 @@ class BalloonPainter extends CustomPainter {
 
   final Color backgroundColor;
 
+  static const radius = 16.0;
+  static const tailRadius = 4.0;
+  static const tailHeight = 12.0;
+  static const tailWidth = 12.0 + tailRadius;
+
   @override
   void paint(Canvas canvas, Size size) {
-    final radius = 16.0;
-    final tailHeight = 16.0;
-    final tailWidth = 12.0;
-    final tailPosition = size.width / 2;
+    const corner = Radius.circular(radius);
+    const tailCorner = Radius.circular(tailRadius);
+    const tailPosition = 28.0; // 현재는 가운데 (1/2)
+    final targetWidth = size.width;
+    final targetHeight = size.height + tailHeight;
+    const startPoint = Offset(radius, tailHeight);
+    const firstTailPoint = Offset(tailPosition - (tailWidth / 2), tailHeight);
+    const secondTailPoint = Offset(tailPosition, 0);
+    final thirdTailPoint = Offset(secondTailPoint.dx + 2, secondTailPoint.dy);
+    const fourthTailPoint = Offset(tailPosition + (tailWidth / 2), tailHeight);
+    final firstRoundEndPoint =
+        Offset(size.width, radius + tailHeight); // 오른쪽 위 라운드 끝 지점.
+    final secondRoundEndPoint = Offset(size.width - radius, targetHeight);
+    final thirdRoundEndPoint = Offset(0, targetHeight - radius);
+
     final path = Path()
-      ..moveTo(radius, tailHeight)
-      ..lineTo(tailPosition - tailWidth / 2, tailHeight)
-      ..lineTo(tailPosition, 0)
-      ..lineTo(tailPosition + tailWidth / 2, tailHeight)
-      ..lineTo(size.width - radius, tailHeight)
-      ..arcToPoint(
-        Offset(size.width, radius + tailHeight),
-        radius: Radius.circular(radius),
-      )
-      ..lineTo(size.width, size.height - radius + tailHeight)
-      ..arcToPoint(
-        Offset(size.width - radius, size.height + tailHeight),
-        radius: Radius.circular(radius),
-      )
-      ..lineTo(radius, size.height + tailHeight)
-      ..arcToPoint(
-        Offset(0, size.height - radius + tailHeight),
-        radius: Radius.circular(radius),
-      )
-      ..lineTo(0, radius + tailHeight)
-      ..arcToPoint(
-        Offset(radius, tailHeight),
-        radius: Radius.circular(radius),
-      )
+
+      /// 왼쪽 선 그리기 시작
+      ..moveTo(startPoint.dx, startPoint.dy) // 첫번째 포인트로 이동 (왼쪽 위, 라운드 직후)
+      ..lineTo(firstTailPoint.dx, firstTailPoint.dy) // 첫번째 꼬리 시작점까지 그리기
+      ..lineTo(secondTailPoint.dx, secondTailPoint.dy) // 꼬리 윗점까지 그리기
+      ..arcToPoint(thirdTailPoint, radius: tailCorner) //꼬리를 둥글게
+      ..lineTo(fourthTailPoint.dx, fourthTailPoint.dy) // 꼬리 끝점까지 그리기
+      ..lineTo(targetWidth - radius, tailHeight) // 오른쪽 위 꼭지점까지 그리기 (라운드 직전)
+      /// 오른쪽 선 그리기 시작
+      ..arcToPoint(firstRoundEndPoint, radius: corner) // 코너 그리기
+      ..lineTo(size.width, targetHeight - radius) // 오른쪽 아래 꼭지점까지 그리기 (라운드 직전)
+      /// 아래쪽 선 그리기 시작
+      ..arcToPoint(secondRoundEndPoint, radius: corner) // 코너 그리기
+      ..lineTo(radius, targetHeight) // 왼쪽 아래 꼭지점까지 그리기 (라운드 직전)
+      /// 왼쪽 선 그리기 시작
+      ..arcToPoint(thirdRoundEndPoint, radius: corner) // 코너 그리기
+      ..lineTo(0, radius + tailHeight) // 왼쪽 위 꼭지점까지 그리기 (라운드 직전)
+      /// 선 닫기
+      ..arcToPoint(startPoint, radius: corner)
       ..close();
 
     canvas.drawPath(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:flutter_naver_map_example/design/custom_widget.dart';
 import 'package:flutter_naver_map_example/pages/examples/overlay_example.dart';
 
 import 'pages/bottom_drawer.dart';
@@ -151,9 +152,11 @@ class _FNMapPageState extends State<FNMapPage> {
     return Padding(
         padding: const EdgeInsets.all(24),
         child: Column(children: const [
-          // todo
-          Text("_cameraMoveTestPage"),
-          Text("카메라 이동"),
+          //
+          // // todo
+          // Text("_cameraMoveTestPage"),
+          // Text("카메라 이동"),
+          //
         ]));
   }
 
