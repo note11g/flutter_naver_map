@@ -1,15 +1,12 @@
-name: Deploy to GitHub Pages
+name: Publish Docs
 
 on:
   push:
     branches:
-      - dev_preview
-    paths:
-      - /doc/**
+      - docs
 
 jobs:
-  deploy:
-    name: Deploy to GitHub Pages
+  publishing:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,11 +16,14 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install --frozen-lockfile
+        run: npm ci
       - name: Build website
-        run: npm build
+        run: npm run build
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com

@@ -34,7 +34,8 @@ class _PlatformViewCreator {
           const autoView = PlatformViewsService.initAndroidView;
 
           // android 10 (API 29) or higher, use Hybrid Composition.
-          // else, use Auto Detected Composition. (99% use Virtual Display Composition)
+          // else, use Auto Detected Composition. (under api 29, using Virtual Display Composition)
+          // https://api.flutter.dev/flutter/services/SurfaceAndroidViewController-class.html
           final usingView = androidSdkVersion! >= 29 ? hybridView : autoView;
 
           final view = usingView.call(
