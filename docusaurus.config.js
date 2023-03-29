@@ -15,6 +15,7 @@ const config = {
 
     organizationName: 'note11g',
     projectName: 'flutter_naver_map',
+    deploymentBranch: 'gh-pages',
 
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
