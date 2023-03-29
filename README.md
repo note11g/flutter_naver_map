@@ -1,6 +1,6 @@
 # flutter_naver_map 1.0 Dev Preview
 
-NaverMap SDK for Flutter (1.0-dev.8) 
+NaverMap SDK for Flutter (1.0-dev.9) 
 
 플러터 3.0 이상, dart 2.18.4 이상을 사용하셔야 합니다.
 android는 5.1 이상, iOS는 11.0 이상을 지원합니다.
@@ -25,8 +25,28 @@ Naver Cloud Platform 에서 앱을 등록하고, Android / iOS 플랫폼을 등�
 
 ```yaml
 dependencies:
-  flutter_naver_map: ^1.0.0-dev.8
+  flutter_naver_map: ^1.0.0-dev.9
 ```
+
+### Android
+
+Android에서는, 해당 [이슈](https://github.com/note11g/flutter_naver_map/issues/56)로 인해,
+
+`[프로젝트 폴더]/android/app/main/.../MainActivity.kt`에서 다음과 같이 코드를 추가해주세요.
+
+```kotlin
+import android.os.Bundle
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        intent.putExtra("background_mode", "transparent")
+        super.onCreate(savedInstanceState)
+    }
+}
+```
+
+### iOS
 
 iOS에서는, 대용량 파일을 받기 위해 [git-lfs](https://git-lfs.github.com/) 설치가 필요합니다.
 
