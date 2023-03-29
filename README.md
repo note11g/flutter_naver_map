@@ -1,6 +1,6 @@
 # flutter_naver_map 1.0 Dev Preview
 
-NaverMap SDK for Flutter (1.0-dev.9) 
+NaverMap SDK for Flutter (1.0-dev.9)
 
 플러터 3.0 이상, dart 2.18.4 이상을 사용하셔야 합니다.
 android는 5.1 이상, iOS는 11.0 이상을 지원합니다.
