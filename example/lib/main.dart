@@ -25,27 +25,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        // home: const FNMapPage(),
-        home: const StartPage(),
+        home: const FNMapPage(),
         theme: ExampleAppTheme.lightThemeData,
         darkTheme: ExampleAppTheme.darkThemeData);
   }
 }
-
-class StartPage extends StatelessWidget {
-  const StartPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-            child: ElevatedButton(
-                onPressed: () => Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => const FNMapPage())),
-                child: const Text("지도 보기"))));
-  }
-}
-
 
 class FNMapPage extends StatefulWidget {
   const FNMapPage({Key? key}) : super(key: key);
