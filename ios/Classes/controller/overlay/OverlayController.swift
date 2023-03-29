@@ -49,7 +49,7 @@ internal class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, C
             return
         }
         let overlay = getOverlay(info: info)
-        if let overlay {
+        if let overlay = overlay {
             detachOverlay(overlay)
         }
     }

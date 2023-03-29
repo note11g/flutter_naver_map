@@ -89,7 +89,7 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
             self!.naverMap.takeSnapshot(withShowControls: showControls) { [weak self] uiImage in
                 do {
                     let path = try self?.saveSnapshot(uiImage, compressQuality: compressQuality)
-                    if let path {
+                    if let path = path {
                         onSuccess(path)
                     }
                 } catch {
@@ -135,7 +135,7 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     }
 
     func clearOverlays(type: NOverlayType?, onSuccess: @escaping (Any?) -> ()) {
-        if let type {
+        if let type = type {
             overlayController.clearOverlays(type: type)
         } else {
             overlayController.clearOverlays()

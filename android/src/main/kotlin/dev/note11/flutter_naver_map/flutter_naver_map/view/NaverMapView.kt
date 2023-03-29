@@ -2,40 +2,50 @@ package dev.note11.flutter_naver_map.flutter_naver_map.view
 
 import android.app.Activity
 import android.app.Application
-import android.content.Context
+import android.content.ComponentCallbacks
+import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
-import com.naver.maps.map.util.FusedLocationSource
 import dev.note11.flutter_naver_map.flutter_naver_map.R
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapControlSender
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapController
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
 import dev.note11.flutter_naver_map.flutter_naver_map.util.NLocationSource
-import io.flutter.embedding.android.FlutterActivity
-import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
 
-
 internal class NaverMapView(
-    context: Context,
     private val activity: Activity,
     private val naverMapViewOptions: NaverMapViewOptions,
     private val channel: MethodChannel,
     private val overlayController: OverlayHandler,
-) : PlatformView, Application.ActivityLifecycleCallbacks {
+) : PlatformView, Application.ActivityLifecycleCallbacks, ComponentCallbacks {
 
     private lateinit var naverMap: NaverMap
     private lateinit var naverMapControlSender: NaverMapControlSender
-    private val mapView = MapView(context, naverMapViewOptions.naverMapOptions).apply {
+    private val mapView = MapView(activity, naverMapViewOptions.naverMapOptions).apply {
+        setTempMethodCallHandler()
         getMapAsync { naverMap ->
             this@NaverMapView.naverMap = naverMap
             onMapReady()
+        }
+    }
+    private var isListenerRegistered = false
+    private var rawNaverMapOptionTempCache: Any? = null
+
+    init {
+        setActivityThemeAppCompat()
+        registerLifecycleCallback()
+    }
+
+    private fun setTempMethodCallHandler() {
+        channel.setMethodCallHandler { call, _ ->
+            if (call.method == "updateOptions") rawNaverMapOptionTempCache = call.arguments
         }
     }
 
@@ -51,7 +61,9 @@ internal class NaverMapView(
     private fun initializeMapController() {
         naverMapControlSender = NaverMapController(
             naverMap, channel, activity.applicationContext, overlayController
-        )
+        ).apply {
+            rawNaverMapOptionTempCache?.let { updateOptions(it.asMap()) {} }
+        }
     }
 
     private fun setLocationSource() {
@@ -59,6 +71,7 @@ internal class NaverMapView(
     }
 
     private fun setMapTapListener() {
+        isListenerRegistered = true
         naverMap.run {
             setOnMapClickListener { pointFPx, latLng ->
                 naverMapControlSender.onMapTapped(NPoint.fromPointFWithPx(pointFPx), latLng)
@@ -73,15 +86,23 @@ internal class NaverMapView(
         }
     }
 
-    override fun getView(): View = mapView
-
-    init {
-        setActivityThemeAppCompat()
-        registerLifecycleCallback()
+    private fun removeMapTapListener() {
+        if (isListenerRegistered) {
+            naverMap.run {
+                onMapClickListener = null
+                onSymbolClickListener = null
+                removeOnCameraChangeListener(naverMapControlSender::onCameraChange)
+                removeOnCameraIdleListener(naverMapControlSender::onCameraIdle)
+                removeOnIndoorSelectionChangeListener(naverMapControlSender::onSelectedIndoorChanged)
+            }
+        }
     }
+
+    override fun getView(): View = mapView
 
     override fun dispose() {
         unRegisterLifecycleCallback()
+        removeMapTapListener()
 
         mapView.run {
             onPause()
@@ -99,38 +120,26 @@ internal class NaverMapView(
     }
 
     private fun registerLifecycleCallback() {
+        mapView.onSaveInstanceState(Bundle())
+        activity.registerComponentCallbacks(this)
         activity.application.registerActivityLifecycleCallbacks(this)
     }
 
     private fun unRegisterLifecycleCallback() {
+        activity.unregisterComponentCallbacks(this)
         activity.application.unregisterActivityLifecycleCallbacks(this)
     }
 
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        if (activity != this.activity) return
+    /** 실행되지 않음 */
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
 
-        mapView.onCreate(savedInstanceState)
-    }
-
-    override fun onActivityStarted(activity: Activity) {
-        if (activity != this.activity) return
-
-        mapView.onStart()
-    }
+    override fun onActivityStarted(activity: Activity) = Unit
 
     override fun onActivityResumed(activity: Activity) {
         if (activity != this.activity) return
 
         reloadMap()
         mapView.onResume()
-    }
-
-    private fun reloadMap() {
-        if (this::naverMap.isInitialized) {
-            val nowMapType = naverMap.mapType
-            naverMap.mapType = NaverMap.MapType.None
-            naverMap.mapType = nowMapType
-        }
     }
 
     override fun onActivityPaused(activity: Activity) {
@@ -156,5 +165,19 @@ internal class NaverMapView(
 
         mapView.onDestroy()
         unRegisterLifecycleCallback()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {}
+
+    override fun onLowMemory() {
+        mapView.onLowMemory()
+    }
+
+    private fun reloadMap() {
+        if (this::naverMap.isInitialized) {
+            val nowMapType = naverMap.mapType
+            naverMap.mapType = NaverMap.MapType.None
+            naverMap.mapType = nowMapType
+        }
     }
 }

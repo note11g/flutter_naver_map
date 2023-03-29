@@ -11,7 +11,6 @@ import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_cust
 import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NLocale
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NLayerGroups
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
-import dev.note11.flutter_naver_map.flutter_naver_map.util.ValueUtil.orDefault
 
 class NaverMapApplierImpl(
     private val naverMap: NaverMap,
@@ -92,17 +91,17 @@ class NaverMapApplierImpl(
     }
 
     override fun setScrollGesturesFriction(rawFriction: Any) {
-        val friction = rawFriction.asFloat().orDefault(0.088f)
+        val friction = rawFriction.asFloat()
         naverMap.uiSettings.scrollGesturesFriction = friction
     }
 
     override fun setZoomGesturesFriction(rawFriction: Any) {
-        val friction = rawFriction.asFloat().orDefault(0.12375f)
+        val friction = rawFriction.asFloat()
         naverMap.uiSettings.zoomGesturesFriction = friction
     }
 
     override fun setRotationGesturesFriction(rawFriction: Any) {
-        val friction = rawFriction.asFloat().orDefault(0.19333f)
+        val friction = rawFriction.asFloat()
         naverMap.uiSettings.rotateGesturesFriction = friction
     }
 

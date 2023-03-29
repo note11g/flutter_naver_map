@@ -24,7 +24,7 @@ internal class SdkInitializer: NSObject, NMFAuthManagerDelegate {
         if setAuthFailedListener {
             setOnAuthFailedListener()
         }
-        if let clientId {
+        if let clientId = clientId {
             initializeMapSdk(clientId: clientId, isGov: isGov)
         }
         onSuccess(nil)
@@ -44,7 +44,7 @@ internal class SdkInitializer: NSObject, NMFAuthManagerDelegate {
     }
 
     func authorized(_ state: NMFAuthState, error: Error?) {
-        if let error {
+        if let error = error {
             channel.invokeMethod("onAuthFailed", arguments: [
                 "code": String(error._code),
                 "message": error.localizedDescription

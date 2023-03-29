@@ -4,9 +4,9 @@ enum NCameraAnimation with NMessageableWithEnum { easing, fly, linear, none }
 
 enum NMapType with NMessageableWithEnum {
   basic,
-  hybrid,
   navi,
   satellite,
+  hybrid,
   terrain,
   none
 }
