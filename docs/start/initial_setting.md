@@ -13,7 +13,27 @@ dependencies:
 
 ---
 
-## 2. iOS 설정
+## 2. 플랫폼별 설정
+
+### Android
+
+Android에서는, 해당 [이슈](https://github.com/note11g/flutter_naver_map/issues/56)로 인해,
+
+`[프로젝트 폴더]/android/app/main/.../MainActivity.kt`에서 다음과 같이 코드를 추가해주셔야 합니다.
+
+```kotlin
+import android.os.Bundle
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        intent.putExtra("background_mode", "transparent")
+        super.onCreate(savedInstanceState)
+    }
+}
+```
+
+### iOS
 
 iOS에서는, 대용량 파일을 받기 위해 [git-lfs](https://git-lfs.github.com/) 설치가 필요합니다.
 
