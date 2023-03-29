@@ -1,7 +1,7 @@
 part of flutter_naver_map;
 
 abstract class NaverMapController extends _NaverMapControlSender {
-  static NaverMapController createController(MethodChannel controllerChannel,
+  static NaverMapController _createController(MethodChannel controllerChannel,
       {required int viewId}) {
     final overlayController = _NOverlayControllerImpl(
         NChannel.overlayChannelName.createChannel(viewId));

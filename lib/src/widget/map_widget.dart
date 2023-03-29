@@ -64,7 +64,7 @@ class _NaverMapState extends State<NaverMap> with _NaverMapControlHandler {
 
   void _onPlatformViewCreated(int id) {
     methodChannel = NChannel.naverMapNativeView.createChannel(id);
-    controller = NaverMapController.createController(methodChannel, viewId: id);
+    controller = NaverMapController._createController(methodChannel, viewId: id);
     controllerCompleter.complete();
     methodChannel.setMethodCallHandler(handle);
   }
