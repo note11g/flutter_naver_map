@@ -22,8 +22,13 @@ export default function Home(): JSX.Element {
             <>
                 <main>
                     <div className="container custom-container">
+                        <h2>문서는 현재 작업중입니다.</h2>
+                        <p>아직 작성되지 않은 부분이 있거나, 최신 버전과 맞지 않는 부분이 있을 수 있으니 유의 바랍니다.</p>
+                    </div>
+                    <hr/>
+                    <div className="container custom-container">
                         <h1>시작하기</h1>
-                        <p>초기 설정은 어떻게 해야할까요? 간단한 시작 가이드와 영상 시작 가이드가 준비되어 있어요!</p>
+                        <p>초기 설정은 어떻게 해야할까요?<br/>간단한 시작 가이드와 영상 시작 가이드가 준비되어 있어요!</p>
                         <div className={styles.buttons}>
                             <Link className="button button--secondary" to="start">
                                 간단 시작 가이드
