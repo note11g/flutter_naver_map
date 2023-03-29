@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 
-// 통합 테스트를 위한 main 입니다.
-
 @visibleForTesting
 Future<void> mainWithTest(int testId) async {
   print("---------------- NEW TEST : $testId ----------------");
