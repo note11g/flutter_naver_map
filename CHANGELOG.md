@@ -1,3 +1,8 @@
+## 1.0.0-dev.10
+- fix bugs ([#69](https://github.com/note11g/flutter_naver_map/issues/69))
+- internal refactoring (code/struct improvement)
+- add [docs](https://note11.dev/flutter_naver_map/)
+
 ## 1.0.0-dev.9
 - fix bugs ([#51](https://github.com/note11g/flutter_naver_map/issues/51), [#53](https://github.com/note11g/flutter_naver_map/issues/53), [#54](https://github.com/note11g/flutter_naver_map/issues/54), [#55](https://github.com/note11g/flutter_naver_map/issues/55), [#60](https://github.com/note11g/flutter_naver_map/issues/60))
 - add `NaverMapViewOptions.copyWith`
