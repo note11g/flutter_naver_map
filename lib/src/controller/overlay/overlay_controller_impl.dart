@@ -1,16 +1,17 @@
 part of flutter_naver_map;
 
-class _NOverlayControllerImpl extends _NOverlayController {
+class _NOverlayControllerImpl extends _NOverlayController with NChannelWrapper {
   final Map<NOverlayInfo, void Function(String)> overlayFunctionMap = {};
 
   @override
-  final MethodChannel channel;
+  late final MethodChannel channel;
 
   NOverlayInfo get _locationOverlayInfo =>
       NLocationOverlay._locationOverlayInfo;
 
-  _NOverlayControllerImpl(this.channel) {
-    channel.setMethodCallHandler(_handleMethodCall);
+  _NOverlayControllerImpl({required int viewId}) {
+    createChannel(NChannel.overlayChannelName,
+        id: viewId, handler: _handleMethodCall);
   }
 
   Future<void> _handleMethodCall(MethodCall call) async {
@@ -32,7 +33,7 @@ class _NOverlayControllerImpl extends _NOverlayController {
   }
 
   @override
-  void disposeWithInfo(NOverlayInfo info) {
+  void deleteWithInfo(NOverlayInfo info) {
     overlayFunctionMap.remove(info);
   }
 

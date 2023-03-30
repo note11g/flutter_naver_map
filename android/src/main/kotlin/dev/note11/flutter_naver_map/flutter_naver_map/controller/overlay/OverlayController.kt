@@ -1,7 +1,6 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay
 
 import android.content.Context
-import android.util.Log
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.*
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.handler.*
@@ -33,12 +32,18 @@ import io.flutter.plugin.common.MethodChannel
 internal class OverlayController(
     private val channel: MethodChannel,
     private val context: Context,
-) : LocationOverlayHandler, MarkerHandler, InfoWindowHandler, CircleOverlayHandler,
+) : OverlaySender, LocationOverlayHandler, MarkerHandler, InfoWindowHandler, CircleOverlayHandler,
     GroundOverlayHandler, PolygonOverlayHandler, PolylineOverlayHandler, PathOverlayHandler,
     MultipartPathOverlayHandler, ArrowheadPathOverlayHandler {
     /* ----- channel ----- */
     init {
         channel.setMethodCallHandler(::handler)
+    }
+
+    /* ----- sender ----- */
+    override fun onOverlayTapped(info: NOverlayInfo) {
+        val query = NOverlayQuery(info, methodName = OverlayHandler.onTapName).query
+        channel.invokeMethod(query, null)
     }
 
     /* ----- overlay storage ----- */
@@ -48,9 +53,8 @@ internal class OverlayController(
     override fun saveOverlay(overlay: Overlay, info: NOverlayInfo) {
         info.saveAtOverlay(overlay)
         detachOverlay(info)
-        val query = NOverlayQuery(info, methodName = OverlayHandler.onTapName).query
         overlay.setOnClickListener {
-            channel.invokeMethod(query, null)
+            onOverlayTapped(info)
             return@setOnClickListener true
         }
         overlays[info] = overlay

@@ -1,12 +1,18 @@
 import NMapsMap
 
-internal class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, CircleOverlayHandler, GroundOverlayHandler, InfoWindowHandler, LocationOverlayHandler, MarkerHandler, MultipartPathOverlayHandler, PathOverlayHandler, PolygonOverlayHandler, PolylineOverlayHandler {
+internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOverlayHandler, CircleOverlayHandler, GroundOverlayHandler, InfoWindowHandler, LocationOverlayHandler, MarkerHandler, MultipartPathOverlayHandler, PathOverlayHandler, PolygonOverlayHandler, PolylineOverlayHandler {
 
     private let channel: FlutterMethodChannel
 
     init(channel: FlutterMethodChannel) {
         self.channel = channel
         channel.setMethodCallHandler(handler)
+    }
+    
+    /* ----- sender ----- */
+    func onOverlayTapped(info: NOverlayInfo) {
+        let query = NOverlayQuery(info: info, methodName: onTapName).query
+        channel.invokeMethod(query, arguments: nil)
     }
 
     /* ----- overlay storage ----- */
@@ -16,9 +22,8 @@ internal class OverlayController: OverlayHandler, ArrowheadPathOverlayHandler, C
     func saveOverlay(overlay: NMFOverlay, info: NOverlayInfo) {
         info.saveAtOverlay(overlay)
         detachOverlay(info: info)
-        let query = NOverlayQuery(info: info, methodName: onTapName).query
         overlay.touchHandler = { [weak self] overlay in
-            self?.channel.invokeMethod(query, arguments: nil)
+            self?.onOverlayTapped(info: info)
             return true
         }
         overlays[info] = overlay
