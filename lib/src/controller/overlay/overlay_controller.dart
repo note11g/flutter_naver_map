@@ -5,7 +5,7 @@ abstract class _NOverlayController with NChannelWrapper {
 
   void add(NOverlayInfo info, NOverlay overlay);
 
-  void disposeWithInfo(NOverlayInfo info);
+  void deleteWithInfo(NOverlayInfo info);
 
   void clear(NOverlayType? type);
 }

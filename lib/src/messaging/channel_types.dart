@@ -8,10 +8,9 @@ enum NChannel {
 
   const NChannel(this.str);
 
-  static const separateString = "#";
+  static const _separateString = "#";
 
-  MethodChannel createChannel(int id) =>
-      MethodChannel("$str$separateString$id");
+  MethodChannel _create(int id) => MethodChannel("$str$_separateString$id");
 
   @override
   String toString() => name;

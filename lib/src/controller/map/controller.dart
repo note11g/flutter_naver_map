@@ -1,12 +1,13 @@
 part of flutter_naver_map;
 
 abstract class NaverMapController extends _NaverMapControlSender {
-  static NaverMapController createController(MethodChannel controllerChannel,
+  static NaverMapController _createController(MethodChannel controllerChannel,
       {required int viewId}) {
-    final overlayController = _NOverlayControllerImpl(
-        NChannel.overlayChannelName.createChannel(viewId));
+    final overlayController = _NOverlayControllerImpl(viewId: viewId);
     return _NaverMapControllerImpl(controllerChannel, overlayController);
   }
+
+  void dispose();
 }
 
 class _NaverMapControllerImpl
@@ -137,7 +138,7 @@ class _NaverMapControllerImpl
   Future<void> deleteOverlay(NOverlayInfo info) async {
     assert(info.type != NOverlayType.locationOverlay);
     await invokeMethod("deleteOverlay", info);
-    overlayController.disposeWithInfo(info);
+    overlayController.deleteWithInfo(info);
   }
 
   @override
@@ -161,4 +162,9 @@ class _NaverMapControllerImpl
 
   @override
   String toString() => "NaverMapController(channel: ${channel.name})";
+
+  @override
+  void dispose() {
+    overlayController.disposeChannel();
+  }
 }

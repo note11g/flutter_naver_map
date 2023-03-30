@@ -94,7 +94,7 @@ class NInfoWindow extends NAddableOverlay<NInfoWindow> {
 
   void close() {
     _runAsync(_closeName);
-    _overlayController!.disposeWithInfo(info);
+    _overlayController!.deleteWithInfo(info);
   }
 
   @override

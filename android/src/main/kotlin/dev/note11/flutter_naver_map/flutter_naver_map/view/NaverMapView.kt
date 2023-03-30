@@ -148,11 +148,7 @@ internal class NaverMapView(
         mapView.onPause()
     }
 
-    override fun onActivityStopped(activity: Activity) {
-        if (activity != this.activity) return
-
-        mapView.onStop()
-    }
+    override fun onActivityStopped(activity: Activity) = Unit
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
         if (activity != this.activity) return

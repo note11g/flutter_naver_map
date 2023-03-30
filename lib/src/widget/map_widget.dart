@@ -31,8 +31,10 @@ class NaverMap extends StatefulWidget {
   State<NaverMap> createState() => _NaverMapState();
 }
 
-class _NaverMapState extends State<NaverMap> with _NaverMapControlHandler {
-  late final MethodChannel methodChannel;
+class _NaverMapState extends State<NaverMap>
+    with _NaverMapControlHandler, NChannelWrapper {
+  @override
+  late final MethodChannel channel;
   late final NaverMapController controller;
   final controllerCompleter = Completer<void>();
   late NaverMapViewOptions nowViewOptions = widget.options;
@@ -63,10 +65,9 @@ class _NaverMapState extends State<NaverMap> with _NaverMapControlHandler {
   }
 
   void _onPlatformViewCreated(int id) {
-    methodChannel = NChannel.naverMapNativeView.createChannel(id);
-    controller = NaverMapController.createController(methodChannel, viewId: id);
+    createChannel(NChannel.naverMapNativeView, id: id, handler: handle);
+    controller = NaverMapController._createController(channel, viewId: id);
     controllerCompleter.complete();
-    methodChannel.setMethodCallHandler(handle);
   }
 
   Set<Factory<OneSequenceGestureRecognizer>> _createGestureRecognizers(
@@ -104,4 +105,11 @@ class _NaverMapState extends State<NaverMap> with _NaverMapControlHandler {
 
   @override
   void onCameraIdle() => widget.onCameraIdle?.call();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    disposeChannel();
+    super.dispose();
+  }
 }
