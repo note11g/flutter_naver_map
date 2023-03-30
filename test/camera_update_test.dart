@@ -29,7 +29,6 @@ void main() {
       final cu = NCameraUpdate.withParams(tilt: 1, zoom: 1, zoomBy: 1);
       expect(cu, 1);
     } catch (e) {
-      print(e.runtimeType);
       expect(e.runtimeType.toString(), "_AssertionError");
     }
   });
