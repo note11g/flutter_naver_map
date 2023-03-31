@@ -6,7 +6,7 @@ mixin NChannelWrapper {
   // optional implementation
   set channel(MethodChannel channel) {}
 
-  void createChannel(
+  void initChannel(
     NChannel channelType, {
     required int id,
     Future<dynamic> Function(MethodCall)? handler,

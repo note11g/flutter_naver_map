@@ -10,7 +10,7 @@ class _NOverlayControllerImpl extends _NOverlayController with NChannelWrapper {
       NLocationOverlay._locationOverlayInfo;
 
   _NOverlayControllerImpl({required int viewId}) {
-    createChannel(NChannel.overlayChannelName,
+    initChannel(NChannel.overlayChannelName,
         id: viewId, handler: _handleMethodCall);
   }
 
