@@ -1,12 +1,16 @@
 part of flutter_naver_map;
 
-abstract class NOverlay<O extends NOverlay<void>> {
+abstract class NOverlay<O extends NOverlay<void>>
+    with _NOverlaySender, _NOverlayHandler<O> {
   NOverlay(this.info);
 
+  @override
   final NOverlayInfo info;
 
+  @override
   bool get _isAdded => _overlayController != null;
 
+  @override
   _NOverlayController? _overlayController;
 
   void _addedOnMap(_NOverlayController controller) {
@@ -14,30 +18,8 @@ abstract class NOverlay<O extends NOverlay<void>> {
     _overlayController = controller;
   }
 
-  Future<dynamic> _invokeMethod(String method, [dynamic arguments]) async {
-    if (!_isAdded) {
-      throw NOverlayNotAddedOnMapException("Overlay Not added on Map!");
-    }
-
-    final query = _NOverlayQuery(info, methodName: method).query;
-
-    final messageable = arguments != null
-        ? NMessageable.forOnce(NPayload.convertToMessageable(arguments!))
-        : null;
-    return await _overlayController!.invokeMethod(query, messageable);
-  }
-
-  void _set(String name, dynamic value) async {
-    if (!_isAdded) return;
-    await _invokeMethod(name, value);
-  }
-
-  Future<T> _getAsyncWithCast<T>(String name, T Function(dynamic) cast) {
-    return _invokeMethod("get$name").then((value) => cast(value));
-  }
-
-  Future<T> _runAsync<T>(String method, [dynamic arguments]) async =>
-      await _invokeMethod(method, arguments);
+  @override
+  Function(O overlay)? _onTapListener;
 
   /*
     --- methods ---
@@ -127,19 +109,6 @@ abstract class NOverlay<O extends NOverlay<void>> {
     _isMaxZoomInclusive = m[_isMaxZoomInclusiveName]!;
   }
 
-  /* ----- Handle ----- */
-
-  void _handle(String methodName) {
-    if (methodName == _onTapName) _onTapListener?.call(this as O);
-  }
-
-  Function(O overlay)? _onTapListener;
-
-  void setOnTapListener(Function(O overlay) listener) =>
-      _onTapListener = listener;
-
-  void removeOnTapListener() => _onTapListener = null;
-
   /* ----- Override ----- */
 
   @override
@@ -167,5 +136,4 @@ abstract class NOverlay<O extends NOverlay<void>> {
   static const _isMinZoomInclusiveName = "isMinZoomInclusive";
   static const _isMaxZoomInclusiveName = "isMaxZoomInclusive";
   static const _performClickName = "performClick";
-  static const _onTapName = "onTap";
 }

@@ -65,7 +65,7 @@ class _NaverMapState extends State<NaverMap>
   }
 
   void _onPlatformViewCreated(int id) {
-    createChannel(NChannel.naverMapNativeView, id: id, handler: handle);
+    initChannel(NChannel.naverMapNativeView, id: id, handler: handle);
     controller = NaverMapController._createController(channel, viewId: id);
     controllerCompleter.complete();
   }
