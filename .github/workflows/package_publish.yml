@@ -3,7 +3,7 @@ name: Publish to Pub.dev
 on:
   pull_request:
     branches:
-      - dev_preview
+      - main
     types:
       - closed
 
