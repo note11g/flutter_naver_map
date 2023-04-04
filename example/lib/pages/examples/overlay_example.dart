@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:flutter_naver_map_example/design/theme.dart';
 
 import '../../design/custom_widget.dart';
 
@@ -29,35 +30,43 @@ class _NOverlayExampleState extends State<NOverlayExample> {
     final cameraPosition = await mapController.getCameraPosition();
     final overlay = NOverlayMakerUtil.makeOverlay(
         type: willCreateOverlayType, cameraPosition: cameraPosition);
+    overlay.setOnTapListener((overlay) {
+      final latLng = cameraPosition.target;
+      mapController.latLngToScreenLocation(latLng).then(
+          (point) => addFlutterFloatingOverlay(point: point, overlay: overlay));
+    });
     mapController.addOverlay(overlay);
   }
 
   OverlayEntry? entry;
 
-  void addFlutterFloatingOverlay(NPoint point) {
-    final screenSize = MediaQuery.of(context).size;
-
+  void addFlutterFloatingOverlay({
+    required NOverlay<dynamic> overlay,
+    required NPoint point,
+  }) {
     entry = OverlayEntry(builder: (context) {
+      final xPosition = (point.x) - 28;
       return Positioned.fill(
           child: GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: () {
-                removeFlutterFloatingOverlay();
-              },
+              onTap: () => removeFlutterFloatingOverlay(),
               child: Stack(children: [
                 Positioned(
-                    left: (point.x) - 28,
-                    top: point.y,
+                    left: xPosition < 0 ? 0 : xPosition,
+                    top: point.y < 0 ? 0 : point.y,
                     child: Balloon(
-                        size: const Size(200, 400),
+                        size: const Size(200, 200),
                         padding: const EdgeInsets.all(8),
-                        child: Container(
-                          // color: Colors.grey,
-                          child: Column(children: const [
-                            Text("마커를 클릭하셨습니다."),
-                            Text("이 오버레이는 Flutter 위젯으로 생성되었습니다."),
-                          ]),
-                        )))
+                        backgroundColor: getColorTheme(context).background,
+                        child: ListView(children: [
+                          Text(overlay.toString()),
+                          SimpleButton(
+                              text: "지우기",
+                              action: () {
+                                mapController.deleteOverlay(overlay.info);
+                                removeFlutterFloatingOverlay();
+                              })
+                        ])))
               ])));
     });
     Overlay.of(context).insert(entry!);
@@ -111,8 +120,6 @@ class _NOverlayExampleState extends State<NOverlayExample> {
       const BottomPadding(),
     ]);
   }
-
-  List<Widget> markerOptions() => [];
 
   @override
   void dispose() {
@@ -168,7 +175,7 @@ class NOverlayMakerUtil {
     ];
     final secondPathCoords = [
       pathCoords.last,
-      pathCoords.last.offsetByMeter(northMeter: -100, eastMeter: 100),
+      pathCoords.last.offsetByMeter(northMeter: -100, eastMeter: -100),
       pathCoords.last.offsetByMeter(northMeter: -200),
     ];
 
