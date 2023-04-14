@@ -11,8 +11,8 @@ class NOverlayInfo with NMessageableWithMap implements NPickableInfo {
 
   /* ----- NMessageable ----- */
 
-  factory NOverlayInfo._fromMessageable(dynamic m) => NOverlayInfo(
-      type: NOverlayType._fromMessageable(m["type"]), id: m["id"]);
+  factory NOverlayInfo._fromMessageable(dynamic m) =>
+      NOverlayInfo(type: NOverlayType._fromMessageable(m["type"]), id: m["id"]);
 
   @override
   NPayload toNPayload() => NPayload.make({"type": type, "id": id});
