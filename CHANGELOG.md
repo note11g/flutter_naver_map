@@ -1,3 +1,7 @@
+## 1.0.1
+- fix bug ([#73](https://github.com/note11g/flutter_naver_map/issues/73))
+- NOverlayInfo Constructor is now public
+
 ## 1.0.0
 - stable release
 

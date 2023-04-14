@@ -34,7 +34,7 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
         super(_locationOverlayInfo);
 
   static const NOverlayInfo _locationOverlayInfo =
-      NOverlayInfo._(type: NOverlayType.locationOverlay, id: "L");
+      NOverlayInfo(type: NOverlayType.locationOverlay, id: "L");
 
   /* ----- Methods ----- */
 

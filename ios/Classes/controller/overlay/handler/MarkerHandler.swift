@@ -17,7 +17,7 @@ internal protocol MarkerHandler: OverlayHandler {
 
     func setAnchor(_ marker: NMFMarker, rawNPoint: Any)
 
-    func setSize(_ marker: NMFMarker, rawNPoint: Any)
+    func setSize(_ marker: NMFMarker, rawSize: Any)
 
     func setCaption(_ marker: NMFMarker, rawCaption: Any)
 
@@ -61,7 +61,7 @@ internal extension MarkerHandler {
         case NMarker.alphaName: setAlpha(marker, rawAlpha: args!)
         case NMarker.angleName: setAngle(marker, rawAngle: args!)
         case NMarker.anchorName: setAnchor(marker, rawNPoint: args!)
-        case NMarker.sizeName: setSize(marker, rawNPoint: args!)
+        case NMarker.sizeName: setSize(marker, rawSize: args!)
         case NMarker.captionName: setCaption(marker, rawCaption: args!)
         case NMarker.subCaptionName: setSubCaption(marker, rawSubCaption: args!)
         case NMarker.captionAlignsName: setCaptionAligns(marker, rawCaptionAligns: args!)

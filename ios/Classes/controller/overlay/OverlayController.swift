@@ -8,7 +8,7 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
         self.channel = channel
         channel.setMethodCallHandler(handler)
     }
-    
+
     /* ----- sender ----- */
     func onOverlayTapped(info: NOverlayInfo) {
         let query = NOverlayQuery(info: info, methodName: onTapName).query
@@ -253,10 +253,10 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
         marker.anchor = NPoint.fromMessageable(rawNPoint).cgPoint
     }
 
-    func setSize(_ marker: NMFMarker, rawNPoint: Any) {
-        let size = NPoint.fromMessageable(rawNPoint)
-        marker.width = size.x
-        marker.height = size.y
+    func setSize(_ marker: NMFMarker, rawSize: Any) {
+        let size = NSize.fromMessageable(rawSize)
+        marker.width = size.width
+        marker.height = size.height
     }
 
     func setCaption(_ marker: NMFMarker, rawCaption: Any) {

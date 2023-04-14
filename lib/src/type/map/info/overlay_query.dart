@@ -20,7 +20,7 @@ class _NOverlayQuery {
     final method = split.last;
     final id = split.sublist(1, split.length - 1).join(_separator);
     return _NOverlayQuery(
-        NOverlayInfo._(type: NOverlayType._fromMessageable(type), id: id),
+        NOverlayInfo(type: NOverlayType._fromMessageable(type), id: id),
         methodName: method);
   }
 
