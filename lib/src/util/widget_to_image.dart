@@ -23,10 +23,10 @@ class WidgetToImageUtil {
   }
 
   static Future<Uint8List> widgetToImageByte(Widget widget,
-      {required Size size, required double pixelRatio}) async {
+      {required Size size, required double pixelRatio, required BuildContext context}) async {
     final renderBox = RenderRepaintBoundary();
     final renderView = RenderView(
-        window: WidgetsBinding.instance.window,
+        view: View.of(context),
         configuration:
             ViewConfiguration(size: size, devicePixelRatio: pixelRatio),
         child:
