@@ -4,7 +4,7 @@ NaverMap SDK for Flutter
 
 [![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=4285F4)](https://pub.dev/packages/flutter_naver_map)
 
-support flutter >= 3.0, dart >= 2.18.4,
+support flutter >= 3.10, dart >= 2.18.4,
 
 android 5.1 or higher, iOS 11.0 or higher.
 
