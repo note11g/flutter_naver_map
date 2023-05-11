@@ -30,7 +30,7 @@ class NOverlayImage with NMessageableWithMap {
   }) async {
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
     final imageBytes = await WidgetToImageUtil.widgetToImageByte(widget,
-        size: size, pixelRatio: pixelRatio);
+        size: size, pixelRatio: pixelRatio, context context);
     final path = await ImageUtil.saveImage(imageBytes);
     return NOverlayImage._(path: path, mode: _NOverlayImageMode.widget);
   }
