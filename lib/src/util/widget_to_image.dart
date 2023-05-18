@@ -25,14 +25,14 @@ class WidgetToImageUtil {
   static Future<Uint8List> widgetToImageByte(
     Widget widget, {
     required Size size,
-    required double pixelRatio,
     required BuildContext context,
   }) async {
     final renderBox = RenderRepaintBoundary();
+    final view = View.of(context);
     final renderView = RenderView(
-        view: View.of(context),
-        configuration:
-            ViewConfiguration(size: size, devicePixelRatio: pixelRatio),
+        view: view,
+        configuration: ViewConfiguration(
+            size: size, devicePixelRatio: view.devicePixelRatio),
         child:
             RenderPositionedBox(alignment: Alignment.center, child: renderBox));
 
@@ -52,7 +52,7 @@ class WidgetToImageUtil {
       ..flushCompositingBits()
       ..flushPaint();
 
-    final image = await renderBox.toImage(pixelRatio: pixelRatio);
+    final image = await renderBox.toImage(pixelRatio: view.devicePixelRatio);
     return image
         .toByteData(format: ImageByteFormat.png)
         .then((b) => b!.buffer.asUint8List());
