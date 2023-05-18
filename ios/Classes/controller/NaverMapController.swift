@@ -111,7 +111,6 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
 
     func setLocationTrackingMode(locationTrackingMode: NMFMyPositionMode, onSuccess: @escaping (Any?) -> ()) {
         mapView.positionMode = locationTrackingMode
-        onSuccess(nil)
     }
 
     func getLocationTrackingMode(onSuccess: @escaping (String) -> ()) {
