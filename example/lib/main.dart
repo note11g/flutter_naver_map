@@ -13,9 +13,11 @@ import 'pages/examples/options_example.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await NaverMapSdk.instance.initialize(clientId: '2vkiu8dsqb', onAuthFailed: (error) {
-    print('Auth failed: $error');
-  });
+  await NaverMapSdk.instance.initialize(
+      clientId: '2vkiu8dsqb',
+      onAuthFailed: (error) {
+        print('Auth failed: $error');
+      });
 
   runApp(const MyApp());
 }
