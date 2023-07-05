@@ -249,6 +249,51 @@ class NMarker extends NAddableOverlay<NMarker> {
         ..._commonMap,
       });
 
+  NMarker copyWith({
+    String? id,
+    NLatLng? position,
+    NOverlayImage? icon,
+    Color? iconTintColor,
+    double? alpha,
+    double? angle,
+    NPoint? anchor,
+    Size? size,
+    NOverlayCaption? caption,
+    NOverlayCaption? subCaption,
+    Iterable<NAlign>? captionAligns,
+    double? captionOffset,
+    bool? isCaptionPerspectiveEnabled,
+    bool? isIconPerspectiveEnabled,
+    bool? isFlat,
+    bool? isForceShowCaption,
+    bool? isForceShowIcon,
+    bool? isHideCollidedCaptions,
+    bool? isHideCollidedMarkers,
+    bool? isHideCollidedSymbols,
+  }) =>
+      NMarker(
+        id: id ?? info.id,
+        position: position ?? _position,
+        icon: icon ?? _icon,
+        iconTintColor: iconTintColor ?? _iconTintColor,
+        alpha: alpha ?? _alpha,
+        angle: angle ?? _angle,
+        anchor: anchor ?? _anchor,
+        size: size ?? _size,
+        caption: caption ?? _caption,
+        subCaption: subCaption ?? _subCaption,
+        captionAligns:  captionAligns??_captionAligns,
+        captionOffset: captionOffset ?? _captionOffset,
+        isCaptionPerspectiveEnabled: isCaptionPerspectiveEnabled ?? _isCaptionPerspectiveEnabled,
+        isIconPerspectiveEnabled: isIconPerspectiveEnabled ?? _isIconPerspectiveEnabled,
+        isFlat: isFlat ?? _isFlat,
+        isForceShowCaption: isForceShowCaption ?? _isForceShowCaption,
+        isForceShowIcon: isForceShowIcon ?? _isForceShowIcon,
+        isHideCollidedCaptions : isHideCollidedCaptions ?? _isHideCollidedCaptions,
+        isHideCollidedMarkers : isHideCollidedMarkers ?? _isHideCollidedMarkers,
+        isHideCollidedSymbols : isHideCollidedSymbols ?? _isHideCollidedSymbols,
+      );
+
   /*
     --- Messaging Name Define ---
   */
