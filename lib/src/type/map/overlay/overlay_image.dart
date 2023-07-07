@@ -10,13 +10,25 @@ class NOverlayImage with NMessageableWithMap {
   })  : _path = path,
         _mode = mode;
 
-  const NOverlayImage.fromAssetImage(String assetName)
-      : _path = assetName,
-        _mode = _NOverlayImageMode.asset;
-
   NOverlayImage.fromFile(File file)
       : _path = file.path,
         _mode = _NOverlayImageMode.file;
+
+  static Future<NOverlayImage> fromAssetImage({
+    required String assetName,
+    double? devicePixelRatio,
+    TargetPlatform? platform,
+  }) async {
+    final configuration = ImageConfiguration(
+      devicePixelRatio: devicePixelRatio,
+      platform: platform ??
+          (Platform.isIOS ? TargetPlatform.iOS : TargetPlatform.android),
+    );
+    final AssetImage assetImage = AssetImage(assetName);
+    final AssetBundleImageKey key = await assetImage.obtainKey(configuration);
+
+    return NOverlayImage._(path: key.name, mode: _NOverlayImageMode.asset);
+  }
 
   static Future<NOverlayImage> fromByteArray(Uint8List imageBytes) async {
     final path = await ImageUtil.saveImage(imageBytes);
