@@ -56,7 +56,7 @@ internal struct NCameraUpdate {
             p.tilt(by: tiltBy)
         }
         if let bearing = bearing {
-            p.rotate(by: bearing)
+            p.rotate(to: bearing)
         }
         if let bearingBy = bearingBy {
             p.rotate(by: bearingBy)
