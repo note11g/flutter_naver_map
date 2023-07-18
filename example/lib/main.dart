@@ -135,7 +135,7 @@ class _FNMapPageState extends State<FNMapPage> {
     ExampleAppBottomDrawer.makeDefault(
         title: "카메라 이동",
         description: "지도에 보이는 영역을 카메라를 이동하여 바꿀 수 있어요",
-        page: (canScroll) => _cameraMoveTestPage()),
+        page: (canScroll) => _cameraMoveTestPage(mapController)),
     ExampleAppBottomDrawer.makeDefault(
         title: "기타 컨트롤러 기능",
         description: "컨트롤러로 여러가지 기능을 조작합니다.",
@@ -152,22 +152,29 @@ class _FNMapPageState extends State<FNMapPage> {
     ),
   ];
 
-  Widget _cameraMoveTestPage() {
+  Widget _cameraMoveTestPage(NaverMapController mapController) {
     return Padding(
         padding: const EdgeInsets.all(24),
-        child: Column(children: const [
-          //
-          // // todo
-          // Text("_cameraMoveTestPage"),
-          // Text("카메라 이동"),
-          //
+        child: Column(children: [
+          // todo
+          Text("_cameraMoveTestPage"),
+          Text("카메라 이동"),
+          ElevatedButton(
+              onPressed: () {
+                mapController.updateCamera(NCameraUpdate.fromCameraPosition(
+                    NCameraPosition(
+                        target: NLatLng(37.56362422812855, 126.96269803941277),
+                        zoom: 17.00922642853924,
+                        bearing: 119.62995870263971)));
+              },
+              child: Text('카메라 회전')),
         ]));
   }
 
   Widget _controllerTestPage() {
     return Padding(
         padding: const EdgeInsets.all(24),
-        child: Column(children: const [
+        child: Column(children: [
           // todo
           Text("_etcControllerTestPage"),
           Text("기타 컨트롤러 기능"),
@@ -177,7 +184,7 @@ class _FNMapPageState extends State<FNMapPage> {
   Widget _pickTestPage() {
     return Padding(
         padding: const EdgeInsets.all(24),
-        child: Column(children: const [
+        child: Column(children: [
           // todo
           Text("_pickTestPage"),
           Text("주변 심볼 및 오버레이 가져오기"),
