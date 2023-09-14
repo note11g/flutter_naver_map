@@ -160,9 +160,10 @@ class NOverlayMakerUtil {
     required NOverlayType type,
     required NCameraPosition cameraPosition,
     String? id,
-  }) async{
+  }) async {
     final overlayId = id ?? _timeBasedId;
-
+    final image = await NOverlayImage.fromAssetImage(
+        assetName: 'assets/location.png', devicePixelRatio: 3.0);
     final point = cameraPosition.target;
     final heartCoords = NOverlayMakerUtil.getHeartCoordinates(
         cameraPosition.target,
@@ -181,7 +182,7 @@ class NOverlayMakerUtil {
 
     switch (type) {
       case NOverlayType.marker:
-        return NMarker(id: overlayId, position: point);
+        return NMarker(id: overlayId, position: point,)..setIcon(image);
       case NOverlayType.infoWindow:
         return NInfoWindow.onMap(
             id: overlayId, position: point, text: '인포 윈도우');
@@ -198,7 +199,8 @@ class NOverlayMakerUtil {
             southWest: point,
             northEast: point.offsetByMeter(northMeter: 422, eastMeter: 818));
         print(bounds);
-        final img = await NOverlayImage.fromAssetImage(assetName: 'assets/ground_img.png');
+        final img = await NOverlayImage.fromAssetImage(
+            assetName: 'assets/ground_img.png');
         return NGroundOverlay(
             id: overlayId, bounds: bounds, image: img, alpha: 1);
       case NOverlayType.polygonOverlay:
