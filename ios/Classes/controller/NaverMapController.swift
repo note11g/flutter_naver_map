@@ -63,9 +63,20 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     }
 
     func getMeterPerDp(lat: Double?, zoom: Double?, onSuccess: @escaping (Double) -> ()) {
-        let metersPerPixel: CLLocationDistance = (lat != nil && zoom != nil) ?
-                mapView.projection.metersPerPixel(atLatitude: lat!, zoom: zoom!) :
-                mapView.projection.metersPerPixel()
+        guard let lat = lat, let zoom = zoom else {
+            let metersPerPixel = mapView.projection.metersPerPixel()
+            let metersPerDp = metersPerPixel / UIScreen.main.scale
+            onSuccess(metersPerDp)
+            return
+        }
+
+        let metersPerPixel = mapView.projection.metersPerPixel(atLatitude: lat, zoom: zoom)
+        let metersPerDp = metersPerPixel / UIScreen.main.scale
+        onSuccess(metersPerDp)
+    }
+    
+    func getMeterPerPixelAtLatitude(lat: Double, zoom: Double, onSuccess: @escaping (Double) -> Void) {
+        let metersPerPixel: CLLocationDistance = mapView.projection.metersPerPixel(atLatitude: lat, zoom: zoom)
         let metersPerDp = metersPerPixel / UIScreen.main.scale
         onSuccess(metersPerDp)
     }

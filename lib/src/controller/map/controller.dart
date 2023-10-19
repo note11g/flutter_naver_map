@@ -85,6 +85,19 @@ class _NaverMapControllerImpl
   }
 
   @override
+  Future<double> getMeterPerPixelAtLatitude({
+    required double latitude,
+    required double zoom,
+  }) {
+    final messageable = NMessageable.forOnceWithMap({
+      "latitude": latitude,
+      "zoom": zoom,
+    });
+    return invokeMethod("getMeterPerPixelAtLatitude", messageable)
+        .then((value) => value as double);
+  }
+
+  @override
   Future<List<NPickableInfo>> pickAll(NPoint point, {double radius = 0}) async {
     final messageable =
         NMessageable.forOnceWithMap({"point": point, "radius": radius});

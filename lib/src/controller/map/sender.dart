@@ -22,6 +22,11 @@ abstract class _NaverMapControlSender {
 
   Future<double> getMeterPerDp({double? latitude, double? zoom});
 
+  Future<double> getMeterPerPixelAtLatitude({
+    required double latitude,
+    required double zoom,
+  });
+
   Future<List<NPickableInfo>> pickAll(NPoint point, {double radius = 0});
 
   Future<File> takeSnapshot(

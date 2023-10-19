@@ -18,6 +18,8 @@ internal protocol NaverMapControlHandler {
     func latLngToScreenLocation(latLng: NMGLatLng, onSuccess: @escaping (_ nPoint: Dictionary<String, Any>) -> Void)
 
     func getMeterPerDp(lat: Double?, zoom: Double?, onSuccess: @escaping (_ meterPerDp: Double) -> Void)
+    
+    func getMeterPerPixelAtLatitude(lat: Double, zoom: Double, onSuccess: @escaping (_ meterPerDp: Double) -> Void)
 
     func pickAll(
             nPoint: NPoint,
@@ -60,7 +62,10 @@ internal extension  NaverMapControlHandler {
         case "latLngToScreenLocation": latLngToScreenLocation(latLng: asLatLng(call.arguments!), onSuccess: result)
         case "getMeterPerDp":
             let d = asDict(call.arguments!)
-            getMeterPerDp(lat: asDouble(d["latitude"]!), zoom: asDouble(d["zoom"]!), onSuccess: result)
+            getMeterPerDp(lat: d["latitude"] as? Double, zoom: d["zoom"] as? Double, onSuccess: result)
+        case "getMeterPerPixelAtLatitude":
+            let d = asDict(call.arguments!)
+            getMeterPerPixelAtLatitude(lat: asDouble(d["latitude"]!), zoom: asDouble(d["zoom"]!), onSuccess: result)
         case "pickAll":
             let d = asDict(call.arguments!)
             pickAll(nPoint: NPoint.fromMessageable(d["point"]!), dpRadius: asDouble(d["radius"]!), onSuccess: result)
