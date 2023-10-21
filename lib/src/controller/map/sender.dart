@@ -21,11 +21,17 @@ abstract class _NaverMapControlSender {
   Future<NPoint> latLngToScreenLocation(NLatLng latLng);
 
   /// meter / dp (logical pixel)
-  /// if latitude is null, use current camera position automatically.
-  /// if zoom is null, use current zoom level automatically.
-  Future<double> getMeterPerDp({double? latitude, double? zoom});
+  /// if latitude is null, use current camera position
+  /// using parameter is deprecated. use [getMeterPerDpAtLatitude] instead.
+  /// please getMeterPerDp() without parameter.
+  Future<double> getMeterPerDp({
+    @Deprecated("use getMeterPerDpAtLatitude() instead")
+    double? latitude,
+    @Deprecated("use getMeterPerDpAtLatitude() instead")
+    double? zoom,
+  });
 
-  /// meter / dp with latitude & zoom level
+  /// meter / dp at latitude (required zoomLevel)
   Future<double> getMeterPerDpAtLatitude({
     required double latitude,
     required double zoom,
