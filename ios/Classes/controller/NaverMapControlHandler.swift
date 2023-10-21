@@ -17,7 +17,7 @@ internal protocol NaverMapControlHandler {
 
     func latLngToScreenLocation(latLng: NMGLatLng, onSuccess: @escaping (_ nPoint: Dictionary<String, Any>) -> Void)
 
-    func getMeterPerDp(lat: Double?, zoom: Double?, onSuccess: @escaping (_ meterPerDp: Double) -> Void)
+    func getMeterPerDp(onSuccess: @escaping (_ meterPerDp: Double) -> Void)
     
     func getMeterPerPixelAtLatitude(lat: Double, zoom: Double, onSuccess: @escaping (_ meterPerDp: Double) -> Void)
 
@@ -61,8 +61,16 @@ internal extension  NaverMapControlHandler {
         case "screenLocationToLatLng": screenLocationToLatLng(nPoint: NPoint.fromMessageable(call.arguments!), onSuccess: result)
         case "latLngToScreenLocation": latLngToScreenLocation(latLng: asLatLng(call.arguments!), onSuccess: result)
         case "getMeterPerDp":
-            let d = asDict(call.arguments!)
-            getMeterPerDp(lat: d["latitude"] as? Double, zoom: d["zoom"] as? Double, onSuccess: result)
+            let d = call.arguments as? Dictionary<String, Any?>
+            guard
+                let latitude = d?["latitude"] as? Double,
+                let zoom = d?["zoom"] as? Double
+            else {
+                getMeterPerDp(onSuccess: result)
+                break;
+            }
+
+            getMeterPerPixelAtLatitude(lat: latitude, zoom: zoom, onSuccess: result)
         case "getMeterPerPixelAtLatitude":
             let d = asDict(call.arguments!)
             getMeterPerPixelAtLatitude(lat: asDouble(d["latitude"]!), zoom: asDouble(d["zoom"]!), onSuccess: result)
