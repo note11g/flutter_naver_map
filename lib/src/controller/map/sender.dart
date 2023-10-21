@@ -22,7 +22,7 @@ abstract class _NaverMapControlSender {
 
   Future<double> getMeterPerDp({double? latitude, double? zoom});
 
-  Future<double> getMeterPerPixelAtLatitude({
+  Future<double> getMeterPerDpAtLatitude({
     required double latitude,
     required double zoom,
   });

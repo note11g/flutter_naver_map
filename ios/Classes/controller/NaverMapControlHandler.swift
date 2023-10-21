@@ -19,7 +19,7 @@ internal protocol NaverMapControlHandler {
 
     func getMeterPerDp(onSuccess: @escaping (_ meterPerDp: Double) -> Void)
     
-    func getMeterPerPixelAtLatitude(lat: Double, zoom: Double, onSuccess: @escaping (_ meterPerDp: Double) -> Void)
+    func getMeterPerDpAtLatitude(lat: Double, zoom: Double, onSuccess: @escaping (_ meterPerDp: Double) -> Void)
 
     func pickAll(
             nPoint: NPoint,
@@ -70,10 +70,10 @@ internal extension  NaverMapControlHandler {
                 break;
             }
 
-            getMeterPerPixelAtLatitude(lat: latitude, zoom: zoom, onSuccess: result)
-        case "getMeterPerPixelAtLatitude":
+            getMeterPerDpAtLatitude(lat: latitude, zoom: zoom, onSuccess: result)
+        case "getMeterPerDpAtLatitude":
             let d = asDict(call.arguments!)
-            getMeterPerPixelAtLatitude(lat: asDouble(d["latitude"]!), zoom: asDouble(d["zoom"]!), onSuccess: result)
+            getMeterPerDpAtLatitude(lat: asDouble(d["latitude"]!), zoom: asDouble(d["zoom"]!), onSuccess: result)
         case "pickAll":
             let d = asDict(call.arguments!)
             pickAll(nPoint: NPoint.fromMessageable(d["point"]!), dpRadius: asDouble(d["radius"]!), onSuccess: result)

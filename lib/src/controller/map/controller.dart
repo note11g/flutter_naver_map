@@ -85,7 +85,7 @@ class _NaverMapControllerImpl
   }
 
   @override
-  Future<double> getMeterPerPixelAtLatitude({
+  Future<double> getMeterPerDpAtLatitude({
     required double latitude,
     required double zoom,
   }) {
@@ -93,7 +93,7 @@ class _NaverMapControllerImpl
       "latitude": latitude,
       "zoom": zoom,
     });
-    return invokeMethod("getMeterPerPixelAtLatitude", messageable)
+    return invokeMethod("getMeterPerDpAtLatitude", messageable)
         .then((value) => value as double);
   }
 
