@@ -75,10 +75,15 @@ class _NaverMapControllerImpl
   }
 
   @override
-  Future<double> getMeterPerDp({double? latitude, double? zoom}) {
+  Future<double> getMeterPerDp({double? latitude, double? zoom}) async {
+    if (latitude != null && zoom != null) {
+      return getMeterPerDpAtLatitude(latitude: latitude, zoom: zoom);
+    }
+
+    final nowPosition = await getCameraPosition();
     final messageable = NMessageable.forOnceWithMap({
-      "latitude": latitude,
-      "zoom": zoom,
+      "latitude": latitude ?? nowPosition.target.latitude,
+      "zoom": zoom ?? nowPosition.zoom,
     });
     return invokeMethod("getMeterPerDp", messageable)
         .then((value) => value as double);

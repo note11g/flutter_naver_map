@@ -20,8 +20,12 @@ abstract class _NaverMapControlSender {
 
   Future<NPoint> latLngToScreenLocation(NLatLng latLng);
 
+  /// meter / dp (logical pixel)
+  /// if latitude is null, use current camera position automatically.
+  /// if zoom is null, use current zoom level automatically.
   Future<double> getMeterPerDp({double? latitude, double? zoom});
 
+  /// meter / dp with latitude & zoom level
   Future<double> getMeterPerDpAtLatitude({
     required double latitude,
     required double zoom,
