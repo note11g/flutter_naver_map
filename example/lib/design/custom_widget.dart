@@ -3,6 +3,45 @@ import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import 'theme.dart';
 
+class InnerSimpleTitle extends StatelessWidget {
+  final Axis direction;
+  final String title;
+  final String? description;
+
+  const InnerSimpleTitle({
+    super.key,
+    required this.title,
+    this.description,
+    this.direction = Axis.vertical,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (direction == Axis.vertical) {
+      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(title, style: getTextTheme(context).titleMedium),
+        if (description != null)
+          Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child:
+                  Text(description!, style: getTextTheme(context).bodySmall)),
+      ]);
+    } else {
+      return Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          // textBaseline: TextBaseline.alphabetic,
+          children: [
+            Text(title, style: getTextTheme(context).titleMedium),
+            if (description != null)
+              Padding(
+                  padding: const EdgeInsets.only(left: 8, bottom: 2),
+                  child: Text(description!,
+                      style: getTextTheme(context).bodySmall)),
+          ]);
+    }
+  }
+}
+
 class SelectorWithTitle extends StatelessWidget {
   final String title;
   final String description;
@@ -19,13 +58,10 @@ class SelectorWithTitle extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
         child: Row(children: [
           Expanded(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                Text(title, style: getTextTheme(context).titleMedium),
-                const SizedBox(height: 2),
-                Text(description, style: getTextTheme(context).bodySmall),
-              ])),
+              child: InnerSimpleTitle(
+                  title: title,
+                  description: description,
+                  direction: Axis.vertical)),
           Expanded(flex: selector.expand ? 2 : 0, child: selector),
         ]));
   }
