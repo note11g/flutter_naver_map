@@ -35,8 +35,8 @@ internal struct NMarker: AddableOverlay {
         marker.alpha = alpha
         marker.angle = angle
         marker.anchor = anchor.cgPoint
-        marker.width = size.width > 0.0 ? size.width : marker.iconImage.imageWidth / UIScreen.main.scale
-        marker.height = size.height > 0.0 ? size.height : marker.iconImage.imageHeight / UIScreen.main.scale
+        marker.width = icon == nil ? size.width : marker.iconImage.imageWidth / UIScreen.main.scale
+        marker.height = icon == nil ? size.height : marker.iconImage.imageHeight / UIScreen.main.scale
         if let caption = caption {
             marker.captionText = caption.text
             marker.captionTextSize = caption.textSize
