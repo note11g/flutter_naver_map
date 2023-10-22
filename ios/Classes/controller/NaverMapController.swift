@@ -62,12 +62,12 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
         onSuccess(NPoint.fromCGPointWithDisplay(point).toMessageable())
     }
 
-    func getMeterPerDp(lat: Double?, zoom: Double?, onSuccess: @escaping (Double) -> ()) {
-        let metersPerPixel: CLLocationDistance = (lat != nil && zoom != nil) ?
-                mapView.projection.metersPerPixel(atLatitude: lat!, zoom: zoom!) :
-                mapView.projection.metersPerPixel()
-        let metersPerDp = metersPerPixel / UIScreen.main.scale
-        onSuccess(metersPerDp)
+    func getMeterPerDp(onSuccess: @escaping (Double) -> ()) {
+        onSuccess(mapView.projection.metersPerPixel())
+    }
+    
+    func getMeterPerDp(lat: Double, zoom: Double, onSuccess: @escaping (Double) -> Void) {
+        onSuccess(mapView.projection.metersPerPixel(atLatitude: lat, zoom: zoom))
     }
 
     func pickAll(nPoint: NPoint, dpRadius: Double, onSuccess: @escaping (Array<Dictionary<String, Any?>>) -> ()) {

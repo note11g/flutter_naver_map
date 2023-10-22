@@ -33,19 +33,6 @@ class ExampleAppBottomDrawer {
 
   bool get hasPage => nowItem != null;
 
-  static MapFunctionItem makeDefault({
-    required String title,
-    required String description,
-    required Widget Function(bool canScroll) page,
-    bool isScrollPage = true,
-  }) =>
-      MapFunctionItem(
-          title: title,
-          description: description,
-          page: page,
-          onTap: null,
-          isScrollPage: isScrollPage);
-
   void go(MapFunctionItem item) {
     nowItem = item;
     rebuildDrawerAndPage();
@@ -64,7 +51,7 @@ class ExampleAppBottomDrawer {
 
   BottomDrawer get bottomDrawer => BottomDrawer(
       height: nowItem?.isScrollPage == false ? null : 200,
-      expandedHeight: 480,
+        expandedHeight: 480,
       handleSectionHeight: 20,
       handleColor: colorTheme.secondary,
       backgroundColor: colorTheme.background,
@@ -96,7 +83,10 @@ class ExampleAppBottomDrawer {
                       itemBuilder: (context, index) {
                         MapFunctionItem page = pages[index];
                         if (page.needItemOnTap) {
-                          page = page.copyWith(onTap: go, onBack: back);
+                          page = page.copyWith(
+                              onTap: go,
+                              onBack: back,
+                              drawerController: drawerController);
                         }
                         return page.getItemWidget(context);
                       },
@@ -133,7 +123,7 @@ class ExampleAppBottomDrawer {
       back();
       return false;
     } else if (drawerState != DrawerState.closed) {
-      drawerController.close();
+      drawerController?.close();
       return false;
     }
     return true;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bottom_drawer/flutter_bottom_drawer.dart';
 
 import 'theme.dart';
 
@@ -12,15 +13,17 @@ class MapFunctionItem {
   final Widget Function(bool canScroll)? page;
   final MapFunctionItemOnBack? onBack;
 
-  final bool? isScrollPage;
+  final bool isScrollPage;
+  DrawerMoveController? drawerController;
 
   MapFunctionItem({
     required this.title,
     this.description,
     this.page,
-    required this.onTap,
+    this.onTap,
     this.onBack,
-    this.isScrollPage,
+    this.isScrollPage = true,
+    this.drawerController,
   });
 
   bool get needItemOnTap => onTap == null;
@@ -60,15 +63,46 @@ class MapFunctionItem {
   Widget getPageWidget(BuildContext context, {bool canScroll = true}) {
     assert(page != null);
     return Column(children: [
-      Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        IconButton(
-            onPressed: onBack,
-            padding: const EdgeInsets.all(16),
-            icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20)),
-        Text(title, style: getTextTheme(context).titleLarge),
-      ]),
+      Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+              IconButton(
+                  onPressed: onBack,
+                  padding: const EdgeInsets.all(16),
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20)),
+              Text(title, style: getTextTheme(context).titleLarge),
+            ]),
+            _drawerAutoControlButton(),
+          ]),
       page!(canScroll)
     ]);
+  }
+
+  Widget _drawerAutoControlButton() {
+    if (drawerController == null) return const SizedBox();
+    DrawerState drawerState = drawerController!.nowState;
+
+    return Padding(
+        padding: const EdgeInsets.only(right: 8),
+        child: StatefulBuilder(builder: (context, setStateButton) {
+          return InkWell(
+              borderRadius: BorderRadius.circular(4),
+              onTap: () {
+                if (drawerController == null) return;
+                drawerController!.autoMove();
+                drawerState = drawerController!.nowState;
+                setStateButton(() {});
+              },
+              child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                  child: Text(drawerState == DrawerState.opened ? "접기" : "펼치기",
+                      style: getTextTheme(context)
+                          .labelSmall
+                          ?.copyWith(color: getColorTheme(context).primary))));
+        }));
   }
 
   MapFunctionItem copyWith({
@@ -78,6 +112,7 @@ class MapFunctionItem {
     Widget Function(bool canScroll)? page,
     MapFunctionItemOnBack? onBack,
     bool? isScrollPage,
+    DrawerMoveController? drawerController,
   }) {
     return MapFunctionItem(
       title: title ?? this.title,
@@ -86,6 +121,7 @@ class MapFunctionItem {
       page: page ?? this.page,
       onBack: onBack ?? this.onBack,
       isScrollPage: isScrollPage ?? this.isScrollPage,
+      drawerController: drawerController ?? this.drawerController,
     );
   }
 }
