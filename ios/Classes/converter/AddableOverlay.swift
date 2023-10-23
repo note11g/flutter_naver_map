@@ -1,5 +1,14 @@
 import NMapsMap
 
+/// Wrapper of NMFOverlay
+internal protocol NOverlay {
+    associatedtype OverlayType: NMFOverlay
+
+    var mapOverlay: OverlayType { get }
+    
+    static func fromMessageable(_ v: Any) -> Self
+}
+
 internal protocol AddableOverlay {
     associatedtype OverlayType: NMFOverlay
 
