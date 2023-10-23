@@ -3,6 +3,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import androidx.annotation.ColorInt
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.CircleOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asInt
@@ -14,6 +15,8 @@ import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 internal data class NCircleOverlay(
     override val info: NOverlayInfo,
     val center: LatLng,
+    val minZoom: Double?,
+    val maxZoom: Double?,
     val radius: Double, // meter
     @ColorInt val color: Int,
     @ColorInt val outlineColor: Int,
@@ -22,6 +25,8 @@ internal data class NCircleOverlay(
 
     override fun createMapOverlay(): CircleOverlay = CircleOverlay().also { c ->
         c.center = center
+        if (minZoom != null) c.minZoom = minZoom
+        if (maxZoom != null) c.maxZoom = maxZoom
         c.radius = radius
         c.color = color
         c.outlineColor = outlineColor
@@ -33,6 +38,8 @@ internal data class NCircleOverlay(
             NCircleOverlay(
                 info = NOverlayInfo.fromMessageable(it[infoName]!!),
                 center = it[centerName]!!.asLatLng(),
+                minZoom = it[OverlayHandler.minZoomName]?.asDouble(),
+                maxZoom = it[OverlayHandler.maxZoomName]?.asDouble(),
                 radius = it[radiusName]!!.asDouble(),
                 color = it[colorName]!!.asInt(),
                 outlineColor = it[outlineColorName]!!.asInt(),

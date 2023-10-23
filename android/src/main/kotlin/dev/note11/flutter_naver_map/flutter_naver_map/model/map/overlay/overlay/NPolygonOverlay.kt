@@ -3,6 +3,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import androidx.annotation.ColorInt
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.PolygonOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asInt
@@ -15,6 +16,8 @@ import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 internal data class NPolygonOverlay(
     override val info: NOverlayInfo,
     val coords: List<LatLng>,
+    val minZoom: Double?,
+    val maxZoom: Double?,
     @ColorInt val color: Int,
     val holes: List<List<LatLng>>,
     @ColorInt val outlineColor: Int,
@@ -25,6 +28,8 @@ internal data class NPolygonOverlay(
 
     override fun createMapOverlay(): PolygonOverlay = PolygonOverlay().also { g ->
         g.coords = coords
+        if (minZoom != null) g.minZoom = minZoom
+        if (maxZoom != null) g.maxZoom = maxZoom
         g.color = color
         g.holes = holes
         g.outlineColor = outlineColor
@@ -36,6 +41,8 @@ internal data class NPolygonOverlay(
             NPolygonOverlay(
                 info = NOverlayInfo.fromMessageable(it[infoName]!!),
                 coords = it[coordsName]!!.asList { latLng -> latLng.asLatLng() },
+                minZoom = it[OverlayHandler.minZoomName]?.asDouble(),
+                maxZoom = it[OverlayHandler.maxZoomName]?.asDouble(),
                 color = it[colorName]!!.asInt(),
                 holes = it[holesName]!!.asList { hole ->
                     hole.asList { latLng -> latLng.asLatLng() }

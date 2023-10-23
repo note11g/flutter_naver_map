@@ -5,6 +5,7 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.PolylineOverlay
 import com.naver.maps.map.overlay.PolylineOverlay.LineCap
 import com.naver.maps.map.overlay.PolylineOverlay.LineJoin
+import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asInt
@@ -19,6 +20,8 @@ import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 internal data class NPolylineOverlay(
     override val info: NOverlayInfo,
     val coords: List<LatLng>,
+    val minZoom: Double?,
+    val maxZoom: Double?,
     @ColorInt val color: Int,
     val widthDp: Double,
     val lineCap: LineCap,
@@ -30,6 +33,8 @@ internal data class NPolylineOverlay(
 
     override fun createMapOverlay(): PolylineOverlay = PolylineOverlay().also { g ->
         g.coords = coords
+        if (minZoom != null) g.minZoom = minZoom
+        if (maxZoom != null) g.maxZoom = maxZoom
         g.color = color
         g.width = DisplayUtil.dpToPx(widthDp)
         g.capType = lineCap
@@ -42,6 +47,8 @@ internal data class NPolylineOverlay(
             NPolylineOverlay(
                 info = NOverlayInfo.fromMessageable(it[infoName]!!),
                 coords = it[coordsName]!!.asList { latLng -> latLng.asLatLng() },
+                minZoom = it[OverlayHandler.minZoomName]?.asDouble(),
+                maxZoom = it[OverlayHandler.maxZoomName]?.asDouble(),
                 color = it[colorName]!!.asInt(),
                 widthDp = it[widthName]!!.asDouble(),
                 lineCap = it[lineCapName]!!.asLineCap(),

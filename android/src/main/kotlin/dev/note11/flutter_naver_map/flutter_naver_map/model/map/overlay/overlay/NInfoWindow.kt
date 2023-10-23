@@ -3,6 +3,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import android.content.Context
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.InfoWindow
+import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
@@ -17,6 +18,8 @@ internal data class NInfoWindow(
     val anchor: NPoint,
     val alpha: Double,
     val position: LatLng?,
+    val minZoom: Double?,
+    val maxZoom: Double?,
     val offsetXDp: Double,
     val offsetYDp: Double,
     private val context: Context?,
@@ -28,6 +31,8 @@ internal data class NInfoWindow(
         m.anchor = anchor.toPointF()
         m.alpha = alpha.toFloat()
         if (position != null) m.position = position
+        if (minZoom != null) m.minZoom = minZoom
+        if (maxZoom != null) m.maxZoom = maxZoom
         m.offsetX = dpToPx(offsetXDp)
         m.offsetY = dpToPx(offsetYDp)
     }
@@ -40,6 +45,8 @@ internal data class NInfoWindow(
                 anchor = NPoint.fromMessageable(it[anchorName]!!),
                 alpha = it[alphaName]!!.asDouble(),
                 position = it[positionName]?.asLatLng(),
+                minZoom = it[OverlayHandler.minZoomName]?.asDouble(),
+                maxZoom = it[OverlayHandler.maxZoomName]?.asDouble(),
                 offsetXDp = it[offsetXName]!!.asDouble(),
                 offsetYDp = it[offsetYName]!!.asDouble(),
                 context = context,

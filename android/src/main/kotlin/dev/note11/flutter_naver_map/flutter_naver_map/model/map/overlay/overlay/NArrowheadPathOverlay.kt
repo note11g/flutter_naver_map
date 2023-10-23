@@ -3,6 +3,8 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import androidx.annotation.ColorInt
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.ArrowheadPathOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler.Companion.maxZoomName
+import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler.Companion.minZoomName
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asFloat
@@ -16,6 +18,8 @@ import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 internal data class NArrowheadPathOverlay(
     override val info: NOverlayInfo,
     val coords: List<LatLng>,
+    val minZoom: Double?,
+    val maxZoom: Double?,
     val widthDp: Double,
     @ColorInt val color: Int,
     val outlineWidthDp: Double,
@@ -26,6 +30,8 @@ internal data class NArrowheadPathOverlay(
 
     override fun createMapOverlay(): ArrowheadPathOverlay = ArrowheadPathOverlay().also { g ->
         g.coords = coords
+        if (minZoom != null) g.minZoom = minZoom
+        if (maxZoom != null) g.maxZoom = maxZoom
         g.width = DisplayUtil.dpToPx(widthDp)
         g.color = color
         g.outlineWidth = DisplayUtil.dpToPx(outlineWidthDp)
@@ -40,6 +46,8 @@ internal data class NArrowheadPathOverlay(
             NArrowheadPathOverlay(
                 info = NOverlayInfo.fromMessageable(it[infoName]!!),
                 coords = it[coordsName]!!.asList { coord -> coord.asLatLng() },
+                minZoom = it[minZoomName]?.asDouble(),
+                maxZoom = it[maxZoomName]?.asDouble(),
                 widthDp = it[widthName]!!.asDouble(),
                 color = it[colorName]!!.asInt(),
                 outlineWidthDp = it[outlineWidthName]!!.asDouble(),

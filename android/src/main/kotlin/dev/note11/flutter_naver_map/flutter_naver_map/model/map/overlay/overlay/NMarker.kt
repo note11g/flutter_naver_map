@@ -3,6 +3,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.Align
 import com.naver.maps.map.overlay.Marker
+import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asBoolean
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
@@ -22,6 +23,8 @@ import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil.dpToPx
 internal data class NMarker(
     override val info: NOverlayInfo,
     val position: LatLng,
+    val minZoom: Double?,
+    val maxZoom: Double?,
     val icon: NOverlayImage?,
     val iconTintColor: Int,
     val alpha: Float,
@@ -43,6 +46,8 @@ internal data class NMarker(
 ) : AddableOverlay<Marker> {
 
     override fun createMapOverlay(): Marker = Marker(position).also { m ->
+        if (minZoom != null) m.minZoom = minZoom
+        if (maxZoom != null) m.maxZoom = maxZoom
         icon?.applyToOverlay(m::setIcon)
         m.iconTintColor = iconTintColor
         m.alpha = alpha
@@ -84,6 +89,8 @@ internal data class NMarker(
             NMarker(
                 info = NOverlayInfo.fromMessageable(it[infoName]!!),
                 position = it[positionName]!!.asLatLng(),
+                minZoom = it[OverlayHandler.minZoomName]?.asDouble(),
+                maxZoom = it[OverlayHandler.maxZoomName]?.asDouble(),
                 icon = it[iconName]?.let(NOverlayImage::fromMessageable),
                 iconTintColor = it[iconTintColorName]!!.asInt(),
                 alpha = it[alphaName]!!.asFloat(),

@@ -2,6 +2,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.overlay.GroundOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
@@ -12,12 +13,16 @@ import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlay
 internal data class NGroundOverlay(
     override val info: NOverlayInfo,
     val bounds: LatLngBounds,
+    val minZoom: Double?,
+    val maxZoom: Double?,
     val image: NOverlayImage,
     val alpha: Double,
 ) : AddableOverlay<GroundOverlay> {
 
     override fun createMapOverlay(): GroundOverlay = GroundOverlay().also { g ->
         g.bounds = bounds
+        if (minZoom != null) g.minZoom = minZoom
+        if (maxZoom != null) g.maxZoom = maxZoom
         g.alpha = alpha.toFloat()
         image.applyToOverlay(g::setImage)
     }
@@ -27,6 +32,8 @@ internal data class NGroundOverlay(
             NGroundOverlay(
                 info = NOverlayInfo.fromMessageable(it[infoName]!!),
                 bounds = it[boundsName]!!.asLatLngBounds(),
+                minZoom = it[OverlayHandler.minZoomName]?.asDouble(),
+                maxZoom = it[OverlayHandler.maxZoomName]?.asDouble(),
                 image = NOverlayImage.fromMessageable(it[imageName]!!),
                 alpha = it[alphaName]!!.asDouble(),
             )

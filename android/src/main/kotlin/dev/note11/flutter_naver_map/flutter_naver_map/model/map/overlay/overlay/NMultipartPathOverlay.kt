@@ -3,6 +3,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.MultipartPathOverlay
 import com.naver.maps.map.overlay.MultipartPathOverlay.ColorPart
+import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asBoolean
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
@@ -16,6 +17,8 @@ import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 internal data class NMultipartPathOverlay(
     override val info: NOverlayInfo,
     val paths: List<NMultipartPath>,
+    val minZoom: Double?,
+    val maxZoom: Double?,
     val widthDp: Double,
     val outlineWidthDp: Double,
     val patternImage: NOverlayImage?,
@@ -34,6 +37,8 @@ internal data class NMultipartPathOverlay(
             coords.add(it.coords)
             colors.add(it.toColorPart())
         }
+        if (minZoom != null) mo.minZoom = minZoom
+        if (maxZoom != null) mo.maxZoom = maxZoom
         mo.coordParts = coords
         mo.colorParts = colors
         mo.width = DisplayUtil.dpToPx(widthDp)
@@ -51,6 +56,8 @@ internal data class NMultipartPathOverlay(
             NMultipartPathOverlay(
                 info = NOverlayInfo.fromMessageable(it[infoName]!!),
                 paths = it[pathsName]!!.asList(NMultipartPath::fromMessageable),
+                minZoom = it[OverlayHandler.minZoomName]?.asDouble(),
+                maxZoom = it[OverlayHandler.maxZoomName]?.asDouble(),
                 widthDp = it[widthName]!!.asDouble(),
                 outlineWidthDp = it[outlineWidthName]!!.asDouble(),
                 patternImage = it[patternImageName]?.let(NOverlayImage::fromMessageable),
