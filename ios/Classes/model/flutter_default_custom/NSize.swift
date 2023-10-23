@@ -23,4 +23,8 @@ internal struct NSize {
         let d = asDict(args, valueCaster: asCGFloat)
         return NSize(width: d["width"]!, height: d["height"]!)
     }
+    
+    static func ==(lhs: Self, rhs: Self) -> Bool {
+        return lhs.width == rhs.width && lhs.height == rhs.height
+    }
 }

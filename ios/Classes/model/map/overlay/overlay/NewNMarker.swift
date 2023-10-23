@@ -73,12 +73,12 @@ internal struct NewNMarker: NOverlay {
                 isHideCollidedSymbols: asBool(d[Self.isHideCollidedSymbolsName]!)
         )
         
-        for (key, caster) in casters {
-            if let rawValue = d[key] {
-                let value = caster(rawValue)
-                m.info =
-            }
-        }
+//        for (key, caster) in casters {
+//            if let rawValue = d[key] {
+//                let value = caster(rawValue)
+//                m.info =
+//            }
+//        }
         
         return m
     }
