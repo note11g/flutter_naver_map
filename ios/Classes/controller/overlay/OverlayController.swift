@@ -185,6 +185,8 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
 
     func setIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any) {
         overlay.icon = NOverlayImage.fromMessageable(rawNOverlayImage).overlayImage
+        
+        // todo : size Correction
     }
 
     func setIconSize(_ overlay: NMFLocationOverlay, rawSize: Any) {
