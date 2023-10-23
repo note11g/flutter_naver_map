@@ -6,6 +6,8 @@ internal struct NArrowheadPathOverlay: AddableOverlay {
 
     let info: NOverlayInfo
     let coords: Array<NMGLatLng>
+    let minZoom: Double?
+    let maxZoom: Double?
     let width: CGFloat
     let color: UIColor
     let outlineWidth: CGFloat
@@ -16,6 +18,12 @@ internal struct NArrowheadPathOverlay: AddableOverlay {
     func createMapOverlay() -> OverlayType {
         let path = NMFArrowheadPath()
         path.points = coords
+        if let minZoom = minZoom {
+            path.minZoom = minZoom
+        }
+        if let maxZoom = maxZoom {
+            path.maxZoom = maxZoom
+        }
         path.width = width
         path.color = color
         path.outlineWidth = outlineWidth
@@ -30,6 +38,8 @@ internal struct NArrowheadPathOverlay: AddableOverlay {
         return NArrowheadPathOverlay(
                 info: NOverlayInfo.fromMessageable(d[infoName]!),
                 coords: asArr(d[coordsName]!, elementCaster: asLatLng),
+                minZoom: castOrNull(d[minZoomName], caster: asDouble),
+                maxZoom: castOrNull(d[maxZoomName], caster: asDouble),
                 width: asCGFloat(d[widthName]!),
                 color: asUIColor(d[colorName]!),
                 outlineWidth: asCGFloat(d[outlineWidthName]!),

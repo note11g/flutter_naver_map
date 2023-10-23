@@ -6,11 +6,19 @@ internal struct NGroundOverlay: AddableOverlay {
 
     let info: NOverlayInfo
     let bounds: NMGLatLngBounds
+    let minZoom: Double?
+    let maxZoom: Double?
     let image: NOverlayImage
     let alpha: CGFloat
 
     func createMapOverlay() -> OverlayType {
         let overlay = NMFGroundOverlay(bounds: bounds, image: image.overlayImage)
+        if let minZoom = minZoom {
+            overlay.minZoom = minZoom
+        }
+        if let maxZoom = maxZoom {
+            overlay.maxZoom = maxZoom
+        }
         overlay.alpha = alpha
         return overlay
     }
@@ -20,6 +28,8 @@ internal struct NGroundOverlay: AddableOverlay {
         return NGroundOverlay(
                 info: NOverlayInfo.fromMessageable(d[infoName]!),
                 bounds: asLatLngBounds(d[boundsName]!),
+                minZoom: castOrNull(d[minZoomName], caster: asDouble),
+                maxZoom: castOrNull(d[maxZoomName], caster: asDouble),
                 image: NOverlayImage.fromMessageable(d[imageName]!),
                 alpha: asCGFloat(d[alphaName]!)
         )

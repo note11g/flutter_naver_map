@@ -6,6 +6,8 @@ internal struct NPolygonOverlay: AddableOverlay {
 
     let info: NOverlayInfo
     let coords: Array<NMGLatLng>
+    let minZoom: Double?
+    let maxZoom: Double?
     let color: UIColor
     let holes: Array<Array<NMGLatLng>>
     let outlineColor: UIColor
@@ -17,6 +19,12 @@ internal struct NPolygonOverlay: AddableOverlay {
                 interiorRings: holes.map({ NMGLineString(points: $0) })
         )
         let overlay = NMFPolygonOverlay(polygon as! NMGPolygon<AnyObject>)!
+        if let minZoom = minZoom {
+            overlay.minZoom = minZoom
+        }
+        if let maxZoom = maxZoom {
+            overlay.maxZoom = maxZoom
+        }
         overlay.fillColor = color
         overlay.outlineColor = outlineColor
         overlay.outlineWidth = UInt(round(outlineWidth))
@@ -28,6 +36,8 @@ internal struct NPolygonOverlay: AddableOverlay {
         return NPolygonOverlay(
                 info: NOverlayInfo.fromMessageable(d[infoName]!),
                 coords: asArr(d[coordsName]!, elementCaster: asLatLng),
+                minZoom: castOrNull(d[minZoomName], caster: asDouble),
+                maxZoom: castOrNull(d[maxZoomName], caster: asDouble),
                 color: asUIColor(d[colorName]!),
                 holes: asArr(d[holesName]!, elementCaster: { asArr($0, elementCaster: asLatLng) }),
                 outlineColor: asUIColor(d[outlineColorName]!),

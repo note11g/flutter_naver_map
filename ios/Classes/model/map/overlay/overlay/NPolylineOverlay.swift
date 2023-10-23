@@ -6,6 +6,8 @@ internal struct NPolylineOverlay: AddableOverlay {
 
     let info: NOverlayInfo
     let coords: Array<NMGLatLng>
+    let minZoom: Double?
+    let maxZoom: Double?
     let color: UIColor
     let width: Double
     let lineCap: NMFOverlayLineCap
@@ -15,6 +17,12 @@ internal struct NPolylineOverlay: AddableOverlay {
     func createMapOverlay() -> OverlayType {
         let polyline = NMFPolylineOverlay()
         polyline.line = NMGLineString(points: coords)
+        if let minZoom = minZoom {
+            polyline.minZoom = minZoom
+        }
+        if let maxZoom = maxZoom {
+            polyline.maxZoom = maxZoom
+        }
         polyline.color = color
         polyline.width = CGFloat(width)
         polyline.capType = lineCap
@@ -28,6 +36,8 @@ internal struct NPolylineOverlay: AddableOverlay {
         return NPolylineOverlay(
                 info: NOverlayInfo.fromMessageable(d[infoName]!),
                 coords: asArr(d[coordsName]!, elementCaster: asLatLng),
+                minZoom: castOrNull(d[minZoomName], caster: asDouble),
+                maxZoom: castOrNull(d[maxZoomName], caster: asDouble),
                 color: asUIColor(d[colorName]!),
                 width: asDouble(d[widthName]!),
                 lineCap: asLineCap(d[lineCapName]!),

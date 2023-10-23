@@ -11,6 +11,8 @@ internal struct NInfoWindow: AddableOverlay {
     let position: NMGLatLng?
     let offsetX: Double
     let offsetY: Double
+    let minZoom: Double?
+    let maxZoom: Double?
 
     func createMapOverlay() -> OverlayType {
         let infoWindow = NMFInfoWindow()
@@ -21,6 +23,12 @@ internal struct NInfoWindow: AddableOverlay {
         infoWindow.offsetY = asRoundInt(rawFloat: offsetY)
         if let position = position {
             infoWindow.position = position
+        }
+        if let minZoom = minZoom {
+            infoWindow.minZoom = minZoom
+        }
+        if let maxZoom = maxZoom {
+            infoWindow.maxZoom = maxZoom
         }
         return infoWindow
     }
@@ -34,7 +42,9 @@ internal struct NInfoWindow: AddableOverlay {
                 alpha: asDouble(d[alphaName]!),
                 position: castOrNull(d[positionName], caster: asLatLng),
                 offsetX: asDouble(d[offsetXName]!),
-                offsetY: asDouble(d[offsetYName]!)
+                offsetY: asDouble(d[offsetYName]!),
+                minZoom: castOrNull(d[minZoomName], caster: asDouble),
+                maxZoom: castOrNull(d[maxZoomName], caster: asDouble)
         )
     }
 

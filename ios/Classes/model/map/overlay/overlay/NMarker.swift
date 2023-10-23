@@ -6,6 +6,8 @@ internal struct NMarker: AddableOverlay {
 
     let info: NOverlayInfo
     let position: NMGLatLng
+    let minZoom: Double?
+    let maxZoom: Double?
     let icon: NOverlayImage?
     let iconTintColor: UIColor
     let alpha: CGFloat
@@ -28,6 +30,12 @@ internal struct NMarker: AddableOverlay {
     func createMapOverlay() -> OverlayType {
         let marker = NMFMarker()
         marker.position = position
+        if let minZoom = minZoom {
+            marker.minZoom = minZoom
+        }
+        if let maxZoom = maxZoom {
+            marker.maxZoom = maxZoom
+        }
         if let icon = icon {
             marker.iconImage = icon.overlayImage
         }
@@ -73,6 +81,8 @@ internal struct NMarker: AddableOverlay {
         return NMarker(
                 info: NOverlayInfo.fromMessageable(d[NMarker.infoName]!),
                 position: asLatLng(d[NMarker.positionName]!),
+                minZoom: castOrNull(d[minZoomName], caster: asDouble),
+                maxZoom: castOrNull(d[maxZoomName], caster: asDouble),
                 icon: castOrNull(d[NMarker.iconName], caster: NOverlayImage.fromMessageable),
                 iconTintColor: asUIColor(d[NMarker.iconTintColorName]!),
                 alpha: asCGFloat(d[NMarker.alphaName]!),

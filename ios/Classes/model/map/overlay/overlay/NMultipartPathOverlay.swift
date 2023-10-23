@@ -6,6 +6,8 @@ internal struct NMultipartPathOverlay: AddableOverlay {
 
     let info: NOverlayInfo
     let paths: Array<NMultipartPath>
+    let minZoom: Double?
+    let maxZoom: Double?
     let width: CGFloat
     let outlineWidth: CGFloat
     let patternImage: NOverlayImage?
@@ -18,6 +20,12 @@ internal struct NMultipartPathOverlay: AddableOverlay {
     func createMapOverlay() -> OverlayType {
         let overlay = NMFMultipartPath()
         paths.applyLineAndColor(linePartsFun: { overlay.lineParts = $0 }, colorPartsFun: { overlay.colorParts = $0 })
+        if let minZoom = minZoom {
+            overlay.minZoom = minZoom
+        }
+        if let maxZoom = maxZoom {
+            overlay.maxZoom = maxZoom
+        }
         overlay.width = width
         overlay.outlineWidth = outlineWidth
         overlay.patternIcon = patternImage?.overlayImage
@@ -34,6 +42,8 @@ internal struct NMultipartPathOverlay: AddableOverlay {
         return NMultipartPathOverlay(
                 info: NOverlayInfo.fromMessageable(d[infoName]!),
                 paths: asArr(d[pathsName]!, elementCaster: NMultipartPath.fromMessageable),
+                minZoom: castOrNull(d[minZoomName], caster: asDouble),
+                maxZoom: castOrNull(d[maxZoomName], caster: asDouble),
                 width: asCGFloat(d[widthName]!),
                 outlineWidth: asCGFloat(d[outlineWidthName]!),
                 patternImage: castOrNull(d[patternImageName], caster: NOverlayImage.fromMessageable),
