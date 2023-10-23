@@ -22,7 +22,6 @@ internal struct NPathOverlay: AddableOverlay {
     func createMapOverlay() -> OverlayType {
         let overlay = NMFPath()
         overlay.path = NMGLineString(points: coords)
-        overlay.width = width
         overlay.color = color
         overlay.outlineWidth = outlineWidth
         overlay.outlineColor = outlineColor
@@ -34,6 +33,9 @@ internal struct NPathOverlay: AddableOverlay {
         overlay.isHideCollidedCaptions = isHideCollidedCaptions
         overlay.isHideCollidedMarkers = isHideCollidedMarkers
         overlay.isHideCollidedSymbols = isHideCollidedSymbols
+        ScaleCorrectionUtil.applyCorrectSize(NSize(width: width, height: -1), image: patternImage, sizeApplier: { width, _ in
+            overlay.width = width
+        })
         return overlay
     }
 

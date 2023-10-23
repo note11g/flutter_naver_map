@@ -18,7 +18,6 @@ internal struct NMultipartPathOverlay: AddableOverlay {
     func createMapOverlay() -> OverlayType {
         let overlay = NMFMultipartPath()
         paths.applyLineAndColor(linePartsFun: { overlay.lineParts = $0 }, colorPartsFun: { overlay.colorParts = $0 })
-        overlay.width = width
         overlay.outlineWidth = outlineWidth
         overlay.patternIcon = patternImage?.overlayImage
         overlay.patternInterval = UInt(round(patternInterval))
@@ -26,6 +25,9 @@ internal struct NMultipartPathOverlay: AddableOverlay {
         overlay.isHideCollidedCaptions = isHideCollidedCaptions
         overlay.isHideCollidedMarkers = isHideCollidedMarkers
         overlay.isHideCollidedSymbols = isHideCollidedSymbols
+        ScaleCorrectionUtil.applyCorrectSize(NSize(width: width, height: -1), image: patternImage, sizeApplier: { width, _ in
+            overlay.width = width
+        })
         return overlay
     }
 
