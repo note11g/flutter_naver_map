@@ -35,6 +35,8 @@ class NArrowheadPathOverlay extends NAddableOverlay<NArrowheadPathOverlay> {
     Color outlineColor = Colors.black,
     double elevation = 0,
     double headSizeRatio = 2.5,
+    super.minZoom,
+    super.maxZoom,
   })  : _coords = coords,
         _width = width,
         _color = color,

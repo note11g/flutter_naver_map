@@ -31,6 +31,8 @@ class NPolylineOverlay extends NAddableOverlay<NPolylineOverlay> {
     NLineCap lineCap = NLineCap.butt,
     NLineJoin lineJoin = NLineJoin.miter,
     Iterable<int> pattern = const [],
+    super.minZoom,
+    super.maxZoom,
   })  : _coords = coords,
         _color = color,
         _width = width,

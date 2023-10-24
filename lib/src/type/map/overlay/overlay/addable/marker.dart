@@ -82,6 +82,8 @@ class NMarker extends NAddableOverlay<NMarker> {
     bool isHideCollidedCaptions = false,
     bool isHideCollidedMarkers = false,
     bool isHideCollidedSymbols = false,
+    super.minZoom,
+    super.maxZoom,
   })  : assert(captionAligns.isNotEmpty),
         _position = position,
         _icon = icon,

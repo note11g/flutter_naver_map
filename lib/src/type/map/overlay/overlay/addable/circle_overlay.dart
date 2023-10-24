@@ -27,6 +27,8 @@ class NCircleOverlay extends NAddableOverlay<NCircleOverlay> {
     Color color = Colors.white,
     Color outlineColor = Colors.black,
     double outlineWidth = 0,
+    super.minZoom,
+    super.maxZoom,
   })  : _center = center,
         _radius = radius,
         _color = color,

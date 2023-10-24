@@ -31,7 +31,7 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
         _iconSize = iconSize,
         _subAnchor = subAnchor,
         _subIconSize = subIconSize,
-        super(_locationOverlayInfo);
+        super(info: _locationOverlayInfo);
 
   static const NOverlayInfo _locationOverlayInfo =
       NOverlayInfo(type: NOverlayType.locationOverlay, id: "L");

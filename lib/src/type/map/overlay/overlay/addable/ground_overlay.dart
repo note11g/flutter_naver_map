@@ -18,6 +18,8 @@ class NGroundOverlay extends NAddableOverlay<NGroundOverlay> {
     required NLatLngBounds bounds,
     required NOverlayImage image,
     double alpha = 1.0,
+    super.minZoom,
+    super.maxZoom,
   })  : _bounds = bounds,
         _image = image,
         _alpha = alpha,

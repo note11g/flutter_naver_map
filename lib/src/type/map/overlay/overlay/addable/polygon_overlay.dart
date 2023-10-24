@@ -27,6 +27,8 @@ class NPolygonOverlay extends NAddableOverlay<NPolygonOverlay> {
     Iterable<Iterable<NLatLng>> holes = const [],
     Color outlineColor = Colors.black,
     double outlineWidth = 0,
+    super.minZoom,
+    super.maxZoom,
   })  : assert(coords.length >= 3),
         assert(coords.first == coords.last),
         _coords = coords,

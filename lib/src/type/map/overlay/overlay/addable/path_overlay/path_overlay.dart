@@ -58,6 +58,8 @@ class NPathOverlay extends NAddableOverlay<NPathOverlay> {
     bool isHideCollidedCaptions = false,
     bool isHideCollidedMarkers = false,
     bool isHideCollidedSymbols = false,
+    super.minZoom,
+    super.maxZoom,
   })  : _coords = coords,
         _width = width,
         _color = color,

@@ -42,6 +42,8 @@ class NMultipartPathOverlay extends NAddableOverlay<NMultipartPathOverlay> {
     bool isHideCollidedCaptions = false,
     bool isHideCollidedMarkers = false,
     bool isHideCollidedSymbols = false,
+    super.minZoom,
+    super.maxZoom,
   })  : _paths = paths,
         _width = width,
         _outlineWidth = outlineWidth,

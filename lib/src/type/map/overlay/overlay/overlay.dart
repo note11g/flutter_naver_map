@@ -2,7 +2,16 @@ part of flutter_naver_map;
 
 abstract class NOverlay<O extends NOverlay<void>>
     with _NOverlaySender, _NOverlayHandler<O> {
-  NOverlay(this.info);
+  NOverlay({
+    required this.info,
+    double? minZoom,
+    double? maxZoom,
+  })  : _minZoom = minZoom ?? NaverMapViewOptions.minimumZoom,
+        _maxZoom = maxZoom ?? NaverMapViewOptions.maximumZoom {
+    if (minZoom != null && maxZoom != null) {
+      assert(minZoom <= maxZoom);
+    }
+  }
 
   @override
   final NOverlayInfo info;
