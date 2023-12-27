@@ -22,8 +22,8 @@ internal struct NPathOverlay: AddableOverlay {
     func createMapOverlay() -> OverlayType {
         let overlay = NMFPath()
         overlay.path = NMGLineString(points: coords)
-        overlay.color = color
         overlay.width = width
+        overlay.color = color
         overlay.outlineWidth = outlineWidth
         overlay.outlineColor = outlineColor
         overlay.passedColor = passedColor

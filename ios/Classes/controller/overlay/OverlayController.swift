@@ -184,8 +184,7 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
     }
 
     func setIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any) {
-        let nOverlayImage = NOverlayImage.fromMessageable(rawNOverlayImage)
-        overlay.icon = nOverlayImage.overlayImage
+        overlay.icon = NOverlayImage.fromMessageable(rawNOverlayImage).overlayImage
     }
 
     func setIconSize(_ overlay: NMFLocationOverlay, rawSize: Any) {
@@ -207,8 +206,7 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
     }
 
     func setSubIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any) {
-        let nOverlayImage = NOverlayImage.fromMessageable(rawNOverlayImage)
-        overlay.subIcon = nOverlayImage.overlayImage
+        overlay.subIcon = NOverlayImage.fromMessageable(rawNOverlayImage).overlayImage
     }
 
     func setSubIconSize(_ overlay: NMFLocationOverlay, rawSize: Any) {
@@ -236,8 +234,7 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
     }
 
     func setIcon(_ marker: NMFMarker, rawIcon: Any) {
-        let nOverlayImage = NOverlayImage.fromMessageable(rawIcon)
-        marker.iconImage = nOverlayImage.overlayImage
+        marker.iconImage = NOverlayImage.fromMessageable(rawIcon).overlayImage
     }
 
     func setIconTintColor(_ marker: NMFMarker, rawIconTintColor: Any) {
@@ -486,8 +483,7 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
     }
 
     func setPatternImage(_ pathOverlay: NMFPath, rawNOverlayImage: Any) {
-        let nOverlayImage = NOverlayImage.fromMessageable(rawNOverlayImage)
-        pathOverlay.patternIcon = nOverlayImage.overlayImage
+        pathOverlay.patternIcon = NOverlayImage.fromMessageable(rawNOverlayImage).overlayImage
     }
 
     func setPatternInterval(_ pathOverlay: NMFPath, rawInterval: Any) {
@@ -530,8 +526,7 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
     }
 
     func setPatternImage(_ multipartPathOverlay: NMFMultipartPath, rawNOverlayImage: Any) {
-        let nOverlayImage = NOverlayImage.fromMessageable(rawNOverlayImage)
-        multipartPathOverlay.patternIcon = nOverlayImage.overlayImage
+        multipartPathOverlay.patternIcon = NOverlayImage.fromMessageable(rawNOverlayImage).overlayImage
     }
 
     func setPatternInterval(_ multipartPathOverlay: NMFMultipartPath, rawInterval: Any) {
