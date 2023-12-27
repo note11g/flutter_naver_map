@@ -25,6 +25,11 @@ class ExampleAppTheme {
             fontWeight: FontWeight.w600,
             color: Colors.white,
             letterSpacing: 0),
+        labelMedium: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+            letterSpacing: 0),
         labelLarge: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,
@@ -54,6 +59,11 @@ class ExampleAppTheme {
         labelSmall: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
+            color: Colors.white,
+            letterSpacing: 0),
+        labelMedium: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
             color: Colors.white,
             letterSpacing: 0),
         labelLarge: TextStyle(
