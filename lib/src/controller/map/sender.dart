@@ -54,6 +54,8 @@ abstract class _NaverMapControlSender {
 
   Future<void> clearOverlays({NOverlayType? type});
 
+  Future<void> forceRefresh();
+
   /*
     --- private methods ---
   */

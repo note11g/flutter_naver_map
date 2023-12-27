@@ -161,6 +161,11 @@ class _NaverMapControllerImpl
     await invokeMethod("clearOverlays", type);
   }
 
+  @override
+  Future<void> forceRefresh() async {
+    await invokeMethod("forceRefresh");
+  }
+
   /*
     --- private methods ---
   */

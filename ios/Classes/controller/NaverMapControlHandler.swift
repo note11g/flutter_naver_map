@@ -43,6 +43,8 @@ internal protocol NaverMapControlHandler {
     func deleteOverlay(overlayInfo: NOverlayInfo, onSuccess: @escaping (Any?) -> Void)
 
     func clearOverlays(type: NOverlayType?, onSuccess: @escaping (Any?) -> Void)
+    
+    func forceRefresh(onSuccess: @escaping (Any?) -> Void)
 
     func updateOptions(options: Dictionary<String, Any>, onSuccess: @escaping (Any?) -> Void)
 }
@@ -88,6 +90,7 @@ internal extension  NaverMapControlHandler {
         case "addOverlayAll": addOverlayAll(rawOverlays: asArr(call.arguments!, elementCaster: asDict), onSuccess: result)
         case "deleteOverlay": deleteOverlay(overlayInfo: NOverlayInfo.fromMessageable(call.arguments!), onSuccess: result)
         case "clearOverlays": clearOverlays(type: castOrNull(call.arguments, caster: { NOverlayType(rawValue: asString($0))! }), onSuccess: result)
+        case "forceRefresh": forceRefresh(onSuccess: result)
         case "updateOptions": updateOptions(options: asDict(call.arguments!), onSuccess: result)
         default: result(FlutterMethodNotImplemented)
         }

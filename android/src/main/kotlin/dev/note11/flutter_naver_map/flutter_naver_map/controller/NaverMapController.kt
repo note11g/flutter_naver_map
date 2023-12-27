@@ -23,6 +23,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInf
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NPickableInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NSymbolInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
+import dev.note11.flutter_naver_map.flutter_naver_map.view.forceRefresh
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
 import java.io.FileOutputStream
@@ -190,6 +191,11 @@ internal class NaverMapController(
             if (type != null) clearOverlays(type)
             else clearOverlays()
         }
+        onSuccess()
+    }
+
+    override fun forceRefresh(onSuccess: () -> Unit) {
+        naverMap.forceRefresh() // todo : change to SDK's API (now ref at NaverMapView.kt)
         onSuccess()
     }
 
