@@ -12,9 +12,11 @@ internal struct NOverlayImage {
     }
 
     private func makeOverlayImageWithPath() -> NMFOverlayImage {
-        let uiImage = UIImage(contentsOfFile: path)
-        let img = NMFOverlayImage(image: uiImage!)
-        return img
+        let image = UIImage(contentsOfFile: path)
+        let imageData = image!.pngData()!
+        let scaledImage = UIImage(data: imageData, scale: UIScreen.main.scale)
+        let overlayImg = NMFOverlayImage(image: scaledImage!)
+        return overlayImg
     }
 
     private func makeOverlayImageWithAssetPath() -> NMFOverlayImage {
