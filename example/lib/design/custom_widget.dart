@@ -587,7 +587,7 @@ class HalfActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-        color: Colors.grey.shade200,
+        color: getColorTheme(context).outlineVariant,
         borderRadius: BorderRadius.circular(12),
         clipBehavior: Clip.antiAlias,
         child: InkWell(

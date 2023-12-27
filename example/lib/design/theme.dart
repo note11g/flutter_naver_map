@@ -10,6 +10,7 @@ class ExampleAppTheme {
         background: Colors.white,
         onBackground: Colors.black,
         outline: Colors.grey.shade200,
+        outlineVariant: Colors.grey.shade200,
         primaryContainer: const Color(0xFFD2FFB4),
       ),
       textTheme: const TextTheme(
@@ -46,6 +47,7 @@ class ExampleAppTheme {
         background: Colors.grey.shade900,
         onBackground: Colors.white,
         outline: Colors.grey.shade700,
+        outlineVariant: Colors.white54,
         primaryContainer: const Color(0xFF7FA864),
       ),
       textTheme: const TextTheme(
