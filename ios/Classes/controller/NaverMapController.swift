@@ -143,6 +143,11 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
         }
         onSuccess(nil)
     }
+    
+    func forceRefresh(onSuccess: @escaping (Any?) -> Void) {
+        mapView.forceRefresh()
+        onSuccess(nil)
+    }
 
     func updateOptions(options: Dictionary<String, Any>, onSuccess: @escaping (Any?) -> ()) {
         naverMapViewOptions = NaverMapViewOptions.fromMessageable(options)

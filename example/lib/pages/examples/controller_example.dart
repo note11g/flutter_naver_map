@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_naver_map_example/design/custom_widget.dart';
-import 'package:flutter_naver_map_example/pages/examples/example_base.dart';
+import 'package:flutter_naver_map_example/pages/example_base.dart';
 import 'package:flutter_naver_map_example/util/alert_util.dart';
 
 import '../../design/theme.dart';
@@ -93,15 +93,32 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
               description: "현재 카메라 기준: .getMeterPerDp()\n"
                   "위도/줌레벨 지정: .getMeterPerDpAtLatitude()"),
           const SizedBox(height: 4),
-          Row(
-              // textBaseline: TextBaseline.alphabetic,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text("1dp = ", style: getTextTheme(context).bodyMedium),
-                Text("${_nowMeterPerDp}m",
-                    style: getTextTheme(context).titleMedium),
-              ]),
+          Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+            Text("1dp = ", style: getTextTheme(context).bodyMedium),
+            Text("${_nowMeterPerDp}m",
+                style: getTextTheme(context).titleMedium),
+          ]),
         ]));
+  }
+
+  Widget _actionButtonSections(bool isUnFold) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+      child: HalfActionButtonGrid(buttons: [
+        if (isUnFold)
+        HalfActionButton(
+            action: _mapController.forceRefresh,
+            icon: Icons.refresh,
+            title: "지도 강제 새로고침",
+            description: ".forceRefresh"),
+        HalfActionButton(
+            action: () => AlertUtil.openAlert("준비중인 예제입니다.\n함수로는 사용하실 수 있습니다.",
+                context: context),
+            icon: Icons.camera_alt,
+            title: "지도 캡쳐하기",
+            description: ".takeSnapshot"),
+      ]),
+    );
   }
 
   @override
@@ -109,6 +126,7 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
     return Column(children: [
       _nowCameraPositionWidget(),
       _meterPerDpWidget(),
+      _actionButtonSections(widget.canScroll),
       const BottomPadding(),
     ]);
   }

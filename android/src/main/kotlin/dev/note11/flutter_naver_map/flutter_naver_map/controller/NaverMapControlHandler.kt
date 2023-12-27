@@ -102,6 +102,7 @@ internal interface NaverMapControlHandler {
             type = call.arguments?.toString()?.let(NOverlayType::fromString),
             onSuccess = result::send
         )
+        "forceRefresh" -> forceRefresh(onSuccess = result::send)
         "updateOptions" -> updateOptions(options = call.arguments.asMap(), onSuccess = result::send)
         else -> result.notImplemented()
     }
@@ -147,6 +148,8 @@ internal interface NaverMapControlHandler {
     fun deleteOverlay(overlayInfo: NOverlayInfo, onSuccess: () -> Unit)
 
     fun clearOverlays(type: NOverlayType?, onSuccess: () -> Unit)
+
+    fun forceRefresh(onSuccess: () -> Unit)
 
     fun updateOptions(options: Map<String, Any>, onSuccess: () -> Unit)
 }
