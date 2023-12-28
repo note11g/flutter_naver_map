@@ -155,7 +155,7 @@ marker
 
 ```dart
 marker.setOnTapListener((NMarker marker) {
-  print("마커가 터치되었습니다. id: ${marker.id});
+  print("마커가 터치되었습니다. id: ${marker.info.id});
 });
 ```
 
