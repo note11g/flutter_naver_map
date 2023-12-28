@@ -205,8 +205,12 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
         overlay.subAnchor = NPoint.fromMessageable(rawNPoint).cgPoint
     }
 
-    func setSubIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any) {
-        overlay.subIcon = NOverlayImage.fromMessageable(rawNOverlayImage).overlayImage
+    func setSubIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any?) {
+        if (rawNOverlayImage != nil) {
+            overlay.subIcon = NOverlayImage.fromMessageable(rawNOverlayImage!).overlayImage
+        } else {
+            overlay.subIcon = nil
+        }
     }
 
     func setSubIconSize(_ overlay: NMFLocationOverlay, rawSize: Any) {

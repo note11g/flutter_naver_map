@@ -218,9 +218,13 @@ internal class OverlayController(
         overlay.subAnchor = nPoint.toPointF()
     }
 
-    override fun setSubIcon(overlay: LocationOverlay, rawNOverlayImage: Any) {
-        val nOverlayImage = NOverlayImage.fromMessageable(rawNOverlayImage.asMap())
-        nOverlayImage.applyToOverlay(overlay::setSubIcon)
+    override fun setSubIcon(overlay: LocationOverlay, rawNOverlayImage: Any?) {
+        val nOverlayImage = rawNOverlayImage?.asMap()?.let(NOverlayImage::fromMessageable)
+        if (nOverlayImage != null) nOverlayImage.applyToOverlay(overlay::setSubIcon)
+        else {
+            overlay.subIcon = null
+            println("subIcon cleared!")
+        }
     }
 
     override fun setSubIconSize(overlay: LocationOverlay, rawSize: Any) {
