@@ -7,26 +7,34 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 // 통합 테스트를 위한 main 입니다.
 
 @visibleForTesting
-Future<void> mainWithTest(int testId) async {
-  print("---------------- NEW TEST : $testId ----------------");
+Future<void> mainWithTest(String tag) async {
+  print("---------------- NEW TEST : $tag ----------------");
   print("*** running platform: ${Platform.operatingSystem} ***\n");
 
   WidgetsFlutterBinding.ensureInitialized();
   await NaverMapSdk.instance.initialize(clientId: '', onAuthFailed: (ex) {});
 
-  runApp(MyApp(testId: testId));
+  runApp(MyApp(tag: tag));
 }
 
+@visibleForTesting
 class MyApp extends StatelessWidget {
-  final int testId;
+  final String tag;
 
-  const MyApp({super.key, required this.testId});
+  const MyApp({super.key, required this.tag});
 
   @override
-  Widget build(BuildContext context) =>
-      MaterialApp(home: TestPage(key: Key("testPage_$testId")));
+  Widget build(BuildContext context) {
+    return MaterialApp(home: newTestPage(tag));
+  }
 }
 
+@visibleForTesting
+TestPage newTestPage(String tag) {
+  return TestPage(key: Key("testPage_$tag"));
+}
+
+@visibleForTesting
 class TestPage extends StatefulWidget {
   const TestPage({Key? key}) : super(key: key);
 
@@ -34,6 +42,7 @@ class TestPage extends StatefulWidget {
   State<TestPage> createState() => TestPageState();
 }
 
+@visibleForTesting
 class TestPageState extends State<TestPage> {
   final Completer<NaverMapController> mapControllerCompleter = Completer();
 
@@ -49,5 +58,10 @@ class TestPageState extends State<TestPage> {
               mapControllerCompleter.complete(controller);
               log("onMapReady", name: "onMapReady");
             }));
+  }
+
+  void newMapTestPage(String tag) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (ctx) => newTestPage(tag)));
   }
 }

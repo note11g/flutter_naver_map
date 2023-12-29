@@ -8,14 +8,28 @@ abstract class NOverlay<O extends NOverlay<void>>
   final NOverlayInfo info;
 
   @override
-  bool get _isAdded => _overlayController != null;
+  bool get _isAdded => _overlayControllers.isNotEmpty;
 
   @override
-  _NOverlayController? _overlayController;
+
+  /// like stack. FIFO (because of flutter's navigator stack)
+  final List<_NOverlayController> _overlayControllers = [];
 
   void _addedOnMap(_NOverlayController controller) {
     controller.add(info, this);
-    _overlayController = controller;
+    _overlayControllers.add(controller);
+  }
+
+  void _removedOnMap(int overlayControllerId) {
+    int foundIndex = -1;
+    for (int i = _overlayControllers.length - 1; i >= 0; i--) {
+      if (_overlayControllers[i].viewId == overlayControllerId) {
+        foundIndex = i;
+        break;
+      }
+    }
+    if (foundIndex == -1) return;
+    _overlayControllers.removeAt(foundIndex);
   }
 
   @override
