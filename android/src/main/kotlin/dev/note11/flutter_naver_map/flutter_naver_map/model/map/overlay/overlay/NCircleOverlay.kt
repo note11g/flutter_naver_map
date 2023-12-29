@@ -18,7 +18,7 @@ internal data class NCircleOverlay(
     @ColorInt val color: Int,
     @ColorInt val outlineColor: Int,
     val outlineWidthDp: Double,
-) : AddableOverlay<CircleOverlay> {
+) : AddableOverlay<CircleOverlay>() {
 
     override fun createMapOverlay(): CircleOverlay = CircleOverlay().also { c ->
         c.center = center

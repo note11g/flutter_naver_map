@@ -22,6 +22,10 @@ internal interface OverlayHandler {
         if (hasOverlay(creator.info)) deleteOverlay(creator.info)
 
         return creator.createMapOverlay().also { overlay ->
+            creator.applyCommonProperties { name, arg ->
+                handleOverlay(overlay, name, arg, null)
+            }
+
             saveOverlay(overlay, creator.info)
         }
     }
@@ -31,7 +35,7 @@ internal interface OverlayHandler {
     */
 
     fun handleOverlay(
-        overlay: Overlay, method: String, arg: Any?, result: MethodChannel.Result,
+        overlay: Overlay, method: String, arg: Any?, result: MethodChannel.Result?,
     ): Boolean {
         when (method) {
             zIndexName -> setZIndex(overlay, arg!!)
@@ -41,7 +45,7 @@ internal interface OverlayHandler {
             maxZoomName -> setMaxZoom(overlay, arg!!)
             isMinZoomInclusiveName -> setIsMinZoomInclusive(overlay, arg!!)
             isMaxZoomInclusiveName -> setIsMaxZoomInclusive(overlay, arg!!)
-            performClickName -> performClick(overlay, result::success)
+            performClickName -> performClick(overlay, result!!::success)
             else -> return false
         }
         return true
@@ -74,6 +78,16 @@ internal interface OverlayHandler {
         const val isMaxZoomInclusiveName = "isMaxZoomInclusive"
         const val performClickName = "performClick"
         const val onTapName = "onTap"
+        val allPropertyNames = listOf(
+            zIndexName,
+            globalZIndexName,
+            isVisibleName,
+            minZoomName,
+            maxZoomName,
+            isMinZoomInclusiveName,
+            isMaxZoomInclusiveName
+        )
+
         fun getterName(name: String): String = "get${name}"
     }
 }

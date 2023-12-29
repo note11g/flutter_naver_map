@@ -40,7 +40,7 @@ internal data class NMarker(
     val isHideCollidedCaptions: Boolean,
     val isHideCollidedMarkers: Boolean,
     val isHideCollidedSymbols: Boolean,
-) : AddableOverlay<Marker> {
+) : AddableOverlay<Marker>() {
 
     override fun createMapOverlay(): Marker = Marker(position).also { m ->
         icon?.applyToOverlay(m::setIcon)
