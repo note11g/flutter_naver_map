@@ -1,13 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'util/test_util.dart';
 
 void main() {
-  testNaverMap("location overlay onTap test", (controller, context) async {
+  testNaverMap("location overlay onTap test", (controller, tester) async {
     final locationOverlay = await controller.getLocationOverlay();
     expect(locationOverlay.info.type, NOverlayType.locationOverlay);
 
@@ -25,7 +26,7 @@ void main() {
     expect(completedOverlayInfo, locationOverlay.info);
   });
 
-  testNaverMap('addable overlays add & pick test', (controller, context) async {
+  testNaverMap('addable overlays add & pick test', (controller, tester) async {
     final nowPosition =
         await controller.getCameraPosition().then((p) => p.target);
 
@@ -41,7 +42,7 @@ void main() {
     final img = await NOverlayImage.fromWidget(
         widget: const FlutterLogo(),
         size: const Size(24, 24),
-        context: context);
+        context: tester.testPageState.context);
 
     final overlaySet = <NAddableOverlay>{
       NMarker(id: "1", position: nowPosition),
@@ -98,13 +99,42 @@ void main() {
 
   group("issue case test", () {
     /// #127 issue test (https://github.com/note11g/flutter_naver_map/issues/127)
-    testNaverMap("AddableOverlay deletion test", (controller, context) async {
-      final nowCameraPosition = await controller.getCameraPosition();
-      final marker = NMarker(id: "1", position: nowCameraPosition.target);
+    testNaverMap("AddableOverlay deletion test", (controller, tester) async {
+      final marker = NMarker(id: "1", position: const NLatLng(127, 37));
       await controller.addOverlay(marker);
       await controller.deleteOverlay(marker.info);
       marker.setAlpha(0.5);
       expect(marker.alpha, 0.5);
+    });
+
+    /// #128 issue test  (https://github.com/note11g/flutter_naver_map/issues/128)
+    testNaverMap("overlay with multiple map test",
+        (map1Controller, tester) async {
+      final marker = NMarker(id: "multi-1", position: const NLatLng(127, 37));
+      await map1Controller.addOverlay(marker);
+      marker.setAlpha(0.1);
+      expect(marker.alpha, 0.1);
+
+      final map2Controller =
+          await createNewNaverMapPageForTest(tester, tag: "map2");
+      await map2Controller.addOverlay(marker);
+      marker.setAlpha(0.2);
+      expect(marker.alpha, 0.2);
+      await map2Controller.deleteOverlay(marker.info);
+
+      final map3Controller =
+          await createNewNaverMapPageForTest(tester, tag: "map3");
+      marker.setAlpha(0.4);
+      expect(marker.alpha, 0.4);
+      await map3Controller.addOverlay(marker);
+      marker.setAlpha(0.5);
+      expect(marker.alpha, 0.5);
+      await map3Controller.deleteOverlay(marker.info);
+      marker.setAlpha(0.6);
+      expect(marker.alpha, 0.6);
+      await map1Controller.clearOverlays();
+      marker.setAlpha(0.8);
+      expect(marker.alpha, 0.8);
     });
   });
 }

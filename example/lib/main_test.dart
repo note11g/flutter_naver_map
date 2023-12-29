@@ -17,16 +17,24 @@ Future<void> mainWithTest(String tag) async {
   runApp(MyApp(tag: tag));
 }
 
+@visibleForTesting
 class MyApp extends StatelessWidget {
   final String tag;
 
   const MyApp({super.key, required this.tag});
 
   @override
-  Widget build(BuildContext context) =>
-      MaterialApp(home: TestPage(key: Key("testPage_$tag")));
+  Widget build(BuildContext context) {
+    return MaterialApp(home: newTestPage(tag));
+  }
 }
 
+@visibleForTesting
+TestPage newTestPage(String tag) {
+  return TestPage(key: Key("testPage_$tag"));
+}
+
+@visibleForTesting
 class TestPage extends StatefulWidget {
   const TestPage({Key? key}) : super(key: key);
 
@@ -34,6 +42,7 @@ class TestPage extends StatefulWidget {
   State<TestPage> createState() => TestPageState();
 }
 
+@visibleForTesting
 class TestPageState extends State<TestPage> {
   final Completer<NaverMapController> mapControllerCompleter = Completer();
 
@@ -49,5 +58,10 @@ class TestPageState extends State<TestPage> {
               mapControllerCompleter.complete(controller);
               log("onMapReady", name: "onMapReady");
             }));
+  }
+
+  void newMapTestPage(String tag) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (ctx) => newTestPage(tag)));
   }
 }
