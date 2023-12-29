@@ -4,6 +4,8 @@ internal protocol AddableOverlay {
     associatedtype OverlayType: NMFOverlay
 
     var info: NOverlayInfo { get }
+    
+    var overlayPayload: Dictionary<String, Any?> { get set }
 
     func createMapOverlay() -> OverlayType
 
@@ -25,7 +27,19 @@ func asAddableOverlayFromMessageable(info: NOverlayInfo, json: Any) throws -> an
     case .arrowheadPathOverlay: creator = NArrowheadPathOverlay.fromMessageable
     case .locationOverlay: throw NSError()
     }
-    return creator(d)
+    var addableOverlay = creator(d)
+    addableOverlay.setCommonProperties(rawArgs: d)
+    return addableOverlay
+}
+
+internal extension AddableOverlay {
+    mutating func setCommonProperties(rawArgs: Dictionary<String, Any?>) {
+        overlayPayload = rawArgs.filter { allPropertyNames.contains($0.key) }
+    }
+    
+    func applyCommonProperties(applyProperty: (_ name: String, _ arg: Any?) -> Void) {
+        overlayPayload.forEach { applyProperty($0, $1) }
+    }
 }
 
 extension NMFLocationOverlay {

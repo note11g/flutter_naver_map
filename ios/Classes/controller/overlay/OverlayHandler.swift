@@ -46,23 +46,32 @@ let isMinZoomInclusiveName = "isMinZoomInclusive"
 let isMaxZoomInclusiveName = "isMaxZoomInclusive"
 private let performClickName = "performClick"
 let onTapName = "onTap"
+let allPropertyNames = [
+    zIndexName,
+    globalZIndexName,
+    isVisibleName,
+    minZoomName,
+    maxZoomName,
+    isMinZoomInclusiveName,
+    isMaxZoomInclusiveName,
+]
 
 internal extension OverlayHandler {
     func handleOverlay(
             overlay: NMFOverlay,
             method: String,
-            args: Any?,
-            result: @escaping FlutterResult
+            arg: Any?,
+            result: FlutterResult? // Optional Closure is @escaping as a default.
     ) -> Bool {
         switch method {
-        case zIndexName: setZIndex(overlay, rawZIndex: args!)
-        case globalZIndexName: setGlobalZIndex(overlay, rawGlobalZIndex: args!)
-        case isVisibleName: setIsVisible(overlay, rawIsVisible: args!)
-        case minZoomName: setMinZoom(overlay, rawMinZoom: args!)
-        case maxZoomName: setMaxZoom(overlay, rawMaxZoom: args!)
-        case isMinZoomInclusiveName: setIsMinZoomInclusive(overlay, rawIsMinZoomInclusive: args!)
-        case isMaxZoomInclusiveName: setIsMaxZoomInclusive(overlay, rawIsMaxZoomInclusive: args!)
-        case performClickName: performClick(overlay, success: result)
+        case zIndexName: setZIndex(overlay, rawZIndex: arg!)
+        case globalZIndexName: setGlobalZIndex(overlay, rawGlobalZIndex: arg!)
+        case isVisibleName: setIsVisible(overlay, rawIsVisible: arg!)
+        case minZoomName: setMinZoom(overlay, rawMinZoom: arg!)
+        case maxZoomName: setMaxZoom(overlay, rawMaxZoom: arg!)
+        case isMinZoomInclusiveName: setIsMinZoomInclusive(overlay, rawIsMinZoomInclusive: arg!)
+        case isMaxZoomInclusiveName: setIsMaxZoomInclusive(overlay, rawIsMaxZoomInclusive: arg!)
+        case performClickName: performClick(overlay, success: result!)
         default: return false
         }
         return true
@@ -74,6 +83,10 @@ internal extension OverlayHandler {
         }
 
         let overlay = creator.createMapOverlay()
+        creator.applyCommonProperties { name, arg in
+            _ = handleOverlay(overlay: overlay, method: name, arg: arg, result: nil)
+        }
+        
         saveOverlay(overlay: overlay, info: creator.info)
         return overlay
     }

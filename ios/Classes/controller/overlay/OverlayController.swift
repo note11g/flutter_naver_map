@@ -93,7 +93,7 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
         }
 
         let isInvokedOnCommonOverlay =
-                handleOverlay(overlay: overlay, method: query.methodName, args: call.arguments, result: result)
+                handleOverlay(overlay: overlay, method: query.methodName, arg: call.arguments, result: result)
 
         if !isInvokedOnCommonOverlay {
             var overlayHandleFunc: (NMFOverlay, String, Any?, @escaping FlutterResult) -> ()
