@@ -33,17 +33,8 @@ class _NOverlayExampleState extends State<NOverlayExample> {
       mapController.latLngToScreenLocation(latLng).then(
           (point) => addFlutterFloatingOverlay(point: point, overlay: overlay));
     });
-
-    if (overlay is NMarker) {
-      nowMarker = overlay;
-    }
-
     mapController.addOverlay(overlay);
   }
-
-  NMarker? nowMarker;
-
-
 
   OverlayEntry? entry;
 
@@ -124,14 +115,6 @@ class _NOverlayExampleState extends State<NOverlayExample> {
                     action: () => mapController.clearOverlays()),
               ),
             ])),
-      SimpleButton(
-          text: "test #127",
-          color: Colors.purple,
-          margin: EdgeInsets.zero,
-          action: () {
-            print(nowMarker);
-            nowMarker?.setIconTintColor(Colors.red);
-          }),
       const BottomPadding(),
     ]);
   }
