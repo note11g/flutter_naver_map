@@ -3,7 +3,7 @@ part of flutter_naver_map;
 mixin _NOverlaySender {
   bool get _isAdded;
 
-  _NOverlayController? get _overlayController;
+  List<_NOverlayController> get _overlayControllers;
 
   NOverlayInfo get info;
 
@@ -18,7 +18,13 @@ mixin _NOverlaySender {
         ? NMessageable.forOnce(NPayload.convertToMessageable(arguments!))
         : null;
 
-    return await _overlayController!.invokeMethod(query, messageable);
+    dynamic lastValue;
+
+    for (final overlayController in _overlayControllers) {
+      lastValue = await overlayController.invokeMethod(query, messageable);
+    }
+
+    return lastValue;
   }
 
   void _set(String name, dynamic value) async {

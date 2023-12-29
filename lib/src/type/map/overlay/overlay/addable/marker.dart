@@ -121,7 +121,7 @@ class NMarker extends NAddableOverlay<NMarker> {
     assert(infoWindow.withMarker);
     assert(_isAdded);
 
-    infoWindow._addedOnMap(_overlayController!);
+    _overlayControllers.forEach(infoWindow._addedOnMap);
     assert(infoWindow._isAdded);
 
     final messageable =
