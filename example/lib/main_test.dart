@@ -7,24 +7,24 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 // 통합 테스트를 위한 main 입니다.
 
 @visibleForTesting
-Future<void> mainWithTest(int testId) async {
-  print("---------------- NEW TEST : $testId ----------------");
+Future<void> mainWithTest(String tag) async {
+  print("---------------- NEW TEST : $tag ----------------");
   print("*** running platform: ${Platform.operatingSystem} ***\n");
 
   WidgetsFlutterBinding.ensureInitialized();
   await NaverMapSdk.instance.initialize(clientId: '', onAuthFailed: (ex) {});
 
-  runApp(MyApp(testId: testId));
+  runApp(MyApp(tag: tag));
 }
 
 class MyApp extends StatelessWidget {
-  final int testId;
+  final String tag;
 
-  const MyApp({super.key, required this.testId});
+  const MyApp({super.key, required this.tag});
 
   @override
   Widget build(BuildContext context) =>
-      MaterialApp(home: TestPage(key: Key("testPage_$testId")));
+      MaterialApp(home: TestPage(key: Key("testPage_$tag")));
 }
 
 class TestPage extends StatefulWidget {
