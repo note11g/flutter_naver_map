@@ -24,7 +24,7 @@ internal data class NPolylineOverlay(
     val lineCap: LineCap,
     val lineJoin: LineJoin,
     val patternDp: List<Int>,
-) : AddableOverlay<PolylineOverlay> {
+) : AddableOverlay<PolylineOverlay>() {
 
 
 

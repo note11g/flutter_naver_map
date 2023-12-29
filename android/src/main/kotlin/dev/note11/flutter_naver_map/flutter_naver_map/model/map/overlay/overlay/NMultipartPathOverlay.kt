@@ -24,7 +24,7 @@ internal data class NMultipartPathOverlay(
     val isHideCollidedCaptions: Boolean,
     val isHideCollidedMarkers: Boolean,
     val isHideCollidedSymbols: Boolean,
-) : AddableOverlay<MultipartPathOverlay> {
+) : AddableOverlay<MultipartPathOverlay>() {
 
 
     override fun createMapOverlay(): MultipartPathOverlay = MultipartPathOverlay().also { mo ->

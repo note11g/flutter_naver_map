@@ -22,7 +22,7 @@ internal data class NArrowheadPathOverlay(
     @ColorInt val outlineColor: Int,
     val elevationDp: Double,
     val headSizeRatio: Float,
-) : AddableOverlay<ArrowheadPathOverlay> {
+) : AddableOverlay<ArrowheadPathOverlay>() {
 
     override fun createMapOverlay(): ArrowheadPathOverlay = ArrowheadPathOverlay().also { g ->
         g.coords = coords

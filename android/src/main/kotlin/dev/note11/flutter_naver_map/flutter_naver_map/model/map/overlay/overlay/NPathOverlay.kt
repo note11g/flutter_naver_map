@@ -29,7 +29,7 @@ internal data class NPathOverlay(
     val isHideCollidedCaptions: Boolean,
     val isHideCollidedMarkers: Boolean,
     val isHideCollidedSymbols: Boolean,
-) : AddableOverlay<PathOverlay> {
+) : AddableOverlay<PathOverlay>() {
 
 
     override fun createMapOverlay(): PathOverlay = PathOverlay().also { g ->

@@ -14,7 +14,7 @@ internal data class NGroundOverlay(
     val bounds: LatLngBounds,
     val image: NOverlayImage,
     val alpha: Double,
-) : AddableOverlay<GroundOverlay> {
+) : AddableOverlay<GroundOverlay>() {
 
     override fun createMapOverlay(): GroundOverlay = GroundOverlay().also { g ->
         g.bounds = bounds
