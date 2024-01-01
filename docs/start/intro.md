@@ -18,3 +18,8 @@ Android와 iOS 플랫폼을 지원하며, 호환 가능한 버전은 다음과 �
 
 본격적으로 시작하기 앞서, [Naver Cloud Platform Console](https://console.ncloud.com/naver-service/application) 에서, 앱을 Android / iOS
 플랫폼 모두 등록해주세요.
+
+:::danger
+Android Platform에서는 Impeller Engine을 활용한 렌더링을 지원하지 않습니다. 이점 유의해주세요. (iOS는 정상 지원)
+플러터의 Android 렌더링 엔진 기본값은 Skia Engine 이므로, 별도의 설정을 하지 않으셨다면 따로 설정하실 필요가 없습니다.
+:::
