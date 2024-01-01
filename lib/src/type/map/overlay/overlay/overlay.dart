@@ -32,8 +32,18 @@ abstract class NOverlay<O extends NOverlay<void>>
     _overlayControllers.removeAt(foundIndex);
   }
 
+  Function(O overlay)? __onTapListener;
+
+  bool get _hasOnTapListener => __onTapListener != null;
+
   @override
-  Function(O overlay)? _onTapListener;
+  Function(O overlay)? get _onTapListener => __onTapListener;
+
+  @override
+  set _onTapListener(Function(O overlay)? listener) {
+    __onTapListener = listener;
+    _set(_hasOnTapListenerName, _hasOnTapListener);
+  }
 
   /*
     --- methods ---
@@ -109,6 +119,7 @@ abstract class NOverlay<O extends NOverlay<void>>
         _maxZoomName: _maxZoom,
         _isMinZoomInclusiveName: _isMinZoomInclusive,
         _isMaxZoomInclusiveName: _isMaxZoomInclusive,
+        _hasOnTapListenerName: _hasOnTapListener,
       };
 
   /* ----- fromMessageable ----- */
@@ -150,4 +161,5 @@ abstract class NOverlay<O extends NOverlay<void>>
   static const _isMinZoomInclusiveName = "isMinZoomInclusive";
   static const _isMaxZoomInclusiveName = "isMaxZoomInclusive";
   static const _performClickName = "performClick";
+  static const _hasOnTapListenerName = "hasOnTapListener";
 }

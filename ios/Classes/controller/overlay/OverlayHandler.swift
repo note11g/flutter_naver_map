@@ -30,6 +30,8 @@ internal protocol OverlayHandler {
     func setIsMaxZoomInclusive(_ overlay: NMFOverlay, rawIsMaxZoomInclusive: Any)
 
     func performClick(_ overlay: NMFOverlay, success: (Any?) -> Void)
+    
+    func setHasOnTapListener(_ overlay: NMFOverlay, rawHasOnTapListener: Any)
 }
 
 func getterName(_ name: String) -> String {
@@ -45,6 +47,7 @@ let maxZoomName = "maxZoom"
 let isMinZoomInclusiveName = "isMinZoomInclusive"
 let isMaxZoomInclusiveName = "isMaxZoomInclusive"
 private let performClickName = "performClick"
+private let hasOnTapListenerName = "hasOnTapListener"
 let onTapName = "onTap"
 let allPropertyNames = [
     zIndexName,
@@ -54,6 +57,7 @@ let allPropertyNames = [
     maxZoomName,
     isMinZoomInclusiveName,
     isMaxZoomInclusiveName,
+    hasOnTapListenerName,
 ]
 
 internal extension OverlayHandler {
@@ -72,6 +76,7 @@ internal extension OverlayHandler {
         case isMinZoomInclusiveName: setIsMinZoomInclusive(overlay, rawIsMinZoomInclusive: arg!)
         case isMaxZoomInclusiveName: setIsMaxZoomInclusive(overlay, rawIsMaxZoomInclusive: arg!)
         case performClickName: performClick(overlay, success: result!)
+        case hasOnTapListenerName: setHasOnTapListener(overlay, rawHasOnTapListener: arg!)
         default: return false
         }
         return true

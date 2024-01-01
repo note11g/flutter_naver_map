@@ -30,8 +30,8 @@ class _NOverlayControllerImpl extends _NOverlayController with NChannelWrapper {
     log("_handleMethodCall: ${query.info}", name: "_OverlayControllerImpl");
 
     try {
-      final func = overlayHandleAndRemoveHelperMap[query.info]!.handler;
-      func.call(query.methodName);
+      final handler = overlayHandleAndRemoveHelperMap[query.info]!.handler;
+      handler.call(query.methodName);
     } catch (e) {
       log("error!", error: e, name: "_OverlayControllerImpl");
     }

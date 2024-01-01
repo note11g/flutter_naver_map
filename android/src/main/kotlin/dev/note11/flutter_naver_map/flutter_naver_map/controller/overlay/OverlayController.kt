@@ -53,10 +53,6 @@ internal class OverlayController(
     override fun saveOverlay(overlay: Overlay, info: NOverlayInfo) {
         info.saveAtOverlay(overlay)
         detachOverlay(info)
-        overlay.setOnClickListener {
-            onOverlayTapped(info)
-            return@setOnClickListener true
-        }
         overlays[info] = overlay
     }
 
@@ -158,6 +154,18 @@ internal class OverlayController(
     override fun performClick(overlay: Overlay, success: (Any?) -> Unit) {
         overlay.performClick()
         success(null)
+    }
+
+    override fun setHasOnTapListener(overlay: Overlay, rawHasOnTapListener: Any) {
+        val hasOnTapListener = rawHasOnTapListener.asBoolean()
+        if (hasOnTapListener) {
+            overlay.setOnClickListener {
+                onOverlayTapped(info = NOverlayInfo.fromOverlay(it))
+                return@setOnClickListener true
+            }
+        } else {
+            overlay.onClickListener = null
+        }
     }
 
     /* ----- LocationOverlay handler ----- */
