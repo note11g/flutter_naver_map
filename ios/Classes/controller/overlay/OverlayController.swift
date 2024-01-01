@@ -22,10 +22,6 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
     func saveOverlay(overlay: NMFOverlay, info: NOverlayInfo) {
         info.saveAtOverlay(overlay)
         detachOverlay(info: info)
-        overlay.touchHandler = { [weak self] overlay in
-            self?.onOverlayTapped(info: info)
-            return true
-        }
         overlays[info] = overlay
     }
 
@@ -150,6 +146,18 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
         if let touchHandler = overlay.touchHandler {
             _ = touchHandler(overlay)
             success(nil)
+        }
+    }
+    
+    func setHasOnTapListener(_ overlay: NMFOverlay, rawHasOnTapListener: Any) {
+        let hasOnTapListener = asBool(rawHasOnTapListener)
+        if hasOnTapListener {
+            overlay.touchHandler = { [weak self] overlay in
+                self?.onOverlayTapped(info: NOverlayInfo.fromOverlay(overlay))
+                return true
+            }
+        } else {
+            overlay.touchHandler = nil
         }
     }
 

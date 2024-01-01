@@ -46,6 +46,7 @@ internal interface OverlayHandler {
             isMinZoomInclusiveName -> setIsMinZoomInclusive(overlay, arg!!)
             isMaxZoomInclusiveName -> setIsMaxZoomInclusive(overlay, arg!!)
             performClickName -> performClick(overlay, result!!::success)
+            hasOnTapListenerName -> setHasOnTapListener(overlay, arg!!)
             else -> return false
         }
         return true
@@ -67,6 +68,8 @@ internal interface OverlayHandler {
 
     fun performClick(overlay: Overlay, success: (Any?) -> Unit)
 
+    fun setHasOnTapListener(overlay: Overlay, rawHasOnTapListener: Any)
+
     companion object {
         /* --- Messaging Name Define --- */
         const val zIndexName = "zIndex"
@@ -76,7 +79,8 @@ internal interface OverlayHandler {
         const val maxZoomName = "maxZoom"
         const val isMinZoomInclusiveName = "isMinZoomInclusive"
         const val isMaxZoomInclusiveName = "isMaxZoomInclusive"
-        const val performClickName = "performClick"
+        private const val performClickName = "performClick"
+        private const val hasOnTapListenerName = "hasOnTapListener"
         const val onTapName = "onTap"
         val allPropertyNames = listOf(
             zIndexName,
@@ -85,7 +89,8 @@ internal interface OverlayHandler {
             minZoomName,
             maxZoomName,
             isMinZoomInclusiveName,
-            isMaxZoomInclusiveName
+            isMaxZoomInclusiveName,
+            hasOnTapListenerName,
         )
 
         fun getterName(name: String): String = "get${name}"
