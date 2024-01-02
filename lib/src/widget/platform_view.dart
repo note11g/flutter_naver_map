@@ -21,22 +21,20 @@ class _PlatformViewCreator {
           hitTestBehavior: hitTestBehavior,
         ),
         onCreatePlatformView: (params) {
-          // ExpensiveAndroidView (Hybrid composition) :
-          // 1. render error (1px * 1px smaller than flutter view) : https://github.com/flutter/flutter/issues/118544
-          // 2. android 5.0 (API 21) ~ android 7.1 (API 25) render issue (GLSurfaceView rendered under flutter view)
-          // TextureSurfaceComposition (SurfaceAndroidView) :
-          // 1. can't serve touch gesture NaverLogoButton and More Contents...
+          // issues
+          // 1. android 5.0 (API 21) ~ android 7.1 (API 25) render issue (GLSurfaceView rendered under flutter view)
+          // -> ExpensiveAndroidView, TextureSurfaceComposition (SurfaceAndroidView).
+          // 2. "Unexpected platform view context for view ID 0;" issue. (+ minimum API 23)
+          // -> AndroidView (virtual display)
 
           // initAndroidView : auto detect.
           // but Android 10 or higher, use TextureSurfaceComposition.
 
           const hybridView = PlatformViewsService.initExpensiveAndroidView;
-          const autoView = PlatformViewsService.initAndroidView;
+          // const autoView = PlatformViewsService.initAndroidView;
+          const autoView = PlatformViewsService.initSurfaceAndroidView;
 
-          // android 10 (API 29) or higher, use Hybrid Composition.
-          // else, use Auto Detected Composition. (under api 29, using Virtual Display Composition)
-          // https://api.flutter.dev/flutter/services/SurfaceAndroidViewController-class.html
-          final usingView = androidSdkVersion! >= 29 ? hybridView : autoView;
+          final usingView = androidSdkVersion! >= 26 ? hybridView : autoView;
 
           final view = usingView.call(
               id: params.id,
