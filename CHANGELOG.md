@@ -1,3 +1,6 @@
+## 1.1.0+1
+- Update Readme & Apply Dart formatting
+
 ## 1.1.0
 ### Improve
 - [All Platform] Add method `controller.forceRefresh` & Update Naver Map SDK version to 3.17.0 (issue: [#116](https://github.com/note11g/flutter_naver_map/issues/116), PR: [#139](https://github.com/note11g/flutter_naver_map/pull/139))
