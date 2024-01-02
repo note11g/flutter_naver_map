@@ -21,7 +21,7 @@ internal protocol LocationOverlayHandler: OverlayHandler {
 
     func setSubAnchor(_ overlay: NMFLocationOverlay, rawNPoint: Any)
 
-    func setSubIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any)
+    func setSubIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any?)
 
     func setSubIconSize(_ overlay: NMFLocationOverlay, rawSize: Any)
 
@@ -60,7 +60,7 @@ internal extension  LocationOverlayHandler {
         case iconSizeName: setIconSize(locationOverlay, rawSize: args!)
         case positionName: setPosition(locationOverlay, rawLatLng: args!)
         case subAnchorName: setSubAnchor(locationOverlay, rawNPoint: args!)
-        case subIconName: setSubIcon(locationOverlay, rawNOverlayImage: args!)
+        case subIconName: setSubIcon(locationOverlay, rawNOverlayImage: args)
         case subIconSizeName: setSubIconSize(locationOverlay, rawSize: args!)
         case getterName(bearingName): getBearing(locationOverlay, success: result)
         case getterName(positionName): getPosition(locationOverlay, success: result)

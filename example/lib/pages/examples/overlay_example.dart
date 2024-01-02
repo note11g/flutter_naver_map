@@ -113,7 +113,7 @@ class _NOverlayExampleState extends State<NOverlayExample> {
                     color: Colors.red,
                     margin: EdgeInsets.zero,
                     action: () => mapController.clearOverlays()),
-              )
+              ),
             ])),
       const BottomPadding(),
     ]);

@@ -20,7 +20,7 @@ internal data class NInfoWindow(
     val offsetXDp: Double,
     val offsetYDp: Double,
     private val context: Context?,
-) : AddableOverlay<InfoWindow> {
+) : AddableOverlay<InfoWindow>() {
 
 
     override fun createMapOverlay(): InfoWindow = InfoWindow().also { m ->

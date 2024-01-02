@@ -20,10 +20,19 @@ import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NPolylineOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 
-internal interface AddableOverlay<T : Overlay> {
-    val info: NOverlayInfo
+internal abstract class AddableOverlay<T : Overlay> {
+    abstract val info: NOverlayInfo
+    abstract fun createMapOverlay(): T
 
-    fun createMapOverlay(): T
+    private lateinit var commonProperties: Map<String, Any>
+
+    private fun setCommonProperties(rawArgs: Map<String, Any>) {
+        commonProperties = rawArgs.filter { OverlayHandler.allPropertyNames.contains(it.key) }
+    }
+
+    fun applyCommonProperties(applyProperty: (name: String, arg: Any) -> Unit) {
+        commonProperties.forEach { applyProperty(it.key, it.value) }
+    }
 
     companion object {
         /** Used on @see [NaverMapControlHandler.addOverlayAll] */
@@ -47,7 +56,7 @@ internal interface AddableOverlay<T : Overlay> {
                 NOverlayType.LOCATION_OVERLAY -> throw IllegalArgumentException("LocationOverlay can not be created from json")
             }
 
-            return creator.invoke(args)
+            return creator.invoke(args).apply { setCommonProperties(args) }
         }
 
         fun LocationOverlay.toMessageable(): Map<String, Any?> = mapOf(

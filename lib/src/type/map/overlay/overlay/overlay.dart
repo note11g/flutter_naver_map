@@ -8,18 +8,42 @@ abstract class NOverlay<O extends NOverlay<void>>
   final NOverlayInfo info;
 
   @override
-  bool get _isAdded => _overlayController != null;
+  bool get _isAdded => _overlayControllers.isNotEmpty;
 
   @override
-  _NOverlayController? _overlayController;
+
+  /// like stack. FIFO (because of flutter's navigator stack)
+  final List<_NOverlayController> _overlayControllers = [];
 
   void _addedOnMap(_NOverlayController controller) {
     controller.add(info, this);
-    _overlayController = controller;
+    _overlayControllers.add(controller);
   }
 
+  void _removedOnMap(int overlayControllerId) {
+    int foundIndex = -1;
+    for (int i = _overlayControllers.length - 1; i >= 0; i--) {
+      if (_overlayControllers[i].viewId == overlayControllerId) {
+        foundIndex = i;
+        break;
+      }
+    }
+    if (foundIndex == -1) return;
+    _overlayControllers.removeAt(foundIndex);
+  }
+
+  Function(O overlay)? __onTapListener;
+
+  bool get _hasOnTapListener => __onTapListener != null;
+
   @override
-  Function(O overlay)? _onTapListener;
+  Function(O overlay)? get _onTapListener => __onTapListener;
+
+  @override
+  set _onTapListener(Function(O overlay)? listener) {
+    __onTapListener = listener;
+    _set(_hasOnTapListenerName, _hasOnTapListener);
+  }
 
   /*
     --- methods ---
@@ -95,6 +119,7 @@ abstract class NOverlay<O extends NOverlay<void>>
         _maxZoomName: _maxZoom,
         _isMinZoomInclusiveName: _isMinZoomInclusive,
         _isMaxZoomInclusiveName: _isMaxZoomInclusive,
+        _hasOnTapListenerName: _hasOnTapListener,
       };
 
   /* ----- fromMessageable ----- */
@@ -136,4 +161,5 @@ abstract class NOverlay<O extends NOverlay<void>>
   static const _isMinZoomInclusiveName = "isMinZoomInclusive";
   static const _isMaxZoomInclusiveName = "isMaxZoomInclusive";
   static const _performClickName = "performClick";
+  static const _hasOnTapListenerName = "hasOnTapListener";
 }

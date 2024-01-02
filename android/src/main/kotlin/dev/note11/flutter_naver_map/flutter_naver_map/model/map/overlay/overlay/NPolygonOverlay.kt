@@ -19,7 +19,7 @@ internal data class NPolygonOverlay(
     val holes: List<List<LatLng>>,
     @ColorInt val outlineColor: Int,
     val outlineWidthDp: Double,
-) : AddableOverlay<PolygonOverlay> {
+) : AddableOverlay<PolygonOverlay>() {
 
 
 

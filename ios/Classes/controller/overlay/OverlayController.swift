@@ -22,10 +22,6 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
     func saveOverlay(overlay: NMFOverlay, info: NOverlayInfo) {
         info.saveAtOverlay(overlay)
         detachOverlay(info: info)
-        overlay.touchHandler = { [weak self] overlay in
-            self?.onOverlayTapped(info: info)
-            return true
-        }
         overlays[info] = overlay
     }
 
@@ -93,7 +89,7 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
         }
 
         let isInvokedOnCommonOverlay =
-                handleOverlay(overlay: overlay, method: query.methodName, args: call.arguments, result: result)
+                handleOverlay(overlay: overlay, method: query.methodName, arg: call.arguments, result: result)
 
         if !isInvokedOnCommonOverlay {
             var overlayHandleFunc: (NMFOverlay, String, Any?, @escaping FlutterResult) -> ()
@@ -152,6 +148,18 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
             success(nil)
         }
     }
+    
+    func setHasOnTapListener(_ overlay: NMFOverlay, rawHasOnTapListener: Any) {
+        let hasOnTapListener = asBool(rawHasOnTapListener)
+        if hasOnTapListener {
+            overlay.touchHandler = { [weak self] overlay in
+                self?.onOverlayTapped(info: NOverlayInfo.fromOverlay(overlay))
+                return true
+            }
+        } else {
+            overlay.touchHandler = nil
+        }
+    }
 
     /* ----- LocationOverlay handler ----- */
 
@@ -205,8 +213,12 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
         overlay.subAnchor = NPoint.fromMessageable(rawNPoint).cgPoint
     }
 
-    func setSubIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any) {
-        overlay.subIcon = NOverlayImage.fromMessageable(rawNOverlayImage).overlayImage
+    func setSubIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any?) {
+        if (rawNOverlayImage != nil) {
+            overlay.subIcon = NOverlayImage.fromMessageable(rawNOverlayImage!).overlayImage
+        } else {
+            overlay.subIcon = nil
+        }
     }
 
     func setSubIconSize(_ overlay: NMFLocationOverlay, rawSize: Any) {
