@@ -3,11 +3,10 @@
 [![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=4285F4)](https://pub.dev/packages/flutter_naver_map)
 [![github](https://img.shields.io/github/stars/note11g/flutter_naver_map)](https://github.com/note11g/flutter_naver_map)
 
-<a href="https://note11.dev/flutter_naver_map" alt="go to documentation page"><img style="width: 796px;" src="https://github.com/note11g/flutter_naver_map/assets/67783062/25a93cad-f372-4f07-a975-9b9b40c7846b"/></a>
+<a href="https://note11.dev/flutter_naver_map" alt="go to documentation page"><img src="https://github.com/note11g/flutter_naver_map/assets/67783062/6ff32d85-efed-4020-af59-31e68bef44cf"/></a>
 
-<a href="https://note11.dev/flutter_naver_map" alt="go to documentation page"><img style="height: 50px;" src="https://github.com/note11g/flutter_naver_map/assets/67783062/e505e9c2-9973-4939-8d27-8874387091da"/></a>
-<a href="https://github.com/note11g/flutter_naver_map/issues" alt="go to github issue page"><img style="height: 50px;" src="https://github.com/note11g/flutter_naver_map/assets/67783062/9a2d53f9-fb08-4ad2-bdeb-bdad23b3ede3"/></a>
-<a href="https://github.com/users/note11g/projects/2/views/2" alt="go to issue tracker page"><img style="height: 50px;" src="https://github.com/note11g/flutter_naver_map/assets/67783062/6b110546-0c45-4f25-86d5-b86007d1a95b"/></a>
+
+<a href="https://note11.dev/flutter_naver_map" alt="go to documentation page"><img src="https://github.com/note11g/flutter_naver_map/assets/67783062/0716372e-4272-4e54-9e47-dd20aeea4075"/></a><a href="https://github.com/note11g/flutter_naver_map/issues" alt="go to github issue page"><img src="https://github.com/note11g/flutter_naver_map/assets/67783062/5f5d6155-1e97-424c-be52-5070a8b837de"/></a><a href="https://github.com/users/note11g/projects/2/views/2" alt="go to issue tracker page"><img src="https://github.com/note11g/flutter_naver_map/assets/67783062/c94a5f17-2e66-4cc0-9786-55fd5da61914"/></a>
 
 ## Known issues
 
