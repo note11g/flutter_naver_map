@@ -25,10 +25,8 @@ abstract class _NaverMapControlSender {
   /// using parameter is deprecated. use [getMeterPerDpAtLatitude] instead.
   /// please getMeterPerDp() without parameter.
   Future<double> getMeterPerDp({
-    @Deprecated("use getMeterPerDpAtLatitude() instead")
-    double? latitude,
-    @Deprecated("use getMeterPerDpAtLatitude() instead")
-    double? zoom,
+    @Deprecated("use getMeterPerDpAtLatitude() instead") double? latitude,
+    @Deprecated("use getMeterPerDpAtLatitude() instead") double? zoom,
   });
 
   /// meter / dp at latitude (required zoomLevel)

@@ -51,7 +51,7 @@ class ExampleAppBottomDrawer {
 
   BottomDrawer get bottomDrawer => BottomDrawer(
       height: nowItem?.isScrollPage == false ? null : 200,
-        expandedHeight: 480,
+      expandedHeight: 480,
       handleSectionHeight: 20,
       handleColor: colorTheme.secondary,
       backgroundColor: colorTheme.background,

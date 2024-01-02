@@ -106,11 +106,11 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
       child: HalfActionButtonGrid(buttons: [
         if (isUnFold)
-        HalfActionButton(
-            action: _mapController.forceRefresh,
-            icon: Icons.refresh,
-            title: "지도 강제 새로고침",
-            description: ".forceRefresh"),
+          HalfActionButton(
+              action: _mapController.forceRefresh,
+              icon: Icons.refresh,
+              title: "지도 강제 새로고침",
+              description: ".forceRefresh"),
         HalfActionButton(
             action: () => AlertUtil.openAlert("준비중인 예제입니다.\n함수로는 사용하실 수 있습니다.",
                 context: context),

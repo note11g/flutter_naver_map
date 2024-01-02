@@ -11,4 +11,3 @@ abstract class ExampleBasePage extends StatefulWidget {
     required this.canScroll,
   });
 }
-

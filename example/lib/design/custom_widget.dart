@@ -596,8 +596,7 @@ class HalfActionButton extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 child: Row(children: [
-                  Icon(icon,
-                      color: getColorTheme(context).primary, size: 22),
+                  Icon(icon, color: getColorTheme(context).primary, size: 22),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(
