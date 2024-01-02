@@ -13,7 +13,7 @@
 
 ### Android Platform
 - Impeller Engine 지원 안함 (Android 기본 값은 Skia) [#133](https://github.com/note11g/flutter_naver_map/issues/133)
-- **[WIP]** flutter 3.16 버전부터 Android 9.0(SDK 28) 이하 작동 오류 [#135](https://github.com/note11g/flutter_naver_map/issues/135)
+- **[WIP]** flutter 3.16 버전부터 Android 9.0(SDK 28) 이하 작동 오류 [#135](https://github.com/note11g/flutter_naver_map/issues/135) ([임시 해결 PR #148](https://github.com/note11g/flutter_naver_map/pull/148))
 - **[WIP]** native_splash_screen 패키지 동시 사용 지원 안함 [#56](https://github.com/note11g/flutter_naver_map/issues/56)
 
 

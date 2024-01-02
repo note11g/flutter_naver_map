@@ -7,6 +7,7 @@
 - [Android] Change support minimum SDK Version to 6.0 (SDK 23) 
 
 ### Fix
+- [Android] Fix Temporary black screen caused by flutter 3.16.0 & android 6.0~9.0 (SDK 23~28) (issue: [#135](https://github.com/note11g/flutter_naver_map/issues/135), Temp Fix PR: [#148](https://github.com/note11g/flutter_naver_map/pull/148))
 - [All Platform] Fix `NOverlay.onTapListener` is called even when it's not registered by `NOverlay.setOnTapListener` (issue: [#96](https://github.com/note11g/flutter_naver_map/issues/96), PR: [#147](https://github.com/note11g/flutter_naver_map/pull/147))
 - [All Platform] Fix `NAddableOverlay` cannot be used concurrently on multiple map widgets (issue: [#128](https://github.com/note11g/flutter_naver_map/issues/128), PR: [#146](https://github.com/note11g/flutter_naver_map/pull/146))
 - [All Platform] Fix `NAddableOverlay` continues to reference the `OverlayController` of the map even after being removed (issue: [#127](https://github.com/note11g/flutter_naver_map/issues/127), PR: [#146](https://github.com/note11g/flutter_naver_map/pull/146))
