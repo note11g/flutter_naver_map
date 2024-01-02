@@ -1,3 +1,20 @@
+## 1.1.0
+### Improve
+- [All Platform] Add method `controller.forceRefresh` & Update Naver Map SDK version to 3.17.0 (issue: [#116](https://github.com/note11g/flutter_naver_map/issues/116), PR: [#139](https://github.com/note11g/flutter_naver_map/pull/139))
+- [All Platform] Add `controller.getMeterPerDpAtLatitude`, deprecated parameter `controller.getMeterPerDp.latitude`, `controller.getMeterPerDp.zoom` (issue: [#85](https://github.com/note11g/flutter_naver_map/issues/85), PR: [#129](https://github.com/note11g/flutter_naver_map/pull/129), [#125](https://github.com/note11g/flutter_naver_map/pull/125))
+
+### Breaking Change
+- [Android] Change support minimum SDK Version to 6.0 (SDK 23) 
+
+### Fix
+- [All Platform] Fix `NOverlay.onTapListener` is called even when it's not registered by `NOverlay.setOnTapListener` (issue: [#96](https://github.com/note11g/flutter_naver_map/issues/96), PR: [#147](https://github.com/note11g/flutter_naver_map/pull/147))
+- [All Platform] Fix `NAddableOverlay` cannot be used concurrently on multiple map widgets (issue: [#128](https://github.com/note11g/flutter_naver_map/issues/128), PR: [#146](https://github.com/note11g/flutter_naver_map/pull/146))
+- [All Platform] Fix `NAddableOverlay` continues to reference the `OverlayController` of the map even after being removed (issue: [#127](https://github.com/note11g/flutter_naver_map/issues/127), PR: [#146](https://github.com/note11g/flutter_naver_map/pull/146))
+- [All Platform] Fix common overlay options were not applied before overlay was added to the map (issue: [#115](https://github.com/note11g/flutter_naver_map/issues/115), PR: [#144](https://github.com/note11g/flutter_naver_map/pull/144))
+- [All Platform] Fix `NLocationOverlay.setSubIcon(null)` Cause NPE (issue: [#142](https://github.com/note11g/flutter_naver_map/issues/142), PR: [#143](https://github.com/note11g/flutter_naver_map/pull/143))
+- [iOS] Fix NOverlayImage Size issue. (issue: [#91](https://github.com/note11g/flutter_naver_map/issues/91), [#130](https://github.com/note11g/flutter_naver_map/issues/130), PR: [#138](https://github.com/note11g/flutter_naver_map/pull/138), [#126](https://github.com/note11g/flutter_naver_map/pull/126))
+- [iOS] Fix the Camera Bearing issue. (issue: [#101](https://github.com/note11g/flutter_naver_map/issues/101), PR: [#110](https://github.com/note11g/flutter_naver_map/pull/110))
+
 ## 1.0.2
 - support flutter 3.10.0 ([#89](https://github.com/note11g/flutter_naver_map/issues/89))
 - fix bug ([#93](https://github.com/note11g/flutter_naver_map/issues/93))
