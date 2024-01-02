@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ExampleAppTheme {
   static final lightThemeData = ThemeData(
+      useMaterial3: false,
       primarySwatch: Colors.green,
       colorScheme: ColorScheme.light(
         primary: Colors.green,
@@ -9,6 +10,7 @@ class ExampleAppTheme {
         background: Colors.white,
         onBackground: Colors.black,
         outline: Colors.grey.shade200,
+        outlineVariant: Colors.grey.shade200,
         primaryContainer: const Color(0xFFD2FFB4),
       ),
       textTheme: const TextTheme(
@@ -24,6 +26,11 @@ class ExampleAppTheme {
             fontWeight: FontWeight.w600,
             color: Colors.white,
             letterSpacing: 0),
+        labelMedium: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+            letterSpacing: 0),
         labelLarge: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,
@@ -32,6 +39,7 @@ class ExampleAppTheme {
       ));
 
   static final darkThemeData = ThemeData(
+      useMaterial3: false,
       brightness: Brightness.dark,
       colorScheme: ColorScheme.dark(
         primary: Colors.green,
@@ -39,6 +47,7 @@ class ExampleAppTheme {
         background: Colors.grey.shade900,
         onBackground: Colors.white,
         outline: Colors.grey.shade700,
+        outlineVariant: Colors.white54,
         primaryContainer: const Color(0xFF7FA864),
       ),
       textTheme: const TextTheme(
@@ -52,6 +61,11 @@ class ExampleAppTheme {
         labelSmall: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
+            color: Colors.white,
+            letterSpacing: 0),
+        labelMedium: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
             color: Colors.white,
             letterSpacing: 0),
         labelLarge: TextStyle(

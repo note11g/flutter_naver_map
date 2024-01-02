@@ -2,11 +2,11 @@ package dev.note11.flutter_naver_map.flutter_naver_map.controller
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.util.Log
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
+import com.naver.maps.map.Projection
 import com.naver.maps.map.Symbol
 import com.naver.maps.map.indoor.IndoorSelection
 import com.naver.maps.map.overlay.LocationOverlay
@@ -23,6 +23,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInf
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NPickableInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NSymbolInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
+import dev.note11.flutter_naver_map.flutter_naver_map.view.forceRefresh
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
 import java.io.FileOutputStream
@@ -103,19 +104,12 @@ internal class NaverMapController(
         onSuccess(nPoint.toMessageable())
     }
 
-    override fun getMeterPerDp(
-        lat: Double?,
-        zoom: Double?,
-        onSuccess: (meterPerDp: Double) -> Unit,
-    ) {
-        val meterPerDp = if (lat != null || zoom != null) {
-            val willSetLat = lat ?: naverMap.cameraPosition.target.latitude
-            val willSetZoom = zoom ?: naverMap.cameraPosition.zoom
-            naverMap.projection.getMetersPerPixel(willSetLat, willSetZoom)
-        } else {
-            naverMap.projection.metersPerDp
-        }
-        onSuccess(meterPerDp)
+    override fun getMeterPerDp(onSuccess: (meterPerDp: Double) -> Unit) {
+        onSuccess(naverMap.projection.metersPerDp)
+    }
+
+    override fun getMeterPerDp(lat: Double, zoom: Double, onSuccess: (meterPerDp: Double) -> Unit) {
+        onSuccess(Projection.getMetersPerDp(lat, zoom))
     }
 
     override fun pickAll(
@@ -197,6 +191,11 @@ internal class NaverMapController(
             if (type != null) clearOverlays(type)
             else clearOverlays()
         }
+        onSuccess()
+    }
+
+    override fun forceRefresh(onSuccess: () -> Unit) {
+        naverMap.forceRefresh() // todo : change to SDK's API (now ref at NaverMapView.kt)
         onSuccess()
     }
 

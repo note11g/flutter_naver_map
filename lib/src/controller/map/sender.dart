@@ -20,7 +20,22 @@ abstract class _NaverMapControlSender {
 
   Future<NPoint> latLngToScreenLocation(NLatLng latLng);
 
-  Future<double> getMeterPerDp({double? latitude, double? zoom});
+  /// meter / dp (logical pixel)
+  /// if latitude is null, use current camera position
+  /// using parameter is deprecated. use [getMeterPerDpAtLatitude] instead.
+  /// please getMeterPerDp() without parameter.
+  Future<double> getMeterPerDp({
+    @Deprecated("use getMeterPerDpAtLatitude() instead")
+    double? latitude,
+    @Deprecated("use getMeterPerDpAtLatitude() instead")
+    double? zoom,
+  });
+
+  /// meter / dp at latitude (required zoomLevel)
+  Future<double> getMeterPerDpAtLatitude({
+    required double latitude,
+    required double zoom,
+  });
 
   Future<List<NPickableInfo>> pickAll(NPoint point, {double radius = 0});
 
@@ -38,6 +53,8 @@ abstract class _NaverMapControlSender {
   Future<void> deleteOverlay(NOverlayInfo info);
 
   Future<void> clearOverlays({NOverlayType? type});
+
+  Future<void> forceRefresh();
 
   /*
     --- private methods ---

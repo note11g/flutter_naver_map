@@ -1,15 +1,25 @@
 part of flutter_naver_map;
 
+class _OverlayHandleAndRemoveHelper {
+  final void Function(String) handler;
+  final void Function(int overlayControllerViewId) remover;
+
+  const _OverlayHandleAndRemoveHelper(this.handler, this.remover);
+}
+
 class _NOverlayControllerImpl extends _NOverlayController with NChannelWrapper {
-  final Map<NOverlayInfo, void Function(String)> overlayFunctionMap = {};
+  final Map<NOverlayInfo, _OverlayHandleAndRemoveHelper>
+      overlayHandleAndRemoveHelperMap = {};
 
   @override
   late final MethodChannel channel;
+  @override
+  final int viewId;
 
   NOverlayInfo get _locationOverlayInfo =>
       NLocationOverlay._locationOverlayInfo;
 
-  _NOverlayControllerImpl({required int viewId}) {
+  _NOverlayControllerImpl({required this.viewId}) {
     initChannel(NChannel.overlayChannelName,
         id: viewId, handler: _handleMethodCall);
   }
@@ -20,8 +30,8 @@ class _NOverlayControllerImpl extends _NOverlayController with NChannelWrapper {
     log("_handleMethodCall: ${query.info}", name: "_OverlayControllerImpl");
 
     try {
-      final func = overlayFunctionMap[query.info]!;
-      func.call(query.methodName);
+      final handler = overlayHandleAndRemoveHelperMap[query.info]!.handler;
+      handler.call(query.methodName);
     } catch (e) {
       log("error!", error: e, name: "_OverlayControllerImpl");
     }
@@ -29,24 +39,37 @@ class _NOverlayControllerImpl extends _NOverlayController with NChannelWrapper {
 
   @override
   void add(NOverlayInfo info, NOverlay overlay) {
-    overlayFunctionMap[info] = overlay._handle;
+    overlayHandleAndRemoveHelperMap[info] =
+        _OverlayHandleAndRemoveHelper(overlay._handle, overlay._removedOnMap);
   }
 
   @override
   void deleteWithInfo(NOverlayInfo info) {
-    overlayFunctionMap.remove(info);
+    overlayHandleAndRemoveHelperMap[info]!.remover.call(viewId);
+    overlayHandleAndRemoveHelperMap.remove(info);
   }
 
   @override
   void clear(NOverlayType? type) {
     if (type != null) {
-      overlayFunctionMap.removeWhere((keyInfo, _) => keyInfo.type == type);
+      overlayHandleAndRemoveHelperMap.removeWhere((info, helper) {
+        final needRemove = info.type == type;
+        if (needRemove) helper.remover.call(viewId);
+        return needRemove;
+      });
     } else {
       // without location overlay
-      final locationOverlay = overlayFunctionMap[_locationOverlayInfo];
-      overlayFunctionMap.clear();
-      if (locationOverlay != null) {
-        overlayFunctionMap[_locationOverlayInfo] = locationOverlay;
+      final locationOverlayHelper =
+          overlayHandleAndRemoveHelperMap[_locationOverlayInfo];
+      overlayHandleAndRemoveHelperMap.remove(_locationOverlayInfo);
+
+      overlayHandleAndRemoveHelperMap
+          .forEach((info, helper) => helper.remover.call(viewId));
+      overlayHandleAndRemoveHelperMap.clear();
+
+      if (locationOverlayHelper != null) {
+        overlayHandleAndRemoveHelperMap[_locationOverlayInfo] =
+            locationOverlayHelper;
       }
     }
   }

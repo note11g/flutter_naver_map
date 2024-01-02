@@ -17,7 +17,9 @@ internal protocol NaverMapControlHandler {
 
     func latLngToScreenLocation(latLng: NMGLatLng, onSuccess: @escaping (_ nPoint: Dictionary<String, Any>) -> Void)
 
-    func getMeterPerDp(lat: Double?, zoom: Double?, onSuccess: @escaping (_ meterPerDp: Double) -> Void)
+    func getMeterPerDp(onSuccess: @escaping (_ meterPerDp: Double) -> Void)
+    
+    func getMeterPerDp(lat: Double, zoom: Double, onSuccess: @escaping (_ meterPerDp: Double) -> Void)
 
     func pickAll(
             nPoint: NPoint,
@@ -41,6 +43,8 @@ internal protocol NaverMapControlHandler {
     func deleteOverlay(overlayInfo: NOverlayInfo, onSuccess: @escaping (Any?) -> Void)
 
     func clearOverlays(type: NOverlayType?, onSuccess: @escaping (Any?) -> Void)
+    
+    func forceRefresh(onSuccess: @escaping (Any?) -> Void)
 
     func updateOptions(options: Dictionary<String, Any>, onSuccess: @escaping (Any?) -> Void)
 }
@@ -59,6 +63,17 @@ internal extension  NaverMapControlHandler {
         case "screenLocationToLatLng": screenLocationToLatLng(nPoint: NPoint.fromMessageable(call.arguments!), onSuccess: result)
         case "latLngToScreenLocation": latLngToScreenLocation(latLng: asLatLng(call.arguments!), onSuccess: result)
         case "getMeterPerDp":
+            let d = call.arguments as? Dictionary<String, Any?>
+            guard
+                let latitude = d?["latitude"] as? Double,
+                let zoom = d?["zoom"] as? Double
+            else {
+                getMeterPerDp(onSuccess: result)
+                break;
+            }
+
+            getMeterPerDp(lat: latitude, zoom: zoom, onSuccess: result)
+        case "getMeterPerDpAtLatitude":
             let d = asDict(call.arguments!)
             getMeterPerDp(lat: asDouble(d["latitude"]!), zoom: asDouble(d["zoom"]!), onSuccess: result)
         case "pickAll":
@@ -75,6 +90,7 @@ internal extension  NaverMapControlHandler {
         case "addOverlayAll": addOverlayAll(rawOverlays: asArr(call.arguments!, elementCaster: asDict), onSuccess: result)
         case "deleteOverlay": deleteOverlay(overlayInfo: NOverlayInfo.fromMessageable(call.arguments!), onSuccess: result)
         case "clearOverlays": clearOverlays(type: castOrNull(call.arguments, caster: { NOverlayType(rawValue: asString($0))! }), onSuccess: result)
+        case "forceRefresh": forceRefresh(onSuccess: result)
         case "updateOptions": updateOptions(options: asDict(call.arguments!), onSuccess: result)
         default: result(FlutterMethodNotImplemented)
         }

@@ -21,7 +21,7 @@ internal interface LocationOverlayHandler : OverlayHandler {
             iconSizeName -> setIconSize(l, arg!!)
             positionName -> setPosition(l, arg!!)
             subAnchorName -> setSubAnchor(l, arg!!)
-            subIconName -> setSubIcon(l, arg!!)
+            subIconName -> setSubIcon(l, arg)
             subIconSizeName -> setSubIconSize(l, arg!!)
             getterName(bearingName) -> getBearing(l, result::success)
             getterName(positionName) -> getPosition(l, result::success)
@@ -49,7 +49,7 @@ internal interface LocationOverlayHandler : OverlayHandler {
 
     fun setSubAnchor(overlay: LocationOverlay, rawNPoint: Any)
 
-    fun setSubIcon(overlay: LocationOverlay, rawNOverlayImage: Any)
+    fun setSubIcon(overlay: LocationOverlay, rawNOverlayImage: Any?)
 
     fun setSubIconSize(overlay: LocationOverlay, rawSize: Any)
 

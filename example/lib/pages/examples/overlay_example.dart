@@ -3,17 +3,15 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_naver_map_example/design/theme.dart';
+import 'package:flutter_naver_map_example/pages/example_base.dart';
 
 import '../../design/custom_widget.dart';
 
-class NOverlayExample extends StatefulWidget {
-  final bool isClosed;
-  final NaverMapController mapController;
-
+class NOverlayExample extends ExampleBasePage {
   const NOverlayExample({
     Key? key,
-    required this.mapController,
-    required this.isClosed,
+    required super.mapController,
+    required super.canScroll,
   }) : super(key: key);
 
   @override
@@ -96,7 +94,7 @@ class _NOverlayExampleState extends State<NOverlayExample> {
           text: "${willCreateOverlayType.koreanName} 생성",
           margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           action: attachOverlay),
-      if (!widget.isClosed)
+      if (widget.canScroll)
         Padding(
             padding: const EdgeInsets.fromLTRB(24, 0, 24, 12),
             child: Row(children: [
@@ -115,7 +113,7 @@ class _NOverlayExampleState extends State<NOverlayExample> {
                     color: Colors.red,
                     margin: EdgeInsets.zero,
                     action: () => mapController.clearOverlays()),
-              )
+              ),
             ])),
       const BottomPadding(),
     ]);

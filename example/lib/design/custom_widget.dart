@@ -3,6 +3,45 @@ import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import 'theme.dart';
 
+class InnerSimpleTitle extends StatelessWidget {
+  final Axis direction;
+  final String title;
+  final String? description;
+
+  const InnerSimpleTitle({
+    super.key,
+    required this.title,
+    this.description,
+    this.direction = Axis.vertical,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (direction == Axis.vertical) {
+      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(title, style: getTextTheme(context).titleMedium),
+        if (description != null)
+          Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child:
+                  Text(description!, style: getTextTheme(context).bodySmall)),
+      ]);
+    } else {
+      return Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          // textBaseline: TextBaseline.alphabetic,
+          children: [
+            Text(title, style: getTextTheme(context).titleMedium),
+            if (description != null)
+              Padding(
+                  padding: const EdgeInsets.only(left: 8, bottom: 2),
+                  child: Text(description!,
+                      style: getTextTheme(context).bodySmall)),
+          ]);
+    }
+  }
+}
+
 class SelectorWithTitle extends StatelessWidget {
   final String title;
   final String description;
@@ -19,13 +58,10 @@ class SelectorWithTitle extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
         child: Row(children: [
           Expanded(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                Text(title, style: getTextTheme(context).titleMedium),
-                const SizedBox(height: 2),
-                Text(description, style: getTextTheme(context).bodySmall),
-              ])),
+              child: InnerSimpleTitle(
+                  title: title,
+                  description: description,
+                  direction: Axis.vertical)),
           Expanded(flex: selector.expand ? 2 : 0, child: selector),
         ]));
   }
@@ -531,5 +567,90 @@ class _BalloonPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
+  }
+}
+
+class HalfActionButton extends StatelessWidget {
+  final Function() action;
+  final IconData icon;
+  final String title;
+  final String description;
+
+  const HalfActionButton({
+    super.key,
+    required this.action,
+    required this.icon,
+    required this.title,
+    required this.description,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+        color: getColorTheme(context).outlineVariant,
+        borderRadius: BorderRadius.circular(12),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+            onTap: action,
+            child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                child: Row(children: [
+                  Icon(icon,
+                      color: getColorTheme(context).primary, size: 22),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(title,
+                              style: getTextTheme(context)
+                                  .labelMedium
+                                  ?.copyWith(color: Colors.black),
+                              overflow: TextOverflow.fade,
+                              softWrap: false,
+                              maxLines: 1),
+                          const SizedBox(height: 2),
+                          Text(description,
+                              style: getTextTheme(context).bodySmall,
+                              overflow: TextOverflow.fade,
+                              softWrap: false,
+                              maxLines: 1),
+                        ]),
+                  ),
+                ]))));
+  }
+}
+
+class HalfActionButtonGrid extends StatelessWidget {
+  final List<Widget> buttons;
+  final double gap;
+
+  const HalfActionButtonGrid({
+    super.key,
+    required this.buttons,
+    this.gap = 8,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> rowCellAndGapWidgets = [];
+
+    for (int i = 0; i < buttons.length; i += 2) {
+      final b1 = buttons[i];
+      final b2 = i + 1 < buttons.length ? buttons[i + 1] : null;
+
+      rowCellAndGapWidgets.add(Row(children: [
+        Expanded(child: b1),
+        SizedBox(width: gap),
+        Expanded(child: b2 ?? const SizedBox()),
+      ]));
+
+      if (i + 2 < buttons.length) {
+        rowCellAndGapWidgets.add(SizedBox(height: gap));
+      }
+    }
+
+    return Column(children: rowCellAndGapWidgets);
   }
 }

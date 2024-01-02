@@ -14,14 +14,14 @@ class NGroundOverlay extends NAddableOverlay<NGroundOverlay> {
   int _globalZIndex = -300000;
 
   NGroundOverlay({
-    required String id,
+    required super.id,
     required NLatLngBounds bounds,
     required NOverlayImage image,
     double alpha = 1.0,
   })  : _bounds = bounds,
         _image = image,
         _alpha = alpha,
-        super(id: id, type: NOverlayType.groundOverlay);
+        super(type: NOverlayType.groundOverlay);
 
   void setBounds(NLatLngBounds bounds) {
     _bounds = bounds;

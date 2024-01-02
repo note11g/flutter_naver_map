@@ -53,10 +53,6 @@ internal class OverlayController(
     override fun saveOverlay(overlay: Overlay, info: NOverlayInfo) {
         info.saveAtOverlay(overlay)
         detachOverlay(info)
-        overlay.setOnClickListener {
-            onOverlayTapped(info)
-            return@setOnClickListener true
-        }
         overlays[info] = overlay
     }
 
@@ -160,6 +156,18 @@ internal class OverlayController(
         success(null)
     }
 
+    override fun setHasOnTapListener(overlay: Overlay, rawHasOnTapListener: Any) {
+        val hasOnTapListener = rawHasOnTapListener.asBoolean()
+        if (hasOnTapListener) {
+            overlay.setOnClickListener {
+                onOverlayTapped(info = NOverlayInfo.fromOverlay(it))
+                return@setOnClickListener true
+            }
+        } else {
+            overlay.onClickListener = null
+        }
+    }
+
     /* ----- LocationOverlay handler ----- */
 
 
@@ -218,9 +226,13 @@ internal class OverlayController(
         overlay.subAnchor = nPoint.toPointF()
     }
 
-    override fun setSubIcon(overlay: LocationOverlay, rawNOverlayImage: Any) {
-        val nOverlayImage = NOverlayImage.fromMessageable(rawNOverlayImage.asMap())
-        nOverlayImage.applyToOverlay(overlay::setSubIcon)
+    override fun setSubIcon(overlay: LocationOverlay, rawNOverlayImage: Any?) {
+        val nOverlayImage = rawNOverlayImage?.asMap()?.let(NOverlayImage::fromMessageable)
+        if (nOverlayImage != null) nOverlayImage.applyToOverlay(overlay::setSubIcon)
+        else {
+            overlay.subIcon = null
+            println("subIcon cleared!")
+        }
     }
 
     override fun setSubIconSize(overlay: LocationOverlay, rawSize: Any) {

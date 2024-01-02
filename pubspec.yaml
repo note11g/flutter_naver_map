@@ -1,6 +1,6 @@
 name: flutter_naver_map
 description: Naver Map plugin for Flutter, which provides map service of Korea.
-version: 1.0.2
+version: 1.1.0
 homepage: https://github.com/note11g/flutter_naver_map
 documentation: https://note11.dev/flutter_naver_map
 
@@ -12,13 +12,13 @@ dependencies:
   flutter:
     sdk: flutter
   vector_math: ^2.1.4
-  path_provider: ^2.0.15
+  path_provider: ^2.1.1
   crypto: ^3.0.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+  flutter_lints: ^3.0.1
 
 flutter:
   plugin:

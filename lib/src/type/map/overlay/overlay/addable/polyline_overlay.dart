@@ -24,7 +24,7 @@ class NPolylineOverlay extends NAddableOverlay<NPolylineOverlay> {
   int _globalZIndex = -200000;
 
   NPolylineOverlay({
-    required String id,
+    required super.id,
     required Iterable<NLatLng> coords,
     Color color = Colors.white,
     double width = 2,
@@ -37,7 +37,7 @@ class NPolylineOverlay extends NAddableOverlay<NPolylineOverlay> {
         _lineCap = lineCap,
         _lineJoin = lineJoin,
         _pattern = pattern,
-        super(id: id, type: NOverlayType.polylineOverlay);
+        super(type: NOverlayType.polylineOverlay);
 
   void setCoords(Iterable<NLatLng> coords) {
     _coords = coords;

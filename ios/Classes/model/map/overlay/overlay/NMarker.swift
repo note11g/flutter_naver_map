@@ -37,6 +37,7 @@ internal struct NMarker: AddableOverlay {
         marker.anchor = anchor.cgPoint
         marker.width = size.width
         marker.height = size.height
+        
         if let caption = caption {
             marker.captionText = caption.text
             marker.captionTextSize = caption.textSize

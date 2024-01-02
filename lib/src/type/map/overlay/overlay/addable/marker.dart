@@ -62,7 +62,7 @@ class NMarker extends NAddableOverlay<NMarker> {
   int _globalZIndex = 200000;
 
   NMarker({
-    required String id,
+    required super.id,
     required NLatLng position,
     NOverlayImage? icon,
     Color iconTintColor = Colors.transparent,
@@ -102,7 +102,7 @@ class NMarker extends NAddableOverlay<NMarker> {
         _isHideCollidedCaptions = isHideCollidedCaptions,
         _isHideCollidedMarkers = isHideCollidedMarkers,
         _isHideCollidedSymbols = isHideCollidedSymbols,
-        super(id: id, type: NOverlayType.marker);
+        super(type: NOverlayType.marker);
 
   /*
     --- constant ---
@@ -121,7 +121,7 @@ class NMarker extends NAddableOverlay<NMarker> {
     assert(infoWindow.withMarker);
     assert(_isAdded);
 
-    infoWindow._addedOnMap(_overlayController!);
+    _overlayControllers.forEach(infoWindow._addedOnMap);
     assert(infoWindow._isAdded);
 
     final messageable =

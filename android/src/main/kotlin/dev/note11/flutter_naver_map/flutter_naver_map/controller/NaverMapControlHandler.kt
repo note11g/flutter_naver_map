@@ -49,11 +49,25 @@ internal interface NaverMapControlHandler {
             latLng = call.arguments.asLatLng(),
             onSuccess = result::send,
         )
-        "getMeterPerDp" -> call.arguments.asMap().let {
+        "getMeterPerDp" -> {
+            val arguments = call.arguments?.asMap()
+            val latitude = arguments?.get("latitude")?.asDouble()
+            val zoom = arguments?.get("zoom")?.asDouble()
+            if (latitude != null && zoom != null) {
+                getMeterPerDp(
+                        lat = latitude,
+                        zoom = zoom,
+                        onSuccess = result::send,
+                )
+            } else {
+                getMeterPerDp(result::send)
+            }
+        }
+        "getMeterPerDpAtLatitude" -> call.arguments.asMap().let {
             getMeterPerDp(
-                lat = it["latitude"]?.asDouble(),
-                zoom = it["zoom"]?.asDouble(),
-                onSuccess = result::send,
+                    lat = it["latitude"]!!.asDouble(),
+                    zoom = it["zoom"]!!.asDouble(),
+                    onSuccess = result::send,
             )
         }
         "pickAll" -> call.arguments.asMap().let {
@@ -88,6 +102,7 @@ internal interface NaverMapControlHandler {
             type = call.arguments?.toString()?.let(NOverlayType::fromString),
             onSuccess = result::send
         )
+        "forceRefresh" -> forceRefresh(onSuccess = result::send)
         "updateOptions" -> updateOptions(options = call.arguments.asMap(), onSuccess = result::send)
         else -> result.notImplemented()
     }
@@ -108,7 +123,9 @@ internal interface NaverMapControlHandler {
 
     fun latLngToScreenLocation(latLng: LatLng, onSuccess: (nPoint: Map<String, Any>) -> Unit)
 
-    fun getMeterPerDp(lat: Double?, zoom: Double?, onSuccess: (meterPerDp: Double) -> Unit)
+    fun getMeterPerDp(onSuccess: (meterPerDp: Double) -> Unit)
+
+    fun getMeterPerDp(lat: Double, zoom: Double, onSuccess: (meterPerDp: Double) -> Unit)
 
     fun pickAll(
         nPoint: NPoint,
@@ -131,6 +148,8 @@ internal interface NaverMapControlHandler {
     fun deleteOverlay(overlayInfo: NOverlayInfo, onSuccess: () -> Unit)
 
     fun clearOverlays(type: NOverlayType?, onSuccess: () -> Unit)
+
+    fun forceRefresh(onSuccess: () -> Unit)
 
     fun updateOptions(options: Map<String, Any>, onSuccess: () -> Unit)
 }

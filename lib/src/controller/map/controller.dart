@@ -85,6 +85,19 @@ class _NaverMapControllerImpl
   }
 
   @override
+  Future<double> getMeterPerDpAtLatitude({
+    required double latitude,
+    required double zoom,
+  }) {
+    final messageable = NMessageable.forOnceWithMap({
+      "latitude": latitude,
+      "zoom": zoom,
+    });
+    return invokeMethod("getMeterPerDpAtLatitude", messageable)
+        .then((value) => value as double);
+  }
+
+  @override
   Future<List<NPickableInfo>> pickAll(NPoint point, {double radius = 0}) async {
     final messageable =
         NMessageable.forOnceWithMap({"point": point, "radius": radius});
@@ -146,6 +159,11 @@ class _NaverMapControllerImpl
     assert(type != NOverlayType.locationOverlay);
     overlayController.clear(type);
     await invokeMethod("clearOverlays", type);
+  }
+
+  @override
+  Future<void> forceRefresh() async {
+    await invokeMethod("forceRefresh");
   }
 
   /*

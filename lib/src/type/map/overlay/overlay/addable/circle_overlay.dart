@@ -21,7 +21,7 @@ class NCircleOverlay extends NAddableOverlay<NCircleOverlay> {
   int _globalZIndex = -200000;
 
   NCircleOverlay({
-    required String id,
+    required super.id,
     required NLatLng center,
     double radius = 1000, // meter
     Color color = Colors.white,
@@ -32,7 +32,7 @@ class NCircleOverlay extends NAddableOverlay<NCircleOverlay> {
         _color = color,
         _outlineColor = outlineColor,
         _outlineWidth = outlineWidth,
-        super(id: id, type: NOverlayType.circleOverlay);
+        super(type: NOverlayType.circleOverlay);
 
   void setCenter(NLatLng center) {
     _center = center;

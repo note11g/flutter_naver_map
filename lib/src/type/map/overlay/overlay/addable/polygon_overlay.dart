@@ -21,7 +21,7 @@ class NPolygonOverlay extends NAddableOverlay<NPolygonOverlay> {
   int _globalZIndex = -200000;
 
   NPolygonOverlay({
-    required String id,
+    required super.id,
     required Iterable<NLatLng> coords,
     Color color = Colors.white,
     Iterable<Iterable<NLatLng>> holes = const [],
@@ -34,7 +34,7 @@ class NPolygonOverlay extends NAddableOverlay<NPolygonOverlay> {
         _holes = holes,
         _outlineColor = outlineColor,
         _outlineWidth = outlineWidth,
-        super(id: id, type: NOverlayType.polygonOverlay);
+        super(type: NOverlayType.polygonOverlay);
 
   void setCoords(Iterable<NLatLng> coords) {
     assert(coords.length >= 3);
