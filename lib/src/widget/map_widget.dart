@@ -16,7 +16,7 @@ class NaverMap extends StatefulWidget {
   final void Function(NSelectedIndoor? selectedIndoor)? onSelectedIndoorChanged;
 
   const NaverMap({
-    Key? key,
+    super.key,
     this.options = const NaverMapViewOptions(),
     this.forceGesture = false,
     this.onMapReady,
@@ -25,7 +25,7 @@ class NaverMap extends StatefulWidget {
     this.onCameraChange,
     this.onCameraIdle,
     this.onSelectedIndoorChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<NaverMap> createState() => _NaverMapState();

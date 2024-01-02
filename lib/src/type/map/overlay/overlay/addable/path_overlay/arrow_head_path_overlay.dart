@@ -27,7 +27,7 @@ class NArrowheadPathOverlay extends NAddableOverlay<NArrowheadPathOverlay> {
   int _globalZIndex = 100000;
 
   NArrowheadPathOverlay({
-    required String id,
+    required super.id,
     required Iterable<NLatLng> coords,
     double width = 4,
     Color color = Colors.white,
@@ -42,7 +42,7 @@ class NArrowheadPathOverlay extends NAddableOverlay<NArrowheadPathOverlay> {
         _outlineColor = outlineColor,
         _elevation = elevation,
         _headSizeRatio = headSizeRatio,
-        super(id: id, type: NOverlayType.arrowheadPathOverlay);
+        super(type: NOverlayType.arrowheadPathOverlay);
 
   void setCoords(Iterable<NLatLng> coords) {
     _coords = coords;

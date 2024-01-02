@@ -44,7 +44,7 @@ class NPathOverlay extends NAddableOverlay<NPathOverlay> {
   int _globalZIndex = -100000;
 
   NPathOverlay({
-    required String id,
+    required super.id,
     required Iterable<NLatLng> coords,
     double width = 4,
     Color color = Colors.white,
@@ -71,7 +71,7 @@ class NPathOverlay extends NAddableOverlay<NPathOverlay> {
         _isHideCollidedCaptions = isHideCollidedCaptions,
         _isHideCollidedMarkers = isHideCollidedMarkers,
         _isHideCollidedSymbols = isHideCollidedSymbols,
-        super(id: id, type: NOverlayType.pathOverlay);
+        super(type: NOverlayType.pathOverlay);
 
   void setCoords(Iterable<NLatLng> coords) {
     _coords = coords;

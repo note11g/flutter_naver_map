@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 
-import '../main.dart';
-
 class DoubleMapTestPage extends StatefulWidget {
   const DoubleMapTestPage({Key? key}) : super(key: key);
 

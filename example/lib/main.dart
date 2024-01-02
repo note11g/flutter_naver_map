@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'package:flutter_naver_map_example/design/custom_widget.dart';
 import 'package:flutter_naver_map_example/pages/examples/controller_example.dart';
 import 'package:flutter_naver_map_example/pages/examples/overlay_example.dart';
 
@@ -167,23 +166,23 @@ class _FNMapPageState extends State<FNMapPage> {
         padding: const EdgeInsets.all(24),
         child: Column(children: [
           // todo
-          Text("_cameraMoveTestPage"),
-          Text("카메라 이동"),
+          const Text("_cameraMoveTestPage"),
+          const Text("카메라 이동"),
           ElevatedButton(
               onPressed: () {
                 mapController.updateCamera(NCameraUpdate.fromCameraPosition(
-                    NCameraPosition(
+                    const NCameraPosition(
                         target: NLatLng(37.56362422812855, 126.96269803941277),
                         zoom: 17.00922642853924,
                         bearing: 119.62995870263971)));
               },
-              child: Text('카메라 회전')),
+              child: const Text('카메라 회전')),
         ]));
   }
 
   Widget _pickTestPage() {
-    return Padding(
-        padding: const EdgeInsets.all(24),
+    return const Padding(
+        padding: EdgeInsets.all(24),
         child: Column(children: [
           // todo
           Text("_pickTestPage"),

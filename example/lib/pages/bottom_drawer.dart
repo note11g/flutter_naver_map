@@ -123,7 +123,7 @@ class ExampleAppBottomDrawer {
       back();
       return false;
     } else if (drawerState != DrawerState.closed) {
-      drawerController?.close();
+      drawerController.close();
       return false;
     }
     return true;

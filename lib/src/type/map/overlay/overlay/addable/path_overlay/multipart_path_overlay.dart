@@ -32,7 +32,7 @@ class NMultipartPathOverlay extends NAddableOverlay<NMultipartPathOverlay> {
   int _globalZIndex = -100000;
 
   NMultipartPathOverlay({
-    required String id,
+    required super.id,
     required Iterable<NMultipartPath> paths,
     double width = 4,
     double outlineWidth = 1,
@@ -51,7 +51,7 @@ class NMultipartPathOverlay extends NAddableOverlay<NMultipartPathOverlay> {
         _isHideCollidedCaptions = isHideCollidedCaptions,
         _isHideCollidedMarkers = isHideCollidedMarkers,
         _isHideCollidedSymbols = isHideCollidedSymbols,
-        super(id: id, type: NOverlayType.multipartPathOverlay);
+        super(type: NOverlayType.multipartPathOverlay);
 
   void setPaths(Iterable<NMultipartPath> paths) {
     _paths = paths;

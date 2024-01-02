@@ -26,7 +26,7 @@ class NInfoWindow extends NAddableOverlay<NInfoWindow> {
   int _globalZIndex = 400000;
 
   NInfoWindow.onMarker({
-    required String id,
+    required super.id,
     required String text,
     NPoint anchor = defaultAnchor,
     double alpha = 1.0,
@@ -39,10 +39,10 @@ class NInfoWindow extends NAddableOverlay<NInfoWindow> {
         _offsetX = offsetX,
         _offsetY = offsetY,
         withMarker = true,
-        super(id: id, type: NOverlayType.infoWindow);
+        super(type: NOverlayType.infoWindow);
 
   NInfoWindow.onMap({
-    required String id,
+    required super.id,
     required String text,
     required NLatLng position,
     NPoint anchor = defaultAnchor,
@@ -56,7 +56,7 @@ class NInfoWindow extends NAddableOverlay<NInfoWindow> {
         _offsetX = offsetX,
         _offsetY = offsetY,
         withMarker = false,
-        super(id: id, type: NOverlayType.infoWindow);
+        super(type: NOverlayType.infoWindow);
 
   void setText(String text) {
     _text = text;
