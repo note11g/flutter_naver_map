@@ -156,7 +156,7 @@ class _FNMapPageState extends State<FNMapPage> {
     MapFunctionItem(
         title: "주변 심볼 및 오버레이 가져오기",
         description: "특정 영역 주변의 심볼 및 오버레이를 가져올 수 있어요",
-        isScrollPage: false,
+        isScrollPage: true,
         page: (canScroll) {
           final screenSize = MediaQuery.sizeOf(context);
           return NaverMapPickExample(
