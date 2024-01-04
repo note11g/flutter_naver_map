@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_naver_map_example/pages/examples/controller_example.dart';
 import 'package:flutter_naver_map_example/pages/examples/overlay_example.dart';
+import 'package:flutter_naver_map_example/pages/examples/pick_example.dart';
 
 import 'pages/bottom_drawer.dart';
 import 'pages/new_window_page.dart';
@@ -154,7 +156,17 @@ class _FNMapPageState extends State<FNMapPage> {
     MapFunctionItem(
         title: "주변 심볼 및 오버레이 가져오기",
         description: "특정 영역 주변의 심볼 및 오버레이를 가져올 수 있어요",
-        page: (canScroll) => _pickTestPage()),
+        isScrollPage: false,
+        page: (canScroll) {
+          final screenSize = MediaQuery.sizeOf(context);
+          return NaverMapPickExample(
+            canScroll: canScroll,
+            mapController: mapController,
+            mapEndPoint:
+                Point(screenSize.width, screenSize.height - drawerHeight),
+            onCameraChangeStream: _onCameraChangeStreamController.stream,
+          );
+        }),
     MapFunctionItem(
       title: "새 페이지에서 지도 보기",
       description: "새 페이지에서 지도를 봅니다. (메모리 누수 확인용)",
@@ -179,16 +191,6 @@ class _FNMapPageState extends State<FNMapPage> {
                         bearing: 119.62995870263971)));
               },
               child: const Text('카메라 회전')),
-        ]));
-  }
-
-  Widget _pickTestPage() {
-    return const Padding(
-        padding: EdgeInsets.all(24),
-        child: Column(children: [
-          // todo
-          Text("_pickTestPage"),
-          Text("주변 심볼 및 오버레이 가져오기"),
         ]));
   }
 }
