@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -112,13 +113,39 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
               title: "지도 강제 새로고침",
               description: ".forceRefresh"),
         HalfActionButton(
-            action: () => AlertUtil.openAlert("준비중인 예제입니다.\n함수로는 사용하실 수 있습니다.",
-                context: context),
+            action: _takeSnapshot,
             icon: Icons.camera_alt,
             title: "지도 캡쳐하기",
             description: ".takeSnapshot"),
       ]),
     );
+  }
+
+  void _takeSnapshot() async {
+    final snapshot = await _mapController.takeSnapshot();
+    if (context.mounted) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Center(
+                child: Material(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("지도 캡쳐하기",
+                            style: getTextTheme(context).titleMedium),
+                        SizedBox(
+                            height: MediaQuery.sizeOf(context).height * 0.64,
+                            child: Image.file(File(snapshot.path))),
+                      ])),
+            ));
+          });
+    }
   }
 
   @override

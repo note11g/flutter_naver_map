@@ -52,12 +52,14 @@ class _FNMapPageState extends State<FNMapPage> {
   @override
   Widget build(BuildContext context) {
     safeArea = MediaQuery.of(context).padding;
-    return WillPopScope(
-      onWillPop: () async => drawerTool.processWillPop(),
-      child: Stack(children: [
-        Positioned.fill(child: mapWidget()),
-        drawerTool.bottomDrawer,
-      ]),
+    return Scaffold(
+      body: WillPopScope(
+        onWillPop: () async => drawerTool.processWillPop(),
+        child: Stack(children: [
+          Positioned.fill(child: mapWidget()),
+          drawerTool.bottomDrawer,
+        ]),
+      ),
     );
   }
 
