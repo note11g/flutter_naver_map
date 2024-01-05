@@ -1,7 +1,11 @@
 ## 1.1.1
 
-### Fix
+### Improve
+- [All Platform] Improve: NOverlayImage.fromWidget delete Image Widget support with assertion.
+- [Example] Add Example controller.pickAll & takeSnapshot.
 
+### Fix
+- [Android] Fix black screen caused by flutter 3.16.0~ & android 6.0~9.0 (SDK 23~28) (issue: [#135](https://github.com/note11g/flutter_naver_map/issues/135), PR: [#153](https://github.com/note11g/flutter_naver_map/pull/153))
 - [Android] Fix MapWidget ignore navigator stack issue android 6.0~13.0 (SDK 23~33) (issue: [#56](https://github.com/note11g/flutter_naver_map/issues/56), Temp Fix PR: [#151](https://github.com/note11g/flutter_naver_map/pull/151))
 
 ## 1.1.0+1
