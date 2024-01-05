@@ -11,7 +11,7 @@ flutter_naver_map을 사용해주셔서 감사드립니다.
 Android와 iOS 플랫폼을 지원하며, 호환 가능한 버전은 다음과 같습니다.
 
 - Flutter : **Flutter 3.0 이상**, Dart 2.18.4 이상
-- Android : API 21 (Android 5.0) 이상
+- Android : API 23 (Android 6.0) 이상
 - iOS : iOS 11 이상
 
 ---

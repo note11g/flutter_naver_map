@@ -6,7 +6,7 @@
 
 ```yaml
 dependencies:
-  flutter_naver_map: ^1.0.0
+  flutter_naver_map: ^1.1.1
 ```
 
 그리고, `pub get`을 실행합니다.
@@ -17,21 +17,7 @@ dependencies:
 
 ### Android
 
-Android에서는, 해당 [이슈](https://github.com/note11g/flutter_naver_map/issues/56)로 인해,
-
-`[프로젝트 폴더]/android/app/main/.../MainActivity.kt`에서 다음과 같이 코드를 추가해주셔야 합니다.
-
-```kotlin
-import android.os.Bundle
-import io.flutter.embedding.android.FlutterActivity
-
-class MainActivity : FlutterActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        intent.putExtra("background_mode", "transparent")
-        super.onCreate(savedInstanceState)
-    }
-}
-```
+Android에서는, 추가로 설정하실 것이 없습니다.
 
 ### iOS
 
@@ -47,36 +33,7 @@ iOS에서는, 대용량 파일을 받기 위해 [git-lfs](https://git-lfs.github
 
 ---
 
-## 3. Client Id 지정하기
-
-flutter_naver_map에서는 두가지의 인증 방법을 지원합니다.
-
-둘 중 하나의 방법을 택하여 Client Id를 지정해주세요.
-
-- **지도 초기화 메서드 실행 시, client Id 지정** (권장됨)
-    - 아래의 [초기화하기](#4-지도-초기화하기) 챕터에서 설명합니다.
-
-
-- `AndroidManifest.xml`과 `Info.plist`에 client Id 지정
-    - `AndroidManifest.xml`에 지정
-        ```xml
-        <manifest>
-           <application>
-               <meta-data
-                   android:name="com.naver.maps.map.CLIENT_ID"
-                   android:value="YOUR_CLIENT_ID" />
-           </application>
-        </manifest>
-        ```
-    - `info.plist`에 지정
-        ```text
-        <key>NMFClientId</key>
-        <string>YOUR_CLIENT_ID</string>
-        ```
-
----
-
-## 4. 지도 초기화하기
+## 3. 지도 초기화하기
 
 지도 초기화 메서드를 **지도 위젯 사용 전에** 실행하여 초기화할 수 있습니다.
 

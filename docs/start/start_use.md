@@ -26,11 +26,10 @@ Widget build(BuildContext context) {
 
 :::danger
 **만약, flutter_naver_map 이전 버전을 사용하셨었다면, 꼭!! 따라해주세요!**
-(0.x대 버전 사용자 or 1.0 dev preview 사용자)
+(1.1.1 미만 버전 사용자)
 
 **이전 버전의 Naver Map iOS SDK와 충돌할 가능성이 있습니다.**
 :::
-
 
 
 따라서, 다음 단계를 따라해주세요.
