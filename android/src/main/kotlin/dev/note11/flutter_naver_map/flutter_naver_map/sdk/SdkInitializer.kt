@@ -36,7 +36,7 @@ internal class SdkInitializer(
         try {
             if (clientId != null) initializeMapSdk(context, clientId, isGov)
             if (setAuthFailedListener) setOnAuthFailedListener()
-            val sendPayload = mapOf("androidSdkVersion" to androidSdkVersion)
+            val sendPayload = mapOf("androidSdkVersion" to Build.VERSION.SDK_INT)
             onSuccess(sendPayload)
         } catch (e: NaverMapSdk.AuthFailedException) {
             onFailure(e)
@@ -62,9 +62,5 @@ internal class SdkInitializer(
                 "message" to ex.message,
             )
         )
-    }
-
-    companion object {
-        private val androidSdkVersion: Int get() = Build.VERSION.SDK_INT
     }
 }

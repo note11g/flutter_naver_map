@@ -21,20 +21,13 @@ class _PlatformViewCreator {
           hitTestBehavior: hitTestBehavior,
         ),
         onCreatePlatformView: (params) {
-          // issues
-          // 1. android 5.0 (API 21) ~ android 7.1 (API 25) render issue (GLSurfaceView rendered under flutter view)
-          // -> ExpensiveAndroidView, TextureSurfaceComposition (SurfaceAndroidView).
-          // 2. "Unexpected platform view context for view ID 0;" issue. (+ minimum API 23)
-          // -> AndroidView (virtual display)
+          // RenderView(Impl Android Side), Display Mode
+          // API 23 ~ 29 : TextureView, Texture Layer Hybrid Composition.
+          // API 30 ~ : GLSurfaceView, Hybrid Composition (TLHC cause issue: flutter#98865)
 
-          // initAndroidView : auto detect.
-          // but Android 10 or higher, use TextureSurfaceComposition.
-
-          const hybridView = PlatformViewsService.initExpensiveAndroidView;
-          // const autoView = PlatformViewsService.initAndroidView;
-          const autoView = PlatformViewsService.initSurfaceAndroidView;
-
-          final usingView = androidSdkVersion! >= 26 ? hybridView : autoView;
+          final usingView = androidSdkVersion! <= 29
+              ? PlatformViewsService.initAndroidView
+              : PlatformViewsService.initExpensiveAndroidView;
 
           final view = usingView.call(
               id: params.id,

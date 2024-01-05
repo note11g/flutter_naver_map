@@ -3,7 +3,9 @@ package dev.note11.flutter_naver_map.flutter_naver_map.view
 import android.app.Activity
 import android.app.Application
 import android.content.ComponentCallbacks
+import android.content.Context
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import com.naver.maps.map.MapView
@@ -21,6 +23,7 @@ import io.flutter.plugin.platform.PlatformView
 
 internal class NaverMapView(
     private val activity: Activity,
+    private val flutterProvidedContext: Context,
     private val naverMapViewOptions: NaverMapViewOptions,
     private val channel: MethodChannel,
     private val overlayController: OverlayHandler,
@@ -28,13 +31,16 @@ internal class NaverMapView(
 
     private lateinit var naverMap: NaverMap
     private lateinit var naverMapControlSender: NaverMapControlSender
-    private val mapView = MapView(activity, naverMapViewOptions.naverMapOptions).apply {
-        setTempMethodCallHandler()
-        getMapAsync { naverMap ->
-            this@NaverMapView.naverMap = naverMap
-            onMapReady()
+    private val mapView =
+        MapView(flutterProvidedContext, naverMapViewOptions.naverMapOptions.apply {
+            useTextureView(Build.VERSION.SDK_INT <= 29)
+        }).apply {
+            setTempMethodCallHandler()
+            getMapAsync { naverMap ->
+                this@NaverMapView.naverMap = naverMap
+                onMapReady()
+            }
         }
-    }
     private var isListenerRegistered = false
     private var rawNaverMapOptionTempCache: Any? = null
 
@@ -60,7 +66,7 @@ internal class NaverMapView(
 
     private fun initializeMapController() {
         naverMapControlSender = NaverMapController(
-            naverMap, channel, activity.applicationContext, overlayController
+            naverMap, channel, flutterProvidedContext, overlayController
         ).apply {
             rawNaverMapOptionTempCache?.let { updateOptions(it.asMap()) {} }
         }
