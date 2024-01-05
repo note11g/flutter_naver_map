@@ -1,3 +1,9 @@
+## 1.1.1
+
+### Fix
+
+- [Android] Fix MapWidget ignore navigator stack issue android 6.0~13.0 (SDK 23~33) (issue: [#56](https://github.com/note11g/flutter_naver_map/issues/56), Temp Fix PR: [#151](https://github.com/note11g/flutter_naver_map/pull/151))
+
 ## 1.1.0+1
 - Update Readme & Apply Dart formatting
 
