@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.ComponentCallbacks
 import android.content.Context
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import com.naver.maps.map.MapView
@@ -30,13 +31,16 @@ internal class NaverMapView(
 
     private lateinit var naverMap: NaverMap
     private lateinit var naverMapControlSender: NaverMapControlSender
-    private val mapView = MapView(flutterProvidedContext, naverMapViewOptions.naverMapOptions).apply {
-        setTempMethodCallHandler()
-        getMapAsync { naverMap ->
-            this@NaverMapView.naverMap = naverMap
-            onMapReady()
+    private val mapView =
+        MapView(flutterProvidedContext, naverMapViewOptions.naverMapOptions.apply {
+            useTextureView(Build.VERSION.SDK_INT <= 29)
+        }).apply {
+            setTempMethodCallHandler()
+            getMapAsync { naverMap ->
+                this@NaverMapView.naverMap = naverMap
+                onMapReady()
+            }
         }
-    }
     private var isListenerRegistered = false
     private var rawNaverMapOptionTempCache: Any? = null
 
