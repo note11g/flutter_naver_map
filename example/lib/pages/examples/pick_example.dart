@@ -1,16 +1,12 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_naver_map_example/design/custom_widget.dart';
 import 'package:flutter_naver_map_example/pages/utils/example_base.dart';
 import 'package:flutter_naver_map_example/pages/examples/overlay_example.dart';
-import 'package:flutter_naver_map_example/util/alert_util.dart';
 
-import '../../design/theme.dart';
 
 class NaverMapPickExample extends ExampleBasePage {
   final Stream<void> onCameraChangeStream;
@@ -70,13 +66,8 @@ class _NaverMapControllerExampleState extends State<NaverMapPickExample> {
 
     if (info is NOverlayInfo) {
       title = info.type.koreanName;
-      final idForCreatedAt = int.tryParse(info.id);
-      description = idForCreatedAt != null
-          ? DateTime.fromMillisecondsSinceEpoch(idForCreatedAt)
-              .toIso8601String()
-              .split("T")
-              .last
-          : info.id;
+      description = info.parseIdAsTimeString();
+
       icon = switch (info.type) {
         NOverlayType.marker => Icons.place_rounded,
         NOverlayType.infoWindow => Icons.chat_bubble_rounded,

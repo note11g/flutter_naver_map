@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_naver_map_example/pages/examples/camera_example.dart';
 import 'package:flutter_naver_map_example/pages/examples/controller_example.dart';
 import 'package:flutter_naver_map_example/pages/examples/overlay_example.dart';
 import 'package:flutter_naver_map_example/pages/examples/pick_example.dart';
+import 'package:flutter_naver_map_example/util/overlay_portal_util.dart';
 import 'package:transparent_pointer/transparent_pointer.dart';
 
 import 'pages/utils/bottom_drawer.dart';
@@ -54,21 +54,26 @@ class _FNMapPageState extends State<FNMapPage> {
   late EdgeInsets safeArea;
   double drawerHeight = 0;
 
+  final nOverlayInfoOverlayPortalController = NInfoOverlayPortalController();
+
   @override
   Widget build(BuildContext context) {
     safeArea = MediaQuery.of(context).padding;
     return Scaffold(
-      body: PopScope(
-        onPopInvoked: (didPop) => drawerTool.processWillPop(),
-        child: Stack(children: [
-          GestureDetector(
-              onTapDown: (details) => _onLastTouchStreamController.sink
-                  .add(details.globalPosition)),
-          Positioned.fill(child: TransparentPointer(child: mapWidget())),
-          drawerTool.bottomDrawer,
-        ]),
-      ),
-    );
+        body: PopScope(
+            onPopInvoked: (didPop) => drawerTool.processWillPop(),
+            child: Stack(children: [
+              GestureDetector(
+                  onTapDown: (details) => _onLastTouchStreamController.sink
+                      .add(details.globalPosition)),
+              Positioned.fill(child: TransparentPointer(child: mapWidget())),
+              drawerTool.bottomDrawer,
+              OverlayPortal(
+                  controller: nOverlayInfoOverlayPortalController,
+                  overlayChildBuilder: (context) =>
+                      nOverlayInfoOverlayPortalController.builder(
+                          context, mapController)),
+            ])));
   }
 
   /*
@@ -120,7 +125,6 @@ class _FNMapPageState extends State<FNMapPage> {
 
   final _onCameraChangeStreamController = StreamController<void>.broadcast();
   final _onLastTouchStreamController = StreamController<Offset>.broadcast();
-  final _onKeyUpStreamController = StreamController<KeyEvent>.broadcast();
 
   /*
     --- Bottom Drawer Widget ---
@@ -149,7 +153,10 @@ class _FNMapPageState extends State<FNMapPage> {
         icon: Icons.add_location_alt_rounded,
         isScrollPage: false,
         page: (canScroll) => NOverlayExample(
-            canScroll: canScroll, mapController: mapController)),
+            nOverlayInfoOverlayPortalController:
+                nOverlayInfoOverlayPortalController,
+            canScroll: canScroll,
+            mapController: mapController)),
     MapFunctionItem(
         title: "카메라 이동",
         isScrollPage: false,

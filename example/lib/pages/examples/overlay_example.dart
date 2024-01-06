@@ -4,14 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_naver_map_example/design/theme.dart';
 import 'package:flutter_naver_map_example/pages/utils/example_base.dart';
+import 'package:flutter_naver_map_example/util/overlay_portal_util.dart';
+import 'package:flutter_naver_map_example/util/string_util.dart';
 
 import '../../design/custom_widget.dart';
 
 class NOverlayExample extends ExampleBasePage {
+  final NInfoOverlayPortalController nOverlayInfoOverlayPortalController;
+
   const NOverlayExample({
     Key? key,
     required super.mapController,
     required super.canScroll,
+    required this.nOverlayInfoOverlayPortalController,
   }) : super(key: key);
 
   @override
@@ -30,49 +35,74 @@ class _NOverlayExampleState extends State<NOverlayExample> {
         type: willCreateOverlayType, cameraPosition: cameraPosition);
     overlay.setOnTapListener((overlay) {
       final latLng = cameraPosition.target;
-      mapController.latLngToScreenLocation(latLng).then(
-          (point) => addFlutterFloatingOverlay(point: point, overlay: overlay));
+      mapController.latLngToScreenLocation(latLng).then((point) =>
+          addFlutterFloatingOverlay(
+              point: point, overlay: overlay, latLng: latLng));
     });
     mapController.addOverlay(overlay);
   }
 
-  OverlayEntry? entry;
-
   void addFlutterFloatingOverlay({
     required NOverlay<dynamic> overlay,
     required NPoint point,
+    required NLatLng latLng,
   }) {
-    entry = OverlayEntry(builder: (context) {
-      final xPosition = (point.x) - 28;
-      return Positioned.fill(
-          child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => removeFlutterFloatingOverlay(),
-              child: Stack(children: [
-                Positioned(
-                    left: xPosition < 0 ? 0 : xPosition,
-                    top: point.y < 0 ? 0 : point.y,
-                    child: Balloon(
-                        size: const Size(200, 200),
-                        padding: const EdgeInsets.all(8),
-                        backgroundColor: getColorTheme(context).background,
-                        child: ListView(children: [
-                          Text(overlay.toString()),
-                          SimpleButton(
-                              text: "지우기",
-                              action: () {
-                                mapController.deleteOverlay(overlay.info);
-                                removeFlutterFloatingOverlay();
-                              })
-                        ])))
-              ])));
-    });
-    Overlay.of(context).insert(entry!);
-  }
+    widget.nOverlayInfoOverlayPortalController.openWithWidget(
+        builder: (context, mapController, controller) {
+          Widget header() =>
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 4),
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            child: Text(overlay.runtimeType.toString(),
+                                maxLines: 1,
+                                softWrap: false,
+                                overflow: TextOverflow.fade,
+                                style: getTextTheme(context).titleSmall)),
+                        const Icon(Icons.close_rounded),
+                      ]));
 
-  void removeFlutterFloatingOverlay() {
-    entry?.remove();
-    entry = null;
+          return Column(children: [
+            header(),
+            Expanded(
+                child: ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    children: [
+                      Text(
+                          overlay.info.id == overlay.info.parseIdAsTimeString()
+                              ? "id: ${overlay.info.id}"
+                              : "${overlay.info.parseIdAsTimeString()
+                              .replaceFirst(":", "시 ")
+                              .replaceFirst(":", "분 ")}초에 생성됨",
+                          style: getTextTheme(context).bodySmall),
+                      Text("${latLng.toShortString()}에 위치함",
+                          style: getTextTheme(context).bodySmall),
+                      const SizedBox(height: 4),
+                      Text(
+                          "zIndex: ${overlay.zIndex} (global: ${overlay
+                              .globalZIndex})\n"
+                              "${overlay.minZoom} ${overlay.isMinZoomInclusive
+                              ? "≤"
+                              : "<"}"
+                              " [보이는 줌 범위] ${overlay.isMaxZoomInclusive
+                              ? "≤"
+                              : "<"} ${overlay.maxZoom}\n",
+                          style: getTextTheme(context).bodySmall),
+                    ])),
+            SmallButton("오버레이 지우기",
+                icon: Icons.delete_forever_outlined,
+                radius: 0,
+                color: Colors.red.shade600, onTap: () {
+                  mapController.deleteOverlay(overlay.info);
+                  controller.hide();
+                }),
+          ]);
+        },
+        screenPoint: point,
+        overlay: overlay);
   }
 
   @override
@@ -84,12 +114,13 @@ class _NOverlayExampleState extends State<NOverlayExample> {
           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24)),
       SelectorWithTitle("오버레이 유형",
           description: "NOverlayType",
-          selector: (context) => EasyDropdown(
-              items: NOverlayType.values
-                  .where((t) => t != NOverlayType.locationOverlay)
-                  .toList(),
-              value: willCreateOverlayType,
-              onChanged: (v) => setState(() => willCreateOverlayType = v))),
+          selector: (context) =>
+              EasyDropdown(
+                  items: NOverlayType.values
+                      .where((t) => t != NOverlayType.locationOverlay)
+                      .toList(),
+                  value: willCreateOverlayType,
+                  onChanged: (v) => setState(() => willCreateOverlayType = v))),
       SimpleButton(
           text: "${willCreateOverlayType.koreanName} 생성",
           margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -99,56 +130,55 @@ class _NOverlayExampleState extends State<NOverlayExample> {
             padding: const EdgeInsets.fromLTRB(24, 0, 24, 12),
             child: Row(children: [
               Expanded(
-                child: SimpleButton(
-                    text: "${willCreateOverlayType.koreanName}만 모두 지우기",
-                    color: Colors.orange,
-                    margin: EdgeInsets.zero,
-                    action: () => mapController.clearOverlays(
-                        type: willCreateOverlayType)),
-              ),
+                  child: SimpleButton(
+                      text: "${willCreateOverlayType.koreanName}만 모두 지우기",
+                      color: Colors.orange,
+                      margin: EdgeInsets.zero,
+                      action: () =>
+                          mapController.clearOverlays(
+                              type: willCreateOverlayType))),
               const SizedBox(width: 12),
               Expanded(
-                child: SimpleButton(
-                    text: "모두 지우기",
-                    color: Colors.red,
-                    margin: EdgeInsets.zero,
-                    action: () => mapController.clearOverlays()),
-              ),
+                  child: SimpleButton(
+                      text: "모두 지우기",
+                      color: Colors.red,
+                      margin: EdgeInsets.zero,
+                      action: () => mapController.clearOverlays())),
             ])),
       const BottomPadding(),
     ]);
   }
+}
 
-  @override
-  void dispose() {
-    removeFlutterFloatingOverlay();
-    super.dispose();
+extension NOverlayTypeExtension on NOverlayType {
+  String get koreanName {
+    return switch (this) {
+      NOverlayType.marker => "마커",
+      NOverlayType.infoWindow => "정보창",
+      NOverlayType.circleOverlay => "원 오버레이",
+      NOverlayType.groundOverlay => "지상 오버레이",
+      NOverlayType.polygonOverlay => "다각형 오버레이",
+      NOverlayType.polylineOverlay => "선 오버레이",
+      NOverlayType.pathOverlay => "경로 오버레이",
+      NOverlayType.multipartPathOverlay => "경로(멀티파트) 오버레이",
+      NOverlayType.arrowheadPathOverlay => "경로(화살표) 오버레이",
+      NOverlayType.locationOverlay => "위치 오버레이",
+    };
   }
 }
 
-extension NOverlayExtension on NOverlayType {
-  String get koreanName {
-    switch (this) {
-      case NOverlayType.marker:
-        return "마커";
-      case NOverlayType.infoWindow:
-        return "정보창";
-      case NOverlayType.circleOverlay:
-        return "원 오버레이";
-      case NOverlayType.groundOverlay:
-        return "지상 오버레이";
-      case NOverlayType.polygonOverlay:
-        return "다각형 오버레이";
-      case NOverlayType.polylineOverlay:
-        return "선 오버레이";
-      case NOverlayType.pathOverlay:
-        return "경로 오버레이";
-      case NOverlayType.multipartPathOverlay:
-        return "경로(멀티파트) 오버레이";
-      case NOverlayType.arrowheadPathOverlay:
-        return "경로(화살표) 오버레이";
-      case NOverlayType.locationOverlay:
-        return "위치 오버레이";
+extension NOverlayInfoExtension on NOverlayInfo {
+  String parseIdAsTimeString() {
+    final idForCreatedAt = int.tryParse(id);
+    if (idForCreatedAt == null) return id;
+    try {
+      return DateTime
+          .fromMillisecondsSinceEpoch(idForCreatedAt)
+          .toIso8601String()
+          .split("T")
+          .last;
+    } catch (_) {
+      return id;
     }
   }
 }
@@ -242,7 +272,9 @@ class NOverlayMakerUtil {
     return heartCoords..add(heartCoords.first);
   }
 
-  static String get _timeBasedId => "${DateTime.now().millisecondsSinceEpoch}";
+  static String get _timeBasedId => "${DateTime
+      .now()
+      .millisecondsSinceEpoch}";
 
   NOverlayMakerUtil._();
 }

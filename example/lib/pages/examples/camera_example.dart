@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'dart:developer';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_naver_map_example/design/theme.dart';
 import 'package:flutter_naver_map_example/pages/utils/example_base.dart';
+import 'package:flutter_naver_map_example/util/string_util.dart';
 
 import '../../design/custom_widget.dart';
 
@@ -61,7 +60,7 @@ class _NOverlayExampleState extends State<CameraUpdateExample> {
               Expanded(
                   child: InnerSimpleTitle(
                       title:
-                          "좌표 (${_nowCameraPosition?.target.latitude.toStringAsFixed(5)}, ${_nowCameraPosition?.target.longitude.toStringAsFixed(5)})",
+                          "좌표 (${_nowCameraPosition?.target.toShortString()})",
                       description:
                           "NCameraUpdate.scrollAndZoomTo, .target,\nNCameraPosition.target")),
               _arrowButtonController(

@@ -7,6 +7,7 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_naver_map_example/design/custom_widget.dart';
 import 'package:flutter_naver_map_example/pages/utils/example_base.dart';
 import 'package:flutter_naver_map_example/util/alert_util.dart';
+import 'package:flutter_naver_map_example/util/string_util.dart';
 
 import '../../design/theme.dart';
 
@@ -128,8 +129,8 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
               description: ".getContentBounds() | .getContentRegion()"),
           const SizedBox(height: 4),
           Text(
-              "남서: ${_regionBounds?.southLatitude.toStringAsFixed(5)}, ${_regionBounds?.westLongitude.toStringAsFixed(5)}, "
-              "북동: ${_regionBounds?.northLatitude.toStringAsFixed(5)}, ${_regionBounds?.eastLongitude.toStringAsFixed(5)}",
+              "남서: ${_regionBounds?.southWest.toShortString()}, "
+              "북동: ${_regionBounds?.northEast.toShortString()}",
               style: getTextTheme(context)
                   .bodyMedium
                   ?.copyWith(fontWeight: FontWeight.w700)),
@@ -148,7 +149,7 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
           Text(
               _lastTappedScreenPosition != null
                   ? "마지막 드래그 화면 좌표: NPoint(${_lastTappedScreenPosition!.x.toStringAsFixed(5)}, ${_lastTappedScreenPosition!.y.toStringAsFixed(5)})\n"
-                      "변환 된 지도 좌표: NLatLng(${_lastTappedMapPosition?.latitude.toStringAsFixed(5)}, ${_lastTappedMapPosition?.longitude.toStringAsFixed(5)})"
+                      "변환 된 지도 좌표: NLatLng(${_lastTappedMapPosition?.toShortString()})"
                   : "지도를 드래그해보세요 (드래그 시작점을 수집합니다)",
               style: getTextTheme(context)
                   .bodyMedium
