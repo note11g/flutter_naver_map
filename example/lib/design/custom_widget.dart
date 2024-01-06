@@ -452,8 +452,7 @@ class BottomPadding extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding:
-            EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom));
+        padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom));
   }
 }
 
@@ -571,8 +570,9 @@ class _BalloonPainter extends CustomPainter {
 }
 
 class HalfActionButton extends StatelessWidget {
-  final Function() action;
+  final Function()? action;
   final IconData icon;
+  final Color? color;
   final String title;
   final String description;
 
@@ -580,6 +580,7 @@ class HalfActionButton extends StatelessWidget {
     super.key,
     required this.action,
     required this.icon,
+    this.color,
     required this.title,
     required this.description,
   });
@@ -587,7 +588,7 @@ class HalfActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-        color: getColorTheme(context).outlineVariant,
+        color: color ?? getColorTheme(context).outline,
         borderRadius: BorderRadius.circular(12),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
@@ -599,24 +600,21 @@ class HalfActionButton extends StatelessWidget {
                   Icon(icon, color: getColorTheme(context).primary, size: 22),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(title,
-                              style: getTextTheme(context)
-                                  .labelMedium
-                                  ?.copyWith(color: Colors.black),
-                              overflow: TextOverflow.fade,
-                              softWrap: false,
-                              maxLines: 1),
-                          const SizedBox(height: 2),
-                          Text(description,
-                              style: getTextTheme(context).bodySmall,
-                              overflow: TextOverflow.fade,
-                              softWrap: false,
-                              maxLines: 1),
-                        ]),
-                  ),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                        Text(title,
+                            style: getTextTheme(context).labelMedium,
+                            overflow: TextOverflow.fade,
+                            softWrap: false,
+                            maxLines: 1),
+                        const SizedBox(height: 2),
+                        Text(description,
+                            style: getTextTheme(context).bodySmall,
+                            overflow: TextOverflow.fade,
+                            softWrap: false,
+                            maxLines: 1),
+                      ])),
                 ]))));
   }
 }
@@ -651,5 +649,52 @@ class HalfActionButtonGrid extends StatelessWidget {
     }
 
     return Column(children: rowCellAndGapWidgets);
+  }
+}
+
+class SmallButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onTap;
+  final Color? color;
+  final Color? textColor;
+  final IconData? icon;
+  final double radius;
+
+  const SmallButton(
+    this.text, {
+    super.key,
+    required this.onTap,
+    this.color,
+    this.textColor,
+    this.icon,
+    this.radius = 6,
+  });
+
+  BorderRadius get borderRadius => BorderRadius.circular(radius);
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+        color: color ?? getColorTheme(context).secondary,
+        borderRadius: borderRadius,
+        child: InkWell(
+            onTap: onTap,
+            borderRadius: borderRadius,
+            child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      if (icon != null)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 4),
+                          child: Icon(icon,
+                              color: textColor ?? Colors.white, size: 16),
+                        ),
+                      Text(text, style: getTextTheme(context)
+                              .labelSmall
+                              ?.copyWith(color: textColor)),
+                    ]))));
   }
 }
