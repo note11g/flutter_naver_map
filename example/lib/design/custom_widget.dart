@@ -692,7 +692,8 @@ class SmallButton extends StatelessWidget {
                           child: Icon(icon,
                               color: textColor ?? Colors.white, size: 16),
                         ),
-                      Text(text, style: getTextTheme(context)
+                      Text(text,
+                          style: getTextTheme(context)
                               .labelSmall
                               ?.copyWith(color: textColor)),
                     ]))));

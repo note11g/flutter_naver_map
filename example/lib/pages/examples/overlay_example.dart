@@ -49,21 +49,20 @@ class _NOverlayExampleState extends State<NOverlayExample> {
   }) {
     widget.nOverlayInfoOverlayPortalController.openWithWidget(
         builder: (context, mapController, controller) {
-          Widget header() =>
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 4),
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                            child: Text(overlay.runtimeType.toString(),
-                                maxLines: 1,
-                                softWrap: false,
-                                overflow: TextOverflow.fade,
-                                style: getTextTheme(context).titleSmall)),
-                        const Icon(Icons.close_rounded),
-                      ]));
+          Widget header() => Padding(
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 4),
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: Text(overlay.runtimeType.toString(),
+                            maxLines: 1,
+                            softWrap: false,
+                            overflow: TextOverflow.fade,
+                            style: getTextTheme(context).titleSmall)),
+                    const Icon(Icons.close_rounded),
+                  ]));
 
           return Column(children: [
             header(),
@@ -71,34 +70,27 @@ class _NOverlayExampleState extends State<NOverlayExample> {
                 child: ListView(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     children: [
-                      Text(
-                          overlay.info.id == overlay.info.parseIdAsTimeString()
-                              ? "id: ${overlay.info.id}"
-                              : "${overlay.info.parseIdAsTimeString()
-                              .replaceFirst(":", "시 ")
-                              .replaceFirst(":", "분 ")}초에 생성됨",
-                          style: getTextTheme(context).bodySmall),
-                      Text("${latLng.toShortString()}에 위치함",
-                          style: getTextTheme(context).bodySmall),
-                      const SizedBox(height: 4),
-                      Text(
-                          "zIndex: ${overlay.zIndex} (global: ${overlay
-                              .globalZIndex})\n"
-                              "${overlay.minZoom} ${overlay.isMinZoomInclusive
-                              ? "≤"
-                              : "<"}"
-                              " [보이는 줌 범위] ${overlay.isMaxZoomInclusive
-                              ? "≤"
-                              : "<"} ${overlay.maxZoom}\n",
-                          style: getTextTheme(context).bodySmall),
-                    ])),
+                  Text(
+                      overlay.info.id == overlay.info.parseIdAsTimeString()
+                          ? "id: ${overlay.info.id}"
+                          : "${overlay.info.parseIdAsTimeString().replaceFirst(":", "시 ").replaceFirst(":", "분 ")}초에 생성됨",
+                      style: getTextTheme(context).bodySmall),
+                  Text("${latLng.toShortString()}에 위치함",
+                      style: getTextTheme(context).bodySmall),
+                  const SizedBox(height: 4),
+                  Text(
+                      "zIndex: ${overlay.zIndex} (global: ${overlay.globalZIndex})\n"
+                      "${overlay.minZoom} ${overlay.isMinZoomInclusive ? "≤" : "<"}"
+                      " [보이는 줌 범위] ${overlay.isMaxZoomInclusive ? "≤" : "<"} ${overlay.maxZoom}\n",
+                      style: getTextTheme(context).bodySmall),
+                ])),
             SmallButton("오버레이 지우기",
                 icon: Icons.delete_forever_outlined,
                 radius: 0,
                 color: Colors.red.shade600, onTap: () {
-                  mapController.deleteOverlay(overlay.info);
-                  controller.hide();
-                }),
+              mapController.deleteOverlay(overlay.info);
+              controller.hide();
+            }),
           ]);
         },
         screenPoint: point,
@@ -114,13 +106,12 @@ class _NOverlayExampleState extends State<NOverlayExample> {
           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24)),
       SelectorWithTitle("오버레이 유형",
           description: "NOverlayType",
-          selector: (context) =>
-              EasyDropdown(
-                  items: NOverlayType.values
-                      .where((t) => t != NOverlayType.locationOverlay)
-                      .toList(),
-                  value: willCreateOverlayType,
-                  onChanged: (v) => setState(() => willCreateOverlayType = v))),
+          selector: (context) => EasyDropdown(
+              items: NOverlayType.values
+                  .where((t) => t != NOverlayType.locationOverlay)
+                  .toList(),
+              value: willCreateOverlayType,
+              onChanged: (v) => setState(() => willCreateOverlayType = v))),
       SimpleButton(
           text: "${willCreateOverlayType.koreanName} 생성",
           margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -134,9 +125,8 @@ class _NOverlayExampleState extends State<NOverlayExample> {
                       text: "${willCreateOverlayType.koreanName}만 모두 지우기",
                       color: Colors.orange,
                       margin: EdgeInsets.zero,
-                      action: () =>
-                          mapController.clearOverlays(
-                              type: willCreateOverlayType))),
+                      action: () => mapController.clearOverlays(
+                          type: willCreateOverlayType))),
               const SizedBox(width: 12),
               Expanded(
                   child: SimpleButton(
@@ -172,8 +162,7 @@ extension NOverlayInfoExtension on NOverlayInfo {
     final idForCreatedAt = int.tryParse(id);
     if (idForCreatedAt == null) return id;
     try {
-      return DateTime
-          .fromMillisecondsSinceEpoch(idForCreatedAt)
+      return DateTime.fromMillisecondsSinceEpoch(idForCreatedAt)
           .toIso8601String()
           .split("T")
           .last;
@@ -272,9 +261,7 @@ class NOverlayMakerUtil {
     return heartCoords..add(heartCoords.first);
   }
 
-  static String get _timeBasedId => "${DateTime
-      .now()
-      .millisecondsSinceEpoch}";
+  static String get _timeBasedId => "${DateTime.now().millisecondsSinceEpoch}";
 
   NOverlayMakerUtil._();
 }

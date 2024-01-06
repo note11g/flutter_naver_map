@@ -7,7 +7,6 @@ import 'package:flutter_naver_map_example/design/custom_widget.dart';
 import 'package:flutter_naver_map_example/pages/utils/example_base.dart';
 import 'package:flutter_naver_map_example/pages/examples/overlay_example.dart';
 
-
 class NaverMapPickExample extends ExampleBasePage {
   final Stream<void> onCameraChangeStream;
   final Point<double> mapEndPoint;

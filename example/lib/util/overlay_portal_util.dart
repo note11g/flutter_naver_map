@@ -3,8 +3,10 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_naver_map_example/design/custom_widget.dart';
 import 'package:flutter_naver_map_example/design/theme.dart';
 
-typedef NInfoOverlayBuilderCreateCallback = Widget Function(BuildContext context,
-    NaverMapController mapController, NInfoOverlayPortalController controller);
+typedef NInfoOverlayBuilderCreateCallback = Widget Function(
+    BuildContext context,
+    NaverMapController mapController,
+    NInfoOverlayPortalController controller);
 
 typedef NInfoOverlayBuilderCallback = Widget Function(
     BuildContext context, NaverMapController mapController);
