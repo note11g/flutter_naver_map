@@ -2,7 +2,7 @@
 
 ### Improve
 - [All Platform] Improve: NOverlayImage.fromWidget delete Image Widget support with assertion.
-- [Example] Add Example controller.pickAll & takeSnapshot.
+- [Example] Improve: All Examples Improve
 
 ### Fix
 - [All Platform] Fix: InfoWindow.onMarker not attached successfully (issue: [#154](https://github.com/note11g/flutter_naver_map/issues/154), PR: [#156](https://github.com/note11g/flutter_naver_map/pull/156))
