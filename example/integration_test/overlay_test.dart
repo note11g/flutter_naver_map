@@ -135,5 +135,42 @@ void main() {
       marker.setAlpha(0.8);
       expect(marker.alpha, 0.8);
     });
+
+    /// #154 issue test (https://github.com/note11g/flutter_naver_map/issues/154)
+    testNaverMap("NInfoWindow.onMarker test", (controller, tester) async {
+      final cameraTarget =
+          await controller.getCameraPosition().then((cp) => cp.target);
+      final marker = NMarker(id: "1", position: cameraTarget);
+      await controller.addOverlay(marker);
+      final infoWindow =
+          NInfoWindow.onMarker(id: "2", text: "infowindow", offsetX: 0.1)
+            ..setMinZoom(13);
+      await marker.openInfoWindow(infoWindow);
+      expect(infoWindow.offsetX, 0.1);
+      expect(infoWindow.minZoom, 13);
+
+      await Future.delayed(const Duration(milliseconds: 200));
+      final screenTarget =
+          await controller.latLngToScreenLocation(cameraTarget);
+
+      Future<List<NOverlayInfo>> pickNOverlayInfo() {
+        return controller
+            .pickAll(screenTarget, radius: 800)
+            .then((pickable) => pickable.whereType<NOverlayInfo>().toList());
+      }
+
+      final pickedInfoListByDefaultZoom = await pickNOverlayInfo();
+      print(pickedInfoListByDefaultZoom);
+      expect(pickedInfoListByDefaultZoom.contains(infoWindow.info), true);
+
+      await controller.updateCamera(NCameraUpdate.scrollAndZoomTo(zoom: 12)
+        ..setAnimation(duration: Duration.zero));
+
+      await Future.delayed(const Duration(milliseconds: 200));
+
+      final pickedInfoListWhenZoomOut = await pickNOverlayInfo();
+      print(pickedInfoListWhenZoomOut);
+      expect(pickedInfoListWhenZoomOut.contains(infoWindow.info), false);
+    });
   });
 }
