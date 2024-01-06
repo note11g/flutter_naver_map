@@ -254,6 +254,7 @@ internal class OverlayController(
         success: (Any?) -> Unit,
     ) {
         val nInfoWindow = NInfoWindow.fromMessageable(rawInfoWindow, context = context)
+            .apply { setCommonProperties(rawInfoWindow.asMap()) }
         val infoWindow = saveOverlayWithAddable(creator = nInfoWindow)
 
         val align = rawAlign.asAlign()
