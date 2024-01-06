@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bottom_drawer/flutter_bottom_drawer.dart';
+import 'package:flutter_naver_map_example/design/custom_widget.dart';
 
-import '../design/map_function_item.dart';
-import '../design/theme.dart';
+import '../../design/map_function_item.dart';
+import '../../design/theme.dart';
 
 class ExampleAppBottomDrawer {
   final BuildContext context;
@@ -27,7 +30,6 @@ class ExampleAppBottomDrawer {
   late DrawerMoveController drawerController;
   late DrawerState drawerState;
   late Function(Function()) drawerSetState;
-  final scrollController = ScrollController();
 
   MapFunctionItem? nowItem;
 
@@ -35,13 +37,26 @@ class ExampleAppBottomDrawer {
 
   void go(MapFunctionItem item) {
     nowItem = item;
-    rebuildDrawerAndPage();
+    if (drawerController.nowState == DrawerState.closed) {
+      drawerController.open();
+      Future.delayed(_drawerAnimationDuration)
+          .then((_) => rebuildDrawerAndPage());
+    } else {
+      rebuildDrawerAndPage();
+    }
   }
 
   void back() {
     nowItem = null;
     onPageDispose?.call();
     rebuildDrawerAndPage();
+    if (drawerController.nowState == DrawerState.opened) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        drawerController.close();
+        Future.delayed(_drawerAnimationDuration)
+            .then((_) => rebuildDrawerAndPage());
+      });
+    }
   }
 
   void rebuildDrawerAndPage() {
@@ -49,8 +64,12 @@ class ExampleAppBottomDrawer {
     rebuild(); // page rebuild (height changed)
   }
 
+  static const _drawerAnimationDuration = Duration(milliseconds: 300);
+
   BottomDrawer get bottomDrawer => BottomDrawer(
-      height: nowItem?.isScrollPage == false ? null : 200,
+      height: nowItem?.isScrollPage == true
+          ? MediaQuery.sizeOf(context).height / 3.6
+          : null,
       expandedHeight: 480,
       handleSectionHeight: 20,
       handleColor: colorTheme.secondary,
@@ -58,39 +77,33 @@ class ExampleAppBottomDrawer {
       onReady: (controller) => drawerController = controller,
       onStateChanged: (state) => drawerState = state,
       onHeightChanged: onDrawerHeightChanged,
+      resizeAnimationDuration: _drawerAnimationDuration,
       builder: (state, setState, context) {
         drawerSetState = setState;
         return hasPage
             ? selectedPage(state == DrawerState.opened)
-            : innerListView(state == DrawerState.opened);
+            : innerListView(state == DrawerState.closed);
       });
 
-  Widget innerListView(bool canScroll) => Column(children: [
+  Widget innerListView(bool isClosed) => Column(children: [
         innerListViewHeader(),
         Expanded(
-            child: ScrollConfiguration(
-                behavior: const ScrollBehavior().copyWith(overscroll: false),
-                child: Scrollbar(
-                    controller: scrollController,
-                    child: ListView.builder(
-                      controller: scrollController,
-                      padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).padding.bottom),
-                      physics: canScroll
-                          ? const ClampingScrollPhysics()
-                          : const NeverScrollableScrollPhysics(),
-                      itemCount: pages.length,
-                      itemBuilder: (context, index) {
-                        MapFunctionItem page = pages[index];
-                        if (page.needItemOnTap) {
-                          page = page.copyWith(
-                              onTap: go,
-                              onBack: back,
-                              drawerController: drawerController);
-                        }
-                        return page.getItemWidget(context);
-                      },
-                    )))),
+          flex: isClosed ? 0 : 1,
+          child: Padding(
+            padding: const EdgeInsets.all(8)
+                .copyWith(bottom: 8 + MediaQuery.of(context).padding.bottom),
+            child: HalfActionButtonGrid(
+                buttons: pages.map((page) {
+              if (page.needItemOnTap) {
+                page = page.copyWith(
+                    onTap: go,
+                    onBack: back,
+                    drawerController: drawerController);
+              }
+              return page.getItemWidget(context);
+            }).toList()),
+          ),
+        ),
       ]);
 
   Widget innerListViewHeader() => Container(
@@ -106,11 +119,16 @@ class ExampleAppBottomDrawer {
         Container(
             padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
             decoration: BoxDecoration(
-              color: kReleaseMode ? colorTheme.primary : colorTheme.secondary,
+              color: Platform.isAndroid ? Colors.green : Colors.black,
               borderRadius: BorderRadius.circular(4),
             ),
-            child: Text(kReleaseMode ? "Release Mode" : "Debug Mode",
-                style: textTheme.labelSmall)),
+            child: Row(children: [
+              Icon(Platform.isAndroid ? Icons.android : Icons.apple,
+                  color: Colors.white, size: 14),
+              const SizedBox(width: 2),
+              Text(Platform.operatingSystemVersion,
+                  style: textTheme.labelSmall),
+            ])),
       ]));
 
   Widget selectedPage(bool canScroll) {

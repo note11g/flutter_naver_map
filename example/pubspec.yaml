@@ -15,10 +15,11 @@ dependencies:
   flutter_naver_map:
     path: ../
 
-  flutter_bottom_drawer: 0.0.8
-  permission_handler: 11.0.1
+  flutter_bottom_drawer: 0.1.0
+  permission_handler: 11.1.0
   flutter_styled_toast: 2.2.1
   pull_to_refresh_flutter3: 2.0.2
+  transparent_pointer: ^1.0.0
 
 dev_dependencies:
   flutter_test:

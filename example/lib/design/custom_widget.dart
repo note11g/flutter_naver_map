@@ -453,7 +453,7 @@ class BottomPadding extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
         padding:
-            EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom));
+            EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom));
   }
 }
 
@@ -571,8 +571,9 @@ class _BalloonPainter extends CustomPainter {
 }
 
 class HalfActionButton extends StatelessWidget {
-  final Function() action;
+  final Function()? action;
   final IconData icon;
+  final Color? color;
   final String title;
   final String description;
 
@@ -580,6 +581,7 @@ class HalfActionButton extends StatelessWidget {
     super.key,
     required this.action,
     required this.icon,
+    this.color,
     required this.title,
     required this.description,
   });
@@ -587,7 +589,7 @@ class HalfActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-        color: getColorTheme(context).outlineVariant,
+        color: color ?? getColorTheme(context).outline,
         borderRadius: BorderRadius.circular(12),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
@@ -599,24 +601,21 @@ class HalfActionButton extends StatelessWidget {
                   Icon(icon, color: getColorTheme(context).primary, size: 22),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(title,
-                              style: getTextTheme(context)
-                                  .labelMedium
-                                  ?.copyWith(color: Colors.black),
-                              overflow: TextOverflow.fade,
-                              softWrap: false,
-                              maxLines: 1),
-                          const SizedBox(height: 2),
-                          Text(description,
-                              style: getTextTheme(context).bodySmall,
-                              overflow: TextOverflow.fade,
-                              softWrap: false,
-                              maxLines: 1),
-                        ]),
-                  ),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                        Text(title,
+                            style: getTextTheme(context).labelMedium,
+                            overflow: TextOverflow.fade,
+                            softWrap: false,
+                            maxLines: 1),
+                        const SizedBox(height: 2),
+                        Text(description,
+                            style: getTextTheme(context).bodySmall,
+                            overflow: TextOverflow.fade,
+                            softWrap: false,
+                            maxLines: 1),
+                      ])),
                 ]))));
   }
 }

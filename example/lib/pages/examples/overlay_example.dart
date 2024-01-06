@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_naver_map_example/design/theme.dart';
-import 'package:flutter_naver_map_example/pages/example_base.dart';
+import 'package:flutter_naver_map_example/pages/utils/example_base.dart';
 
 import '../../design/custom_widget.dart';
 

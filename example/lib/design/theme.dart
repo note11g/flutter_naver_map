@@ -12,6 +12,7 @@ class ExampleAppTheme {
         outline: Colors.grey.shade200,
         outlineVariant: Colors.grey.shade200,
         primaryContainer: const Color(0xFFD2FFB4),
+        onSurface: Colors.grey.shade100,
       ),
       textTheme: const TextTheme(
         titleSmall: TextStyle(
@@ -29,7 +30,7 @@ class ExampleAppTheme {
         labelMedium: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w700,
-            color: Colors.white,
+            color: Colors.black,
             letterSpacing: 0),
         labelLarge: TextStyle(
             fontSize: 16,
@@ -49,6 +50,7 @@ class ExampleAppTheme {
         outline: Colors.grey.shade700,
         outlineVariant: Colors.white54,
         primaryContainer: const Color(0xFF7FA864),
+        onSurface: Colors.grey.shade800,
       ),
       textTheme: const TextTheme(
         titleSmall: TextStyle(
