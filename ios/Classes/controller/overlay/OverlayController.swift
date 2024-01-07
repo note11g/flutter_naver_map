@@ -233,7 +233,8 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
     }
 
     func openInfoWindow(_ marker: NMFMarker, rawInfoWindow: Any, rawAlign: Any, success: (Any?) -> ()) {
-        let nInfoWindow = NInfoWindow.fromMessageable(rawInfoWindow)
+        var nInfoWindow = NInfoWindow.fromMessageable(rawInfoWindow)
+        nInfoWindow.setCommonProperties(rawArgs: asDict(rawInfoWindow))
         let infoWindow = saveOverlayWithAddable(creator: nInfoWindow) as! NMFInfoWindow
 
         let align = try! asAlign(rawAlign)

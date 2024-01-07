@@ -29,6 +29,7 @@ internal class NaverMapViewFactory(
 
         return NaverMapView(
             activity = activity,
+            flutterProvidedContext = context,
             naverMapViewOptions = options,
             channel = channel,
             overlayController = overlayController,

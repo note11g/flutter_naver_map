@@ -1,5 +1,6 @@
 package dev.note11.flutter_naver_map.flutter_naver_map
 
+import android.app.Activity
 import android.content.Context
 import dev.note11.flutter_naver_map.flutter_naver_map.sdk.SdkInitializer
 import dev.note11.flutter_naver_map.flutter_naver_map.view.NaverMapViewFactory
@@ -28,12 +29,17 @@ internal class FlutterNaverMapPlugin : FlutterPlugin, ActivityAware {
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) = Unit
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+        val activity = binding.activity
         val naverMapViewFactory =
-            NaverMapViewFactory(binding.activity, pluginBinding.binaryMessenger)
+            NaverMapViewFactory(activity, pluginBinding.binaryMessenger)
+        correctDisplayOnFlutterNavigatorStackWithActivityBackgroundMode(activity)
         pluginBinding.platformViewRegistry.registerViewFactory(
-            MAP_VIEW_TYPE_ID,
-            naverMapViewFactory
+            MAP_VIEW_TYPE_ID, naverMapViewFactory
         )
+    }
+
+    private fun correctDisplayOnFlutterNavigatorStackWithActivityBackgroundMode(activity: Activity) {
+        activity.intent.putExtra("background_mode", "transparent")
     }
 
     override fun onDetachedFromActivityForConfigChanges() = Unit

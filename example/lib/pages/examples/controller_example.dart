@@ -1,22 +1,26 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_naver_map_example/design/custom_widget.dart';
-import 'package:flutter_naver_map_example/pages/example_base.dart';
+import 'package:flutter_naver_map_example/pages/utils/example_base.dart';
 import 'package:flutter_naver_map_example/util/alert_util.dart';
+import 'package:flutter_naver_map_example/util/string_util.dart';
 
 import '../../design/theme.dart';
 
 class NaverMapControllerExample extends ExampleBasePage {
   final Stream<void> onCameraChangeStream;
+  final Stream<Offset> onLastTouchStream;
 
   const NaverMapControllerExample({
     super.key,
     required super.mapController,
     required super.canScroll,
     required this.onCameraChangeStream,
+    required this.onLastTouchStream,
   });
 
   @override
@@ -31,10 +35,25 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
   /// 현재 m/dp (1dp가 몇 미터인지)
   double? _nowMeterPerDp;
 
+  /// 현재 표출되는 지도 범위
+  NLatLngBounds? _regionBounds;
+
+  /// 마지막 터치 화면 좌표
+  NPoint? _lastTappedScreenPosition;
+  NLatLng? _lastTappedMapPosition;
+
   void onCameraChange() async {
     _nowCameraPosition = await _mapController.getCameraPosition();
     _nowMeterPerDp = await _mapController.getMeterPerDp();
-    setState(() {});
+    _regionBounds = await _mapController.getContentBounds();
+    if (mounted) setState(() {});
+  }
+
+  void onLastTouch(Offset offset) {
+    _lastTappedScreenPosition = NPoint(offset.dx, offset.dy);
+    _mapController
+        .screenLocationToLatLng(_lastTappedScreenPosition!)
+        .then((latLng) => _lastTappedMapPosition = latLng);
   }
 
   Widget _nowCameraPositionWidget() {
@@ -101,19 +120,54 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
         ]));
   }
 
-  Widget _actionButtonSections(bool isUnFold) {
+  Widget _contentsRegionWidget() {
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const InnerSimpleTitle(
+              title: "지도 위젯에 보여지는 범위",
+              description: ".getContentBounds() | .getContentRegion()"),
+          const SizedBox(height: 4),
+          Text(
+              "남서: ${_regionBounds?.southWest.toShortString()}, "
+              "북동: ${_regionBounds?.northEast.toShortString()}",
+              style: getTextTheme(context)
+                  .bodyMedium
+                  ?.copyWith(fontWeight: FontWeight.w700)),
+        ]));
+  }
+
+  Widget _switchLatLngToScreenLocationWidget() {
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const InnerSimpleTitle(
+              title: "위치 좌표 ↔️ 화면 좌표",
+              description:
+                  ".screenLocationToLatLng(NPoint)\n.latLngToScreenLocation(NLatLng)"),
+          const SizedBox(height: 4),
+          Text(
+              _lastTappedScreenPosition != null
+                  ? "마지막 드래그 화면 좌표: NPoint(${_lastTappedScreenPosition!.x.toStringAsFixed(5)}, ${_lastTappedScreenPosition!.y.toStringAsFixed(5)})\n"
+                      "변환 된 지도 좌표: NLatLng(${_lastTappedMapPosition?.toShortString()})"
+                  : "지도를 드래그해보세요 (드래그 시작점을 수집합니다)",
+              style: getTextTheme(context)
+                  .bodyMedium
+                  ?.copyWith(fontWeight: FontWeight.w700)),
+        ]));
+  }
+
+  Widget _actionButtonSections() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
       child: HalfActionButtonGrid(buttons: [
-        if (isUnFold)
         HalfActionButton(
             action: _mapController.forceRefresh,
             icon: Icons.refresh,
             title: "지도 강제 새로고침",
             description: ".forceRefresh"),
         HalfActionButton(
-            action: () => AlertUtil.openAlert("준비중인 예제입니다.\n함수로는 사용하실 수 있습니다.",
-                context: context),
+            action: _takeSnapshot,
             icon: Icons.camera_alt,
             title: "지도 캡쳐하기",
             description: ".takeSnapshot"),
@@ -121,20 +175,61 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
     );
   }
 
+  void _takeSnapshot() async {
+    final snapshot = await _mapController.takeSnapshot(showControls: false);
+    if (context.mounted) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Center(
+                child: Material(
+              color: getColorTheme(context).background,
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("지도 캡쳐하기",
+                            style: getTextTheme(context).titleMedium),
+                        Container(
+                            margin: const EdgeInsets.only(top: 6),
+                            height: MediaQuery.sizeOf(context).height * 0.64,
+                            child: Image.file(File(snapshot.path))),
+                      ])),
+            ));
+          });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      _nowCameraPositionWidget(),
-      _meterPerDpWidget(),
-      _actionButtonSections(widget.canScroll),
-      const BottomPadding(),
-    ]);
+    return Expanded(
+      flex: widget.canScroll ? 1 : 0,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        _nowCameraPositionWidget(),
+        if (widget.canScroll)
+          Expanded(
+              child: ListView(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.paddingOf(context).bottom),
+                  children: [
+                _actionButtonSections(),
+                _meterPerDpWidget(),
+                _contentsRegionWidget(),
+                _switchLatLngToScreenLocationWidget(),
+              ])),
+        if (!widget.canScroll) const BottomPadding(),
+      ]),
+    );
   }
 
   // --- worker ---
 
   NaverMapController get _mapController => widget.mapController;
-  StreamSubscription? onCameraChangeStreamSubscription;
+  StreamSubscription<void>? onCameraChangeStreamSubscription;
+  StreamSubscription<Offset>? onLastTouchStreamSubscription;
 
   @override
   void initState() {
@@ -142,11 +237,14 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
     onCameraChange();
     onCameraChangeStreamSubscription =
         widget.onCameraChangeStream.listen((_) => onCameraChange());
+    onLastTouchStreamSubscription =
+        widget.onLastTouchStream.listen(onLastTouch);
   }
 
   @override
   void dispose() {
     onCameraChangeStreamSubscription?.cancel();
+    onLastTouchStreamSubscription?.cancel();
     super.dispose();
   }
 }

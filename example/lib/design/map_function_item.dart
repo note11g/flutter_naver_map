@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bottom_drawer/flutter_bottom_drawer.dart';
+import 'package:flutter_naver_map_example/design/custom_widget.dart';
 
 import 'theme.dart';
 
@@ -8,7 +9,8 @@ typedef MapFunctionItemOnBack = void Function();
 
 class MapFunctionItem {
   final String title;
-  final String? description;
+  final String description;
+  final IconData icon;
   final MapFunctionItemOnTap? onTap;
   final Widget Function(bool canScroll)? page;
   final MapFunctionItemOnBack? onBack;
@@ -18,7 +20,8 @@ class MapFunctionItem {
 
   MapFunctionItem({
     required this.title,
-    this.description,
+    required this.description,
+    required this.icon,
     this.page,
     this.onTap,
     this.onBack,
@@ -29,35 +32,13 @@ class MapFunctionItem {
   bool get needItemOnTap => onTap == null;
 
   Widget getItemWidget(BuildContext context) {
-    return InkWell(
-        onTap: onTap != null ? () => onTap!.call(this) : null,
-        child: Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: 24, vertical: description != null ? 12 : 20),
-            child:
-                Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              Expanded(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                    Text(title, style: Theme.of(context).textTheme.titleSmall),
-                    if (description != null)
-                      Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: SizedBox(
-                              width: double.infinity,
-                              child: Text(description!,
-                                  style: getTextTheme(context)
-                                      .bodyMedium
-                                      ?.copyWith(
-                                          color:
-                                              getColorTheme(context).secondary),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1)))
-                  ])),
-              const Icon(Icons.arrow_forward_ios_rounded, size: 20),
-            ])));
+    return HalfActionButton(
+      action: onTap != null ? () => onTap!.call(this) : null,
+      title: title,
+      color: getColorTheme(context).onSurface,
+      description: description,
+      icon: icon,
+    );
   }
 
   Widget getPageWidget(BuildContext context, {bool canScroll = true}) {
@@ -113,6 +94,7 @@ class MapFunctionItem {
     MapFunctionItemOnBack? onBack,
     bool? isScrollPage,
     DrawerMoveController? drawerController,
+    IconData? icon,
   }) {
     return MapFunctionItem(
       title: title ?? this.title,
@@ -122,6 +104,7 @@ class MapFunctionItem {
       onBack: onBack ?? this.onBack,
       isScrollPage: isScrollPage ?? this.isScrollPage,
       drawerController: drawerController ?? this.drawerController,
+      icon: icon ?? this.icon,
     );
   }
 }

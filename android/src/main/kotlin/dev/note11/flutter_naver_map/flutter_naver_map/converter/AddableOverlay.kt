@@ -26,7 +26,7 @@ internal abstract class AddableOverlay<T : Overlay> {
 
     private lateinit var commonProperties: Map<String, Any>
 
-    private fun setCommonProperties(rawArgs: Map<String, Any>) {
+    fun setCommonProperties(rawArgs: Map<String, Any>) {
         commonProperties = rawArgs.filter { OverlayHandler.allPropertyNames.contains(it.key) }
     }
 
