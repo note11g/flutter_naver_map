@@ -108,40 +108,34 @@ class ExampleAppBottomDrawer {
 
   Widget innerListViewHeader() => Container(
       decoration: BoxDecoration(
-        border: Border(
-            bottom: BorderSide(
-                color: colorTheme.onBackground.withOpacity(0.28), width: 0.2)),
-      ),
-      padding: const EdgeInsets.fromLTRB(24, 12, 24, 16),
+          border: Border(
+              bottom: BorderSide(
+                  color: colorTheme.onBackground.withOpacity(0.28),
+                  width: 0.2))),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
       child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Text("지도 기능 둘러보기", style: textTheme.titleLarge),
-        Expanded(
-          child: LayoutBuilder(
-            builder: (context, constraints) =>
-                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
-                  decoration: BoxDecoration(
-                      color: Platform.isAndroid ? Colors.green : Colors.black,
-                      borderRadius: BorderRadius.circular(4)),
-                  child: Row(children: [
-                    Icon(Platform.isAndroid ? Icons.android : Icons.apple,
-                        color: Colors.white, size: 14),
-                    const SizedBox(width: 2),
-                    ConstrainedBox(
-                      constraints:
-                          BoxConstraints(maxWidth: constraints.maxWidth - 32),
-                      child: Text(Platform.operatingSystemVersion,
-                          softWrap: false,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: textTheme.labelSmall),
-                    ),
-                  ])),
-            ]),
-          ),
-        ),
+        const SizedBox(width: 8),
+        Flexible(
+            child: Align(
+                alignment: Alignment.centerRight,
+                child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                    decoration: BoxDecoration(
+                        color: Platform.isAndroid ? Colors.green : Colors.black,
+                        borderRadius: BorderRadius.circular(4)),
+                    child: Row(mainAxisSize: MainAxisSize.min, children: [
+                      Icon(Platform.isAndroid ? Icons.android : Icons.apple,
+                          color: Colors.white, size: 14),
+                      const SizedBox(width: 2),
+                      Flexible(
+                          child: Text(Platform.operatingSystemVersion,
+                              softWrap: false,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: textTheme.labelSmall)),
+                    ])))),
       ]));
 
   Widget selectedPage(bool canScroll) {
