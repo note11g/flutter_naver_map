@@ -3,7 +3,7 @@ internal func asBool(_ v: Any) -> Bool {
 }
 
 internal func asFloat(_ v: Any) -> Float {
-    v as! Float
+    Float(asDouble(v))
 }
 
 internal func asCGFloat(_ v: Any) -> CGFloat {
