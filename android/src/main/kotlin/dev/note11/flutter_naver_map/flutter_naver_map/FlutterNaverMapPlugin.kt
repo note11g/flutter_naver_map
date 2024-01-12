@@ -39,7 +39,9 @@ internal class FlutterNaverMapPlugin : FlutterPlugin, ActivityAware {
     }
 
     private fun correctDisplayOnFlutterNavigatorStackWithActivityBackgroundMode(activity: Activity) {
-        activity.intent.putExtra("background_mode", "transparent")
+        if (30 <= Build.VERSION.SDK_INT && Build.VERSION.SDK_INT <= 33) {
+            activity.intent.putExtra("background_mode", "transparent")
+        }
     }
 
     override fun onDetachedFromActivityForConfigChanges() = Unit
