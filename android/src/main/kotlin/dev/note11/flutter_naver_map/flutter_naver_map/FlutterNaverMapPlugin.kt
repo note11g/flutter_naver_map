@@ -2,6 +2,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map
 
 import android.app.Activity
 import android.content.Context
+import android.os.Build
 import dev.note11.flutter_naver_map.flutter_naver_map.sdk.SdkInitializer
 import dev.note11.flutter_naver_map.flutter_naver_map.view.NaverMapViewFactory
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -39,7 +40,7 @@ internal class FlutterNaverMapPlugin : FlutterPlugin, ActivityAware {
     }
 
     private fun correctDisplayOnFlutterNavigatorStackWithActivityBackgroundMode(activity: Activity) {
-        if (30 <= Build.VERSION.SDK_INT && Build.VERSION.SDK_INT <= 33) {
+        if (Build.VERSION.SDK_INT in 30..33) {
             activity.intent.putExtra("background_mode", "transparent")
         }
     }
