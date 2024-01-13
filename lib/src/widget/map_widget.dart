@@ -14,6 +14,7 @@ class NaverMap extends StatefulWidget {
       onCameraChange;
   final void Function()? onCameraIdle;
   final void Function(NSelectedIndoor? selectedIndoor)? onSelectedIndoorChanged;
+  final void Function()? onMapLoaded;
 
   const NaverMap({
     super.key,
@@ -25,6 +26,7 @@ class NaverMap extends StatefulWidget {
     this.onCameraChange,
     this.onCameraIdle,
     this.onSelectedIndoorChanged,
+    this.onMapLoaded,
   });
 
   @override
@@ -105,6 +107,9 @@ class _NaverMapState extends State<NaverMap>
 
   @override
   void onCameraIdle() => widget.onCameraIdle?.call();
+
+  @override
+  void onMapLoaded() => widget.onMapLoaded?.call();
 
   @override
   void dispose() {
