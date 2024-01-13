@@ -189,6 +189,10 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     func onSelectedIndoorChanged(selectedIndoor: NMFIndoorSelection?) {
         channel.invokeMethod("onSelectedIndoorChanged", arguments: selectedIndoor?.toMessageable())
     }
+    
+    func onMapLoaded() {
+        channel.invokeMethod("onMapLoaded", arguments: nil)
+    }
 
     /*
       --- deinit ---
