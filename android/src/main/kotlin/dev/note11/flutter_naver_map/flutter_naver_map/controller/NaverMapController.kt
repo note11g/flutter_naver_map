@@ -243,6 +243,10 @@ internal class NaverMapController(
         channel.invokeMethod("onSelectedIndoorChanged", selectedIndoor?.toMessageable())
     }
 
+    override fun onMapLoaded() {
+        channel.invokeMethod("onMapLoaded", null)
+    }
+
     /*
       --- remove ---
     */

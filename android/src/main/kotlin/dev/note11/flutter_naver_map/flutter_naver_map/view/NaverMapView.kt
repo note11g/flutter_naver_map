@@ -89,6 +89,7 @@ internal class NaverMapView(
             addOnCameraChangeListener(naverMapControlSender::onCameraChange)
             addOnCameraIdleListener(naverMapControlSender::onCameraIdle)
             addOnIndoorSelectionChangeListener(naverMapControlSender::onSelectedIndoorChanged)
+            addOnLoadListener(naverMapControlSender::onMapLoaded)
         }
     }
 
@@ -100,6 +101,7 @@ internal class NaverMapView(
                 removeOnCameraChangeListener(naverMapControlSender::onCameraChange)
                 removeOnCameraIdleListener(naverMapControlSender::onCameraIdle)
                 removeOnIndoorSelectionChangeListener(naverMapControlSender::onSelectedIndoorChanged)
+                removeOnLoadListener(naverMapControlSender::onMapLoaded)
             }
         }
     }

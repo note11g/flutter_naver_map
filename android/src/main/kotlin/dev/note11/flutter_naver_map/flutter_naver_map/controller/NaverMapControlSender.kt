@@ -17,4 +17,6 @@ internal interface NaverMapControlSender {
     fun onCameraIdle()
 
     fun onSelectedIndoorChanged(selectedIndoor: IndoorSelection?)
+
+    fun onMapLoaded()
 }
