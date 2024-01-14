@@ -19,6 +19,7 @@ internal class NaverMapView: NSObject, FlutterPlatformView {
     private func onMapReady() {
         setMapTapListener()
         naverMapControlSender.onMapReady()
+        eventDelegate.checkNowShownMapIsCached()
     }
 
     private func setMapTapListener() {

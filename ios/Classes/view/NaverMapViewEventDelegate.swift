@@ -49,12 +49,6 @@ internal class NaverMapViewEventDelegate: NSObject, NMFMapViewTouchDelegate, NMF
         mapView.addIndoorSelectionDelegate(delegate: self)
         
         offlineStorageHelper.delegate = self
-        
-        let nowCount = NMFOfflineStorage.shared.countOfBytesCompleted
-        
-        print("cacheCheck(dif:\(nowCount - lastCacheCount):: last:\(lastCacheCount), now:\(nowCount)")
-//        if nowCount == lastCacheCount { onMapLoaded(desc: "maybe") } // cached.
-        lastCacheCount = nowCount
     }
 
     func unregisterDelegates(mapView: NMFMapView) {
@@ -64,6 +58,18 @@ internal class NaverMapViewEventDelegate: NSObject, NMFMapViewTouchDelegate, NMF
         offlineStorageHelper.delegate = nil
     }
     
+    func checkNowShownMapIsCached() {
+        let nowCacheCount = NMFOfflineStorage.shared.countOfBytesCompleted
+        
+        print("cacheCheck(dif:\(nowCacheCount != lastCacheCount):: last:\(lastCacheCount), now:\(nowCacheCount)")
+        do {
+            if nowCacheCount == lastCacheCount { // cached. register timing is too ealry. not sended platform messages.
+                onMapLoaded(desc: "maybe")
+            }
+        }
+        lastCacheCount = nowCacheCount
+    }
+    
     func offlineStorage(_ storage: NMFOfflineStorage, urlForResourceOf kind: NMFResourceKind, with url: URL) -> URL {
         onMapLoaded(desc: "sure")
         print("offlineStorageSaved: \(url.absoluteString)")
@@ -71,9 +77,10 @@ internal class NaverMapViewEventDelegate: NSObject, NMFMapViewTouchDelegate, NMF
         
         if kind == .tile {
             offlineStorageHelper.delegate = nil
+            return url
+        } else {
+            return URL(string: "https://map.pstatic.net/nrs/api/")! // URL Cache Failed.
         }
-//        offlineStorageHelper.delegate = nil
-        return url
     }
     
     private func onMapLoaded(desc: String) {
