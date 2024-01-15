@@ -214,11 +214,7 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
     }
 
     func setSubIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any?) {
-        if (rawNOverlayImage != nil) {
-            overlay.subIcon = NOverlayImage.fromMessageable(rawNOverlayImage!).overlayImage
-        } else {
-            overlay.subIcon = nil
-        }
+        overlay.subIcon = castOrNull(rawNOverlayImage, caster: NOverlayImage.fromMessageable)?.overlayImage
     }
 
     func setSubIconSize(_ overlay: NMFLocationOverlay, rawSize: Any) {
@@ -246,8 +242,8 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
         marker.position = asLatLng(rawPosition)
     }
 
-    func setIcon(_ marker: NMFMarker, rawIcon: Any) {
-        marker.iconImage = NOverlayImage.fromMessageable(rawIcon).overlayImage
+    func setIcon(_ marker: NMFMarker, rawIcon: Any?) {
+        marker.iconImage = castOrNull(rawIcon, caster: NOverlayImage.fromMessageable)?.overlayImage ?? NMF_MARKER_IMAGE_GREEN
     }
 
     func setIconTintColor(_ marker: NMFMarker, rawIconTintColor: Any) {
