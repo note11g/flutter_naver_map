@@ -1,6 +1,7 @@
 import "dart:typed_data" show Uint8List;
-import "dart:ui" show ImageByteFormat;
+import "dart:ui" show FlutterView, ImageByteFormat;
 
+import "package:flutter/material.dart";
 import "package:flutter/rendering.dart"
     show
         PipelineOwner,
@@ -8,17 +9,21 @@ import "package:flutter/rendering.dart"
         RenderRepaintBoundary,
         RenderView,
         ViewConfiguration;
-import "package:flutter/widgets.dart";
 
 class WidgetToImageUtil {
-  static Widget _setSizeAndTextDirection(Widget widget, Size size) {
+  static Widget _setSizeAndTextDirection(
+      Widget widget, Size size, BuildContext context, FlutterView view) {
     return SizedBox(
       width: size.width,
       height: size.height,
-      child: Directionality(
-        textDirection: TextDirection.ltr,
-        child: widget,
-      ),
+      child: MediaQuery(
+          data: MediaQueryData.fromView(view),
+          child: Theme(
+              data: Theme.of(context),
+              child: Directionality(
+                textDirection: TextDirection.ltr,
+                child: widget,
+              ))),
     );
   }
 
@@ -29,33 +34,52 @@ class WidgetToImageUtil {
   }) async {
     final renderBox = RenderRepaintBoundary();
     final view = View.of(context);
+
+    final renderPositionedBox =
+        RenderPositionedBox(alignment: Alignment.center, child: renderBox);
     final renderView = RenderView(
         view: view,
         configuration: ViewConfiguration(
             size: size, devicePixelRatio: view.devicePixelRatio),
-        child:
-            RenderPositionedBox(alignment: Alignment.center, child: renderBox));
+        child: renderPositionedBox);
 
     final pipelineOwner = PipelineOwner()..rootNode = renderView;
     renderView.prepareInitialFrame();
 
     final buildOwner = BuildOwner(focusManager: FocusManager());
-    final renderToWidget = RenderObjectToWidgetAdapter(
-            container: renderBox, child: _setSizeAndTextDirection(widget, size))
+    final rootElement = RenderObjectToWidgetAdapter(
+            container: renderBox,
+            child: _setSizeAndTextDirection(widget, size, context, view))
         .attachToRenderTree(buildOwner);
     buildOwner
-      ..buildScope(renderToWidget)
+      ..buildScope(rootElement)
       ..finalizeTree();
 
     pipelineOwner
       ..flushLayout()
       ..flushCompositingBits()
       ..flushPaint();
+    try {
+      final image = await renderBox.toImage(pixelRatio: view.devicePixelRatio);
 
-    final image = await renderBox.toImage(pixelRatio: view.devicePixelRatio);
-    return image
-        .toByteData(format: ImageByteFormat.png)
-        .then((b) => b!.buffer.asUint8List());
+      final rawImage = await image
+          .toByteData(format: ImageByteFormat.png)
+          .then((b) => b!.buffer.asUint8List());
+
+      return rawImage;
+    } finally {
+      final emptyRenderToWidgetAdapter =
+          RenderObjectToWidgetAdapter(container: renderBox);
+      rootElement.update(emptyRenderToWidgetAdapter); // renderbox child = null
+      buildOwner.finalizeTree();
+      renderView
+        ..detach()
+        ..dispose();
+      rootElement
+        ..detachRenderObject()
+        ..deactivate();
+      buildOwner.finalizeTree();
+    }
   }
 
   WidgetToImageUtil._();

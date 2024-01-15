@@ -7,7 +7,7 @@ internal protocol MarkerHandler: OverlayHandler {
 
     func setPosition(_ marker: NMFMarker, rawPosition: Any)
 
-    func setIcon(_ marker: NMFMarker, rawIcon: Any)
+    func setIcon(_ marker: NMFMarker, rawIcon: Any?)
 
     func setIconTintColor(_ marker: NMFMarker, rawIconTintColor: Any)
 
@@ -56,7 +56,7 @@ internal extension MarkerHandler {
             let d = asDict(args!)
             openInfoWindow(marker, rawInfoWindow: d["infoWindow"]!, rawAlign: d["align"]!, success: result)
         case NMarker.positionName: setPosition(marker, rawPosition: args!)
-        case NMarker.iconName: setIcon(marker, rawIcon: args!)
+        case NMarker.iconName: setIcon(marker, rawIcon: args)
         case NMarker.iconTintColorName: setIconTintColor(marker, rawIconTintColor: args!)
         case NMarker.alphaName: setAlpha(marker, rawAlpha: args!)
         case NMarker.angleName: setAngle(marker, rawAngle: args!)
