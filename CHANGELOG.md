@@ -1,11 +1,11 @@
 ## 1.1.2
 
 ### Improve
-- [Android] Improve Performance Using TextureView as FlutterView's Renderer only on android 11~13. (#152)
+- [Android] Improve Performance Using TextureView as FlutterView's Renderer only on android 11~13. (related issue [#152](https://github.com/note11g/flutter_naver_map/issues/152))
 
 ### Fix
-- [All Platform] #167 (PR #168, #169)
-- [iOS] #158 (PR #161)
+- [All Platform] NMarker.setIcon(null) cause Crash. (issue: [#167](https://github.com/note11g/flutter_naver_map/issues/167), PR: [#168](https://github.com/note11g/flutter_naver_map/issues/168), [#169](https://github.com/note11g/flutter_naver_map/issues/169))
+- [iOS] NaverMapViewOptions.buildingHeight cause Crash (issue: [#158](https://github.com/note11g/flutter_naver_map/issues/158), PR: [#161](https://github.com/note11g/flutter_naver_map/issues/161))
 - [All Platform] using NOverlayImage.fromWidget with stful widget cause memory leak because of un-disposing.
 
 ## 1.1.1
