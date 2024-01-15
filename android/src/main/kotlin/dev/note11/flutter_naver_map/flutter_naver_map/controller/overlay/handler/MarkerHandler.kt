@@ -17,7 +17,7 @@ internal interface MarkerHandler : OverlayHandler {
                 openInfoWindow(m, it["infoWindow"]!!, it["align"]!!, result::success)
             }
             NMarker.positionName -> setPosition(m, arg!!)
-            NMarker.iconName -> setIcon(m, arg!!)
+            NMarker.iconName -> setIcon(m, arg)
             NMarker.iconTintColorName -> setIconTintColor(m, arg!!)
             NMarker.alphaName -> setAlpha(m, arg!!)
             NMarker.angleName -> setAngle(m, arg!!)
@@ -45,7 +45,7 @@ internal interface MarkerHandler : OverlayHandler {
 
     fun setPosition(marker: Marker, rawPosition: Any)
 
-    fun setIcon(marker: Marker, rawIcon: Any)
+    fun setIcon(marker: Marker, rawIcon: Any?)
 
     fun setIconTintColor(marker: Marker, rawIconTintColor: Any)
 
