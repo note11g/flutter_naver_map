@@ -1,3 +1,13 @@
+## 1.1.2
+
+### Improve
+- [Android] Improve Performance Using TextureView as FlutterView's Renderer only on android 11~13. (#152)
+
+### Fix
+- [All Platform] #167 (PR #168, #169)
+- [iOS] #158 (PR #161)
+- [All Platform] using NOverlayImage.fromWidget with stful widget cause memory leak because of un-disposing.
+
 ## 1.1.1
 
 ### Improve
