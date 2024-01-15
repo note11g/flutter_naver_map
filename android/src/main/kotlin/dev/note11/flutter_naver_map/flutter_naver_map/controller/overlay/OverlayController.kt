@@ -3,6 +3,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay
 import android.content.Context
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.*
+import com.naver.maps.map.util.MarkerIcons
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.handler.*
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asBoolean
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
@@ -266,9 +267,11 @@ internal class OverlayController(
         marker.position = rawPosition.asLatLng()
     }
 
-    override fun setIcon(marker: Marker, rawIcon: Any) {
-        val nOverlayImage = NOverlayImage.fromMessageable(rawIcon.asMap())
-        nOverlayImage.applyToOverlay(marker::setIcon)
+    override fun setIcon(marker: Marker, rawIcon: Any?) {
+        val nOverlayImage = rawIcon?.asMap()?.let(NOverlayImage::fromMessageable)
+
+        if (nOverlayImage != null) nOverlayImage.applyToOverlay(marker::setIcon)
+        else marker.icon = MarkerIcons.GREEN
     }
 
     override fun setIconTintColor(marker: Marker, rawIconTintColor: Any) {
