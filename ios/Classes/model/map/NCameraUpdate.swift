@@ -14,6 +14,7 @@ internal struct NCameraUpdate {
     let pivot: NPoint?
     let animation: NMFCameraUpdateAnimation
     let duration: Int // mill seconds. not Second.
+    let reason: Int?
 
     var cameraUpdate: NMFCameraUpdate {
         get throws {
@@ -29,6 +30,9 @@ internal struct NCameraUpdate {
 
             if let pivot = pivot {
                 cameraUpdate.pivot = pivot.cgPoint
+            }
+            if let reason = reason {
+                cameraUpdate.reason = Int32(reason)
             }
 
             cameraUpdate.animation = animation
@@ -79,7 +83,8 @@ internal struct NCameraUpdate {
                 boundsPadding: castOrNull(d["boundsPadding"], caster: NEdgeInsets.fromMessageable),
                 pivot: castOrNull(d["pivot"], caster: NPoint.fromMessageable),
                 animation: asCameraAnimation(d["animation"]!),
-                duration: asInt(d["duration"]!)
+                duration: asInt(d["duration"]!),
+                reason: castOrNull(d["reason"], caster: asInt)
         )
     }
 }

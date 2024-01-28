@@ -13,6 +13,7 @@ class NCameraUpdate with NMessageableWithMap {
   NPoint? _pivot;
   NCameraAnimation _animation = defaultMovingAnimation;
   Duration _duration = defaultMovingDuration;
+  NCameraUpdateReason? _reason;
 
   final String _signature;
 
@@ -92,6 +93,11 @@ class NCameraUpdate with NMessageableWithMap {
     if (duration != null) _duration = duration;
   }
 
+  @visibleForTesting
+  void setReason(NCameraUpdateReason? reason) {
+    _reason = reason;
+  }
+
   @override
   String toString() => "$runtimeType: ${toNPayload().map}";
 
@@ -109,6 +115,7 @@ class NCameraUpdate with NMessageableWithMap {
         "pivot": _pivot,
         "animation": _animation,
         "duration": _duration.inMilliseconds,
+        "reason": _reason,
       }, sign: _signature);
 
   static const defaultMovingAnimation = NCameraAnimation.easing;
