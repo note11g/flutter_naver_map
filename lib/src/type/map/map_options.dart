@@ -1,7 +1,7 @@
 part of flutter_naver_map;
 
 class NaverMapViewOptions with NMessageableWithMap {
-  final NCameraPosition? initialCameraPosition;
+  final NCameraPosition initialCameraPosition;
   final NLatLngBounds? extent;
   final NMapType mapType;
 
@@ -41,7 +41,7 @@ class NaverMapViewOptions with NMessageableWithMap {
   final Locale locale;
 
   const NaverMapViewOptions({
-    this.initialCameraPosition,
+    this.initialCameraPosition = defaultInitialCameraPosition,
     this.extent,
     this.mapType = NMapType.basic,
     this.liteModeEnable = false,
@@ -198,6 +198,8 @@ class NaverMapViewOptions with NMessageableWithMap {
     --- Constants ---
   */
 
+  static const defaultInitialCameraPosition =
+      NCameraPosition(target: NLatLng(37.5666, 126.979), zoom: 14);
   static const defaultIndoorFocusDp = 56.0;
   static const defaultPickTolerance = 2.0;
   static const minimumZoom = 0.0;
