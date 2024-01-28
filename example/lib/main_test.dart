@@ -45,19 +45,27 @@ class TestPage extends StatefulWidget {
 @visibleForTesting
 class TestPageState extends State<TestPage> {
   final Completer<NaverMapController> mapControllerCompleter = Completer();
+  final onCameraChangeStreamController =
+      StreamController<(NCameraUpdateReason, bool)>.broadcast();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: NaverMap(
-            options: const NaverMapViewOptions(
-                indoorEnable: true,
-                locationButtonEnable: true,
-                consumeSymbolTapEvents: false),
-            onMapReady: (controller) async {
-              mapControllerCompleter.complete(controller);
-              log("onMapReady", name: "onMapReady");
-            }));
+      options: const NaverMapViewOptions(
+          initialCameraPosition:
+              NCameraPosition(target: NLatLng(37, 127), zoom: 12),
+          indoorEnable: true,
+          locationButtonEnable: true,
+          consumeSymbolTapEvents: false),
+      onMapReady: (controller) async {
+        mapControllerCompleter.complete(controller);
+        log("onMapReady", name: "onMapReady");
+      },
+      onCameraChange: (reason, animated) {
+        onCameraChangeStreamController.add((reason, animated));
+      },
+    ));
   }
 
   void newMapTestPage(String tag) {
