@@ -124,3 +124,5 @@ part 'src/type/map/overlay/overlay_image.dart';
 part 'src/widget/map_widget.dart';
 
 part 'src/widget/platform_view.dart';
+
+part 'src/widget/control_widget/zoom_control_widget.dart';
