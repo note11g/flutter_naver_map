@@ -1,11 +1,5 @@
 part of flutter_naver_map;
 
-// 보내야 하는 것들이라서, 모든 반환 값이 Future.
-// but, 값을 얻기 위해 반환하는게 매번 Future일 필요는 X
-// [getCameraPosition]
-// [getContentBounds]
-// [getContentRegion]
-//
 abstract class _NaverMapControlSender {
   /// return :
   ///  true if the camera update was canceled
