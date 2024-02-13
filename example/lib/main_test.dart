@@ -62,6 +62,9 @@ class TestPageState extends State<TestPage> {
         mapControllerCompleter.complete(controller);
         log("onMapReady", name: "onMapReady");
       },
+      onCameraIdle: () {
+        print("onCameraIdle: ${DateTime.now().millisecondsSinceEpoch}");
+      },
       onCameraChange: (reason, animated) {
         onCameraChangeStreamController.add((reason, animated));
       },

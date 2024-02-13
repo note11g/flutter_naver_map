@@ -19,7 +19,7 @@ class InnerSimpleTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     if (direction == Axis.vertical) {
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(title, style: getTextTheme(context).titleMedium),
+        Text(title, style: getTextTheme(context).titleMedium, maxLines: 1, softWrap: false, overflow: TextOverflow.fade),
         if (description != null)
           Padding(
               padding: const EdgeInsets.only(top: 2),

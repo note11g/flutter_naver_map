@@ -30,7 +30,7 @@ class _NOverlayExampleState extends State<NOverlayExample> {
   NaverMapController get mapController => widget.mapController;
 
   void attachOverlay() async {
-    final cameraPosition = await mapController.getCameraPosition();
+    final cameraPosition = mapController.nowCameraPosition;
     final overlay = NOverlayMakerUtil.makeOverlay(
         type: willCreateOverlayType, cameraPosition: cameraPosition);
     overlay.setOnTapListener((overlay) {
