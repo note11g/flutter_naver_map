@@ -8,6 +8,8 @@ abstract class _NaverMapControlSender {
   Future<void> cancelTransitions(
       {NCameraUpdateReason reason = NCameraUpdateReason.developer});
 
+  /// normally, using nowCameraPosition property.
+  /// this method provide exact now cameraPosition.
   Future<NCameraPosition> getCameraPosition();
 
   Future<NLatLngBounds> getContentBounds({bool withPadding = false});

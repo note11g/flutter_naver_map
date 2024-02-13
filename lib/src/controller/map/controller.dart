@@ -2,12 +2,23 @@ part of flutter_naver_map;
 
 abstract class NaverMapController implements _NaverMapControlSender {
   static NaverMapController _createController(MethodChannel controllerChannel,
-      {required int viewId}) {
+      {required int viewId, required NCameraPosition initialCameraPosition}) {
     final overlayController = _NOverlayControllerImpl(viewId: viewId);
-    return _NaverMapControllerImpl(controllerChannel, overlayController);
+    return _NaverMapControllerImpl(
+        controllerChannel, overlayController, initialCameraPosition);
   }
 
   void dispose();
+
+  /// This property allows you to retrieve the position of the camera currently displayed on the map.
+  ///
+  /// It is currently in the **experimental stage**.
+  ///
+  /// For exact results, please use the [getCameraPosition] method.
+  @experimental
+  NCameraPosition get nowCameraPosition;
+
+  void _updateNowCameraPositionData(NCameraPosition position);
 }
 
 class _NaverMapControllerImpl
@@ -18,7 +29,11 @@ class _NaverMapControllerImpl
 
   final _NOverlayController overlayController;
 
-  _NaverMapControllerImpl(this.channel, this.overlayController);
+  @override
+  NCameraPosition nowCameraPosition;
+
+  _NaverMapControllerImpl(
+      this.channel, this.overlayController, this.nowCameraPosition);
 
   @override
   Future<bool> updateCamera(NCameraUpdate cameraUpdate) async {
@@ -172,6 +187,11 @@ class _NaverMapControllerImpl
   @override
   void _updateOptions(NaverMapViewOptions options) {
     invokeMethod("updateOptions", options);
+  }
+
+  @override
+  void _updateNowCameraPositionData(NCameraPosition position) {
+    nowCameraPosition = position;
   }
 
   /*

@@ -7,7 +7,11 @@ mixin _NaverMapControlHandler {
 
   void onSymbolTapped(NSymbolInfo symbol);
 
+  @Deprecated("use `onCameraChangeWithCameraPosition` instead")
   void onCameraChange(NCameraUpdateReason reason, bool animated);
+
+  void onCameraChangeWithCameraPosition(
+      NCameraUpdateReason reason, bool animated, NCameraPosition position);
 
   void onCameraIdle();
 
@@ -30,10 +34,10 @@ mixin _NaverMapControlHandler {
         break;
       case "onCameraChange":
         final args = call.arguments;
-        onCameraChange(
-          NCameraUpdateReason._fromMessageable(call.arguments["reason"]),
-          args["animated"],
-        );
+        onCameraChangeWithCameraPosition(
+            NCameraUpdateReason._fromMessageable(args["reason"]),
+            args["animated"],
+            NCameraPosition._fromMessageable(args["position"]));
         break;
       case "onCameraIdle":
         onCameraIdle();

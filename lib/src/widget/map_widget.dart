@@ -66,7 +66,9 @@ class _NaverMapState extends State<NaverMap>
 
   void _onPlatformViewCreated(int id) {
     initChannel(NChannel.naverMapNativeView, id: id, handler: handle);
-    controller = NaverMapController._createController(channel, viewId: id);
+    controller = NaverMapController._createController(channel,
+        viewId: id,
+        initialCameraPosition: widget.options.initialCameraPosition);
     controllerCompleter.complete();
   }
 
@@ -98,6 +100,14 @@ class _NaverMapState extends State<NaverMap>
   @override
   void onCameraChange(NCameraUpdateReason reason, bool animated) =>
       widget.onCameraChange?.call(reason, animated);
+
+  // like hot stream. (if needed, migrate to stream based event handling)
+  @override
+  void onCameraChangeWithCameraPosition(
+      NCameraUpdateReason reason, bool animated, NCameraPosition position) {
+    controller._updateNowCameraPositionData(position);
+    widget.onCameraChange?.call(reason, animated);
+  }
 
   @override
   void onSelectedIndoorChanged(NSelectedIndoor? selectedIndoor) =>
