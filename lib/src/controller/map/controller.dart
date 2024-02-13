@@ -90,26 +90,16 @@ class _NaverMapControllerImpl
   }
 
   @override
-  Future<double> getMeterPerDp({double? latitude, double? zoom}) {
-    final messageable = NMessageable.forOnceWithMap({
-      "latitude": latitude,
-      "zoom": zoom,
-    });
-    return invokeMethod("getMeterPerDp", messageable)
-        .then((value) => value as double);
+  double getMeterPerDp() {
+    return getMeterPerDpAtLatitude(
+        latitude: nowCameraPosition.target.latitude,
+        zoom: nowCameraPosition.zoom);
   }
 
   @override
-  Future<double> getMeterPerDpAtLatitude({
-    required double latitude,
-    required double zoom,
-  }) {
-    final messageable = NMessageable.forOnceWithMap({
-      "latitude": latitude,
-      "zoom": zoom,
-    });
-    return invokeMethod("getMeterPerDpAtLatitude", messageable)
-        .then((value) => value as double);
+  double getMeterPerDpAtLatitude(
+      {required double latitude, required double zoom}) {
+    return MathUtil.calcMeterPerDp(latitude, zoom);
   }
 
   @override

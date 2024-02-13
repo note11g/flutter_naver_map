@@ -1,5 +1,11 @@
 part of flutter_naver_map;
 
+// 보내야 하는 것들이라서, 모든 반환 값이 Future.
+// but, 값을 얻기 위해 반환하는게 매번 Future일 필요는 X
+// [getCameraPosition]
+// [getContentBounds]
+// [getContentRegion]
+//
 abstract class _NaverMapControlSender {
   /// return :
   ///  true if the camera update was canceled
@@ -9,7 +15,7 @@ abstract class _NaverMapControlSender {
       {NCameraUpdateReason reason = NCameraUpdateReason.developer});
 
   /// normally, using nowCameraPosition property.
-  /// this method provide exact now cameraPosition.
+  /// this method provide exact currentCameraPosition.
   Future<NCameraPosition> getCameraPosition();
 
   Future<NLatLngBounds> getContentBounds({bool withPadding = false});
@@ -22,17 +28,15 @@ abstract class _NaverMapControlSender {
 
   Future<NPoint> latLngToScreenLocation(NLatLng latLng);
 
-  /// meter / dp (logical pixel)
-  /// if latitude is null, use current camera position
-  /// using parameter is deprecated. use [getMeterPerDpAtLatitude] instead.
-  /// please getMeterPerDp() without parameter.
-  Future<double> getMeterPerDp({
-    @Deprecated("use getMeterPerDpAtLatitude() instead") double? latitude,
-    @Deprecated("use getMeterPerDpAtLatitude() instead") double? zoom,
-  });
+  /// meter / 1dp (logical pixel)
+  ///
+  /// if's same `getMeterPerDpAtLatitude` + nowCameraPosition.
+  ///
+  /// using parameter is removed. if you want measure with specific latitude&zoomLevel, use [getMeterPerDpAtLatitude] instead.
+  double getMeterPerDp();
 
-  /// meter / dp at latitude (required zoomLevel)
-  Future<double> getMeterPerDpAtLatitude({
+  /// meter / 1dp at latitude (required zoomLevel)
+  double getMeterPerDpAtLatitude({
     required double latitude,
     required double zoom,
   });
