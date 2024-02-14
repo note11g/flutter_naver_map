@@ -155,6 +155,7 @@ class _FNMapPageState extends State<FNMapPage> {
         page: (canScroll) => NOverlayExample(
             nOverlayInfoOverlayPortalController:
                 nOverlayInfoOverlayPortalController,
+            onCameraChangeStream: _onCameraChangeStreamController.stream,
             canScroll: canScroll,
             mapController: mapController)),
     MapFunctionItem(
