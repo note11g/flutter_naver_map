@@ -54,7 +54,7 @@ class TestPageState extends State<TestPage> {
         body: NaverMap(
       options: const NaverMapViewOptions(
           initialCameraPosition:
-              NCameraPosition(target: NLatLng(37, 127), zoom: 12),
+              NCameraPosition(target: NLatLng(37, 127), zoom: 14),
           indoorEnable: true,
           locationButtonEnable: true,
           consumeSymbolTapEvents: false),
