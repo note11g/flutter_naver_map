@@ -1,5 +1,13 @@
 ## 1.2.0
 
+### Improve
+- [All Platform] Add / Improve APIs
+  - Add property `NaverMapController.nowCameraPosition` as a experimental api which type is `NCameraPosition` (non-async)
+  - Add method `NCameraUpdate.setReason`
+  - Change return type of method `NaverMapController.getMeterPerDp` 
+      & `NaverMapController.getMeterPerDpAtLatitude` to non-async (Future<double> -> double)
+  - Change `NCameraUpdate.setAnimation` to have non-null parameters with default values
+  - Change property type `NaverMapViewOptions.initialCameraPosition` to non-nullable type
 
 ## 1.1.2
 
