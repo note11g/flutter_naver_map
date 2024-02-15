@@ -96,8 +96,7 @@ class NCameraUpdate with NMessageableWithMap {
     _duration = duration;
   }
 
-  @visibleForTesting
-  void setReason(NCameraUpdateReason? reason) {
+  void setReason(NCameraUpdateReason reason) {
     _reason = reason;
   }
 
