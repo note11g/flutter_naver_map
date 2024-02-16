@@ -23,12 +23,16 @@ void main() {
     // 약 57235.1m/dp (±0.0009318m), 1000dp 기준 오차범위 ±0.0163dp
     //
     // 따라서, 테스트 허용 오차범위는 worst 값인 ±0.0014m로 설정.
-    final original1 = MathUtil.calcMeterPerDp(originLat1, NaverMapViewOptions.minimumZoom);
-    final margined1 = MathUtil.calcMeterPerDp(originLat1 + 0.000001, NaverMapViewOptions.minimumZoom);
+    final original1 =
+        MathUtil.calcMeterPerDp(originLat1, NaverMapViewOptions.minimumZoom);
+    final margined1 = MathUtil.calcMeterPerDp(
+        originLat1 + 0.000001, NaverMapViewOptions.minimumZoom);
     expect(margined1, closeTo(original1, 0.0014));
 
-    final original2 = MathUtil.calcMeterPerDp(originLat2, NaverMapViewOptions.minimumZoom);
-    final margined2 = MathUtil.calcMeterPerDp(originLat2 + 0.000001, NaverMapViewOptions.minimumZoom);
+    final original2 =
+        MathUtil.calcMeterPerDp(originLat2, NaverMapViewOptions.minimumZoom);
+    final margined2 = MathUtil.calcMeterPerDp(
+        originLat2 + 0.000001, NaverMapViewOptions.minimumZoom);
     expect(margined2, closeTo(original2, 0.001));
   });
 }

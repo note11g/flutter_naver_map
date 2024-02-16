@@ -26,7 +26,7 @@ class _PlatformViewCreator {
           // API 30 ~ : GLSurfaceView, Texture Layer Hybrid Composition.
           // related issue : https://github.com/note11g/flutter_naver_map/issues/152
 
-          const usingView =  PlatformViewsService.initAndroidView;
+          const usingView = PlatformViewsService.initAndroidView;
 
           final view = usingView.call(
               id: params.id,

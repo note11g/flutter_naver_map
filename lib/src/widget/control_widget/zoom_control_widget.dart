@@ -15,8 +15,10 @@ class NaverMapZoomControlWidget extends StatelessWidget {
   });
 
   Color get buttonColor => nightMode ? Colors.grey.shade900 : Colors.white;
-  Color get iconColor => nightMode ? Colors.grey.shade200 : Colors.grey.shade800;
-  Color get dividerColor => nightMode ? Colors.grey.shade700 : Colors.grey.shade200;
+  Color get iconColor =>
+      nightMode ? Colors.grey.shade200 : Colors.grey.shade800;
+  Color get dividerColor =>
+      nightMode ? Colors.grey.shade700 : Colors.grey.shade200;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +28,7 @@ class NaverMapZoomControlWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(roundness),
         color: buttonColor,
         elevation: 1,
-        child: Column(mainAxisSize: MainAxisSize.min,
-            children: [
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
           baseWidget(icon: Icons.add, action: zoomIn),
           _divider(),
           baseWidget(icon: Icons.remove, action: zoomOut),
@@ -58,10 +59,10 @@ class NaverMapZoomControlWidget extends StatelessWidget {
     if (mapController == null) return;
     final nowZoomLevel =
         await mapController!.getCameraPosition().then((cp) => cp.zoom);
-    final update =
-        NCameraUpdate.withParams(zoom: (nowZoomLevel.round() + delta).toDouble())
-          ..setReason(NCameraUpdateReason.control)
-          ..setAnimation(duration: const Duration(milliseconds: 300));
+    final update = NCameraUpdate.withParams(
+        zoom: (nowZoomLevel.round() + delta).toDouble())
+      ..setReason(NCameraUpdateReason.control)
+      ..setAnimation(duration: const Duration(milliseconds: 300));
     mapController?.updateCamera(update);
   }
 }
