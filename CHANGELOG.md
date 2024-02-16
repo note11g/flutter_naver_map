@@ -9,6 +9,13 @@
   - Change `NCameraUpdate.setAnimation` to have non-null parameters with default values
   - Change property type `NaverMapViewOptions.initialCameraPosition` to non-nullable type
 
+### Breaking Change
+- [Flutter] Change support minimum Flutter SDK Version to 3.19.0, Dart 3.0.0 
+
+### Fix
+- [Android] Change Platform View display mode to TLHC (related issue [#152](https://github.com/note11g/flutter_naver_map/issues/152))
+- [Android] Change Flutter Render View to SurfaceView at Android 11~13 (related issue [#152](https://github.com/note11g/flutter_naver_map/issues/152))
+
 ## 1.1.2
 
 ### Improve
