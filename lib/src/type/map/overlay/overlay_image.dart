@@ -1,5 +1,7 @@
 part of flutter_naver_map;
 
+// todo 1 : 재사용 식별자(Identifier) 사용
+// todo 2 : dynamic ratio support. (android platform의 방법을 찾지 못함)
 class NOverlayImage with NMessageableWithMap {
   final String _path;
   final _NOverlayImageMode _mode;
@@ -45,7 +47,8 @@ class NOverlayImage with NMessageableWithMap {
       });
 
   @override
-  String toString() => "NOverlayImage{from: ${_mode.toExplainString()}";
+  String toString() =>
+      "NOverlayImage{from: ${_mode.toExplainString()}}";
 
   @override
   bool operator ==(Object other) =>
