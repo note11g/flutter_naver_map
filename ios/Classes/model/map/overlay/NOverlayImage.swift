@@ -19,9 +19,12 @@ internal struct NOverlayImage {
     }
 
     private func makeOverlayImageWithAssetPath() -> NMFOverlayImage {
-        let assetPath = SwiftFlutterNaverMapPlugin.getAssets(path: path)
-        let img = NMFOverlayImage(name: assetPath)
-        return img
+        let key = SwiftFlutterNaverMapPlugin.getAssets(path: path)
+        let assetPath = Bundle.main.path(forResource: key, ofType: nil) ?? ""
+        let image = UIImage(contentsOfFile: assetPath)
+        let scaledImage = UIImage(data: image!.pngData()!, scale: UIScreen.main.scale)
+        let overlayImg = NMFOverlayImage(image: scaledImage!, reuseIdentifier: assetPath)
+        return overlayImg
     }
 
     func toMessageable() -> Dictionary<String, Any> {
