@@ -227,10 +227,12 @@ internal class NaverMapController(
     }
 
     override fun onCameraChange(cameraUpdateReason: Int, animated: Boolean) {
+        val cameraPosition = naverMap.cameraPosition
         channel.invokeMethod(
             "onCameraChange", mapOf(
                 "reason" to cameraUpdateReason,
                 "animated" to animated,
+                "position" to cameraPosition.toMessageable()
             )
         )
     }

@@ -19,7 +19,11 @@ class InnerSimpleTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     if (direction == Axis.vertical) {
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(title, style: getTextTheme(context).titleMedium),
+        Text(title,
+            style: getTextTheme(context).titleMedium,
+            maxLines: 1,
+            softWrap: false,
+            overflow: TextOverflow.fade),
         if (description != null)
           Padding(
               padding: const EdgeInsets.only(top: 2),
@@ -464,108 +468,6 @@ class SliverBottomPadding extends StatelessWidget {
     return SliverPadding(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom));
-  }
-}
-
-class Balloon extends StatelessWidget {
-  final Size size;
-  final EdgeInsets padding;
-  final Color backgroundColor;
-  final Widget child;
-
-  const Balloon({
-    Key? key,
-    required this.size,
-    required this.padding,
-    this.backgroundColor = Colors.grey,
-    required this.child,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-        type: MaterialType.transparency,
-        child: SizedBox.fromSize(
-          size: size,
-          child: CustomPaint(
-              painter: _BalloonPainter(
-                  backgroundColor: backgroundColor,
-                  shadowColor: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white24
-                      : Colors.black26),
-              child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(_BalloonPainter.radius),
-                      child: Container(
-                        height: size.height - _BalloonPainter.tailHeight,
-                        padding: padding,
-                        child: MediaQuery.removePadding(
-                            removeTop: true,
-                            removeBottom: true,
-                            context: context,
-                            child: child),
-                      )))),
-        ));
-  }
-}
-
-class _BalloonPainter extends CustomPainter {
-  _BalloonPainter({required this.backgroundColor, required this.shadowColor});
-
-  final Color backgroundColor;
-  final Color shadowColor;
-
-  static const radius = 16.0;
-  static const tailRadius = 4.0;
-  static const tailHeight = 12.0;
-  static const tailWidth = 12.0 + tailRadius;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    const corner = Radius.circular(radius);
-    const tailCorner = Radius.circular(tailRadius);
-    const tailPosition = 28.0; // 현재는 가운데 (1/2)
-    final targetWidth = size.width;
-    final targetHeight = size.height;
-    const startPoint = Offset(radius, tailHeight);
-    const firstTailPoint = Offset(tailPosition - (tailWidth / 2), tailHeight);
-    const secondTailPoint = Offset(tailPosition, 0);
-    final thirdTailPoint = Offset(secondTailPoint.dx + 2, secondTailPoint.dy);
-    const fourthTailPoint = Offset(tailPosition + (tailWidth / 2), tailHeight);
-    final firstRoundEndPoint =
-        Offset(size.width, radius + tailHeight); // 오른쪽 위 라운드 끝 지점.
-    final secondRoundEndPoint = Offset(size.width - radius, targetHeight);
-    final thirdRoundEndPoint = Offset(0, targetHeight - radius);
-
-    final path = Path()
-      ..moveTo(startPoint.dx, startPoint.dy) // 첫번째 포인트로 이동 (왼쪽 위, 라운드 직후)
-      ..lineTo(firstTailPoint.dx, firstTailPoint.dy) // 첫번째 꼬리 시작점까지 그리기
-      ..lineTo(secondTailPoint.dx, secondTailPoint.dy) // 꼬리 윗점까지 그리기
-      ..arcToPoint(thirdTailPoint, radius: tailCorner) //꼬리를 둥글게
-      ..lineTo(fourthTailPoint.dx, fourthTailPoint.dy) // 꼬리 끝점까지 그리기
-      ..lineTo(targetWidth - radius, tailHeight) // 오른쪽 위 꼭지점까지 그리기 (라운드 직전)
-      ..arcToPoint(firstRoundEndPoint, radius: corner)
-      ..lineTo(size.width, targetHeight - radius)
-      ..arcToPoint(secondRoundEndPoint, radius: corner)
-      ..lineTo(radius, targetHeight)
-      ..arcToPoint(thirdRoundEndPoint, radius: corner)
-      ..lineTo(0, radius + tailHeight)
-      ..arcToPoint(startPoint, radius: corner)
-      ..close();
-
-    canvas.drawShadow(path, shadowColor, 12, false);
-    canvas.drawPath(
-        path,
-        Paint()
-          ..color = backgroundColor
-          ..style = PaintingStyle.fill);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
   }
 }
 

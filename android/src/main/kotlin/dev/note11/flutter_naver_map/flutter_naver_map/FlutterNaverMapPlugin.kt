@@ -33,16 +33,9 @@ internal class FlutterNaverMapPlugin : FlutterPlugin, ActivityAware {
         val activity = binding.activity
         val naverMapViewFactory =
             NaverMapViewFactory(activity, pluginBinding.binaryMessenger)
-        correctDisplayOnFlutterNavigatorStackWithActivityBackgroundMode(activity)
         pluginBinding.platformViewRegistry.registerViewFactory(
             MAP_VIEW_TYPE_ID, naverMapViewFactory
         )
-    }
-
-    private fun correctDisplayOnFlutterNavigatorStackWithActivityBackgroundMode(activity: Activity) {
-        if (Build.VERSION.SDK_INT in 30..33) {
-            activity.intent.putExtra("background_mode", "transparent")
-        }
     }
 
     override fun onDetachedFromActivityForConfigChanges() = Unit

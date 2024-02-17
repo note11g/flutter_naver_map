@@ -13,6 +13,7 @@ class NCameraUpdate with NMessageableWithMap {
   NPoint? _pivot;
   NCameraAnimation _animation = defaultMovingAnimation;
   Duration _duration = defaultMovingDuration;
+  NCameraUpdateReason? _reason;
 
   final String _signature;
 
@@ -87,9 +88,16 @@ class NCameraUpdate with NMessageableWithMap {
 
   void setPivot(NPoint pivot) => _pivot = pivot;
 
-  void setAnimation({NCameraAnimation? animation, Duration? duration}) {
-    if (animation != null) _animation = animation;
-    if (duration != null) _duration = duration;
+  void setAnimation({
+    NCameraAnimation animation = NCameraAnimation.easing,
+    Duration duration = const Duration(milliseconds: 800),
+  }) {
+    _animation = animation;
+    _duration = duration;
+  }
+
+  void setReason(NCameraUpdateReason reason) {
+    _reason = reason;
   }
 
   @override
@@ -109,6 +117,7 @@ class NCameraUpdate with NMessageableWithMap {
         "pivot": _pivot,
         "animation": _animation,
         "duration": _duration.inMilliseconds,
+        "reason": _reason,
       }, sign: _signature);
 
   static const defaultMovingAnimation = NCameraAnimation.easing;

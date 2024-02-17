@@ -43,7 +43,7 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
   NLatLng? _lastTappedMapPosition;
 
   void onCameraChange() async {
-    _nowCameraPosition = await _mapController.getCameraPosition();
+    _nowCameraPosition = _mapController.nowCameraPosition;
     _nowMeterPerDp = await _mapController.getMeterPerDp();
     _regionBounds = await _mapController.getContentBounds();
     if (mounted) setState(() {});
@@ -62,7 +62,7 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
         child: Column(children: [
           const InnerSimpleTitle(
               title: "현재 카메라 상태",
-              description: ".getCameraPosition()",
+              description: ".nowCameraPosition",
               direction: Axis.horizontal),
           const SizedBox(height: 8),
           Row(children: [

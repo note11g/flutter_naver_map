@@ -6,6 +6,7 @@ import com.naver.maps.map.CameraAnimation
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.CameraUpdateParams
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asInt
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asLong
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asCameraAnimation
@@ -28,6 +29,7 @@ internal data class NCameraUpdate(
     val pivot: NPoint? = null, // change to NPoint
     val animation: CameraAnimation,
     val duration: Long,
+    val reason: Int? = null,
 ) {
 
     fun toCameraUpdate(): CameraUpdate {
@@ -47,9 +49,9 @@ internal data class NCameraUpdate(
             else -> throw IllegalArgumentException("Unknown signature: $signature")
         }
 
-        return cameraUpdate.animate(animation, duration).run {
-            pivot?.let { pivot(it.toPointF()) } ?: this
-        }
+        return cameraUpdate.animate(animation, duration)
+            .run { pivot?.let { pivot(it.toPointF()) } ?: this }
+            .run { reason?.let { reason(it) } ?: this }
     }
 
     companion object {
@@ -68,6 +70,7 @@ internal data class NCameraUpdate(
                 pivot = map["pivot"]?.let(NPoint::fromMessageable),
                 animation = map["animation"]!!.asCameraAnimation(),
                 duration = map["duration"]!!.asLong(),
+                reason = map["reason"]?.asInt()
             )
         }
     }

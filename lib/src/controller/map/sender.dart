@@ -8,6 +8,8 @@ abstract class _NaverMapControlSender {
   Future<void> cancelTransitions(
       {NCameraUpdateReason reason = NCameraUpdateReason.developer});
 
+  /// normally, using nowCameraPosition property.
+  /// this method provide exact currentCameraPosition.
   Future<NCameraPosition> getCameraPosition();
 
   Future<NLatLngBounds> getContentBounds({bool withPadding = false});
@@ -20,17 +22,15 @@ abstract class _NaverMapControlSender {
 
   Future<NPoint> latLngToScreenLocation(NLatLng latLng);
 
-  /// meter / dp (logical pixel)
-  /// if latitude is null, use current camera position
-  /// using parameter is deprecated. use [getMeterPerDpAtLatitude] instead.
-  /// please getMeterPerDp() without parameter.
-  Future<double> getMeterPerDp({
-    @Deprecated("use getMeterPerDpAtLatitude() instead") double? latitude,
-    @Deprecated("use getMeterPerDpAtLatitude() instead") double? zoom,
-  });
+  /// meter / 1dp (logical pixel)
+  ///
+  /// if's same `getMeterPerDpAtLatitude` + nowCameraPosition.
+  ///
+  /// using parameter is removed. if you want measure with specific latitude&zoomLevel, use [getMeterPerDpAtLatitude] instead.
+  double getMeterPerDp();
 
-  /// meter / dp at latitude (required zoomLevel)
-  Future<double> getMeterPerDpAtLatitude({
+  /// meter / 1dp at latitude (required zoomLevel)
+  double getMeterPerDpAtLatitude({
     required double latitude,
     required double zoom,
   });

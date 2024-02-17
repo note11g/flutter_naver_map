@@ -11,12 +11,14 @@ import '../../design/custom_widget.dart';
 
 class NOverlayExample extends ExampleBasePage {
   final NInfoOverlayPortalController nOverlayInfoOverlayPortalController;
+  final Stream<void> onCameraChangeStream;
 
   const NOverlayExample({
     Key? key,
     required super.mapController,
     required super.canScroll,
     required this.nOverlayInfoOverlayPortalController,
+    required this.onCameraChangeStream,
   }) : super(key: key);
 
   @override
@@ -30,7 +32,7 @@ class _NOverlayExampleState extends State<NOverlayExample> {
   NaverMapController get mapController => widget.mapController;
 
   void attachOverlay() async {
-    final cameraPosition = await mapController.getCameraPosition();
+    final cameraPosition = mapController.nowCameraPosition;
     final overlay = NOverlayMakerUtil.makeOverlay(
         type: willCreateOverlayType, cameraPosition: cameraPosition);
     overlay.setOnTapListener((overlay) {
@@ -48,7 +50,9 @@ class _NOverlayExampleState extends State<NOverlayExample> {
     required NLatLng latLng,
   }) {
     widget.nOverlayInfoOverlayPortalController.openWithWidget(
-        builder: (context, mapController, controller) {
+        screenPointStream: widget.onCameraChangeStream.asyncMap((event) async =>
+            await mapController.latLngToScreenLocation(latLng)),
+        builder: (context, mapController, controller, back) {
           Widget header() => Padding(
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 4),
               child: Row(
@@ -61,7 +65,8 @@ class _NOverlayExampleState extends State<NOverlayExample> {
                             softWrap: false,
                             overflow: TextOverflow.fade,
                             style: getTextTheme(context).titleSmall)),
-                    const Icon(Icons.close_rounded),
+                    InkWell(
+                        onTap: back, child: const Icon(Icons.close_rounded)),
                   ]));
 
           return Column(children: [

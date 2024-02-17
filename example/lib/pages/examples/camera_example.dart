@@ -29,8 +29,8 @@ class _NOverlayExampleState extends State<CameraUpdateExample> {
   int _animationMill = 300;
   static const dpForMove = 40.0;
 
-  void onCameraChange() async {
-    _nowCameraPosition = await _mapController.getCameraPosition();
+  void onCameraChange() {
+    _nowCameraPosition = _mapController.nowCameraPosition;
     if (mounted) setState(() {});
   }
 

@@ -23,11 +23,10 @@ class _PlatformViewCreator {
         onCreatePlatformView: (params) {
           // RenderView(Impl Android Side), Display Mode
           // API 23 ~ 29 : TextureView, Texture Layer Hybrid Composition.
-          // API 30 ~ : GLSurfaceView, Hybrid Composition (TLHC cause issue: flutter#98865)
+          // API 30 ~ : GLSurfaceView, Texture Layer Hybrid Composition.
+          // related issue : https://github.com/note11g/flutter_naver_map/issues/152
 
-          final usingView = androidSdkVersion! <= 29
-              ? PlatformViewsService.initAndroidView
-              : PlatformViewsService.initExpensiveAndroidView;
+          const usingView = PlatformViewsService.initAndroidView;
 
           final view = usingView.call(
               id: params.id,

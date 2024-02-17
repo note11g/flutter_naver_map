@@ -176,9 +176,11 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     }
 
     func onCameraChange(cameraUpdateReason: Int, animated: Bool) {
+        let cameraPosition = mapView.cameraPosition
         channel.invokeMethod("onCameraChange", arguments: [
             "reason": cameraUpdateReason,
             "animated": animated,
+            "position": cameraPosition.toMessageable()
         ])
     }
 
