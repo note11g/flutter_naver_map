@@ -13,7 +13,11 @@ NCircleOverlay(id: "test", center: target);
 다각형을 그리는 오버레이입니다.
 
 ```dart
-NPolylineOverlay(id: "test", coords: testTargets);
+NPolygonOverlay(
+    id: "test", 
+    coords: [...testTargets, target], // 처음과 마지막 좌표는 같아야 합니다. 
+    // holes: [] // 안쪽에 홀을 뚫을 수 있습니다. 
+);
 ```
 
 ## NPolylineOverlay
@@ -21,9 +25,5 @@ NPolylineOverlay(id: "test", coords: testTargets);
 선을 그리는 오버레이입니다.
 
 ```dart
-NPolygonOverlay(
-    id: "test", 
-    coords: [...testTargets, target], // 처음과 마지막 좌표는 같아야 합니다. 
-    // holes: [] // 안쪽에 홀을 뚫을 수 있습니다. 
-);
+NPolylineOverlay(id: "test", coords: testTargets);
 ```
