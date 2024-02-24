@@ -21,6 +21,19 @@ class NCameraPosition with NMessageableWithMap {
     );
   }
 
+  NCameraPosition copyWith({
+    NLatLng? target,
+    double? zoom,
+    double? tilt,
+    double? bearing,
+  }) =>
+      NCameraPosition(
+        target: target ?? this.target,
+        zoom: zoom ?? this.zoom,
+        bearing: bearing ?? this.bearing,
+        tilt: tilt ?? this.tilt,
+      );
+
   @override
   String toString() => "$runtimeType: ${toNPayload().map}";
 
