@@ -1,3 +1,11 @@
+## 1.2.1
+### Improve
+- [All Platform] Add / Improve APIs
+  - Add: Add `NCameraPosition.copyWith` method.
+### Fix
+- [Android] Fix PlatformView Issue for Android 13~14(>=API 33) (issue: [#189](https://github.com/note11g/flutter_naver_map/issues/189))
+- [iOS] Fix `NOverlayImage.fromAssetImage` Size issue. (issue: [#91](https://github.com/note11g/flutter_naver_map/issues/91), PR: [#185](https://github.com/note11g/flutter_naver_map/pull/185))
+
 ## 1.2.0
 
 ### Improve
@@ -55,7 +63,7 @@
 - [All Platform] Fix `NAddableOverlay` continues to reference the `OverlayController` of the map even after being removed (issue: [#127](https://github.com/note11g/flutter_naver_map/issues/127), PR: [#146](https://github.com/note11g/flutter_naver_map/pull/146))
 - [All Platform] Fix common overlay options were not applied before overlay was added to the map (issue: [#115](https://github.com/note11g/flutter_naver_map/issues/115), PR: [#144](https://github.com/note11g/flutter_naver_map/pull/144))
 - [All Platform] Fix `NLocationOverlay.setSubIcon(null)` Cause NPE (issue: [#142](https://github.com/note11g/flutter_naver_map/issues/142), PR: [#143](https://github.com/note11g/flutter_naver_map/pull/143))
-- [iOS] Fix NOverlayImage Size issue. (issue: [#91](https://github.com/note11g/flutter_naver_map/issues/91), [#130](https://github.com/note11g/flutter_naver_map/issues/130), PR: [#138](https://github.com/note11g/flutter_naver_map/pull/138), [#126](https://github.com/note11g/flutter_naver_map/pull/126))
+- [iOS] Fix `NOverlayImage` Size issue. (issue: [#91](https://github.com/note11g/flutter_naver_map/issues/91), [#130](https://github.com/note11g/flutter_naver_map/issues/130), PR: [#138](https://github.com/note11g/flutter_naver_map/pull/138), [#126](https://github.com/note11g/flutter_naver_map/pull/126))
 - [iOS] Fix the Camera Bearing issue. (issue: [#101](https://github.com/note11g/flutter_naver_map/issues/101), PR: [#110](https://github.com/note11g/flutter_naver_map/pull/110))
 
 ## 1.0.2

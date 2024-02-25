@@ -33,7 +33,7 @@ internal class NaverMapView(
     private lateinit var naverMapControlSender: NaverMapControlSender
     private val mapView =
         MapView(flutterProvidedContext, naverMapViewOptions.naverMapOptions.apply {
-            useTextureView(Build.VERSION.SDK_INT <= 29)
+            useTextureView(Build.VERSION.SDK_INT !in 30..32)
         }).apply {
             setTempMethodCallHandler()
             getMapAsync { naverMap ->

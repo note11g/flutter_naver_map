@@ -11,7 +11,7 @@ void main() {
         tilt: tilt1, zoom: zoom1, bearing: bearing1, target: target1);
 
     expect(cu1.toString(),
-        "CameraUpdate: {target: {lat: ${target1.latitude}, lng: ${target1.longitude}}, zoom: $zoom1, tilt: $tilt1, bearing: $bearing1, animation: easing, duration: 800, sign: withParams}");
+        "NCameraUpdate: {target: {lat: ${target1.latitude}, lng: ${target1.longitude}}, zoom: $zoom1, tilt: $tilt1, bearing: $bearing1, animation: easing, duration: 800, sign: withParams}");
 
     const target2 = NLatLng(37.5662, 126.97);
     const zoom2 = 17.0;
@@ -21,7 +21,7 @@ void main() {
         tiltBy: tilt2, zoomBy: zoom2, bearingBy: bearing2, target: target2);
 
     expect(cu2.toString(),
-        "CameraUpdate: {target: {lat: ${target2.latitude}, lng: ${target2.longitude}}, zoomBy: $zoom2, tiltBy: $tilt2, bearingBy: $bearing2, animation: easing, duration: 800, sign: withParams}");
+        "NCameraUpdate: {target: {lat: ${target2.latitude}, lng: ${target2.longitude}}, zoomBy: $zoom2, tiltBy: $tilt2, bearingBy: $bearing2, animation: easing, duration: 800, sign: withParams}");
   });
 
   test("cameraUpdateAssertionTest", () {
