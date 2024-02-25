@@ -47,8 +47,7 @@ class NOverlayImage with NMessageableWithMap {
       });
 
   @override
-  String toString() =>
-      "NOverlayImage{from: ${_mode.toExplainString()}}";
+  String toString() => "NOverlayImage{from: ${_mode.toExplainString()}}";
 
   @override
   bool operator ==(Object other) =>
