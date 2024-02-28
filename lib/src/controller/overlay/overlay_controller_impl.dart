@@ -45,7 +45,9 @@ class _NOverlayControllerImpl extends _NOverlayController with NChannelWrapper {
 
   @override
   void deleteWithInfo(NOverlayInfo info) {
-    overlayHandleAndRemoveHelperMap[info]!.remover.call(viewId);
+    final helper = overlayHandleAndRemoveHelperMap[info];
+    assert(helper != null, "Not Added or Already Deleted this overlay : $info");
+    helper?.remover.call(viewId);
     overlayHandleAndRemoveHelperMap.remove(info);
   }
 
