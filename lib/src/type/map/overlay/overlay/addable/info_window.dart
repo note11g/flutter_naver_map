@@ -1,4 +1,4 @@
-part of flutter_naver_map;
+part of "../../../../../../flutter_naver_map.dart";
 
 class NInfoWindow extends NAddableOverlay<NInfoWindow> {
   final bool withMarker;

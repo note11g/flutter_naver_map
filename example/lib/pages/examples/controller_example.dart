@@ -44,7 +44,7 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
 
   void onCameraChange() async {
     _nowCameraPosition = _mapController.nowCameraPosition;
-    _nowMeterPerDp = await _mapController.getMeterPerDp();
+    _nowMeterPerDp = _mapController.getMeterPerDp();
     _regionBounds = await _mapController.getContentBounds();
     if (mounted) setState(() {});
   }

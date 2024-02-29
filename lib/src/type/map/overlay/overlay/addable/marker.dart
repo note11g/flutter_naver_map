@@ -1,4 +1,4 @@
-part of flutter_naver_map;
+part of "../../../../../../flutter_naver_map.dart";
 
 class NMarker extends NAddableOverlay<NMarker> {
   NLatLng get position => _position;

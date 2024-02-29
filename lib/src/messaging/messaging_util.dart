@@ -1,4 +1,4 @@
-part of flutter_naver_map_messaging;
+part of "messaging.dart";
 
 extension MessagingUtil on Object {
   /// is String or int or double or bool

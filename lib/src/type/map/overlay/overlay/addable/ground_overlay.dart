@@ -1,4 +1,4 @@
-part of flutter_naver_map;
+part of "../../../../../../flutter_naver_map.dart";
 
 class NGroundOverlay extends NAddableOverlay<NGroundOverlay> {
   NLatLngBounds get bounds => _bounds;

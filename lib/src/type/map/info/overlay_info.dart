@@ -1,4 +1,4 @@
-part of flutter_naver_map;
+part of "../../../../flutter_naver_map.dart";
 
 class NOverlayInfo with NMessageableWithMap implements NPickableInfo {
   final NOverlayType type;

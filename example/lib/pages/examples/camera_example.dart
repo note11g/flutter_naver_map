@@ -40,7 +40,7 @@ class _NOverlayExampleState extends State<CameraUpdateExample> {
   }
 
   void moveCameraCoordWithDp(double dp, Axis axis) async {
-    final meterPerDp = await _mapController.getMeterPerDp();
+    final meterPerDp = _mapController.getMeterPerDp();
     final offsetMeter = meterPerDp * dp;
     updateCamera(NCameraUpdate.withParams(
         target: _nowCameraPosition!.target.offsetByMeter(

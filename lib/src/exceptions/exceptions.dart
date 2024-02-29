@@ -1,4 +1,4 @@
-part of flutter_naver_map;
+part of "../../flutter_naver_map.dart";
 
 class NAuthFailedException implements Exception {
   final String code;

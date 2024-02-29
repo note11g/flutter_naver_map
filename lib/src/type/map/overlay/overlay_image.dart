@@ -1,4 +1,4 @@
-part of flutter_naver_map;
+part of "../../../../flutter_naver_map.dart";
 
 // todo 1 : 재사용 식별자(Identifier) 사용
 // todo 2 : dynamic ratio support. (android platform의 방법을 찾지 못함)

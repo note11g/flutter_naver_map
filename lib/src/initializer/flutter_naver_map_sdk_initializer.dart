@@ -1,4 +1,4 @@
-part of flutter_naver_map;
+part of "../../flutter_naver_map.dart";
 
 abstract class NaverMapSdk {
   static final NaverMapSdk instance = _NaverMapSdkImpl();
