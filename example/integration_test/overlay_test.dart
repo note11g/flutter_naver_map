@@ -3,26 +3,88 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meta/meta.dart';
 
 import 'util/test_util.dart';
 
-void main() {
-  testNaverMap("location overlay onTap test", (controller, tester) async {
-    final locationOverlay = await controller.getLocationOverlay();
-    expect(locationOverlay.info.type, NOverlayType.locationOverlay);
+@isTestGroup
+void overlayTests() {
+  group("location overlay tests", () {
+    testNaverMap("location overlay onTap test", (controller, tester) async {
+      final locationOverlay = controller.getLocationOverlay();
+      expect(locationOverlay.info.type, NOverlayType.locationOverlay);
 
-    final tappedVerifyCompleter = Completer<NOverlayInfo>();
+      final tappedVerifyCompleter = Completer<NOverlayInfo>();
 
-    locationOverlay.setOnTapListener((overlay) {
-      tappedVerifyCompleter.complete(overlay.info);
+      locationOverlay.setOnTapListener((overlay) {
+        tappedVerifyCompleter.complete(overlay.info);
+      });
+
+      await locationOverlay.performClick();
+
+      final completedOverlayInfo = await tappedVerifyCompleter.future;
+
+      print("[onTapListener] $completedOverlayInfo");
+      expect(completedOverlayInfo, locationOverlay.info);
     });
 
-    await locationOverlay.performClick();
+    testNaverMap("location overlay sync test", (controller, tester) async {
+      final locationOverlay = controller.getLocationOverlay();
+      expect(locationOverlay.info.type, NOverlayType.locationOverlay);
 
-    final completedOverlayInfo = await tappedVerifyCompleter.future;
+      locationOverlay.setIsVisible(true);
 
-    print("[onTapListener] $completedOverlayInfo");
-    expect(completedOverlayInfo, locationOverlay.info);
+      final testPoints = [
+        const NLatLng(37.497175, 127.027926),
+        const NLatLng(37.484147, 127.034631),
+        const NLatLng(37.470023, 127.038573),
+        const NLatLng(37.447211, 127.055664),
+        const NLatLng(37.394761, 127.111217),
+        const NLatLng(37.367381, 127.108847),
+      ];
+
+      for (final point in testPoints) {
+        locationOverlay.setPosition(point);
+        expect(await locationOverlay.getPosition(), point);
+      }
+
+      for (double bearing = 359.0; bearing >= 30.0; bearing -= 0.5) {
+        locationOverlay.setBearing(bearing);
+        expect(await locationOverlay.getBearing(), bearing);
+      }
+
+      locationOverlay.setSubIcon(NLocationOverlay.faceModeSubIcon);
+
+      await controller.updateCamera(
+          NCameraUpdate.scrollAndZoomTo(target: testPoints.last)
+            ..setAnimation(duration: Duration.zero));
+      await Future.delayed(const Duration(seconds: 1));
+
+      const imageWidgetKey = Key("GoldenTestImage");
+
+      final snapshot = await controller.takeSnapshot();
+      showDialog(
+          context: tester.testPageState.context,
+          builder: (context) => Stack(children: [
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  child: SizedBox(
+                      width: 300,
+                      height: 300,
+                      child: RepaintBoundary(
+                          key: imageWidgetKey, child: Image.file(snapshot))),
+                )
+              ]));
+
+      await tester.flutterWidgetTester.pumpAndSettle();
+
+      await Future.delayed(const Duration(seconds: 1));
+
+      // todo: change to naverMapGoldenTest method.
+      await expectLater(find.byKey(imageWidgetKey),
+          matchesGoldenFile('golden/location_overlay_sync_test.png'));
+    });
   });
 
   testNaverMap('addable overlays add & pick test', (controller, tester) async {
