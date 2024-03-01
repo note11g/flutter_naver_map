@@ -9,6 +9,7 @@ abstract class NaverMapSdk {
 
   Function(NAuthFailedException ex)? get onAuthFailed;
 
+  /// 지도 사용 전에 호출해야 하는 초기화 메서드입니다.
   Future<void> initialize({
     String? clientId,
     bool gov = false,
