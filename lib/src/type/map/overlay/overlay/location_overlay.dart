@@ -1,5 +1,10 @@
 part of "../../../../../flutter_naver_map.dart";
 
+/// 사용자의 위치를 나타낼 때 사용하는 오버레이입니다.
+///
+/// 직접 사용할 수 없으며, 지도 위젯별로 1개씩만 존재합니다.
+///
+/// [NaverMapController.getLocationOverlay] 메서드를 활용해 가져올 수 있습니다.
 class NLocationOverlay extends NOverlay<NLocationOverlay> {
   /* ----- Constructor ----- */
 
