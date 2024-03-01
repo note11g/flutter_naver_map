@@ -1,5 +1,8 @@
 part of flutter_naver_map;
 
+/// 영역의 서쪽의 좌표와 북동쪽의 좌표를 이용하여 영역의 최소 경계 사각형(MBR)을 나타내는 객체입니다.
+///
+/// 자세한 내용은 문서를 참조하세요. [문서 바로가기](https://note11.dev/flutter_naver_map/element/coord#nlatlngbounds-%EB%B2%94%EC%9C%84)
 class NLatLngBounds with NMessageableWithMap {
   final NLatLng southWest;
   final NLatLng northEast;
@@ -43,6 +46,7 @@ class NLatLngBounds with NMessageableWithMap {
     }
   }
 
+  /// 영역이 특정 지점([point])를 포함하는지 여부를 반환합니다.
   bool containsPoint(NLatLng point) {
     return southLatitude <= point.latitude &&
         westLongitude <= point.longitude &&
@@ -50,6 +54,7 @@ class NLatLngBounds with NMessageableWithMap {
         eastLongitude >= point.longitude;
   }
 
+  /// 영역이 다른 영역([bounds])를 포함하는지 여부를 반환합니다.
   bool containsBounds(NLatLngBounds bounds) {
     return southLatitude <= bounds.southLatitude &&
         westLongitude <= bounds.westLongitude &&
@@ -57,6 +62,7 @@ class NLatLngBounds with NMessageableWithMap {
         eastLongitude >= bounds.eastLongitude;
   }
 
+  /// 영역과 다른 한 지점([point]) 포함하는 최소한의 bounds를 반환합니다. (합집합)
   NLatLngBounds expand(NLatLng point) {
     if (containsPoint(point)) return this;
 
@@ -70,6 +76,7 @@ class NLatLngBounds with NMessageableWithMap {
         northEast: NLatLng(northLatitude, eastLongitude));
   }
 
+  /// 영역과 다른 영역([bounds])을 포함하는 최소한의 영역을 반환합니다. (합집합)
   NLatLngBounds union(NLatLngBounds bounds) {
     if (containsBounds(bounds)) return this;
 
@@ -83,6 +90,7 @@ class NLatLngBounds with NMessageableWithMap {
         northEast: NLatLng(northLatitude, eastLongitude));
   }
 
+  /// 영역과 다른 영역([bounds])이 겹치는 영역을 반환합니다. (교집합)
   NLatLngBounds? intersection(NLatLngBounds bounds) {
     final maxWest = max(westLongitude, bounds.westLongitude);
     final minEast = min(eastLongitude, bounds.eastLongitude);
