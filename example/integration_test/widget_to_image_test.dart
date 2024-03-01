@@ -1,8 +1,10 @@
 import "package:flutter/material.dart";
 import "package:flutter_naver_map/src/util/widget_to_image.dart";
 import "package:flutter_test/flutter_test.dart";
+import "package:meta/meta.dart";
 
-void main() {
+@isTestGroup
+void widgetToImageTests() {
   testWidgets("NOverlayImage.fromWidget MemoryLeak test", (tester) async {
     const myAppPageKey = Key("MyApp");
     const stfulWidgetKey = Key("stfulA");
