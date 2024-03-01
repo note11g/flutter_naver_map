@@ -1,8 +1,7 @@
 part of "../../../../../flutter_naver_map.dart";
 
 /// 지도의 특정 위치나 영역에 정보를 표시하는 UI 요소입니다.
-// todo : Migrate to Sealed Class
-abstract class NOverlay<O extends NOverlay<void>>
+sealed class NOverlay<O extends NOverlay<void>>
     with _NOverlaySender, _NOverlayHandler<O> {
   NOverlay(this.info);
 
