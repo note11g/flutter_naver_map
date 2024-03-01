@@ -14,6 +14,7 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
         self.naverMap = naverMap
         self.channel = channel
         self.overlayController = overlayController
+        overlayController.initializeLocationOverlay(overlay: naverMap.mapView.locationOverlay)
 
         channel.setMethodCallHandler(handle)
     }
@@ -45,10 +46,6 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
 
     func getLocationOverlay(onSuccess: @escaping (Any?) -> ()) {
         let overlay = mapView.locationOverlay
-        let info = NOverlayInfo.locationOverlayInfo
-        if (!overlayController.hasOverlay(info: info)) {
-            overlayController.saveOverlay(overlay: overlay, info: info)
-        }
         onSuccess(overlay.toMessageable())
     }
 
@@ -198,6 +195,6 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
 
     func removeChannel() {
         channel.setMethodCallHandler(nil)
-        (overlayController as! OverlayController).removeChannel()
+        overlayController.removeChannel()
     }
 }

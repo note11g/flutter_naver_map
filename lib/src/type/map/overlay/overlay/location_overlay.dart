@@ -8,35 +8,10 @@ part of "../../../../../flutter_naver_map.dart";
 class NLocationOverlay extends NOverlay<NLocationOverlay> {
   /* ----- Constructor ----- */
 
-  factory NLocationOverlay._fromMessageable(dynamic m) => NLocationOverlay._(
-        anchor: NPoint._fromMessageable(m[_anchorName]!),
-        circleColor: Color(m[_circleColorName] as int),
-        circleOutlineColor: Color(m[_circleOutlineColorName] as int),
-        circleOutlineWidth: m[_circleOutlineWidthName] as double,
-        circleRadius: m[_circleRadiusName] as double,
-        iconSize: NSize._fromMessageable(m[_iconSizeName]!),
-        subAnchor: NPoint._fromMessageable(m[_subAnchorName]!),
-        subIconSize: NSize._fromMessageable(m[_subIconSizeName]!),
-      ).._applyFromMessageable(m);
-
-  NLocationOverlay._({
-    required NPoint anchor,
-    required Color circleColor,
-    required Color circleOutlineColor,
-    required double circleOutlineWidth,
-    required double circleRadius,
-    required NSize iconSize,
-    required NPoint subAnchor,
-    required NSize subIconSize,
-  })  : _anchor = anchor,
-        _circleColor = circleColor,
-        _circleOutlineColor = circleOutlineColor,
-        _circleOutlineWidth = circleOutlineWidth,
-        _circleRadius = circleRadius,
-        _iconSize = iconSize,
-        _subAnchor = subAnchor,
-        _subIconSize = subIconSize,
-        super(_locationOverlayInfo);
+  NLocationOverlay._attachToMapWhenFirstUse(_NOverlayController controller) : super(_locationOverlayInfo) {
+    _addedOnMap(controller);
+    _allSyncByDefaultForPlatformDiffProperties();
+  }
 
   static const NOverlayInfo _locationOverlayInfo =
       NOverlayInfo(type: NOverlayType.locationOverlay, id: "L");
@@ -135,6 +110,11 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
     _set(_subIconSizeName, size);
   }
 
+  void _allSyncByDefaultForPlatformDiffProperties() {
+    setIcon(defaultIcon);
+    setCircleColor(defaultCircleColor);
+  }
+
   /*
     --- Messaging Name Define ---
   */
@@ -154,7 +134,7 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
 
   static const defaultAnchor = NPoint(0.5, 0.5);
   static const defaultSubAnchor = NPoint(0.5, 1.0);
-  static const defaultCircleColor = Color(0x0A1666F0);
+  static const defaultCircleColor = Color(0x3D1666F0);
   static const defaultCircleRadius = 18.0;
   static const autoSize = Size(0, 0);
   static const defaultIcon = NOverlayImage.fromAssetImage(

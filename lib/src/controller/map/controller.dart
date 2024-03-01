@@ -71,12 +71,13 @@ class _NaverMapControllerImpl
   }
 
   @override
-  Future<NLocationOverlay> getLocationOverlay() async {
-    final rawLocationOverlay = await invokeMethod("getLocationOverlay");
-    overlayController.locationOverlay ??=
-        NLocationOverlay._fromMessageable(rawLocationOverlay)
-          .._addedOnMap(overlayController);
-    return overlayController.locationOverlay!;
+  NLocationOverlay getLocationOverlay() {
+    if (overlayController.locationOverlay != null) {
+      return overlayController.locationOverlay!;
+    }
+    final lo = NLocationOverlay._attachToMapWhenFirstUse(overlayController);
+    overlayController.locationOverlay = lo;
+    return lo;
   }
 
   @override
