@@ -1,18 +1,30 @@
 part of flutter_naver_map;
 
+/// 다각형을 나타내는 오버레이입니다.
 class NPolygonOverlay extends NAddableOverlay<NPolygonOverlay> {
+  /// 다각형의 지점들을 나타냅니다.
   List<NLatLng> get coords => _coords.toList();
   Iterable<NLatLng> _coords;
 
+  /// 다각형의 색상을 나타냅니다.
+  ///
+  /// 기본값은 [Colors.white]
   Color get color => _color;
   Color _color;
 
+  /// 내부에 빈 공간을 나타냅니다.
   List<Iterable<NLatLng>> get holes => _holes.toList();
   Iterable<Iterable<NLatLng>> _holes;
 
+  /// 다각형의 테두리 색상을 나타냅니다.
+  ///
+  /// 기본값은 [Colors.black]
   Color get outlineColor => _outlineColor;
   Color _outlineColor;
 
+  /// 다각형의 테두리 두께를 나타냅니다.
+  ///
+  /// 기본값은 [0]
   double get outlineWidth => _outlineWidth;
   double _outlineWidth;
 
@@ -36,33 +48,50 @@ class NPolygonOverlay extends NAddableOverlay<NPolygonOverlay> {
         _outlineWidth = outlineWidth,
         super(type: NOverlayType.polygonOverlay);
 
+  /// 다각형의 지점들을 지정합니다.
+  /// 다각형의 기본 조건을 따라, 점이 3개 이상 있어야 합니다.
   void setCoords(Iterable<NLatLng> coords) {
     assert(coords.length >= 3);
-    assert(coords.first == coords.last);
     _coords = coords;
     _set(_coordsName, coords);
   }
 
+  /// 다각형의 색상을 지정합니다.
+  ///
+  /// 기본값은 [Colors.white]
   void setColor(Color color) {
     _color = color;
     _set(_colorName, color);
   }
 
+  /// 다각형의 내부가 비어있는 영역을 지정합니다.
+  /// [coords]와 반대 방향으로 나열되어야 합니다.
+  ///
+  /// 예를 들어, [coords]가 시계 방향이라면, [holes]는 반대 방향인 반 시계방향으로 나열되어 있어야 합니다.
+  ///
+  /// 또한, [coords]와 마찬가지로 다각형의 기본 조건을 따라, 점이 3개 이상 있어야 합니다.
   void setHoles(Iterable<Iterable<NLatLng>> holes) {
     _holes = holes;
     _set(_holesName, holes);
   }
 
+  /// 다각형의 테두리 색상을 지정합니다.
+  ///
+  /// 기본값은 [Colors.black]
   void setOutlineColor(Color outlineColor) {
     _outlineColor = outlineColor;
     _set(_outlineColorName, outlineColor);
   }
 
+  /// 다각형의 테두리 두께를 지정합니다.
+  ///
+  /// 기본값은 [0]
   void setOutlineWidth(double outlineWidth) {
     _outlineWidth = outlineWidth;
     _set(_outlineWidthName, outlineWidth);
   }
 
+  /// 다각형 오버레이가 차지하는 영역을 반환합니다.
   Future<NLatLngBounds> getBounds() {
     return _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
   }
