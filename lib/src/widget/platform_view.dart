@@ -30,8 +30,8 @@ class _PlatformViewCreator {
           final rawCreationParameters = creationParams.map;
 
           // RenderView(Impl Android Side), Display Mode
-          // API 23 ~ 29 : TextureView, Texture Layer Hybrid Composition.
-          // API 30 ~ : GLSurfaceView, Texture Layer Hybrid Composition.
+          // API 23 ~ 29, 33 ~ 34 : TextureView, Texture Layer Hybrid Composition.
+          // API 30 ~ 32 : GLSurfaceView, Texture Layer Hybrid Composition.
           // related issue : https://github.com/note11g/flutter_naver_map/issues/152
           /// by default, only android 11\~12L (SDK 30\~32) using GLSurfaceView.
           if (forceGLSurfaceView != null) {
