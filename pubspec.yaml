@@ -29,3 +29,8 @@ flutter:
         pluginClass: FlutterNaverMapPlugin
       ios:
         pluginClass: FlutterNaverMapPlugin
+
+  assets:
+    - ./assets/icon/location_overlay_icon.png
+    - ./assets/icon/location_overlay_sub_icon.png
+    - ./assets/icon/location_overlay_sub_icon_face.png

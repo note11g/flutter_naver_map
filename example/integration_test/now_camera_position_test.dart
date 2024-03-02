@@ -1,9 +1,11 @@
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meta/meta.dart';
 
 import 'util/test_util.dart';
 
-void main() {
+@isTestGroup
+void nowCameraPositionTests() {
   testNaverMap("now Camera position test", (controller, tester) async {
     final NCameraPosition cameraPositionFromFlutter =
         controller.nowCameraPosition;

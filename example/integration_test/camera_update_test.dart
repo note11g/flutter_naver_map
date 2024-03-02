@@ -1,9 +1,11 @@
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:meta/meta.dart';
 
 import 'util/test_util.dart';
 
-void main() {
+@isTestGroup
+void cameraUpdateTests() {
   testNaverMap("Camera Update With Reason Test", (controller, tester) async {
     (NCameraUpdateReason, bool)? lastMovedData;
     final onCameraChangeStreamSubscription = tester
@@ -15,7 +17,6 @@ void main() {
 
     final cameraUpdate = NCameraUpdate.zoomIn()
       ..setAnimation(duration: Duration.zero)
-      // setReason Method visibility is only testing.
       ..setReason(NCameraUpdateReason.control); // 위치 UI는 location.
 
     await controller.updateCamera(cameraUpdate);

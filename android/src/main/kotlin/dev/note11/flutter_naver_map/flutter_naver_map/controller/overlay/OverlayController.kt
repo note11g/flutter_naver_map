@@ -41,6 +41,10 @@ internal class OverlayController(
         channel.setMethodCallHandler(::handler)
     }
 
+    override fun initializeLocationOverlay(overlay: LocationOverlay) {
+        saveOverlay(overlay, NOverlayInfo.locationOverlayInfo)
+    }
+
     /* ----- sender ----- */
     override fun onOverlayTapped(info: NOverlayInfo) {
         val query = NOverlayQuery(info, methodName = OverlayHandler.onTapName).query
@@ -668,7 +672,7 @@ internal class OverlayController(
       --- remove ---
     */
 
-    fun remove() {
+    override fun remove() {
         channel.setMethodCallHandler(null)
     }
 }

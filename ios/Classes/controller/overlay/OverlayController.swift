@@ -8,6 +8,10 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
         self.channel = channel
         channel.setMethodCallHandler(handler)
     }
+    
+    func initializeLocationOverlay(overlay: NMFLocationOverlay) {
+        saveOverlay(overlay: overlay, info: NOverlayInfo.locationOverlayInfo)
+    }
 
     /* ----- sender ----- */
     func onOverlayTapped(info: NOverlayInfo) {

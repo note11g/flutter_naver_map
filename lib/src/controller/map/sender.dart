@@ -30,7 +30,7 @@ abstract class _NaverMapControlSender {
   Future<List<NLatLng>> getContentRegion({bool withPadding = false});
 
   /// 위치 오버레이를 가져옵니다. 위치 오버레이는 직접 생성하지 않고 이 메서드를 통해 가져옵니다.
-  Future<NLocationOverlay> getLocationOverlay();
+  NLocationOverlay getLocationOverlay();
 
   /// 화면 좌표를 위경도 좌표로 변환합니다.
   ///
