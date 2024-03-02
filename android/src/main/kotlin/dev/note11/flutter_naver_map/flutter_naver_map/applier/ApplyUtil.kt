@@ -7,8 +7,8 @@ internal object ApplyUtil {
     internal fun <A : NaverMapOptionApplier> A.applyOptions(args: Map<String, Any>): A {
         for ((funcName, arg) in args) {
             try {
-                val func = optionApplyFuncMap[funcName]!!.invoke(this)
-                func.invoke(arg)
+                val func = optionApplyFuncMap[funcName]?.invoke(this)
+                func?.invoke(arg)
             } catch (e: NullPointerException) {
                 throw NoSuchMethodException(
                     "No such method \"$funcName\". " +

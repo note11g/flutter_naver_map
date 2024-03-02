@@ -11,6 +11,8 @@ class _PlatformViewCreator {
     MessageCodec<dynamic> creationParamsCodec = const StandardMessageCodec(),
     required void Function(int id) onPlatformViewCreated,
     required int? androidSdkVersion,
+    bool? forceHybridComposition,
+    bool? forceGLSurfaceView,
   }) {
     if (Platform.isAndroid) {
       return PlatformViewLink(
@@ -21,18 +23,26 @@ class _PlatformViewCreator {
           hitTestBehavior: hitTestBehavior,
         ),
         onCreatePlatformView: (params) {
+          final usingView = forceHybridComposition == true
+              ? PlatformViewsService.initExpensiveAndroidView
+              : PlatformViewsService.initAndroidView;
+
+          final rawCreationParameters = creationParams.map;
+
           // RenderView(Impl Android Side), Display Mode
           // API 23 ~ 29 : TextureView, Texture Layer Hybrid Composition.
           // API 30 ~ : GLSurfaceView, Texture Layer Hybrid Composition.
           // related issue : https://github.com/note11g/flutter_naver_map/issues/152
-
-          const usingView = PlatformViewsService.initAndroidView;
+          /// by default, only android 11\~12L (SDK 30\~32) using GLSurfaceView.
+          if (forceGLSurfaceView != null) {
+            rawCreationParameters.addAll({"glsurface": forceGLSurfaceView});
+          }
 
           final view = usingView.call(
               id: params.id,
               viewType: viewType,
               layoutDirection: layoutDirection,
-              creationParams: creationParams.map,
+              creationParams: rawCreationParameters,
               creationParamsCodec: creationParamsCodec,
               onFocus: () => params.onFocusChanged(true));
 

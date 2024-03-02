@@ -27,13 +27,19 @@ internal class NaverMapView(
     private val naverMapViewOptions: NaverMapViewOptions,
     private val channel: MethodChannel,
     private val overlayController: OverlayHandler,
+    private val usingGLSurfaceView: Boolean?
 ) : PlatformView, Application.ActivityLifecycleCallbacks, ComponentCallbacks {
 
     private lateinit var naverMap: NaverMap
     private lateinit var naverMapControlSender: NaverMapControlSender
     private val mapView =
         MapView(flutterProvidedContext, naverMapViewOptions.naverMapOptions.apply {
-            useTextureView(Build.VERSION.SDK_INT !in 30..32)
+            if (usingGLSurfaceView != null) {
+                useTextureView(!usingGLSurfaceView)
+            } else {
+                val defaultRenderViewStrategy = Build.VERSION.SDK_INT !in 30..32;
+                useTextureView(defaultRenderViewStrategy)
+            }
         }).apply {
             setTempMethodCallHandler()
             getMapAsync { naverMap ->

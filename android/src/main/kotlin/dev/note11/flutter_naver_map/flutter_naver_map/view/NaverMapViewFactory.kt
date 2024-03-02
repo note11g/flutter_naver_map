@@ -26,6 +26,7 @@ internal class NaverMapViewFactory(
 
         val convertedArgs = args!!.asMap()
         val options = NaverMapViewOptions.fromMessageable(convertedArgs)
+        val usingGLSurfaceView = convertedArgs["glsurface"] as? Boolean?
 
         return NaverMapView(
             activity = activity,
@@ -33,6 +34,7 @@ internal class NaverMapViewFactory(
             naverMapViewOptions = options,
             channel = channel,
             overlayController = overlayController,
+            usingGLSurfaceView = usingGLSurfaceView,
         )
     }
 }

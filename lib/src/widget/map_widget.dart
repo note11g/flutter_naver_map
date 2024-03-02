@@ -12,6 +12,12 @@ class NaverMap extends StatefulWidget {
   /// 기본값은 `false`입니다.
   final bool forceGesture;
 
+  @visibleForTesting
+  final bool? forceHybridComposition;
+
+  @visibleForTesting
+  final bool? forceGLSurfaceView;
+
   /*
     --- Events ---
   */
@@ -62,6 +68,8 @@ class NaverMap extends StatefulWidget {
     this.onCameraChange,
     this.onCameraIdle,
     this.onSelectedIndoorChanged,
+    @visibleForTesting this.forceHybridComposition,
+    @visibleForTesting this.forceGLSurfaceView,
   });
 
   @override
@@ -98,6 +106,8 @@ class _NaverMapState extends State<NaverMap>
       creationParams: widget.options.toNPayload(),
       onPlatformViewCreated: _onPlatformViewCreated,
       androidSdkVersion: mapSdk._androidSdkVersion,
+      forceHybridComposition: widget.forceHybridComposition,
+      forceGLSurfaceView: widget.forceGLSurfaceView,
     );
   }
 
