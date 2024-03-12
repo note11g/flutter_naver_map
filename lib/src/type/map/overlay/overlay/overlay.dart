@@ -180,18 +180,6 @@ sealed class NOverlay<O extends NOverlay<void>>
         _hasOnTapListenerName: _hasOnTapListener,
       };
 
-  /* ----- fromMessageable ----- */
-
-  void _applyFromMessageable(dynamic m) {
-    _zIndex = m[_zIndexName]!;
-    _globalZIndex = m[_globalZIndexName]!;
-    _isVisible = m[_isVisibleName]!;
-    _minZoom = m[_minZoomName]!;
-    _maxZoom = m[_maxZoomName]!;
-    _isMinZoomInclusive = m[_isMinZoomInclusiveName]!;
-    _isMaxZoomInclusive = m[_isMaxZoomInclusiveName]!;
-  }
-
   /* ----- Override ----- */
 
   @override
