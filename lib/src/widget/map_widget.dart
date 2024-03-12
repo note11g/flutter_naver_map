@@ -165,7 +165,7 @@ class _NaverMapState extends State<NaverMap>
 
   @override
   void dispose() {
-    controller.dispose();
+    controllerCompleter.future.then((_) => controller.dispose());
     disposeChannel();
     super.dispose();
   }
