@@ -2,21 +2,28 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'package:flutter_naver_map_example/design/theme.dart';
-import 'package:flutter_naver_map_example/pages/utils/example_base.dart';
-import 'package:flutter_naver_map_example/util/overlay_portal_util.dart';
-import 'package:flutter_naver_map_example/util/string_util.dart';
-
+import '../../design/theme.dart';
+import '../../util/overlay_portal_util.dart';
+import '../../util/string_util.dart';
 import '../../design/custom_widget.dart';
+import '../others/example_page_data.dart';
 
-class NOverlayExample extends ExampleBasePage {
+class NOverlayExample extends StatefulWidget {
+  static const ExamplePageData pageData = ExamplePageData(
+    title: "오버레이 추가 / 제거",
+    description: "마커/경로/도형 등을 띄워봐요",
+    icon: Icons.add_location_alt_rounded,
+    route: "/overlay",
+  );
+
   final NInfoOverlayPortalController nOverlayInfoOverlayPortalController;
-  final Stream<void> onCameraChangeStream;
+  final Stream<NCameraUpdateReason> onCameraChangeStream;
+  final NaverMapController mapController;
+
 
   const NOverlayExample({
     Key? key,
-    required super.mapController,
-    required super.canScroll,
+    required this.mapController,
     required this.nOverlayInfoOverlayPortalController,
     required this.onCameraChangeStream,
   }) : super(key: key);
@@ -104,24 +111,24 @@ class _NOverlayExampleState extends State<NOverlayExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      const SimpleTitle("화면 중앙에 오버레이가 생성됩니다.",
-          description: "생성된 오버레이를 터치하면 속성을 변경할 수 있어요.",
-          direction: Axis.vertical,
-          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24)),
-      SelectorWithTitle("오버레이 유형",
-          description: "NOverlayType",
-          selector: (context) => EasyDropdown(
-              items: NOverlayType.values
-                  .where((t) => t != NOverlayType.locationOverlay)
-                  .toList(),
-              value: willCreateOverlayType,
-              onChanged: (v) => setState(() => willCreateOverlayType = v))),
-      SimpleButton(
-          text: "${willCreateOverlayType.koreanName} 생성",
-          margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          action: attachOverlay),
-      if (widget.canScroll)
+    return SingleChildScrollView(
+      child: Column(children: [
+        const SimpleTitle("화면 중앙에 오버레이가 생성됩니다.",
+            description: "생성된 오버레이를 터치하면 속성을 변경할 수 있어요.",
+            direction: Axis.vertical,
+            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 24)),
+        SelectorWithTitle("오버레이 유형",
+            description: "NOverlayType",
+            selector: (context) => EasyDropdown(
+                items: NOverlayType.values
+                    .where((t) => t != NOverlayType.locationOverlay)
+                    .toList(),
+                value: willCreateOverlayType,
+                onChanged: (v) => setState(() => willCreateOverlayType = v))),
+        SimpleButton(
+            text: "${willCreateOverlayType.koreanName} 생성",
+            margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            action: attachOverlay),
         Padding(
             padding: const EdgeInsets.fromLTRB(24, 0, 24, 12),
             child: Row(children: [
@@ -140,8 +147,9 @@ class _NOverlayExampleState extends State<NOverlayExample> {
                       margin: EdgeInsets.zero,
                       action: () => mapController.clearOverlays())),
             ])),
-      const BottomPadding(),
-    ]);
+        const BottomPadding(),
+      ]),
+    );
   }
 }
 

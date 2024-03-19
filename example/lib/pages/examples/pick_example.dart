@@ -1,21 +1,26 @@
 import 'dart:async';
-import 'dart:math';
+import 'dart:math' show max;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'package:flutter_naver_map_example/design/custom_widget.dart';
-import 'package:flutter_naver_map_example/pages/utils/example_base.dart';
-import 'package:flutter_naver_map_example/pages/examples/overlay_example.dart';
+import '../../design/custom_widget.dart';
+import '../others/example_page_data.dart';
+import 'overlay_example.dart';
 
-class NaverMapPickExample extends ExampleBasePage {
-  final Stream<void> onCameraChangeStream;
-  final Point<double> mapEndPoint;
+class NaverMapPickExample extends StatefulWidget {
+  static const ExamplePageData pageData = ExamplePageData(
+    title: "주변 Pickable 보기",
+    description: "주변 심볼, 오버레이를 찾아봐요",
+    icon: Icons.domain_rounded,
+    route: "/pickable",
+  );
+
+  final Stream<NCameraUpdateReason> onCameraChangeStream;
+  final NaverMapController mapController;
 
   const NaverMapPickExample({
     super.key,
-    required super.mapController,
-    required super.canScroll,
-    required this.mapEndPoint,
+    required this.mapController,
     required this.onCameraChangeStream,
   });
 
@@ -27,10 +32,17 @@ class _NaverMapControllerExampleState extends State<NaverMapPickExample> {
   final List<NPickableInfo> pickables = [];
 
   void onCameraChange() async {
-    final p = widget.mapEndPoint;
-    final center = NPoint(p.x / 2, p.y / 2);
-    final radius = max(p.x, p.y);
-    final pickables = await _mapController.pickAll(center, radius: radius);
+    if (screenSize == null) return;
+
+    final nowLocation = _mapController.nowCameraPosition.target;
+    final center = await _mapController.latLngToScreenLocation(nowLocation);
+
+    final isTrustWithErrorMargin =
+        (center.x - screenSize!.width / 2).abs() < 1.0;
+    if (!isTrustWithErrorMargin) return;
+
+    final pickables =
+        await _mapController.pickAll(center, radius: max(center.x, center.y));
     this.pickables
       ..clear()
       ..addAll(pickables);
@@ -39,7 +51,7 @@ class _NaverMapControllerExampleState extends State<NaverMapPickExample> {
 
   Widget _nowCameraPositionWidget() {
     return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
         child:
             Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           const InnerSimpleTitle(
@@ -97,20 +109,26 @@ class _NaverMapControllerExampleState extends State<NaverMapPickExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(child: _nowCameraPositionWidget());
+    screenSize = MediaQuery.sizeOf(context);
+    return _nowCameraPositionWidget();
   }
 
   // --- worker ---
 
+  Size? screenSize;
+
   NaverMapController get _mapController => widget.mapController;
-  StreamSubscription<void>? onCameraChangeStreamSubscription;
+  StreamSubscription<NCameraUpdateReason>? onCameraChangeStreamSubscription;
 
   @override
   void initState() {
     super.initState();
-    onCameraChange();
-    onCameraChangeStreamSubscription =
-        widget.onCameraChangeStream.listen((_) => onCameraChange());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // need to cameraChange when first screenSize initialized.
+      onCameraChange();
+      onCameraChangeStreamSubscription =
+          widget.onCameraChangeStream.listen((_) => onCameraChange());
+    });
   }
 
   @override
