@@ -4,23 +4,27 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'package:flutter_naver_map_example/design/custom_widget.dart';
-import 'package:flutter_naver_map_example/pages/utils/example_base.dart';
-import 'package:flutter_naver_map_example/util/alert_util.dart';
-import 'package:flutter_naver_map_example/util/string_util.dart';
+import '../../design/custom_widget.dart';
+import '../../util/alert_util.dart';
+import '../../util/string_util.dart';
+import '../others/example_page_data.dart';
 
 import '../../design/theme.dart';
 
-class NaverMapControllerExample extends ExampleBasePage {
-  final Stream<void> onCameraChangeStream;
-  final Stream<Offset> onLastTouchStream;
+class NaverMapControllerExample extends StatefulWidget {
+  static const ExamplePageData pageData = ExamplePageData(
+      title: "기타 컨트롤러 기능",
+      description: "컨트롤러 기능을 살펴봐요",
+      icon: Icons.sports_esports_rounded,
+      route: "/controller_etc");
+
+  final NaverMapController mapController;
+  final Stream<NCameraUpdateReason> onCameraChangeStream;
 
   const NaverMapControllerExample({
     super.key,
-    required super.mapController,
-    required super.canScroll,
+    required this.mapController,
     required this.onCameraChangeStream,
-    required this.onLastTouchStream,
   });
 
   @override
@@ -38,22 +42,17 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
   /// 현재 표출되는 지도 범위
   NLatLngBounds? _regionBounds;
 
-  /// 마지막 터치 화면 좌표
+  /// 마지막 터치 화면 좌표 (nowCameraPosition으로부터 변환됨)
   NPoint? _lastTappedScreenPosition;
-  NLatLng? _lastTappedMapPosition;
 
   void onCameraChange() async {
     _nowCameraPosition = _mapController.nowCameraPosition;
     _nowMeterPerDp = _mapController.getMeterPerDp();
     _regionBounds = await _mapController.getContentBounds();
-    if (mounted) setState(() {});
-  }
+    _lastTappedScreenPosition =
+        await _mapController.latLngToScreenLocation(_nowCameraPosition!.target);
 
-  void onLastTouch(Offset offset) {
-    _lastTappedScreenPosition = NPoint(offset.dx, offset.dy);
-    _mapController
-        .screenLocationToLatLng(_lastTappedScreenPosition!)
-        .then((latLng) => _lastTappedMapPosition = latLng);
+    if (mounted) setState(() {});
   }
 
   Widget _nowCameraPositionWidget() {
@@ -147,10 +146,10 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
                   ".screenLocationToLatLng(NPoint)\n.latLngToScreenLocation(NLatLng)"),
           const SizedBox(height: 4),
           Text(
-              _lastTappedScreenPosition != null
-                  ? "마지막 드래그 화면 좌표: NPoint(${_lastTappedScreenPosition!.x.toStringAsFixed(5)}, ${_lastTappedScreenPosition!.y.toStringAsFixed(5)})\n"
-                      "변환 된 지도 좌표: NLatLng(${_lastTappedMapPosition?.toShortString()})"
-                  : "지도를 드래그해보세요 (드래그 시작점을 수집합니다)",
+              _nowCameraPosition != null && _lastTappedScreenPosition != null
+                  ? "마지막 드래그 지도 좌표: NLatLng(${_nowCameraPosition!.target.toShortString()})\n"
+                      "변환 된 화면 좌표: NPoint(${_lastTappedScreenPosition!.x.toStringAsFixed(5)}, ${_lastTappedScreenPosition!.y.toStringAsFixed(5)})"
+                  : "",
               style: getTextTheme(context)
                   .bodyMedium
                   ?.copyWith(fontWeight: FontWeight.w700)),
@@ -177,7 +176,7 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
 
   void _takeSnapshot() async {
     final snapshot = await _mapController.takeSnapshot(showControls: false);
-    if (context.mounted) {
+    if (mounted) {
       showDialog(
           context: context,
           builder: (context) {
@@ -205,31 +204,25 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: widget.canScroll ? 1 : 0,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        _nowCameraPositionWidget(),
-        if (widget.canScroll)
-          Expanded(
-              child: ListView(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.paddingOf(context).bottom),
-                  children: [
-                _actionButtonSections(),
-                _meterPerDpWidget(),
-                _contentsRegionWidget(),
-                _switchLatLngToScreenLocationWidget(),
-              ])),
-        if (!widget.canScroll) const BottomPadding(),
-      ]),
-    );
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      _nowCameraPositionWidget(),
+      Expanded(
+          child: ListView(
+              padding:
+                  EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
+              children: [
+            _actionButtonSections(),
+            _meterPerDpWidget(),
+            _contentsRegionWidget(),
+            _switchLatLngToScreenLocationWidget(),
+          ])),
+    ]);
   }
 
   // --- worker ---
 
   NaverMapController get _mapController => widget.mapController;
-  StreamSubscription<void>? onCameraChangeStreamSubscription;
-  StreamSubscription<Offset>? onLastTouchStreamSubscription;
+  StreamSubscription<NCameraUpdateReason>? onCameraChangeStreamSubscription;
 
   @override
   void initState() {
@@ -237,14 +230,11 @@ class _NaverMapControllerExampleState extends State<NaverMapControllerExample> {
     onCameraChange();
     onCameraChangeStreamSubscription =
         widget.onCameraChangeStream.listen((_) => onCameraChange());
-    onLastTouchStreamSubscription =
-        widget.onLastTouchStream.listen(onLastTouch);
   }
 
   @override
   void dispose() {
     onCameraChangeStreamSubscription?.cancel();
-    onLastTouchStreamSubscription?.cancel();
     super.dispose();
   }
 }

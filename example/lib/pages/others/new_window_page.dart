@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'example_page_data.dart';
 
 class DoubleMapTestPage extends StatefulWidget {
   const DoubleMapTestPage({Key? key}) : super(key: key);
@@ -62,6 +63,12 @@ class _DoubleMapTestPageState extends State<DoubleMapTestPage> {
 }
 
 class NewWindowTestPage extends StatelessWidget {
+  static const pageData = ExamplePageData(
+      title: "새 페이지에서 지도 보기",
+      icon: Icons.note_add_rounded,
+      description: "테스트용이에요",
+      route: "/new_test_page");
+
   const NewWindowTestPage({Key? key}) : super(key: key);
 
   @override
