@@ -123,7 +123,11 @@ class _FNMapPageState extends State<FNMapPage> {
     return Scaffold(
         body: SizedBox.expand(
       child: Stack(children: [
-        Positioned.fill(
+        AnimatedPositioned(
+          duration: const Duration(milliseconds: 150),
+          left: 0,
+          right: 0,
+          top: 0,
           bottom: drawerHeight - _drawerHandleHeight,
           child: StreamBuilder(
               stream: widget.sharedMapViewOptionChangeStream,
