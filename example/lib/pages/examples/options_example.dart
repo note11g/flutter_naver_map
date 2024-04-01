@@ -1,28 +1,55 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 
 import '../../design/custom_widget.dart';
 import '../../util/location_util.dart';
 import '../../util/alert_util.dart';
+import '../others/example_page_data.dart';
 
-class NaverMapViewOptionsExample extends StatelessWidget {
-  final NaverMapViewOptions options;
-  final Function(NaverMapViewOptions options) onOptionsChanged;
+class NaverMapViewOptionsExample extends StatefulWidget {
+  static const ExamplePageData pageData = ExamplePageData(
+    title: "지도 위젯 옵션 변경하기",
+    description: "위젯에 보여지는 걸 바꿔봐요",
+    icon: Icons.map_rounded,
+    route: "/map_option",
+  );
+
+  final StreamController<NaverMapViewOptions> sharedMapViewOptionChangeState;
   final bool canScroll;
 
   const NaverMapViewOptionsExample({
     Key? key,
-    required this.options,
-    required this.onOptionsChanged,
+    required this.sharedMapViewOptionChangeState,
     required this.canScroll,
   }) : super(key: key);
 
-  set options(NaverMapViewOptions value) {
-    final changedOptions = prepareOptionChange(value);
-    onOptionsChanged(changedOptions);
+  @override
+  State<NaverMapViewOptionsExample> createState() =>
+      _NaverMapViewOptionsExampleState();
+}
+
+class _NaverMapViewOptionsExampleState
+    extends State<NaverMapViewOptionsExample> {
+  @override
+  void initState() {
+    widget.sharedMapViewOptionChangeState.stream.listen((e) => _options = e);
+    super.initState();
   }
 
-  void clearOptions() => onOptionsChanged(const NaverMapViewOptions());
+  NaverMapViewOptions _options = const NaverMapViewOptions();
+
+  NaverMapViewOptions get options => _options;
+
+  set options(NaverMapViewOptions value) {
+    _options = value;
+    final changedOptions = prepareOptionChange(value);
+    widget.sharedMapViewOptionChangeState.add(changedOptions);
+    setState(() {});
+  }
+
+  void clearOptions() => options = const NaverMapViewOptions();
 
   NaverMapViewOptions prepareOptionChange(NaverMapViewOptions newOptions) {
     if (!indoorAvailable) {
@@ -52,13 +79,12 @@ class NaverMapViewOptionsExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: ReLoader(
+    return ReLoader(
       text: "옵션을 모두",
       reload: clearOptions,
       child: CustomScrollView(
           primary: true,
-          physics: canScroll
+          physics: widget.canScroll
               ? const BouncingScrollPhysics()
               : const NeverScrollableScrollPhysics(),
           slivers: [
@@ -300,7 +326,7 @@ class NaverMapViewOptionsExample extends StatelessWidget {
             ]),
             const SliverBottomPadding(),
           ]),
-    ));
+    );
   }
 
   Widget sliverMultiSwitcherGrid(List<TextSwitcher> switchers,

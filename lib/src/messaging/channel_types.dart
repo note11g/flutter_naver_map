@@ -1,4 +1,4 @@
-part of flutter_naver_map_messaging;
+part of "messaging.dart";
 
 enum NChannel {
   naverMapNativeView("flutter_naver_map_view"),

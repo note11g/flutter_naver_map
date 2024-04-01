@@ -1,5 +1,8 @@
-part of flutter_naver_map;
+part of "../../../../flutter_naver_map.dart";
 
+/// 실내 지도에서 하나의 층을 나타내는 객체입니다.
+///
+/// 실내 지도에서 하나의 구역을 나타내는 [NIndoorZone]의 구성요소입니다.
 class NIndoorLevel {
   final String name;
   @override

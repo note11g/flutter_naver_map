@@ -1,4 +1,4 @@
-part of flutter_naver_map;
+part of "../../../../../../../flutter_naver_map.dart";
 
 class NMultipartPathOverlay extends NAddableOverlay<NMultipartPathOverlay> {
   List<NMultipartPath> get paths => _paths.toList();

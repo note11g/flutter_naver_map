@@ -1,21 +1,15 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bottom_drawer/flutter_bottom_drawer.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'package:flutter_naver_map_example/pages/examples/camera_example.dart';
-import 'package:flutter_naver_map_example/pages/examples/controller_example.dart';
-import 'package:flutter_naver_map_example/pages/examples/overlay_example.dart';
-import 'package:flutter_naver_map_example/pages/examples/pick_example.dart';
+import 'package:flutter_naver_map_example/design/custom_widget.dart';
+import 'package:flutter_naver_map_example/pages/others/example_page_data.dart';
+import 'package:flutter_naver_map_example/pages/others/routes.dart';
 import 'package:flutter_naver_map_example/util/overlay_portal_util.dart';
-import 'package:transparent_pointer/transparent_pointer.dart';
-
-import 'pages/utils/bottom_drawer.dart';
-import 'pages/utils/new_window_page.dart';
-import 'design/map_function_item.dart';
+import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'design/theme.dart';
-
-import 'pages/examples/options_example.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,57 +28,39 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
         debugShowCheckedModeBanner: false,
-        home: const FNMapPage(),
+        routerConfig: goRouter,
         theme: ExampleAppTheme.lightThemeData,
         darkTheme: ExampleAppTheme.darkThemeData);
   }
 }
 
 class FNMapPage extends StatefulWidget {
-  const FNMapPage({Key? key}) : super(key: key);
+  final Widget bottomSheetPage;
+  final Stream<ExamplePageData?> pageObserveStream;
+  final Stream<NaverMapViewOptions> sharedMapViewOptionChangeStream;
+
+  const FNMapPage({
+    Key? key,
+    required this.bottomSheetPage,
+    required this.pageObserveStream,
+    required this.sharedMapViewOptionChangeStream,
+  }) : super(key: key);
 
   @override
   State<FNMapPage> createState() => _FNMapPageState();
 }
 
 class _FNMapPageState extends State<FNMapPage> {
-  /* ----- UI Size ----- */
-  late EdgeInsets safeArea;
-  double drawerHeight = 0;
-
-  final nOverlayInfoOverlayPortalController = NInfoOverlayPortalController();
-
-  @override
-  Widget build(BuildContext context) {
-    safeArea = MediaQuery.of(context).padding;
-    return Scaffold(
-        body: PopScope(
-            onPopInvoked: (didPop) => drawerTool.processWillPop(),
-            child: Stack(children: [
-              GestureDetector(
-                  onTapDown: (details) => _onLastTouchStreamController.sink
-                      .add(details.globalPosition)),
-              Positioned.fill(child: TransparentPointer(child: mapWidget())),
-              drawerTool.bottomDrawer,
-              OverlayPortal(
-                  controller: nOverlayInfoOverlayPortalController,
-                  overlayChildBuilder: (context) =>
-                      nOverlayInfoOverlayPortalController.builder(
-                          context, mapController)),
-            ])));
-  }
-
-  /*
-    --- Naver Map Widget ---
-  */
-
   late NaverMapController mapController;
-  NaverMapViewOptions options = const NaverMapViewOptions();
+  final _onCameraChangeStreamController =
+      StreamController<NCameraUpdateReason>.broadcast();
 
-  Widget mapWidget() {
-    final mapPadding = EdgeInsets.only(bottom: drawerHeight - safeArea.bottom);
+  Widget mapWidget(BuildContext context, NaverMapViewOptions options) {
+    final safeArea = MediaQuery.paddingOf(context);
+    final mapPadding =
+        safeArea.copyWith(bottom: drawerHeight - safeArea.bottom);
     return NaverMap(
       options: options.copyWith(contentPadding: mapPadding),
       onMapReady: onMapReady,
@@ -100,6 +76,7 @@ class _FNMapPageState extends State<FNMapPage> {
 
   void onMapReady(NaverMapController controller) {
     mapController = controller;
+    GetIt.I.registerSingleton(controller);
   }
 
   void onMapTapped(NPoint point, NLatLng latLng) async {
@@ -112,7 +89,7 @@ class _FNMapPageState extends State<FNMapPage> {
 
   void onCameraChange(NCameraUpdateReason reason, bool isGesture) {
     // ...
-    _onCameraChangeStreamController.sink.add(null);
+    _onCameraChangeStreamController.sink.add(reason);
   }
 
   void onCameraIdle() {
@@ -123,81 +100,116 @@ class _FNMapPageState extends State<FNMapPage> {
     // ...
   }
 
-  final _onCameraChangeStreamController = StreamController<void>.broadcast();
-  final _onLastTouchStreamController = StreamController<Offset>.broadcast();
+  @override
+  void initState() {
+    GetIt.I.registerLazySingleton<Stream<NCameraUpdateReason>>(
+        () => _onCameraChangeStreamController.stream);
+    GetIt.I.registerLazySingleton(() => nOverlayInfoOverlayPortalController);
+    super.initState();
+  }
 
-  /*
-    --- Bottom Drawer Widget ---
-  */
+  /* ----- UI Size ----- */
+  double drawerHeight = 0;
+  double? initMainDrawerHeight;
 
-  late final drawerTool = ExampleAppBottomDrawer(
-      context: context,
-      onDrawerHeightChanged: (height) => setState(() => drawerHeight = height),
-      rebuild: () => setState(() {}),
-      pages: pages);
+  final nOverlayInfoOverlayPortalController = NInfoOverlayPortalController();
+  DrawerMoveController? drawerController;
+  final drawerKey = UniqueKey();
 
-  late final List<MapFunctionItem> pages = [
-    MapFunctionItem(
-        title: "지도 위젯 옵션 변경하기",
-        description: "위젯에 보여지는 걸 바꿔봐요",
-        icon: Icons.map_rounded,
-        page: (canScroll) => NaverMapViewOptionsExample(
-            canScroll: canScroll,
-            options: options,
-            onOptionsChanged: (changed) {
-              if (changed != options) setState(() => options = changed);
-            })),
-    MapFunctionItem(
-        title: "오버레이 추가 / 제거",
-        description: "마커/경로/도형 등을 띄워봐요",
-        icon: Icons.add_location_alt_rounded,
-        isScrollPage: false,
-        page: (canScroll) => NOverlayExample(
-            nOverlayInfoOverlayPortalController:
-                nOverlayInfoOverlayPortalController,
-            onCameraChangeStream: _onCameraChangeStreamController.stream,
-            canScroll: canScroll,
-            mapController: mapController)),
-    MapFunctionItem(
-        title: "카메라 이동",
-        isScrollPage: false,
-        icon: Icons.zoom_in_rounded,
-        description: "지도를 요리조리 움직여봐요",
-        page: (canScroll) => CameraUpdateExample(
-            onCameraChangeStream: _onCameraChangeStreamController.stream,
-            canScroll: canScroll,
-            mapController: mapController)),
-    MapFunctionItem(
-        title: "주변 Pickable 보기",
-        description: "주변 심볼, 오버레이를 찾아봐요",
-        icon: Icons.domain_rounded,
-        page: (canScroll) {
-          final screenSize = MediaQuery.sizeOf(context);
-          return NaverMapPickExample(
-            canScroll: canScroll,
-            mapController: mapController,
-            mapEndPoint:
-                Point(screenSize.width, screenSize.height - drawerHeight),
-            onCameraChangeStream: _onCameraChangeStreamController.stream,
-          );
-        }),
-    MapFunctionItem(
-        title: "기타 컨트롤러 기능",
-        description: "컨트롤러 기능을 살펴봐요",
-        isScrollPage: false,
-        icon: Icons.sports_esports_rounded,
-        page: (canScroll) => NaverMapControllerExample(
-              canScroll: canScroll,
-              mapController: mapController,
-              onCameraChangeStream: _onCameraChangeStreamController.stream,
-              onLastTouchStream: _onLastTouchStreamController.stream,
-            )),
-    MapFunctionItem(
-      title: "새 페이지에서 지도 보기",
-      icon: Icons.note_add_rounded,
-      description: "테스트용이에요",
-      onTap: (_) => Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const NewWindowTestPage())),
-    ),
-  ];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Stack(children: [
+      StreamBuilder(
+          stream: widget.sharedMapViewOptionChangeStream,
+          builder: (context, snapshot) =>
+              mapWidget(context, snapshot.data ?? const NaverMapViewOptions())),
+      _bottomDrawer(context),
+      _overlayPortalSection(),
+    ]));
+  }
+
+  Widget _bottomDrawer(BuildContext context) => BottomDrawer(
+      key: drawerKey,
+      height: initMainDrawerHeight /* cached height */,
+      expandedHeight: MediaQuery.sizeOf(context).height / 2,
+      handleSectionHeight: 20,
+      handleColor: getColorTheme(context).secondary,
+      backgroundColor: getColorTheme(context).background,
+      onReady: (controller) => drawerController = controller,
+      onHeightChanged: (height) {
+        initMainDrawerHeight ??= height;
+        drawerHeight = height;
+        setState(() {});
+      },
+      builder: (state, setState, context) => Column(children: [
+            _headerSection(context),
+            Expanded(
+                flex: initMainDrawerHeight != null ? 1 : 0,
+                child: widget.bottomSheetPage),
+            // todo: prevent scroll gesture when state != DrawerState.opened
+          ]));
+
+  Widget _overlayPortalSection() => OverlayPortal(
+      controller: nOverlayInfoOverlayPortalController,
+      overlayChildBuilder: (context) =>
+          nOverlayInfoOverlayPortalController.builder(context, mapController));
+
+  Widget _headerSection(BuildContext context) => StreamBuilder(
+      stream: widget.pageObserveStream,
+      builder: (context, snapshot) {
+        return snapshot.data != null
+            ? getHeaderByPageData(snapshot.data!)
+            : getMainHeader(context);
+      });
+
+  Widget getMainHeader(BuildContext context) => BaseDrawerHeader(
+          child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        Text("지도 기능 둘러보기", style: getTextTheme(context).titleLarge),
+        const SizedBox(width: 8),
+        const Flexible(
+            child: Align(
+                alignment: Alignment.centerRight, child: VersionInfoWidget())),
+      ]));
+
+  Widget getHeaderByPageData(ExamplePageData data) => BaseDrawerHeader(
+      padding: EdgeInsets.zero,
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+              IconButton(
+                  onPressed: context.pop,
+                  padding: const EdgeInsets.all(12),
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20)),
+              Text(data.title, style: getTextTheme(context).titleLarge),
+            ]),
+            _drawerAutoControlButton(),
+          ]));
+
+  Widget _drawerAutoControlButton() {
+    if (drawerController == null) return const SizedBox();
+    DrawerState drawerState = drawerController!.nowState;
+
+    return Padding(
+        padding: const EdgeInsets.only(right: 8),
+        child: StatefulBuilder(builder: (context, setStateButton) {
+          return InkWell(
+              borderRadius: BorderRadius.circular(4),
+              onTap: () {
+                if (drawerController == null) return;
+                drawerController!.autoMove();
+                drawerState = drawerController!.nowState;
+                setStateButton(() {});
+              },
+              child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                  child: Text(drawerState == DrawerState.opened ? "접기" : "펼치기",
+                      style: getTextTheme(context)
+                          .labelSmall
+                          ?.copyWith(color: getColorTheme(context).primary))));
+        }));
+  }
 }

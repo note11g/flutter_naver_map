@@ -28,6 +28,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
+    namespace "dev.note11.flutter_naver_map.flutter_naver_map"
+
     compileSdk 34
 
     compileOptions {

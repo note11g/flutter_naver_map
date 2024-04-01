@@ -1,4 +1,4 @@
-part of flutter_naver_map;
+part of "../../../flutter_naver_map.dart";
 
 class NEdgeInsets extends EdgeInsets with NMessageableWithMap {
   const NEdgeInsets.fromLTRB(super.left, super.top, super.right, super.bottom)

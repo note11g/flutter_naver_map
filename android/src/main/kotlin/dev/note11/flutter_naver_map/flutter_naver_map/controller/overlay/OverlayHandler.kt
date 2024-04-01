@@ -1,5 +1,6 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay
 
+import com.naver.maps.map.overlay.LocationOverlay
 import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
@@ -17,6 +18,8 @@ internal interface OverlayHandler {
     fun clearOverlays()
 
     fun clearOverlays(type: NOverlayType)
+
+    fun initializeLocationOverlay(overlay: LocationOverlay)
 
     fun <T : Overlay> saveOverlayWithAddable(creator: AddableOverlay<out T>): T {
         if (hasOverlay(creator.info)) deleteOverlay(creator.info)
@@ -69,6 +72,8 @@ internal interface OverlayHandler {
     fun performClick(overlay: Overlay, success: (Any?) -> Unit)
 
     fun setHasOnTapListener(overlay: Overlay, rawHasOnTapListener: Any)
+
+    fun remove()
 
     companion object {
         /* --- Messaging Name Define --- */

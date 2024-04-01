@@ -1,4 +1,4 @@
-part of flutter_naver_map;
+part of "../../../flutter_naver_map.dart";
 
 class _OverlayHandleAndRemoveHelper {
   final void Function(String) handler;
@@ -45,7 +45,9 @@ class _NOverlayControllerImpl extends _NOverlayController with NChannelWrapper {
 
   @override
   void deleteWithInfo(NOverlayInfo info) {
-    overlayHandleAndRemoveHelperMap[info]!.remover.call(viewId);
+    final helper = overlayHandleAndRemoveHelperMap[info];
+    assert(helper != null, "Not Added or Already Deleted this overlay : $info");
+    helper?.remover.call(viewId);
     overlayHandleAndRemoveHelperMap.remove(info);
   }
 

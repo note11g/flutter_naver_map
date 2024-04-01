@@ -51,23 +51,27 @@ class TestPageState extends State<TestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: NaverMap(
-      options: const NaverMapViewOptions(
-          initialCameraPosition:
-              NCameraPosition(target: NLatLng(37, 127), zoom: 14),
-          indoorEnable: true,
-          locationButtonEnable: true,
-          consumeSymbolTapEvents: false),
-      onMapReady: (controller) async {
-        mapControllerCompleter.complete(controller);
-        log("onMapReady", name: "onMapReady");
-      },
-      onCameraIdle: () {
-        print("onCameraIdle: ${DateTime.now().millisecondsSinceEpoch}");
-      },
-      onCameraChange: (reason, animated) {
-        onCameraChangeStreamController.add((reason, animated));
-      },
+        body: SizedBox(
+      width: 300,
+      height: 300,
+      child: NaverMap(
+        options: const NaverMapViewOptions(
+            initialCameraPosition:
+                NCameraPosition(target: NLatLng(37, 127), zoom: 14),
+            indoorEnable: true,
+            locationButtonEnable: true,
+            consumeSymbolTapEvents: false),
+        onMapReady: (controller) async {
+          mapControllerCompleter.complete(controller);
+          log("onMapReady", name: "onMapReady");
+        },
+        onCameraIdle: () {
+          print("onCameraIdle: ${DateTime.now().millisecondsSinceEpoch}");
+        },
+        onCameraChange: (reason, animated) {
+          onCameraChangeStreamController.add((reason, animated));
+        },
+      ),
     ));
   }
 

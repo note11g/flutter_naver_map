@@ -1,5 +1,6 @@
-part of flutter_naver_map;
+part of "../../../flutter_naver_map.dart";
 
+/// 줌 레벨을 컨트롤할 수 있는 위젯입니다.
 class NaverMapZoomControlWidget extends StatelessWidget {
   final NaverMapController? mapController;
   final bool nightMode;

@@ -3,19 +3,26 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'package:flutter_naver_map_example/design/theme.dart';
-import 'package:flutter_naver_map_example/pages/utils/example_base.dart';
-import 'package:flutter_naver_map_example/util/string_util.dart';
 
+import '../../design/theme.dart';
+import '../../util/string_util.dart';
 import '../../design/custom_widget.dart';
+import '../others/example_page_data.dart';
 
-class CameraUpdateExample extends ExampleBasePage {
-  final Stream<void> onCameraChangeStream;
+class CameraUpdateExample extends StatefulWidget {
+  static const ExamplePageData pageData = ExamplePageData(
+    title: "카메라 이동",
+    icon: Icons.zoom_in_rounded,
+    description: "지도를 요리조리 움직여봐요",
+    route: "/move_camera",
+  );
+
+  final NaverMapController mapController;
+  final Stream<NCameraUpdateReason> onCameraChangeStream;
 
   const CameraUpdateExample({
     Key? key,
-    required super.mapController,
-    required super.canScroll,
+    required this.mapController,
     required this.onCameraChangeStream,
   }) : super(key: key);
 
@@ -40,7 +47,7 @@ class _NOverlayExampleState extends State<CameraUpdateExample> {
   }
 
   void moveCameraCoordWithDp(double dp, Axis axis) async {
-    final meterPerDp = await _mapController.getMeterPerDp();
+    final meterPerDp = _mapController.getMeterPerDp();
     final offsetMeter = meterPerDp * dp;
     updateCamera(NCameraUpdate.withParams(
         target: _nowCameraPosition!.target.offsetByMeter(
@@ -217,17 +224,17 @@ class _NOverlayExampleState extends State<CameraUpdateExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return SingleChildScrollView(
+        child: Column(children: [
       coordControlWidget(),
       zoomControlWidget(),
-      if (widget.canScroll)
-        Column(children: [
-          tiltControlWidget(),
-          bearingControlWidget(),
-          animationSpeedControlWidget(),
-        ]),
+      Column(children: [
+        tiltControlWidget(),
+        bearingControlWidget(),
+        animationSpeedControlWidget(),
+      ]),
       const BottomPadding(),
-    ]);
+    ]));
   }
 
   bool _onKeyUp(KeyEvent event) {
@@ -253,7 +260,7 @@ class _NOverlayExampleState extends State<CameraUpdateExample> {
   }
 
   NaverMapController get _mapController => widget.mapController;
-  StreamSubscription<void>? onCameraChangeStreamSubscription;
+  StreamSubscription<NCameraUpdateReason>? onCameraChangeStreamSubscription;
   StreamSubscription<KeyEvent>? onKeyUpStreamSubscription;
 
   @override

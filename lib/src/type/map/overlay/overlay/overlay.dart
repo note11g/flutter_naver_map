@@ -1,9 +1,11 @@
-part of flutter_naver_map;
+part of "../../../../../flutter_naver_map.dart";
 
-abstract class NOverlay<O extends NOverlay<void>>
+/// 지도의 특정 위치나 영역에 정보를 표시하는 UI 요소입니다.
+sealed class NOverlay<O extends NOverlay<void>>
     with _NOverlaySender, _NOverlayHandler<O> {
   NOverlay(this.info);
 
+  /// 오버레이의 정보를 나타냅니다.
   @override
   final NOverlayInfo info;
 
@@ -49,66 +51,122 @@ abstract class NOverlay<O extends NOverlay<void>>
     --- methods ---
   */
 
+  /// 지도에서 오버레이 종류끼리의 zIndex를 나타냅니다.
+  ///
+  /// 기본 값은 `0` 입니다.
+  ///
+  /// 자세한 내용은 문서를 참고하세요. [문서 바로가기](https://note11.dev/flutter_naver_map/element/overlay/#%EB%B3%B4%EC%A1%B0-%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84-zindex)
   int get zIndex => _zIndex;
   int _zIndex = 0;
 
+  /// 지도에서의 zIndex를 나타냅니다.
+  ///
   /// globalZIndex has different initial values for each overlay type.
+  ///
+  /// 자세한 내용은 문서를 참고하세요. [문서 바로가기](https://note11.dev/flutter_naver_map/element/overlay/#%EC%A0%84%EC%97%AD-%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84-globalzindex)
   int get _globalZIndex;
 
   set _globalZIndex(int value);
 
   int get globalZIndex => _globalZIndex;
 
+  /// 지도에 오버레이를 보여지고 있는지, 숨겨졌는지 나타냅니다.
+  /// 숨겨지더라도, 오버레이는 지도에 남아있으며, 다시 보이게 할 수 있습니다.
+  ///
+  /// 따라서, 이 값은 오버레이가 추가되었을 때만 유의미하며, 제거되었을 때는 무의미합니다. (추가/제거와 무관합니다)
+  ///
+  /// 자세한 내용은 문서를 참고하세요. [문서 바로가기](https://note11.dev/flutter_naver_map/element/overlay/#%EC%A7%80%EB%8F%84%EC%97%90%EC%84%9C-%EC%88%A8%EA%B9%80)
   bool get isVisible => _isVisible;
   bool _isVisible = true;
 
+  /// 오버레이가 보여질 최소 줌 레벨을 나타냅니다.
+  ///
+  /// 자세한 내용은 문서를 참고하세요. [문서 바로가기](https://note11.dev/flutter_naver_map/element/overlay/#%EB%B3%B4%EC%97%AC%EC%A7%80%EB%8A%94-%EC%A4%8C-%EB%A0%88%EB%B2%A8%EC%9D%98-%EB%B2%94%EC%9C%84-%EC%A7%80%EC%A0%95)
   double get minZoom => _minZoom;
   double _minZoom = NaverMapViewOptions.minimumZoom;
 
+  /// 오버레이가 보여질 최대 줌 레벨을 나타냅니다.
+  ///
+  /// 자세한 내용은 문서를 참고하세요. [문서 바로가기](https://note11.dev/flutter_naver_map/element/overlay/#%EB%B3%B4%EC%97%AC%EC%A7%80%EB%8A%94-%EC%A4%8C-%EB%A0%88%EB%B2%A8%EC%9D%98-%EB%B2%94%EC%9C%84-%EC%A7%80%EC%A0%95)
   double get maxZoom => _maxZoom;
   double _maxZoom = NaverMapViewOptions.maximumZoom;
 
+  /// 오버레이의 최소 줌 레벨을 포함해서 보여줄 지를 나타냅니다.
+  ///
+  /// 자세한 내용은 문서를 참고하세요. [문서 바로가기](https://note11.dev/flutter_naver_map/element/overlay/#%EB%B3%B4%EC%97%AC%EC%A7%80%EB%8A%94-%EC%A4%8C-%EB%A0%88%EB%B2%A8%EC%9D%98-%EB%B2%94%EC%9C%84-%EC%A7%80%EC%A0%95)
   bool get isMinZoomInclusive => _isMinZoomInclusive;
   bool _isMinZoomInclusive = true;
 
+  /// 오버레이의 최대 줌 레벨을 포함해서 보여줄 지를 나타냅니다.
+  ///
+  /// 자세한 내용은 문서를 참고하세요. [문서 바로가기](https://note11.dev/flutter_naver_map/element/overlay/#%EB%B3%B4%EC%97%AC%EC%A7%80%EB%8A%94-%EC%A4%8C-%EB%A0%88%EB%B2%A8%EC%9D%98-%EB%B2%94%EC%9C%84-%EC%A7%80%EC%A0%95)
   bool get isMaxZoomInclusive => _isMaxZoomInclusive;
   bool _isMaxZoomInclusive = true;
 
+  /// 지도에서 오버레이 종류끼리의 zIndex를 지정합니다.
+  ///
+  /// 기본 값은 `0` 입니다.
+  ///
+  /// 자세한 내용은 문서를 참고하세요. [문서 바로가기](https://note11.dev/flutter_naver_map/element/overlay/#%EB%B3%B4%EC%A1%B0-%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84-zindex)
   void setZIndex(int zIndex) {
     _zIndex = zIndex;
     _set(_zIndexName, zIndex);
   }
 
+  /// 지도에서의 zIndex를 지정합니다.
+  ///
+  /// globalZIndex has different initial values for each overlay type.
+  ///
+  /// 자세한 내용은 문서를 참고하세요. [문서 바로가기](https://note11.dev/flutter_naver_map/element/overlay/#%EC%A0%84%EC%97%AD-%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84-globalzindex)
   void setGlobalZIndex(int globalZIndex) {
     _globalZIndex = globalZIndex;
     _set(_globalZIndexName, globalZIndex);
   }
 
+  /// 지도에 오버레이를 보여지고 있는지, 숨겨졌는지 지정합니다.
+  /// 숨겨지더라도, 오버레이는 지도에 남아있으며, 다시 보이게 할 수 있습니다.
+  ///
+  /// 따라서, 이 값은 오버레이가 추가되었을 때만 유의미하며, 제거되었을 때는 무의미합니다. (추가/제거와 무관합니다)
+  ///
+  /// 자세한 내용은 문서를 참고하세요. [문서 바로가기](https://note11.dev/flutter_naver_map/element/overlay/#%EC%A7%80%EB%8F%84%EC%97%90%EC%84%9C-%EC%88%A8%EA%B9%80)
   void setIsVisible(bool isVisible) {
     _isVisible = isVisible;
     _set(_isVisibleName, isVisible);
   }
 
+  /// 오버레이가 보여질 최소 줌 레벨을 지정합니다.
+  ///
+  /// 자세한 내용은 문서를 참고하세요. [문서 바로가기](https://note11.dev/flutter_naver_map/element/overlay/#%EB%B3%B4%EC%97%AC%EC%A7%80%EB%8A%94-%EC%A4%8C-%EB%A0%88%EB%B2%A8%EC%9D%98-%EB%B2%94%EC%9C%84-%EC%A7%80%EC%A0%95)
   void setMinZoom(double minZoom) {
     _minZoom = minZoom;
     _set(_minZoomName, minZoom);
   }
 
+  /// 오버레이가 보여질 최대 줌 레벨을 지정합니다.
+  ///
+  /// 자세한 내용은 문서를 참고하세요. [문서 바로가기](https://note11.dev/flutter_naver_map/element/overlay/#%EB%B3%B4%EC%97%AC%EC%A7%80%EB%8A%94-%EC%A4%8C-%EB%A0%88%EB%B2%A8%EC%9D%98-%EB%B2%94%EC%9C%84-%EC%A7%80%EC%A0%95)
   void setMaxZoom(double maxZoom) {
     _maxZoom = maxZoom;
     _set(_maxZoomName, maxZoom);
   }
 
+  /// 오버레이의 최소 줌 레벨을 포함해서 보여줄 지를 지정합니다.
+  ///
+  /// 자세한 내용은 문서를 참고하세요. [문서 바로가기](https://note11.dev/flutter_naver_map/element/overlay/#%EB%B3%B4%EC%97%AC%EC%A7%80%EB%8A%94-%EC%A4%8C-%EB%A0%88%EB%B2%A8%EC%9D%98-%EB%B2%94%EC%9C%84-%EC%A7%80%EC%A0%95)
   void setIsMinZoomInclusive(bool isMinZoomInclusive) {
     _isMinZoomInclusive = isMinZoomInclusive;
     _set(_isMinZoomInclusiveName, isMinZoomInclusive);
   }
 
+  /// 오버레이의 최대 줌 레벨을 포함해서 보여줄 지를 지정합니다.
+  ///
+  /// 자세한 내용은 문서를 참고하세요. [문서 바로가기](https://note11.dev/flutter_naver_map/element/overlay/#%EB%B3%B4%EC%97%AC%EC%A7%80%EB%8A%94-%EC%A4%8C-%EB%A0%88%EB%B2%A8%EC%9D%98-%EB%B2%94%EC%9C%84-%EC%A7%80%EC%A0%95)
   void setIsMaxZoomInclusive(bool isMaxZoomInclusive) {
     _isMaxZoomInclusive = isMaxZoomInclusive;
     _set(_isMaxZoomInclusiveName, isMaxZoomInclusive);
   }
 
+  /// [setOnTapListener]를 통해 지정된 사용자의 오버레이 터치를 처리하는 함수를 실행합니다.
   Future<void> performClick() => _runAsync(_performClickName);
 
   Map<String, dynamic> get _commonMap => {
@@ -121,18 +179,6 @@ abstract class NOverlay<O extends NOverlay<void>>
         _isMaxZoomInclusiveName: _isMaxZoomInclusive,
         _hasOnTapListenerName: _hasOnTapListener,
       };
-
-  /* ----- fromMessageable ----- */
-
-  void _applyFromMessageable(dynamic m) {
-    _zIndex = m[_zIndexName]!;
-    _globalZIndex = m[_globalZIndexName]!;
-    _isVisible = m[_isVisibleName]!;
-    _minZoom = m[_minZoomName]!;
-    _maxZoom = m[_maxZoomName]!;
-    _isMinZoomInclusive = m[_isMinZoomInclusiveName]!;
-    _isMaxZoomInclusive = m[_isMaxZoomInclusiveName]!;
-  }
 
   /* ----- Override ----- */
 

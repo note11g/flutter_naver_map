@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
@@ -599,5 +601,53 @@ class SmallButton extends StatelessWidget {
                               .labelSmall
                               ?.copyWith(color: textColor)),
                     ]))));
+  }
+}
+
+class BaseDrawerHeader extends StatelessWidget {
+  final Widget child;
+  final EdgeInsets padding;
+
+  const BaseDrawerHeader({
+    super.key,
+    required this.child,
+    this.padding = const EdgeInsets.fromLTRB(16, 12, 16, 16),
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+                    color:
+                        getColorTheme(context).onBackground.withOpacity(0.28),
+                    width: 0.2))),
+        padding: padding,
+        child: child);
+  }
+}
+
+class VersionInfoWidget extends StatelessWidget {
+  const VersionInfoWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+        decoration: BoxDecoration(
+            color: Platform.isAndroid ? Colors.green : Colors.black,
+            borderRadius: BorderRadius.circular(4)),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          Icon(Platform.isAndroid ? Icons.android : Icons.apple,
+              color: Colors.white, size: 14),
+          const SizedBox(width: 2),
+          Flexible(
+              child: Text(Platform.operatingSystemVersion,
+                  softWrap: false,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: getTextTheme(context).labelSmall)),
+        ]));
   }
 }

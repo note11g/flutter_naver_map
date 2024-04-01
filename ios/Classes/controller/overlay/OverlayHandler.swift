@@ -10,6 +10,8 @@ internal protocol OverlayHandler {
     func clearOverlays()
 
     func clearOverlays(type: NOverlayType)
+    
+    func initializeLocationOverlay(overlay: NMFLocationOverlay)
 
     /*
       --- methods ---
@@ -32,6 +34,8 @@ internal protocol OverlayHandler {
     func performClick(_ overlay: NMFOverlay, success: (Any?) -> Void)
     
     func setHasOnTapListener(_ overlay: NMFOverlay, rawHasOnTapListener: Any)
+    
+    func removeChannel()
 }
 
 func getterName(_ name: String) -> String {

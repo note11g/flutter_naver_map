@@ -1,4 +1,4 @@
-part of flutter_naver_map;
+part of "../../../flutter_naver_map.dart";
 
 abstract class NaverMapController implements _NaverMapControlSender {
   static NaverMapController _createController(MethodChannel controllerChannel,
@@ -10,6 +10,8 @@ abstract class NaverMapController implements _NaverMapControlSender {
 
   void dispose();
 
+  /// 이 프로퍼티는 지금 카메라가 보여주고 있는 위치를 나타냅니다.
+  ///
   /// This property allows you to retrieve the position of the camera currently displayed on the map.
   ///
   /// It is currently in the **experimental stage**.
@@ -69,12 +71,13 @@ class _NaverMapControllerImpl
   }
 
   @override
-  Future<NLocationOverlay> getLocationOverlay() async {
-    final rawLocationOverlay = await invokeMethod("getLocationOverlay");
-    overlayController.locationOverlay ??=
-        NLocationOverlay._fromMessageable(rawLocationOverlay)
-          .._addedOnMap(overlayController);
-    return overlayController.locationOverlay!;
+  NLocationOverlay getLocationOverlay() {
+    if (overlayController.locationOverlay != null) {
+      return overlayController.locationOverlay!;
+    }
+    final lo = NLocationOverlay._attachToMapWhenFirstUse(overlayController);
+    overlayController.locationOverlay = lo;
+    return lo;
   }
 
   @override

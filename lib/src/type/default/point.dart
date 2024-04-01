@@ -1,4 +1,4 @@
-part of flutter_naver_map;
+part of "../../../flutter_naver_map.dart";
 
 /// NPoint 의 x, y는 소수점 6자리 이내의 정확도만 보장합니다.
 class NPoint extends Point<double> with NMessageableWithMap {
