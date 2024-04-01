@@ -56,12 +56,14 @@ class _FNMapPageState extends State<FNMapPage> {
   late NaverMapController mapController;
   final _onCameraChangeStreamController =
       StreamController<NCameraUpdateReason>.broadcast();
+  final _mapKey = UniqueKey();
 
   Widget mapWidget(BuildContext context, NaverMapViewOptions options) {
     final safeArea = MediaQuery.paddingOf(context);
     final mapPadding =
-        safeArea.copyWith(bottom: drawerHeight - safeArea.bottom);
+        EdgeInsets.only(top: safeArea.top, bottom: _drawerHandleHeight);
     return NaverMap(
+      key: _mapKey,
       options: options.copyWith(contentPadding: mapPadding),
       onMapReady: onMapReady,
       onMapTapped: onMapTapped,
@@ -119,21 +121,28 @@ class _FNMapPageState extends State<FNMapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(children: [
-      StreamBuilder(
-          stream: widget.sharedMapViewOptionChangeStream,
-          builder: (context, snapshot) =>
-              mapWidget(context, snapshot.data ?? const NaverMapViewOptions())),
-      _bottomDrawer(context),
-      _overlayPortalSection(),
-    ]));
+        body: SizedBox.expand(
+      child: Stack(children: [
+        Positioned.fill(
+          bottom: drawerHeight - _drawerHandleHeight,
+          child: StreamBuilder(
+              stream: widget.sharedMapViewOptionChangeStream,
+              builder: (context, snapshot) => mapWidget(
+                  context, snapshot.data ?? const NaverMapViewOptions())),
+        ),
+        _bottomDrawer(context),
+        _overlayPortalSection(),
+      ]),
+    ));
   }
+
+  static const _drawerHandleHeight = 20.0;
 
   Widget _bottomDrawer(BuildContext context) => BottomDrawer(
       key: drawerKey,
       height: initMainDrawerHeight /* cached height */,
       expandedHeight: MediaQuery.sizeOf(context).height / 2,
-      handleSectionHeight: 20,
+      handleSectionHeight: _drawerHandleHeight,
       handleColor: getColorTheme(context).secondary,
       backgroundColor: getColorTheme(context).background,
       onReady: (controller) => drawerController = controller,
