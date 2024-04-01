@@ -6,6 +6,7 @@ part of "../../../../flutter_naver_map.dart";
 class NSelectedIndoor {
   final int levelIndex;
   final int zoneIndex;
+
   /// 현재 보이는 실내 지도 영역입니다.
   final NIndoorRegion region;
 

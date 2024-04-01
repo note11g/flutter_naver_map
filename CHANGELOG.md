@@ -1,3 +1,18 @@
+## 1.2.2
+### Fix
+- [Android] Fix Only One Start Frame from Android TextureView Doesn't Copied to Flutter Platform View(TLHC) (issue: [#195](https://github.com/note11g/flutter_naver_map/issues/195), PR: [#212](https://github.com/note11g/flutter_naver_map/pull/212))
+
+### Improve
+- [All Platform] Add / Improve APIs
+  - Add: Add `NLocationOverlay.defaultIcon`, `defaultSubIcon`, `faceModeSubIcon`
+  - Improve: Change return type of method `NaverMapController.getLocationOverlay` to non-async (Future<NLocationOverlay> -> double)
+  - Improve: migrate `NOverlay`, `NAddableOverlay`, `NPickableInfo` Abstract Class to Sealed Class
+  - AddForTesting: Add NaverMap.forceHybridComposition, forceGLSurfaceView for testing
+- [Android] Apply migrate about android gradle plugin update (issue: [#198](https://github.com/note11g/flutter_naver_map/issues/198))
+- [All Platform] Change to no such overlay assertion instead NPE when delete overlay with info (issue: [#192](https://github.com/note11g/flutter_naver_map/issues/192))
+- [API Reference] Add API Reference about most of the APIs. (PR: [#193](https://github.com/note11g/flutter_naver_map/pull/193))
+
+
 ## 1.2.2-pre.1
 ### Improve
 - [All Platform] Add / Improve APIs

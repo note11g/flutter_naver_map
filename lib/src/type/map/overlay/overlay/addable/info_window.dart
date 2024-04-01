@@ -97,7 +97,6 @@ class NInfoWindow extends NAddableOverlay<NInfoWindow> {
     _set(_alphaName, alpha);
   }
 
-
   /// 정보창의 위치를 지정합니다. 지도에 표시된 경우에만 값이 존재합니다.
   void setPosition(NLatLng position) {
     if (withMarker) {

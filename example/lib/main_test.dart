@@ -52,27 +52,27 @@ class TestPageState extends State<TestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SizedBox(
-          width: 300,
-          height: 300,
-          child: NaverMap(
-                options: const NaverMapViewOptions(
+      width: 300,
+      height: 300,
+      child: NaverMap(
+        options: const NaverMapViewOptions(
             initialCameraPosition:
                 NCameraPosition(target: NLatLng(37, 127), zoom: 14),
             indoorEnable: true,
             locationButtonEnable: true,
             consumeSymbolTapEvents: false),
-                onMapReady: (controller) async {
+        onMapReady: (controller) async {
           mapControllerCompleter.complete(controller);
           log("onMapReady", name: "onMapReady");
-                },
-                onCameraIdle: () {
+        },
+        onCameraIdle: () {
           print("onCameraIdle: ${DateTime.now().millisecondsSinceEpoch}");
-                },
-                onCameraChange: (reason, animated) {
+        },
+        onCameraChange: (reason, animated) {
           onCameraChangeStreamController.add((reason, animated));
-                },
-              ),
-        ));
+        },
+      ),
+    ));
   }
 
   void newMapTestPage(String tag) {

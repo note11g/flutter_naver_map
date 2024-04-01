@@ -8,7 +8,8 @@ part of "../../../../../flutter_naver_map.dart";
 class NLocationOverlay extends NOverlay<NLocationOverlay> {
   /* ----- Constructor ----- */
 
-  NLocationOverlay._attachToMapWhenFirstUse(_NOverlayController controller) : super(_locationOverlayInfo) {
+  NLocationOverlay._attachToMapWhenFirstUse(_NOverlayController controller)
+      : super(_locationOverlayInfo) {
     _addedOnMap(controller);
     _allSyncByDefaultForPlatformDiffProperties();
   }

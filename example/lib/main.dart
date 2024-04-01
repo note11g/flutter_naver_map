@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bottom_drawer/flutter_bottom_drawer.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_naver_map_example/design/custom_widget.dart';
