@@ -153,7 +153,9 @@ internal class NaverMapView(
     override fun onActivityResumed(activity: Activity) {
         if (activity != this.activity) return
 
-        if (::naverMap.isInitialized) naverMap.forceRefresh()
+        if (::naverMap.isInitialized) {
+            naverMap.refreshMapType()
+        }
         mapView.onResume()
     }
 
@@ -186,7 +188,7 @@ internal class NaverMapView(
 }
 
 // todo : change to naverMap.forceRefresh
-fun NaverMap.forceRefresh() = run {
+fun NaverMap.refreshMapType() = run {
     val nowMapType = mapType
     mapType = NaverMap.MapType.None
     mapType = nowMapType

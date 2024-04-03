@@ -19,7 +19,7 @@ rootProject.allprojects {
         google()
         mavenCentral()
         maven {
-            url 'https://naver.jfrog.io/artifactory/maven/'
+            url 'https://repository.map.naver.com/archive/maven'
         }
     }
 }
@@ -50,7 +50,7 @@ android {
     }
 
     dependencies {
-        implementation 'com.naver.maps:map-sdk:3.17.0'
+        implementation 'com.naver.maps:map-sdk:3.18.0'
         implementation 'com.google.android.gms:play-services-location:21.0.1'
     }
 }
