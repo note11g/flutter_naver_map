@@ -91,6 +91,7 @@ internal object MapTypeConverter {
     fun Any.asMapType(): NaverMap.MapType = when (this) {
         "basic" -> NaverMap.MapType.Basic
         "hybrid" -> NaverMap.MapType.Hybrid
+        "naviHybrid" -> NaverMap.MapType.NaviHybrid
         "navi" -> NaverMap.MapType.Navi
         "satellite" -> NaverMap.MapType.Satellite
         "terrain" -> NaverMap.MapType.Terrain
