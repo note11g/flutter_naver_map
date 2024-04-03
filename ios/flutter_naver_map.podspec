@@ -4,18 +4,18 @@
 
 Pod::Spec.new do |s|
   s.name             = 'flutter_naver_map'
-  s.version          = '1.0.0'
+  s.version          = '1.3.0'
   s.summary          = 'flutter naver map plugin'
   s.description      = <<-DESC
 flutter naver map plugin
                        DESC
   s.homepage         = 'https://github.com/note11g/flutter_naver_map'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Kim Seung Bin' => 'note11@kakao.com' }
+  s.author           = { 'note11g' => 'note11@kakao.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'NMapsMap','3.17.0'
+  s.dependency 'NMapsMap','3.18.0'
   s.platform = :ios, '11.0'
 
   # Flutter.framework does not contain a i386 slice.
