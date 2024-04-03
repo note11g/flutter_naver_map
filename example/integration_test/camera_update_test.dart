@@ -8,6 +8,8 @@ import 'util/test_util.dart';
 void cameraUpdateTests() {
   testNaverMap("Camera Update With Reason Test", (controller, tester) async {
     (NCameraUpdateReason, bool)? lastMovedData;
+
+    await Future.delayed(const Duration(milliseconds: 300));
     final onCameraChangeStreamSubscription = tester
         .testPageState.onCameraChangeStreamController.stream
         .listen((event) {

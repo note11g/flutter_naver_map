@@ -60,30 +60,9 @@ void overlayTests() {
             ..setAnimation(duration: Duration.zero));
       await Future.delayed(const Duration(seconds: 1));
 
-      const imageWidgetKey = Key("GoldenTestImage");
+      expectLatLng(controller.nowCameraPosition.target, testPoints.last);
 
-      final snapshot = await controller.takeSnapshot();
-      showDialog(
-          context: tester.testPageState.context,
-          builder: (context) => Stack(children: [
-                Positioned(
-                  left: 0,
-                  top: 0,
-                  child: SizedBox(
-                      width: 300,
-                      height: 300,
-                      child: RepaintBoundary(
-                          key: imageWidgetKey, child: Image.file(snapshot))),
-                )
-              ]));
-
-      await tester.flutterWidgetTester.pumpAndSettle();
-
-      await Future.delayed(const Duration(seconds: 1));
-
-      // todo: change to naverMapGoldenTest method.
-      await expectLater(find.byKey(imageWidgetKey),
-          matchesGoldenFile('golden/location_overlay_sync_test.png'));
+      tester.runGoldenTest(fileName: "golden/location_overlay_sync_test.png");
     });
   });
 
