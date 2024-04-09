@@ -187,7 +187,6 @@ internal class NaverMapView(
     }
 }
 
-// todo : change to naverMap.forceRefresh
 fun NaverMap.refreshMapType() = run {
     val nowMapType = mapType
     mapType = NaverMap.MapType.None

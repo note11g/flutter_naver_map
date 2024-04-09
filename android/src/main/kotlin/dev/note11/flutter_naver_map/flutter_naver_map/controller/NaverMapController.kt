@@ -190,7 +190,7 @@ internal class NaverMapController(
     }
 
     override fun forceRefresh(onSuccess: () -> Unit) {
-        naverMap.forceRefresh() // todo : change to SDK's API (now ref at NaverMapView.kt)
+        naverMap.forceRefresh()
         onSuccess()
     }
 
