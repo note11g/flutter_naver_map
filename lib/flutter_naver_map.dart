@@ -53,13 +53,13 @@ part 'src/initializer/flutter_naver_map_sdk_initializer_impl.dart';
   --- type ---
 */
 
-part 'src/type/default/locale.dart';
+part 'src/type/base/locale.dart';
 
-part 'src/type/default/padding.dart';
+part 'src/type/base/padding.dart';
 
-part 'src/type/default/point.dart';
+part 'src/type/base/point.dart';
 
-part 'src/type/default/size.dart';
+part 'src/type/base/size.dart';
 
 part 'src/type/map/camera/camera_position.dart';
 
