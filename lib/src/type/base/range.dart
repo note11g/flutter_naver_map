@@ -13,7 +13,7 @@ part of "../../../flutter_naver_map.dart";
 /// ( range <= 7 ) => `NMapRange(null, 7)`
 ///
 @immutable
-class NRange {
+class NRange with NMessageableWithMap {
   final double? min;
   final double? max;
   final bool includeMin;
@@ -98,9 +98,13 @@ class NRange {
         includeMin: newIncludeMin, includeMax: newIncludeMax);
   }
 
-/* todo: support invert?
-      - NMapRange(3, 5).invert() || NMapRange.invert(3, 5)
-         => [range < 3 || 5 < range] */
-
   static const mapZoomRange = NRange(0, 21);
+
+  @override
+  NPayload toNPayload() => NPayload.make({
+        "min": min,
+        "max": max,
+        "inMin": includeMin,
+        "inMax": includeMax,
+      });
 }
