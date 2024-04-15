@@ -24,7 +24,7 @@ class NRange with NMessageableWithMap {
     this.max, {
     this.includeMin = true,
     this.includeMax = true,
-  });
+  }) : assert(min == null || max == null || min <= max);
 
   /// 값이 범위 내에 있는지 확인합니다.
   bool contains(num value) {
