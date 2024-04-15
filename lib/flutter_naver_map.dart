@@ -61,6 +61,8 @@ part 'src/type/base/point.dart';
 
 part 'src/type/base/size.dart';
 
+part 'src/type/base/range.dart';
+
 part 'src/type/map/camera/camera_position.dart';
 
 part 'src/type/map/camera/camera_update.dart';
