@@ -108,3 +108,8 @@ class NRange with NMessageableWithMap {
         "inMax": includeMax,
       });
 }
+
+class NInclusiveRange extends NRange {
+  const NInclusiveRange(super.min, super.max)
+      : super(includeMin: true, includeMax: true);
+}
