@@ -123,7 +123,11 @@ part 'src/type/map/overlay/overlay_caption.dart';
 
 part 'src/type/map/overlay/overlay_image.dart';
 
+part 'src/type/map/overlay/clustering/cluster_options.dart';
+
 part 'src/type/map/overlay/clustering/cluster_info.dart';
+
+part 'src/type/map/overlay/clustering/cluster_merge_strategy.dart';
 
 part 'src/type/map/overlay/clustering/cluster_marker.dart';
 
