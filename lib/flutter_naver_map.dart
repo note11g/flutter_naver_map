@@ -101,6 +101,8 @@ part 'src/type/map/overlay/overlay/addable/info_window.dart';
 
 part 'src/type/map/overlay/overlay/addable/marker.dart';
 
+part 'src/type/map/overlay/overlay/addable/marker_wrapper.dart';
+
 part 'src/type/map/overlay/overlay/addable/path_overlay/arrow_head_path_overlay.dart';
 
 part 'src/type/map/overlay/overlay/addable/path_overlay/multipart_path.dart';
