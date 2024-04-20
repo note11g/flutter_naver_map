@@ -125,6 +125,8 @@ part 'src/type/map/overlay/overlay_image.dart';
 
 part 'src/type/map/overlay/clustering/cluster_info.dart';
 
+part 'src/type/map/overlay/clustering/cluster_marker.dart';
+
 part 'src/type/map/overlay/clustering/clusterable_marker.dart';
 
 /*
