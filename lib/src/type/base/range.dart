@@ -98,7 +98,7 @@ class NRange with NMessageableWithMap {
         includeMin: newIncludeMin, includeMax: newIncludeMax);
   }
 
-  static const mapZoomRange = NRange(0, 21);
+  static const mapZoomRange = NInclusiveRange(0, 21);
 
   @override
   NPayload toNPayload() => NPayload.make({
