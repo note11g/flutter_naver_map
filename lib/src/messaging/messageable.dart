@@ -43,6 +43,11 @@ class NPayload {
           {required String sign}) =>
       NPayload.make({...m, "sign": sign});
 
+  NPayload expandWith(Map<String, dynamic> m) {
+    final convertedM = _convertMapValueAsMessageable(m);
+    return NPayload._({...map, ...convertedM});
+  }
+
   static void _removeNull(Map<String, dynamic> m) =>
       m.removeWhere((key, value) => value == null);
 
