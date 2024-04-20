@@ -165,6 +165,7 @@ extension NOverlayTypeExtension on NOverlayType {
       NOverlayType.multipartPathOverlay => "경로(멀티파트) 오버레이",
       NOverlayType.arrowheadPathOverlay => "경로(화살표) 오버레이",
       NOverlayType.locationOverlay => "위치 오버레이",
+      NOverlayType.clusterableMarker => "마커(클러스터링 가능)"
     };
   }
 }
@@ -251,6 +252,8 @@ class NOverlayMakerUtil {
             id: overlayId, coords: pathCoords, color: Colors.purple);
       case NOverlayType.locationOverlay:
         throw Exception("locationOverlay is not supported");
+      case NOverlayType.clusterableMarker:
+        return NClusterableMarker(id: overlayId, position: point);
     }
   }
 
