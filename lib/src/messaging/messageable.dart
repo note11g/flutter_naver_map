@@ -1,5 +1,6 @@
 part of "messaging.dart";
 
+@internal
 class NMessageable {
   final dynamic payload;
 
@@ -12,6 +13,7 @@ class NMessageable {
   String toString() => "$runtimeType: $payload";
 }
 
+@internal
 mixin NMessageableWithMap implements NMessageable {
   @override
   Map<String, dynamic> get payload => toNPayload().map;
@@ -19,11 +21,13 @@ mixin NMessageableWithMap implements NMessageable {
   NPayload toNPayload();
 }
 
+@internal
 mixin NMessageableWithEnum on Enum implements NMessageable {
   @override
   dynamic get payload => name;
 }
 
+@internal
 class NPayload {
   final Map<String, dynamic> map;
 
