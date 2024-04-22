@@ -9,7 +9,9 @@ class NaverMap extends StatefulWidget {
 
   /// 클러스터링 기능에 대한 옵션들입니다.
   ///
-  /// 기본 값은 클러스터링 옵션을 사용하지 않는 것을 의미하는 `null`입니다.
+  /// 이 옵션들은 클러스터링 기능을 사용할 때, 즉 `NClusterableMarker`가 추가 되었을 때 확인할 수 있습니다.
+  ///
+  /// 기본 값은 `NaverMapClusterOptions()`입니다.
   final NaverMapClusterOptions clusterOptions;
 
   /// 스크롤 가능한 뷰 안에서 사용할 때, 지도에 제스처가 먼저 전달되도록 하는 옵션입니다.
