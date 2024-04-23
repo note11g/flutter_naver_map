@@ -1,5 +1,6 @@
 part of "messaging.dart";
 
+@internal
 class NMessageable {
   final dynamic payload;
 
@@ -12,6 +13,7 @@ class NMessageable {
   String toString() => "$runtimeType: $payload";
 }
 
+@internal
 mixin NMessageableWithMap implements NMessageable {
   @override
   Map<String, dynamic> get payload => toNPayload().map;
@@ -19,11 +21,13 @@ mixin NMessageableWithMap implements NMessageable {
   NPayload toNPayload();
 }
 
+@internal
 mixin NMessageableWithEnum on Enum implements NMessageable {
   @override
   dynamic get payload => name;
 }
 
+@internal
 class NPayload {
   final Map<String, dynamic> map;
 
@@ -38,6 +42,11 @@ class NPayload {
   factory NPayload.makeWithSignature(Map<String, dynamic> m,
           {required String sign}) =>
       NPayload.make({...m, "sign": sign});
+
+  NPayload expandWith(Map<String, dynamic> m) {
+    final convertedM = _convertMapValueAsMessageable(m);
+    return NPayload._({...map, ...convertedM});
+  }
 
   static void _removeNull(Map<String, dynamic> m) =>
       m.removeWhere((key, value) => value == null);

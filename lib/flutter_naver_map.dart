@@ -101,6 +101,8 @@ part 'src/type/map/overlay/overlay/addable/info_window.dart';
 
 part 'src/type/map/overlay/overlay/addable/marker.dart';
 
+part 'src/type/map/overlay/overlay/addable/marker_wrapper.dart';
+
 part 'src/type/map/overlay/overlay/addable/path_overlay/arrow_head_path_overlay.dart';
 
 part 'src/type/map/overlay/overlay/addable/path_overlay/multipart_path.dart';
@@ -120,6 +122,17 @@ part 'src/type/map/overlay/overlay/overlay.dart';
 part 'src/type/map/overlay/overlay_caption.dart';
 
 part 'src/type/map/overlay/overlay_image.dart';
+
+part 'src/type/map/overlay/clustering/cluster_options.dart';
+
+part 'src/type/map/overlay/clustering/cluster_info.dart';
+
+part 'src/type/map/overlay/clustering/cluster_merge_strategy.dart';
+
+part 'src/type/map/overlay/clustering/cluster_marker.dart';
+
+part 'src/type/map/overlay/clustering/clusterable_marker.dart';
+
 /*
   --- widget ---
 */

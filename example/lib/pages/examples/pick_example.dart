@@ -90,6 +90,7 @@ class _NaverMapControllerExampleState extends State<NaverMapPickExample> {
         NOverlayType.multipartPathOverlay => Icons.route_sharp,
         NOverlayType.arrowheadPathOverlay => Icons.arrow_right_alt_rounded,
         NOverlayType.locationOverlay => Icons.my_location_rounded,
+        NOverlayType.clusterableMarker => Icons.share_location_rounded,
       };
       action = () {};
     } else if (info is NSymbolInfo) {

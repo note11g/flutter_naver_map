@@ -97,7 +97,7 @@ class NCameraUpdate with NMessageableWithMap {
           bounds: bounds, boundsPadding: padding, signature: "fitBounds");
 
   /// 카메라의 이동 기준점을 설정하는 메서드입니다.
-  /// 기본값은 화면 중앙을 의미하는 `NPoint(0.5, 0.5)`입니다.
+  /// 기본값은 화면 중앙을 의미하는 [NPoint.relativeCenter]입니다.
   void setPivot(NPoint pivot) => _pivot = pivot;
 
   /// 카메라가 이동할 때의 애니메이션을 설정하는 메서드입니다.
