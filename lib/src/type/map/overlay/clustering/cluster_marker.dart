@@ -21,7 +21,7 @@ class NClusterMarker extends _NMarkerWrapper<NClusterMarker> {
     required super.position,
   }) : super(type: NOverlayType.clusterableMarker) { // todo
     _captionAligns = const [NAlign.center];
-    _anchor = NPoint.center;
+    _anchor = NPoint.relativeCenter;
   }
 
   Future<void> _apply() async {
@@ -54,14 +54,14 @@ class NClusterMarker extends _NMarkerWrapper<NClusterMarker> {
   /// 좌표가 아이콘의 어느 지점에 위치하는 지인 기준점을 나타냅니다.
   /// 값 범위는 (0, 0) ~ (1, 1)입니다.
   ///
-  /// 클러스터 마커의 anchor 기본 값은 중앙을 나타내는 [NPoint.center]입니다.
+  /// 클러스터 마커의 anchor 기본 값은 중앙을 나타내는 [NPoint.relativeCenter]입니다.
   @override
   NPoint get anchor => super.anchor;
 
   /// 좌표가 아이콘의 어느 지점에 위치하는 지인 기준점을 지정합니다.
   /// 값 범위는 좌측 상단(0, 0) ~ 우측하단(1, 1)입니다.
   ///
-  /// 클러스터 마커의 anchor 기본 값은 중앙을 나타내는 [NPoint.center]입니다.
+  /// 클러스터 마커의 anchor 기본 값은 중앙을 나타내는 [NPoint.relativeCenter]입니다.
   @override
   void setAnchor(NPoint value) => super.setAnchor(value);
 }

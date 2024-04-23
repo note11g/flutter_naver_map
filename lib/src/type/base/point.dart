@@ -4,7 +4,10 @@ part of "../../../flutter_naver_map.dart";
 class NPoint extends math.Point<double> with NMessageableWithMap {
   const NPoint(super.x, super.y);
 
-  static const center = NPoint(0.5, 0.5);
+  /// NPoint(0, 0)~NPoint(1, 1)의 중앙 값입니다.
+  ///
+  /// 화면의 절대 위치를 나타낼 때는 사용하지 않습니다.
+  static const relativeCenter = NPoint(0.5, 0.5);
 
   @override
   NPayload toNPayload() => NPayload.make({
