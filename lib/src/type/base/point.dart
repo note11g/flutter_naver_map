@@ -4,6 +4,8 @@ part of "../../../flutter_naver_map.dart";
 class NPoint extends math.Point<double> with NMessageableWithMap {
   const NPoint(super.x, super.y);
 
+  static const center = NPoint(0.5, 0.5);
+
   @override
   NPayload toNPayload() => NPayload.make({
         "x": x,
