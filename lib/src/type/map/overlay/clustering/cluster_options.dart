@@ -4,8 +4,8 @@ part of "../../../../../flutter_naver_map.dart";
 class NaverMapClusterOptions {
   /// 클러스터링 기능이 활성화 될 줌 범위를 지정합니다.
   ///
-  /// 기본 값은 기본 줌 범위를 의미하는 [NRange.mapZoomRange].
-  final NRange enableZoomLevel;
+  /// 기본 값은 [defaultClusteringZoomRange] (0 ~ 20).
+  final NInclusiveRange<int> enableZoomRange;
 
   /// 클러스터링이 이루어질 때 애니메이션을 실행할 지 여부를 나타냅니다.
   ///
@@ -27,6 +27,7 @@ class NaverMapClusterOptions {
   const NaverMapClusterOptions({
     this.enableZoomLevel = NRange.mapZoomRange,
     this.animate = true,
+    this.enableZoomRange = defaultClusteringZoomRange,
     this.mergeStrategy = const NClusterMergeStrategy(),
     this.clusterMarkerBuilder,
   });
@@ -39,4 +40,49 @@ class NaverMapClusterOptions {
       haloColor: Colors.transparent,
     ));
   }
+
+  @override
+  NPayload toNPayload() => NPayload.make({
+        "enableZoomRange": enableZoomRange,
+        "animationDuration": animationDuration.inMilliseconds,
+        "mergeStrategy": mergeStrategy,
+      });
+
+  @override
+  String toString() => "$runtimeType: ${toNPayload().map}";
+
+  NaverMapClusteringOptions copyWith({
+    NInclusiveRange<int>? enableZoomRange,
+    Duration? animationDuration,
+    NClusterMergeStrategy? mergeStrategy,
+    Function(NClusterInfo info, NClusterMarker clusterMarker)?
+        clusterMarkerBuilder,
+  }) =>
+      NaverMapClusteringOptions(
+        enableZoomRange: enableZoomRange ?? this.enableZoomRange,
+        animationDuration: animationDuration ?? this.animationDuration,
+        mergeStrategy: mergeStrategy ?? this.mergeStrategy,
+        clusterMarkerBuilder: clusterMarkerBuilder ?? this.clusterMarkerBuilder,
+      );
+
+  static const defaultClusteringZoomRange = NInclusiveRange(0, 20);
+
+//region equals & hashCodes
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is NaverMapClusteringOptions &&
+          runtimeType == other.runtimeType &&
+          enableZoomRange == other.enableZoomRange &&
+          animationDuration == other.animationDuration &&
+          mergeStrategy == other.mergeStrategy &&
+          clusterMarkerBuilder == other.clusterMarkerBuilder;
+
+  @override
+  int get hashCode =>
+      enableZoomRange.hashCode ^
+      animationDuration.hashCode ^
+      mergeStrategy.hashCode ^
+      clusterMarkerBuilder.hashCode;
+//endregion
 }

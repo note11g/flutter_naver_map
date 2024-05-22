@@ -8,7 +8,7 @@ class NClusterMergeStrategy {
   // "something1": NMapRange(null, 11, includeMax: false),
   // "something2": NMapRange(15, null, includeMin: false),
   // },
-  final Map<String, NRange> mergeByEachTagEnableZoomLevel;
+  final Map<String, NRange<double>> mergeByEachTagEnableZoomRanges;
 
   /// 마커간의 거리가 70dp 이하인 경우 병합
   ///
@@ -35,7 +35,7 @@ class NClusterMergeStrategy {
   final int minClusterChildCount;
 
   const NClusterMergeStrategy({
-    this.mergeByEachTagEnableZoomLevel = const <String, NRange>{},
+    this.mergeByEachTagEnableZoomRanges = const {},
     this.maxMergedScreenDistanceByTag = twoThirdOfMinScreenSizeFlag,
     this.willMergedScreenDistance = 70,
     this.minClusterChildCount = 2,
