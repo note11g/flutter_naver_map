@@ -68,7 +68,7 @@ class NaverMap extends StatefulWidget {
   const NaverMap({
     super.key,
     this.options = const NaverMapViewOptions(),
-    this.clusterOptions = const NaverMapClusterOptions(),
+    this.clusterOptions = const NaverMapClusteringOptions(),
     this.forceGesture = false,
     this.onMapReady,
     this.onMapTapped,
@@ -91,22 +91,16 @@ class _NaverMapState extends State<NaverMap>
   late final NaverMapController controller;
   final controllerCompleter = Completer<void>();
   late NaverMapViewOptions nowViewOptions = widget.options;
+  NaverMapClusteringOptions? nowClusterOptions;
   final mapSdk = NaverMapSdk.instance;
+  final onMapReadyTasksQueue = <Future Function()>[];
+  bool isMapReady = false;
 
   @override
   Widget build(BuildContext context) {
     assert(mapSdk._isInitialized);
 
-    if (mounted && nowViewOptions != widget.options) {
-      nowViewOptions = widget.options;
-
-      void updateOptionClosure([void _]) =>
-          controller._updateOptions(nowViewOptions);
-
-      controllerCompleter.isCompleted
-          ? updateOptionClosure()
-          : controllerCompleter.future.then(updateOptionClosure);
-    }
+    _updateOptionsIfNeeded();
 
     return _PlatformViewCreator.createPlatformView(
       viewType: NChannel.naverMapNativeView.str,
@@ -136,14 +130,50 @@ class _NaverMapState extends State<NaverMap>
     return gestureRecognizers;
   }
 
+  void _updateOptionsIfNeeded() {
+    final List<Future Function()> updateQueue = [];
+    if (nowViewOptions != widget.options) {
+      nowViewOptions = widget.options;
+      updateQueue.add(() => controller._updateOptions(nowViewOptions));
+    }
+    if (nowClusterOptions != widget.clusterOptions) {
+      nowClusterOptions = widget.clusterOptions;
+      updateQueue
+          .add(() => controller._updateClusteringOptions(nowClusterOptions!));
+    }
+
+    if (updateQueue.isNotEmpty) {
+      if (isMapReady) {
+        for (final update in updateQueue) {
+          update.call();
+        }
+      } else {
+        onMapReadyTasksQueue.addAll(updateQueue);
+      }
+    }
+  }
+
+  Future<void> _runOnMapReadyTasks() async {
+    final tasks = List<Future Function()>.from(onMapReadyTasksQueue);
+    onMapReadyTasksQueue.clear();
+    for (final task in tasks) {
+      try {
+        await task();
+      } catch (e) {
+        debugPrint("Error on running onMapReadyTasks: $e");
+      }
+    }
+  }
+
   /*
     --- handler ---
   */
 
   @override
-  void onMapReady() => widget.onMapReady?.call(controller);
   void onMapReady() async {
     controllerCompleter.complete();
+    await _runOnMapReadyTasks();
+    isMapReady = true;
     widget.onMapReady?.call(controller);
   }
 
