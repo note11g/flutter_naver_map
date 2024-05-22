@@ -59,34 +59,23 @@ class NPayload {
   static dynamic convertToMessageable(Object value) {
     if (value.isDefaultType) return value;
 
-    assert(value is NMessageable ||
-        value is List ||
-        value is Locale ||
-        value is EdgeInsets ||
-        value is Size ||
-        value is Color);
-
-    if (value is NMessageable) return value.payload;
-    if (value is List) {
-      return value.map((e) => convertToMessageable(e!)).toList();
-    }
-    return _convertFlutterTypes(value);
+    return switch (value) {
+      NMessageable() => value.payload,
+      List() => value.map((e) => convertToMessageable(e!)).toList(),
+      Map<String, dynamic>() => value.map((k, v) => MapEntry(k, convertToMessageable(v))),
+      Locale() || EdgeInsets() || Size() || Color() => _convertFlutterTypes(value),
+      _ => throw ArgumentError.value(value),
+    };
   }
 
   static dynamic _convertFlutterTypes(Object value) {
-    if (value is Color) return value.value;
-
-    late final NMessageable nMessageable;
-
-    if (value is Locale) {
-      nMessageable = NLocale.fromLocale(value);
-    } else if (value is EdgeInsets) {
-      nMessageable = NEdgeInsets.fromEdgeInsets(value);
-    } else if (value is Size) {
-      nMessageable = NSize.fromSize(value);
-    }
-
-    return nMessageable.payload;
+    return switch (value) {
+      Color() => value.value,
+      Locale() => NLocale.fromLocale(value).payload,
+      EdgeInsets() => NEdgeInsets.fromEdgeInsets(value).payload,
+      Size() => NSize.fromSize(value).payload,
+      _ => throw ArgumentError.value(value),
+    };
   }
 
   @override
