@@ -40,4 +40,11 @@ class NClusterableMarker extends _NMarkerWrapper<NClusterableMarker> {
     super.isHideCollidedMarkers,
     super.isHideCollidedSymbols,
   }) : super(type: NOverlayType.clusterableMarker);
+
+  @override
+  NPayload toNPayload() {
+    return super.toNPayload().expandWith({
+      "info": info,
+    });
+  }
 }

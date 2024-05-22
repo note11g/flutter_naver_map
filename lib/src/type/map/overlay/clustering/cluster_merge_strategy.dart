@@ -1,7 +1,7 @@
 part of "../../../../../flutter_naver_map.dart";
 
 @immutable
-class NClusterMergeStrategy {
+class NClusterMergeStrategy with NMessageableWithMap {
   // mergeByEachTagEnableZoomLevel: <String, NMapRange>{
   // "gu": NMapRange(11, 13, includeMax: false), // 11 <= range < 13
   // "dong": NMapRange(13, 15), // 13 <= range <= 15
@@ -42,4 +42,53 @@ class NClusterMergeStrategy {
   }): assert(minClusterChildCount >= 2);
 
   static const twoThirdOfMinScreenSizeFlag = -1.0;
+
+  @override
+  NPayload toNPayload() => NPayload.make({
+        "mergeByEachTagEnableZoomRanges": mergeByEachTagEnableZoomRanges,
+        "willMergedScreenDistance": willMergedScreenDistance,
+        "maxMergedScreenDistanceByTag": maxMergedScreenDistanceByTag,
+        "minClusterChildCount": minClusterChildCount,
+      });
+
+  @override
+  String toString() => "$runtimeType: ${toNPayload().map}";
+
+  NClusterMergeStrategy copyWith({
+    Map<String, NRange<double>>? mergeByEachTagEnableZoomRanges,
+    double? willMergedScreenDistance,
+    double? maxMergedScreenDistanceByTag,
+    int? minClusterChildCount,
+  }) =>
+      NClusterMergeStrategy(
+        mergeByEachTagEnableZoomRanges:
+        mergeByEachTagEnableZoomRanges ?? this.mergeByEachTagEnableZoomRanges,
+        willMergedScreenDistance:
+            willMergedScreenDistance ?? this.willMergedScreenDistance,
+        maxMergedScreenDistanceByTag:
+            maxMergedScreenDistanceByTag ?? this.maxMergedScreenDistanceByTag,
+        minClusterChildCount: minClusterChildCount ?? this.minClusterChildCount,
+      );
+
+//region equals & hashCode
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is NClusterMergeStrategy &&
+          runtimeType == other.runtimeType &&
+          mergeByEachTagEnableZoomRanges ==
+              other.mergeByEachTagEnableZoomRanges &&
+          willMergedScreenDistance == other.willMergedScreenDistance &&
+          maxMergedScreenDistanceByTag == other.maxMergedScreenDistanceByTag &&
+          minClusterChildCount == other.minClusterChildCount;
+
+  @override
+  int get hashCode =>
+      mergeByEachTagEnableZoomRanges.hashCode ^
+      willMergedScreenDistance.hashCode ^
+      maxMergedScreenDistanceByTag.hashCode ^
+      minClusterChildCount.hashCode;
+
+//endregion
 }
