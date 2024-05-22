@@ -94,5 +94,7 @@ abstract class _NaverMapControlSender {
   /*
     --- private methods ---
   */
-  void _updateOptions(NaverMapViewOptions options);
+  Future<void> _updateOptions(NaverMapViewOptions options);
+
+  Future<void> _updateClusteringOptions(NaverMapClusteringOptions options);
 }

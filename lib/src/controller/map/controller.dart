@@ -178,8 +178,13 @@ class _NaverMapControllerImpl
     --- private methods ---
   */
   @override
-  void _updateOptions(NaverMapViewOptions options) {
-    invokeMethod("updateOptions", options);
+  Future<void> _updateOptions(NaverMapViewOptions options) {
+    return invokeMethod("updateOptions", options);
+  }
+
+  @override
+  Future<void> _updateClusteringOptions(NaverMapClusteringOptions options) {
+    return invokeMethod("updateClusteringOptions", options);
   }
 
   @override
