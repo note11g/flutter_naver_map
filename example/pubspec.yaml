@@ -15,7 +15,10 @@ dependencies:
   flutter_naver_map:
     path: ../
 
-  flutter_bottom_drawer: 0.1.0
+  flutter_bottom_drawer:
+    git:
+      url: https://github.com/note11g/flutter_bottom_drawer.git
+      ref: migrate_3.20
   permission_handler: ^11.3.0
   flutter_styled_toast: 2.2.1
   pull_to_refresh_flutter3: 2.0.2
