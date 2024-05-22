@@ -1,7 +1,7 @@
 part of "../../../../../flutter_naver_map.dart";
 
 /// 클러스터링 기능에 대한 옵션들입니다.
-class NaverMapClusterOptions {
+class NaverMapClusteringOptions with NMessageableWithMap {
   /// 클러스터링 기능이 활성화 될 줌 범위를 지정합니다.
   ///
   /// 기본 값은 [defaultClusteringZoomRange] (0 ~ 20).
@@ -17,16 +17,13 @@ class NaverMapClusterOptions {
   /// 기본 값은 ``.
   final NClusterMergeStrategy mergeStrategy;
 
-
   /// 클러스터 마커의 속성을 지정할 수 있습니다.
   ///
   /// 기본 값은 null이며, 이때는 기본적으로 [NaverMapClusterOptions.defaultClusterMarkerBuilder]가 실행됩니다.
   final Function(NClusterInfo info, NClusterMarker clusterMarker)?
       clusterMarkerBuilder;
 
-  const NaverMapClusterOptions({
-    this.enableZoomLevel = NRange.mapZoomRange,
-    this.animate = true,
+  const NaverMapClusteringOptions({
     this.enableZoomRange = defaultClusteringZoomRange,
     this.mergeStrategy = const NClusterMergeStrategy(),
     this.clusterMarkerBuilder,
