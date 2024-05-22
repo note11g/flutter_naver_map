@@ -1,3 +1,6 @@
+## 1.2.2-flutter3.22
+- support flutter 3.22 (if you using under 3.22, using `flutter_naver_map 1.2.2`)
+
 ## 1.2.2
 ### Fix
 - [Android] Fix Only One Start Frame from Android TextureView Doesn't Copied to Flutter Platform View(TLHC) (issue: [#195](https://github.com/note11g/flutter_naver_map/issues/195), PR: [#212](https://github.com/note11g/flutter_naver_map/pull/212))

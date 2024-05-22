@@ -8,6 +8,19 @@
 
 <a href="https://note11.dev/flutter_naver_map" alt="go to documentation page"><img src="https://github.com/note11g/flutter_naver_map/assets/67783062/f3c9c433-0a45-4d35-95b6-3baf753878e0"/></a><a href="https://github.com/note11g/flutter_naver_map/issues" alt="go to github issue page"><img src="https://github.com/note11g/flutter_naver_map/assets/67783062/89efa17d-bf96-413d-b910-0f38e9c36c3f"/></a><a href="https://github.com/users/note11g/projects/2/views/2" alt="go to issue tracker page"><img src="https://github.com/note11g/flutter_naver_map/assets/67783062/4bb00306-85e6-4e4d-9329-6129d6f344f6"/></a>
 
+## API Reference
+
+현재는 문서보다, API Reference가 권장됩니다. 문서는 out-dated된 내용이 있으니, 참고하세요.
+
+[API Reference 바로가기](https://pub.dev/documentation/flutter_naver_map/latest/)
+
+## Flutter 3.22 Support
+- 현재 최신버전 (<flutter 3.22): `1.2.2`
+- Flutter 3.22 대응 최신 버전: `1.2.2-flutter3.22`
+
+3.22 이전 버전과 호환되지 않는 API가 존재하여, 다음과 같이 사용하시면 됩니다.
+1.3.0에서 역시 동일하게 두가지로 나뉘어 출시됩니다.
+
 ## Version Up Guide
 
 `1.2.0`부터는 Flutter SDK 최소 지원 버전이 `3.19`로 변경되었습니다. 
