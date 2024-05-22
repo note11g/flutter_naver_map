@@ -13,7 +13,7 @@ class NClusterableMarker extends _NMarkerWrapper<NClusterableMarker> {
 
   @override
   NClusterableMarkerInfo get info =>
-      NClusterableMarkerInfo(id: info.id, tags: tags);
+      NClusterableMarkerInfo(id: super.info.id, tags: tags, position: position);
 
   final Map<String, String> tags;
 

@@ -20,16 +20,19 @@ class NClusterInfo {
 
 class NClusterableMarkerInfo extends NOverlayInfo {
   final Map<String, String> tags;
+  final NLatLng position;
 
   const NClusterableMarkerInfo({
     required super.id,
     required this.tags,
+    required this.position,
   }) : super(type: NOverlayType.clusterableMarker);
 
   @override
   NPayload toNPayload() {
     return super.toNPayload().expandWith({
       "tags": tags,
+      "position": position,
     });
   }
 }
