@@ -1,4 +1,4 @@
-## 1.2.2-flutter3.22
+## 1.2.2+flutter3.22
 - support flutter 3.22 (if you using under 3.22, using `flutter_naver_map 1.2.2`)
 
 ## 1.2.2
