@@ -124,7 +124,6 @@ class _NaverMapState extends State<NaverMap>
     controller = NaverMapController._createController(channel,
         viewId: id,
         initialCameraPosition: widget.options.initialCameraPosition);
-    controllerCompleter.complete();
   }
 
   Set<Factory<OneSequenceGestureRecognizer>> _createGestureRecognizers(
@@ -143,6 +142,10 @@ class _NaverMapState extends State<NaverMap>
 
   @override
   void onMapReady() => widget.onMapReady?.call(controller);
+  void onMapReady() async {
+    controllerCompleter.complete();
+    widget.onMapReady?.call(controller);
+  }
 
   @override
   void onMapTapped(NPoint point, NLatLng latLng) =>
