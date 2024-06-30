@@ -3,4 +3,5 @@ enum NOverlayImageMode : String {
     case file = "file"
     case temp = "temp"
     case widget = "widget"
+    case data = "data"
 }

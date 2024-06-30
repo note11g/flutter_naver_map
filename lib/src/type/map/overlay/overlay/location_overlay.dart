@@ -138,11 +138,11 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
   static const defaultCircleColor = Color(0x3D1666F0);
   static const defaultCircleRadius = 18.0;
   static const autoSize = Size(0, 0);
-  static const defaultIcon = NOverlayImage.fromAssetImage(
+  static final defaultIcon = NOverlayImage.fromAssetImage(
       "$_packageIconAssetPath/location_overlay_icon.png");
-  static const defaultSubIcon = NOverlayImage.fromAssetImage(
+  static final defaultSubIcon = NOverlayImage.fromAssetImage(
       "$_packageIconAssetPath/location_overlay_sub_icon.png");
-  static const faceModeSubIcon = NOverlayImage.fromAssetImage(
+  static final faceModeSubIcon = NOverlayImage.fromAssetImage(
       "$_packageIconAssetPath/location_overlay_sub_icon_face.png");
   static const _packageIconAssetPath = "packages/flutter_naver_map/assets/icon";
 }

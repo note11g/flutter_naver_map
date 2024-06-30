@@ -4,7 +4,8 @@ internal enum class NOverlayImageMode(private val str: String) {
     ASSET("asset"),
     FILE("file"),
     TEMP("temp"),
-    WIDGET("widget");
+    WIDGET("widget"),
+    DATA("data");
 
     override fun toString(): String = str
 

@@ -166,7 +166,8 @@ enum _NOverlayImageMode with NMessageableWithEnum {
   asset,
   file,
   temp,
-  widget;
+  widget,
+  data;
 
   String toExplainString() =>
       this == _NOverlayImageMode.temp ? "byteArray" : name;

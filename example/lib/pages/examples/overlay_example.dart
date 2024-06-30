@@ -227,7 +227,7 @@ class NOverlayMakerUtil {
             southWest: point,
             northEast: point.offsetByMeter(northMeter: 422, eastMeter: 818));
         print(bounds);
-        const img = NOverlayImage.fromAssetImage('assets/ground_img.png');
+        final img = NOverlayImage.fromAssetImage('assets/ground_img.png');
         return NGroundOverlay(
             id: overlayId, bounds: bounds, image: img, alpha: 1);
       case NOverlayType.polygonOverlay:

@@ -26,6 +26,10 @@ internal func asString(_ v: Any) -> String {
     v as! String
 }
 
+internal func asUint8Arr(_ v: Any) -> [UInt8] {
+    v as! [UInt8]
+}
+
 internal func asDict(_ v: Any) -> Dictionary<String, Any> {
     v as! Dictionary<String, Any>
 }
