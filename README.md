@@ -14,16 +14,15 @@
 
 [API Reference 바로가기](https://pub.dev/documentation/flutter_naver_map/latest/)
 
-## Flutter 3.22 Support
-- 현재 최신버전 (<flutter 3.22): `1.2.2`
-- Flutter 3.22 대응 최신 버전: `1.2.2+flutter3.22`
+## 1.3.0 출시 관련 안내
 
-3.22 이전 버전과 호환되지 않는 API가 존재하여, 다음과 같이 사용하시면 됩니다.
-1.3.0에서 역시 동일하게 두가지로 나뉘어 출시됩니다.
+- 7월 중에 클러스터링, 이미지 webp 지원 등을 포함한 1.3.0 버전이 출시 될 예정입니다.
+
+  자세한 내용은 [#207](https://github.com/note11g/flutter_naver_map/issues/207)에서 확인하실 수 있습니다.
 
 ## Version Up Guide
 
-`1.2.0`부터는 Flutter SDK 최소 지원 버전이 `3.19`로 변경되었습니다. 
+- `1.2.3`부터는 Flutter SDK 최소 지원 버전이 `3.22.0`으로 변경되었습니다. 
 
 - `1.1.0 이하` -> `1.1.1 이상`으로 업그레이드 할 경우, 해당 코드를 다음과 같이 지워주세요.<br>(편의상 주석처리로 표시해두었지만, 그냥 지워주세요)
     [관련 이슈](https://github.com/note11g/flutter_naver_map/issues/56)가 해결되어, 더 이상 필요하지 않습니다.
@@ -40,8 +39,9 @@
 
 ## Known issues
 
-- Android Impeller Engine 지원 안함 (Android 기본 값은 Skia) [#133](https://github.com/note11g/flutter_naver_map/issues/133)
-  - 해당 이슈에 대해 레포트를 받고 있습니다. 테스트 결과를 [이슈 페이지](https://github.com/note11g/flutter_naver_map/issues/133)에 코멘트로 남겨주시면 감사하겠습니다.
+~~- Android Impeller Engine 지원 안함 (Android 기본 값은 Skia) [#133](https://github.com/note11g/flutter_naver_map/issues/133)~~
+  ~~- 해당 이슈에 대해 레포트를 받고 있습니다. 테스트 결과를 [이슈 페이지](https://github.com/note11g/flutter_naver_map/issues/133)에 코멘트로 남겨주시면 감사하겠습니다.~~
+  - 해당 이슈에 대한 확인 중입니다. 정식 지원은 아니지만, 사용 가능한 것으로 확인되었습니다. 이슈가 있으신 분들은 [#133](https://github.com/note11g/flutter_naver_map/issues/133)으로 레포트 부탁드립니다.
 
 이슈 제보는 언제나 환영입니다:)
 
