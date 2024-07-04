@@ -1,3 +1,7 @@
+## 1.2.3+1
+- [iOS] Update podspec file
+- [Chore] Update README.MD
+
 ## 1.2.3
 - [All Platform] **change naver map sdk version to 3.18.0(Android) & 3.18.1(iOS) + No additional features (feature add will be in 1.3.0)**
 - [All Platform] **change minimum flutter sdk version to 3.22.0**

@@ -22,6 +22,29 @@
 
 ## Version Up Guide
 
+- **`1.2.3` 이상 버전으로 업데이트 하시려면, 다음 과정을 한번 수행해주셔야 합니다.**
+    ```shell
+    cd ios # 프로젝트의 ios 폴더로 이동
+    pod update NMapsMap
+  
+    cd .. # 프로젝트 루트로 이동 (optional)
+  
+    cd android # 프로젝트의 android 폴더로 이동
+    ./gradlew clean
+    ./gradlew --refresh-dependencies
+    ```
+  
+    이 명령어를 프로젝트 루트에서 실행하면, 한번에 수행하실 수 있습니다.
+    Mac
+    ```shell
+    (cd ios && pod update NMapsMap) && (cd android && ./gradlew clean && ./gradlew --refresh-dependencies)
+    ```
+    Windows
+    ```shell
+    cd android && gradlew.bat clean && gradlew.bat --refresh-dependencies
+    ```
+- 
+
 - `1.2.3`부터는 Flutter SDK 최소 지원 버전이 `3.22.0`으로 변경되었습니다. 
 
 - `1.1.0 이하` -> `1.1.1 이상`으로 업그레이드 할 경우, 해당 코드를 다음과 같이 지워주세요.<br>(편의상 주석처리로 표시해두었지만, 그냥 지워주세요)
