@@ -1,3 +1,7 @@
+## 1.2.3
+- change naver map sdk version to 3.18.0(Android) & 3.18.1(iOS) + No additional features (feature add will be in 1.3.0)
+- change minimum flutter sdk version to 3.22.0
+
 ## 1.2.2+flutter3.22
 - support flutter 3.22 (if you using under 3.22, using `flutter_naver_map 1.2.2`)
 
