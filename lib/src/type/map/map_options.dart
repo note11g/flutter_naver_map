@@ -6,6 +6,10 @@ class NaverMapViewOptions with NMessageableWithMap {
   /// 지도가 로드될 때, 첫 카메라 위치(영역)을 지정합니다.
   /// 기본값은 [seoulCityHall]으로, 서울 시청 주변을 보여줍니다.
   final NCameraPosition initialCameraPosition;
+  final const NCameraPosition seoulCityHall = NCameraPosition(
+      target: NLatLng(37.532600, 127.024612), 
+      zoom: 1,
+  );
 
   /// 지도에서 사용자가 움직일 수 있는 영역을 제한합니다.
   /// 기본값은 제한 없음(`null`)
