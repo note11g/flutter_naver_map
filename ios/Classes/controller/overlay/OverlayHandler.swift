@@ -87,9 +87,9 @@ internal extension OverlayHandler {
     }
 
     func saveOverlayWithAddable(creator: any AddableOverlay) -> NMFOverlay {
-        if hasOverlay(info: creator.info) {
-            deleteOverlay(info: creator.info)
-        }
+        // if hasOverlay(info: creator.info) {
+        //     deleteOverlay(info: creator.info)
+        // }
 
         let overlay = creator.createMapOverlay()
         creator.applyCommonProperties { name, arg in
