@@ -1,4 +1,5 @@
 import NMapsMap
+import Foundation
 
 internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler {
     private let naverMap: NMFNaverMapView!
@@ -116,11 +117,14 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     }
 
     func addOverlayAll(rawOverlays: Array<Dictionary<String, Any>>, onSuccess: @escaping (Any?) -> ()) {
+        let startTime = Date()
         for rawOverlay in rawOverlays {
             let info = NOverlayInfo.fromMessageable(rawOverlay["info"]!)
+            print("\(Date().timeIntervalSince(startTime))")
             let creator = try! asAddableOverlayFromMessageable(info: info, json: rawOverlay)
-
+            print("\(Date().timeIntervalSince(startTime))")
             let overlay = overlayController.saveOverlayWithAddable(creator: creator)
+            print("\(Date().timeIntervalSince(startTime))")
             overlay.mapView = mapView
         }
 
