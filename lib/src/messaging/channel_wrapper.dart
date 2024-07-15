@@ -24,7 +24,9 @@ mixin NChannelWrapper {
 
   Future<T?> invokeMethodWithIterable<T>(
       String funcName, Iterable<NMessageable> list) {
+    log("${DateTime.now()}: payload");
     final payload = list.map((item) => item.payload);
+    log("${DateTime.now()}: channel.invokeMethod");
     return channel.invokeMethod<T>(funcName, payload.toList());
   }
 }

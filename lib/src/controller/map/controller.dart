@@ -149,9 +149,11 @@ class _NaverMapControllerImpl
 
   @override
   Future<void> addOverlayAll(Set<NAddableOverlay> overlays) async {
+    log("${DateTime.now()}: addedOnMap");
     for (final overlay in overlays) {
       overlay._addedOnMap(overlayController);
     }
+    log("${DateTime.now()}: invokeMethodWithIterable");
     await invokeMethodWithIterable("addOverlayAll", overlays);
   }
 

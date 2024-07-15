@@ -2,6 +2,8 @@
 
 library flutter_naver_map_messaging;
 
+import "dart:developer";
+
 import 'package:flutter/services.dart';
 import "package:flutter/widgets.dart";
 import "package:flutter_naver_map/flutter_naver_map.dart";
