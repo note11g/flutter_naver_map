@@ -10,9 +10,8 @@ import com.naver.maps.map.Projection
 import com.naver.maps.map.Symbol
 import com.naver.maps.map.indoor.IndoorSelection
 import com.naver.maps.map.overlay.LocationOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.controller.clustering.ClusteringController
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay.Companion.toMessageable
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageableString
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
@@ -40,6 +39,7 @@ internal class NaverMapController(
     private val overlayController: OverlayHandler,
 ) : NaverMapControlSender, NaverMapControlHandler {
     private var naverMapViewOptions: NaverMapViewOptions? = null
+    private val clusteringController = ClusteringController(naverMap, overlayController, channel::invokeMethod)
 
     init {
         overlayController.initializeLocationOverlay(naverMap.locationOverlay)
@@ -169,28 +169,52 @@ internal class NaverMapController(
         rawOverlays: List<Map<String, Any>>,
         onSuccess: () -> Unit,
     ) {
+        val clusterableMarkers = mutableListOf<NClusterableMarker>()
+
         for (rawOverlay in rawOverlays) {
             val overlayInfo = NOverlayInfo.fromMessageable(rawOverlay["info"]!!)
-            val creator = AddableOverlay.fromMessageable(
+            val nOverlay = LazyOrAddableOverlay.fromMessageable(
                 info = overlayInfo, args = rawOverlay, context = applicationContext
             )
 
-            val overlay = overlayController.saveOverlayWithAddable(creator)
-            overlay.map = naverMap
+            when (nOverlay) {
+                is AddableOverlay<*> -> {
+                    val overlay = overlayController.saveOverlayWithAddable(nOverlay)
+                    overlay.map = naverMap
+                }
+                is NClusterableMarker -> clusterableMarkers.add(nOverlay)
+                else -> throw IllegalArgumentException("Invalid overlay type")
+            }
+        }
+
+        if (clusterableMarkers.isNotEmpty()) {
+            clusteringController.addClusterableMarkerAll(clusterableMarkers)
         }
 
         onSuccess()
     }
 
     override fun deleteOverlay(overlayInfo: NOverlayInfo, onSuccess: () -> Unit) {
-        overlayController.deleteOverlay(overlayInfo)
+        when (overlayInfo.type) {
+            NOverlayType.CLUSTERABLE_MARKER -> {
+                require(overlayInfo is NClusterableMarkerInfo)
+                clusteringController.deleteClusterableMarker(overlayInfo)
+            }
+
+            else -> overlayController.deleteOverlay(overlayInfo)
+        }
         onSuccess()
     }
 
     override fun clearOverlays(type: NOverlayType?, onSuccess: () -> Unit) {
-        overlayController.run {
-            if (type != null) clearOverlays(type)
-            else clearOverlays()
+        if (type == null) {
+            overlayController.clearOverlays()
+            clusteringController.clearClusterableMarker()
+        } else {
+            when (type) {
+                NOverlayType.CLUSTERABLE_MARKER -> clusteringController.clearClusterableMarker()
+                else -> overlayController.clearOverlays(type)
+            }
         }
         onSuccess()
     }
@@ -208,6 +232,9 @@ internal class NaverMapController(
 
     override fun updateClusteringOptions(rawOptions: Map<String, Any>, onSuccess: () -> Unit) {
         try {
+            val options = NaverMapClusterOptions.fromMessageable(rawOptions)
+            clusteringController.updateClusterOptions(options)
+            onSuccess()
         } catch (e: Exception) {
             throw e
         }

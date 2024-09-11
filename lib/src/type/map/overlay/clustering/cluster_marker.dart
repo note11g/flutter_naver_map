@@ -1,12 +1,5 @@
 part of "../../../../../flutter_naver_map.dart";
 
-/* todo:
-    - overlay dir로 옮길지 여부 결정.
-    - 기존 오버레이와 다르게 구현해야할 부분 있는지 체크:
-      - LocationOverlay 와는 다르게, 삭제시 클러스터 마커와 리프 마커를 모두 삭제시켜야 함.
-      - isVisible 처리를 라이브러리 외부에 어떻게 노출시킬지.
-    */
-
 /// 너무 많은 마커가 몰려 있을 때, 사용자 경험과 지도의 성능을 향상시키기 위해 클러스터링 기능을 사용하면,
 /// 실제 장소를 나타내는 마커([NClusterableMarker]) 여러 개를 대신하여 볼 수 있는 클러스터 마커입니다.
 ///
@@ -24,10 +17,10 @@ class NClusterMarker extends _NMarkerWrapper<NClusterMarker> {
     _anchor = NPoint.relativeCenter;
   }
 
-  Future<void> _apply() async {
+  Future<void> _apply(_NOverlayController overlayController) async {
     setIsVisible(true);
-    // 네이티브에 send 필요.
-    // _addedOnMap(); // todo: overlayController 연결 시켜야 함.
+    _addedOnMap(overlayController); // TODO: 삭제시 핸들링 유지 유무 확인
+    _send("lSyncClusterMarker", this);
   }
 
   /// 캡션이 어디에 위치하는 지 나타냅니다.
