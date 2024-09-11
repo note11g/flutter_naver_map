@@ -3,7 +3,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import androidx.annotation.ColorInt
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.ArrowheadPathOverlay
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asFloat
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asInt
@@ -24,7 +24,9 @@ internal data class NArrowheadPathOverlay(
     val headSizeRatio: Float,
 ) : AddableOverlay<ArrowheadPathOverlay>() {
 
-    override fun createMapOverlay(): ArrowheadPathOverlay = ArrowheadPathOverlay().also { g ->
+    override fun createMapOverlay(): ArrowheadPathOverlay = applyAtRawOverlay(ArrowheadPathOverlay())
+
+    override fun applyAtRawOverlay(overlay: ArrowheadPathOverlay)= overlay.also { g ->
         g.coords = coords
         g.width = DisplayUtil.dpToPx(widthDp)
         g.color = color

@@ -5,6 +5,7 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.*
 import com.naver.maps.map.util.MarkerIcons
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.handler.*
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asBoolean
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asFloat
@@ -258,8 +259,10 @@ internal class OverlayController(
         rawAlign: Any,
         success: (Any?) -> Unit,
     ) {
-        val nInfoWindow = NInfoWindow.fromMessageable(rawInfoWindow, context = context)
-            .apply { setCommonProperties(rawInfoWindow.asMap()) }
+        val nInfoWindow = AddableOverlay.fromMessageableCorrector(rawInfoWindow.asMap()) {
+            NInfoWindow.fromMessageable(it, context = context)
+        }
+
         val infoWindow = saveOverlayWithAddable(creator = nInfoWindow)
 
         val align = rawAlign.asAlign()

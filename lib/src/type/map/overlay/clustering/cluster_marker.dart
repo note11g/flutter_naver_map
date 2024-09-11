@@ -19,7 +19,7 @@ class NClusterMarker extends _NMarkerWrapper<NClusterMarker> {
   NClusterMarker._({
     required super.id,
     required super.position,
-  }) : super(type: NOverlayType.clusterableMarker) { // todo
+  }) : super(type: NOverlayType.clusterableMarker) {
     _captionAligns = const [NAlign.center];
     _anchor = NPoint.relativeCenter;
   }

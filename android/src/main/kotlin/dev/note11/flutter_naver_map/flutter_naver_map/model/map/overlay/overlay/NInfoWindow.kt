@@ -3,7 +3,6 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import android.content.Context
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.InfoWindow
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
@@ -23,7 +22,9 @@ internal data class NInfoWindow(
 ) : AddableOverlay<InfoWindow>() {
 
 
-    override fun createMapOverlay(): InfoWindow = InfoWindow().also { m ->
+    override fun createMapOverlay(): InfoWindow = applyAtRawOverlay(InfoWindow())
+
+    override fun applyAtRawOverlay(overlay: InfoWindow) = overlay.also { m ->
         m.adapter = createTextAdapter(text, context!!)
         m.anchor = anchor.toPointF()
         m.alpha = alpha.toFloat()

@@ -1,4 +1,4 @@
-package dev.note11.flutter_naver_map.flutter_naver_map.converter
+package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 
 import android.content.Context
 import com.naver.maps.map.overlay.LocationOverlay
@@ -9,24 +9,17 @@ import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NSize
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NArrowheadPathOverlay
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NCircleOverlay
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NGroundOverlay
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NInfoWindow
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NMarker
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NMultipartPathOverlay
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NPathOverlay
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NPolygonOverlay
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NPolylineOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 
-internal abstract class AddableOverlay<T : Overlay> {
+internal abstract class AddableOverlay<T : Overlay> : LazyOrAddableOverlay {
     abstract val info: NOverlayInfo
-    abstract fun createMapOverlay(): T
+    abstract override fun createMapOverlay(): T
+
+    abstract fun applyAtRawOverlay(overlay: T): T
 
     private lateinit var commonProperties: Map<String, Any>
 
-    fun setCommonProperties(rawArgs: Map<String, Any>) {
+    private fun setCommonProperties(rawArgs: Map<String, Any>) {
         commonProperties = rawArgs.filter { OverlayHandler.allPropertyNames.contains(it.key) }
     }
 
@@ -41,11 +34,9 @@ internal abstract class AddableOverlay<T : Overlay> {
             args: Map<String, Any>,
             context: Context,
         ): AddableOverlay<out Overlay> {
-            val creator = when (info.type) {
+            val creator: (Any) -> AddableOverlay<out Overlay> = when (info.type) {
                 NOverlayType.MARKER -> NMarker::fromMessageable
-                NOverlayType.INFO_WINDOW -> { rawMap ->
-                    NInfoWindow.fromMessageable(rawMap, context = context)
-                }
+                NOverlayType.INFO_WINDOW -> { it -> NInfoWindow.fromMessageable(it, context) }
                 NOverlayType.CIRCLE_OVERLAY -> NCircleOverlay::fromMessageable
                 NOverlayType.GROUND_OVERLAY -> NGroundOverlay::fromMessageable
                 NOverlayType.POLYGON_OVERLAY -> NPolygonOverlay::fromMessageable
@@ -54,9 +45,16 @@ internal abstract class AddableOverlay<T : Overlay> {
                 NOverlayType.MULTIPART_PATH_OVERLAY -> NMultipartPathOverlay::fromMessageable
                 NOverlayType.ARROWHEAD_PATH_OVERLAY -> NArrowheadPathOverlay::fromMessageable
                 NOverlayType.LOCATION_OVERLAY -> throw IllegalArgumentException("LocationOverlay can not be created from json")
+                NOverlayType.CLUSTERABLE_MARKER -> throw IllegalArgumentException("ClusterableMarker is not addableOverlay")
             }
 
-            return creator.invoke(args).apply { setCommonProperties(args) }
+            return fromMessageableCorrector(args, creator)
+        }
+
+        fun <O : AddableOverlay<*>> fromMessageableCorrector(
+            rawMap: Map<String, Any>, creator: (Any) -> O,
+        ): O {
+            return creator.invoke(rawMap).apply { setCommonProperties(rawMap) }
         }
 
         fun LocationOverlay.toMessageable(): Map<String, Any?> = mapOf(
@@ -68,8 +66,7 @@ internal abstract class AddableOverlay<T : Overlay> {
             circleRadiusName to DisplayUtil.pxToDp(circleRadius),
             iconSizeName to NSize.fromPixelSize(iconWidth, iconHeight).toMessageable(),
             subAnchorName to NPoint.fromPointF(subAnchor).toMessageable(),
-            subIconSizeName to NSize.fromPixelSize(subIconWidth, subIconHeight)
-                .toMessageable(),
+            subIconSizeName to NSize.fromPixelSize(subIconWidth, subIconHeight).toMessageable(),
         ) + overlayToMessageable(this)
 
         private const val anchorName = "anchor"
