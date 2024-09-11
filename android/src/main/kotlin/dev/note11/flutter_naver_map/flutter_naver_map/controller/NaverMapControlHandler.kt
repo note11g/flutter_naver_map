@@ -103,7 +103,6 @@ internal interface NaverMapControlHandler {
             onSuccess = result::send
         )
         "forceRefresh" -> forceRefresh(onSuccess = result::send)
-        "updateOptions" -> updateOptions(options = call.arguments.asMap(), onSuccess = result::send)
         "updateOptions" -> updateOptions(
             rawOptions = call.arguments.asMap(), onSuccess = result::send,
         )
@@ -154,6 +153,5 @@ internal interface NaverMapControlHandler {
 
     fun forceRefresh(onSuccess: () -> Unit)
 
-    fun updateOptions(options: Map<String, Any>, onSuccess: () -> Unit)
     fun updateOptions(rawOptions: Map<String, Any>, onSuccess: () -> Unit)
 }
