@@ -149,10 +149,15 @@ class _NaverMapControllerImpl
 
   @override
   Future<void> addOverlayAll(Set<NAddableOverlay> overlays) async {
+    final addTaskFuture = invokeMethodWithIterable("addOverlayAll", overlays);
+    _connectOverlayControllerOnOverlays(overlays);
+    await addTaskFuture;
+  }
+
+  void _connectOverlayControllerOnOverlays(Iterable<NAddableOverlay> overlays) {
     for (final overlay in overlays) {
       overlay._addedOnMap(overlayController);
     }
-    await invokeMethodWithIterable("addOverlayAll", overlays);
   }
 
   @override
