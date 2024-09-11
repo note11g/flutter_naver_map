@@ -6,8 +6,8 @@ import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapControlHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
-import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
-import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NSize
+import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
+import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NSize
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NArrowheadPathOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NCircleOverlay

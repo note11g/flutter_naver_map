@@ -16,7 +16,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay.C
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageableString
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
-import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
+import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NPickableInfo

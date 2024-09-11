@@ -15,7 +15,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapControl
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapController
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
-import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
+import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
 import dev.note11.flutter_naver_map.flutter_naver_map.util.NLocationSource
 import dev.note11.flutter_naver_map.flutter_naver_map.util.TextureSurfaceViewUtil

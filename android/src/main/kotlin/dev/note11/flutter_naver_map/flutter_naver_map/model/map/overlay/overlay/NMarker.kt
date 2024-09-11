@@ -12,8 +12,8 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asAlign
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
-import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
-import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NSize
+import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
+import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NSize
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayCaption
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayImage
