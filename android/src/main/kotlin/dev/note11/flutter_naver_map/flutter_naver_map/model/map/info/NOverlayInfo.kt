@@ -4,7 +4,7 @@ import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 
-internal data class NOverlayInfo(val type: NOverlayType, val id: String) : NPickableInfo {
+internal open class NOverlayInfo(open val type: NOverlayType, open val id: String) : NPickableInfo {
     companion object {
         fun fromMessageable(rawMap: Any): NOverlayInfo = rawMap.asMap().let { map ->
             NOverlayInfo(
@@ -43,5 +43,9 @@ internal data class NOverlayInfo(val type: NOverlayType, val id: String) : NPick
         var result = type.hashCode()
         result = 31 * result + id.hashCode()
         return result
+    }
+
+    override fun toString(): String {
+        return "NOverlayInfo(type=$type, id='$id')"
     }
 }
