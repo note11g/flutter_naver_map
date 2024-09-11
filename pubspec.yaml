@@ -12,9 +12,9 @@ dependencies:
   flutter:
     sdk: flutter
   vector_math: ^2.1.4
-  path_provider: ^2.1.2
-  crypto: ^3.0.3
-  meta: ^1.11.0
+  path_provider: ^2.1.4
+  crypto: ^3.0.5
+  meta: ^1.15.0
 
 dev_dependencies:
   flutter_test:
