@@ -253,7 +253,11 @@ class NOverlayMakerUtil {
       case NOverlayType.locationOverlay:
         throw Exception("locationOverlay is not supported");
       case NOverlayType.clusterableMarker:
-        return NClusterableMarker(id: overlayId, position: point);
+        return NClusterableMarker(
+          id: overlayId,
+          position: point,
+          iconTintColor: Colors.blueAccent,
+        );
     }
   }
 
