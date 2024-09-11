@@ -12,7 +12,7 @@ class NaverMapClusteringOptions with NMessageableWithMap {
   /// 기본 값은 `300ms`.
   final Duration animationDuration;
 
-  /// 클러스터링 기능이 활성화 될 줌 범위를 지정합니다.
+  /// 클러스터가 병합될 기본 전략을 지정합니다.
   ///
   /// 기본 값은 `NClusterMergeStrategy()` 기본 생성자.
   final NClusterMergeStrategy mergeStrategy;
@@ -29,6 +29,16 @@ class NaverMapClusteringOptions with NMessageableWithMap {
     this.mergeStrategy = const NClusterMergeStrategy(),
     this.clusterMarkerBuilder,
   });
+
+  void _handleClusterMarkerBuilder(
+      Object args, _NOverlayController overlayController) {
+    final info = NClusterInfo._fromMessageable(args as Map);
+    final clusterMarker =
+        NClusterMarker._(id: info._id, position: info.position);
+    (clusterMarkerBuilder ?? defaultClusterMarkerBuilder)
+        .call(info, clusterMarker);
+    clusterMarker._apply(overlayController);
+  }
 
   static void defaultClusterMarkerBuilder(
       NClusterInfo info, NClusterMarker clusterMarker) {

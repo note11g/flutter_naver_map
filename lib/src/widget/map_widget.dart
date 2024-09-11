@@ -205,6 +205,16 @@ class _NaverMapState extends State<NaverMap>
   void onCameraIdle() => widget.onCameraIdle?.call();
 
   @override
+  void onAnotherMethod(String methodName, dynamic args) {
+    switch (methodName) {
+      case "clusterMarkerBuilder":
+        nowClusterOptions?._handleClusterMarkerBuilder(
+            args, (controller as _NaverMapControllerImpl).overlayController);
+        break;
+    }
+  }
+
+  @override
   void dispose() {
     controllerCompleter.future.then((_) => controller.dispose());
     disposeChannel();
