@@ -18,9 +18,15 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NClusterableMarkerInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NPickableInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NSymbolInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.clustering.NaverMapClusterOptions
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.AddableOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.AddableOverlay.Companion.toMessageable
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.LazyOrAddableOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NClusterableMarker
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
@@ -194,9 +200,17 @@ internal class NaverMapController(
         onSuccess()
     }
 
-    override fun updateOptions(options: Map<String, Any>, onSuccess: () -> Unit) {
-        naverMapViewOptions = NaverMapViewOptions.updateNaverMapFromMessageable(naverMap, options)
+    override fun updateOptions(rawOptions: Map<String, Any>, onSuccess: () -> Unit) {
+        naverMapViewOptions =
+            NaverMapViewOptions.updateNaverMapFromMessageable(naverMap, rawOptions)
         onSuccess()
+    }
+
+    override fun updateClusteringOptions(rawOptions: Map<String, Any>, onSuccess: () -> Unit) {
+        try {
+        } catch (e: Exception) {
+            throw e
+        }
     }
 
     /*

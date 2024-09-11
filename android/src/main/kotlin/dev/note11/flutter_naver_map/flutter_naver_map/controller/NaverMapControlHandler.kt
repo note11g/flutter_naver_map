@@ -106,6 +106,9 @@ internal interface NaverMapControlHandler {
         "updateOptions" -> updateOptions(
             rawOptions = call.arguments.asMap(), onSuccess = result::send,
         )
+        "updateClusteringOptions" -> updateClusteringOptions(
+            rawOptions = call.arguments.asMap(), onSuccess = result::send,
+        )
         else -> result.notImplemented()
     }
 
@@ -154,4 +157,6 @@ internal interface NaverMapControlHandler {
     fun forceRefresh(onSuccess: () -> Unit)
 
     fun updateOptions(rawOptions: Map<String, Any>, onSuccess: () -> Unit)
+
+    fun updateClusteringOptions(rawOptions: Map<String, Any>, onSuccess: () -> Unit)
 }

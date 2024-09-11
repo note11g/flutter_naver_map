@@ -27,6 +27,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NMultipa
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayCaption
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayImage
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NInfoWindow
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NMarker
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil.dpToPx
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -36,7 +37,7 @@ internal class OverlayController(
     private val context: Context,
 ) : OverlaySender, LocationOverlayHandler, MarkerHandler, InfoWindowHandler, CircleOverlayHandler,
     GroundOverlayHandler, PolygonOverlayHandler, PolylineOverlayHandler, PathOverlayHandler,
-    MultipartPathOverlayHandler, ArrowheadPathOverlayHandler {
+    MultipartPathOverlayHandler, ArrowheadPathOverlayHandler, ClusterMarkerHandler, ClusterableMarkerHandler {
     /* ----- channel ----- */
     init {
         channel.setMethodCallHandler(::handler)
@@ -122,6 +123,7 @@ internal class OverlayController(
                 NOverlayType.MULTIPART_PATH_OVERLAY -> this::handleMultipartPathOverlay
                 NOverlayType.ARROWHEAD_PATH_OVERLAY -> this::handleArrowheadPathOverlay
                 NOverlayType.LOCATION_OVERLAY -> this::handleLocationOverlay
+                NOverlayType.CLUSTERABLE_MARKER -> this::handleClusterableMarker
             }
             overlayHandleFunc(overlay, query.methodName, call.arguments, result)
         }
@@ -669,6 +671,14 @@ internal class OverlayController(
         success: (bounds: Map<String, Any>) -> Unit,
     ) {
         success(arrowheadPathOverlay.bounds.toMessageable())
+    }
+
+    /* ----- Cluster Marker handler ----- */
+    override fun syncClusterMarker(marker: Marker, rawClusterMarker: Any, success: (Any?) -> Unit) {
+        val mapData = rawClusterMarker.asMap()
+        val clusterMarker = AddableOverlay.fromMessageableCorrector(mapData, NMarker::fromMessageable)
+        clusterMarker.applyAtRawOverlay(marker)
+        success(null)
     }
 
     /*
