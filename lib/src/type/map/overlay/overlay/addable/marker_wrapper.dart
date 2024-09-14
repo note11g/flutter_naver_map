@@ -370,7 +370,7 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   //region communication with Native Method
 
   @override
-  NPayload toNPayload() => _marker.toNPayload();
+  NPayload toNPayload() => _marker.toNPayload().expandWith(_commonMap);
 
   @override
   Future<bool> hasOpenInfoWindow() => _marker.hasOpenInfoWindow();
