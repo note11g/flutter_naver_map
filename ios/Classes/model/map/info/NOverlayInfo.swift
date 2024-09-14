@@ -1,8 +1,13 @@
 import NMapsMap
 
-internal struct NOverlayInfo: NPickableInfo, Hashable {
+internal class NOverlayInfo: NSObject, NPickableInfo {
     let type: NOverlayType
     let id: String
+    
+    init(type: NOverlayType, id: String) {
+        self.type = type
+        self.id = id
+    }
 
     static func fromMessageable(_ v: Any) -> NOverlayInfo {
         let d = asDict(v)
@@ -28,9 +33,21 @@ internal struct NOverlayInfo: NPickableInfo, Hashable {
 
     // ----- Hashable -----
 
-    func hash(into hasher: inout Hasher) {
+    override var hash: Int {
+        var hasher = Hasher()
         hasher.combine(type)
         hasher.combine(id)
+        return hasher.finalize()
+    }
+    
+    override func isEqual(_ o: Any?) -> Bool {
+        guard let o = o as? NOverlayInfo else {
+            return false
+        }
+        if self === o {
+            return true
+        }
+        return o.type == self.type && o.id == self.id
     }
 
     static func ==(i1: NOverlayInfo, i2: NOverlayInfo) -> Bool {
