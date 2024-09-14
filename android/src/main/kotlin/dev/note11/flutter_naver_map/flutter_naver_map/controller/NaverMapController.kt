@@ -197,7 +197,6 @@ internal class NaverMapController(
     override fun deleteOverlay(overlayInfo: NOverlayInfo, onSuccess: () -> Unit) {
         when (overlayInfo.type) {
             NOverlayType.CLUSTERABLE_MARKER -> {
-                require(overlayInfo is NClusterableMarkerInfo)
                 clusteringController.deleteClusterableMarker(overlayInfo)
             }
 

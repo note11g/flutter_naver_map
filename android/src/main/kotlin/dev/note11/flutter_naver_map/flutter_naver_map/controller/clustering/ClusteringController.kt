@@ -1,6 +1,7 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.controller.clustering
 
 import android.util.Log
+import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.NaverMap.MAXIMUM_ZOOM
 import com.naver.maps.map.NaverMap.MINIMUM_ZOOM
@@ -18,6 +19,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NRange
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NClusterableMarkerInfo
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.clustering.NaverMapClusterOptions
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NClusterInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NClusterableMarker
@@ -78,9 +80,10 @@ internal class ClusteringController(
         Log.d("ClusteringController", "클러스터블 마커 추가: $markers")
     }
 
-    fun deleteClusterableMarker(overlayInfo: NClusterableMarkerInfo) {
-        clusterableMarkers.remove(overlayInfo)
-        clusterer.remove(overlayInfo)
+    fun deleteClusterableMarker(overlayInfo: NOverlayInfo) {
+        val clusterOverlayInfo = NClusterableMarkerInfo(overlayInfo.id, mapOf(), LatLng.INVALID)
+        clusterableMarkers.remove(clusterOverlayInfo)
+        clusterer.remove(clusterOverlayInfo)
         overlayController.deleteOverlay(overlayInfo)
         updateClusterer()
         Log.d("ClusteringController", "클러스터블 마커 삭제: $overlayInfo")
