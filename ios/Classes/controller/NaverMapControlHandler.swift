@@ -47,6 +47,8 @@ internal protocol NaverMapControlHandler {
     func forceRefresh(onSuccess: @escaping (Any?) -> Void)
 
     func updateOptions(options: Dictionary<String, Any>, onSuccess: @escaping (Any?) -> Void)
+    
+    func updateClusteringOptions(rawOptions: Dictionary<String, Any>, onSuccess: @escaping (Any?) -> Void)
 }
 
 internal extension  NaverMapControlHandler {
@@ -92,6 +94,7 @@ internal extension  NaverMapControlHandler {
         case "clearOverlays": clearOverlays(type: castOrNull(call.arguments, caster: { NOverlayType(rawValue: asString($0))! }), onSuccess: result)
         case "forceRefresh": forceRefresh(onSuccess: result)
         case "updateOptions": updateOptions(options: asDict(call.arguments!), onSuccess: result)
+        case "updateClusteringOptions": updateClusteringOptions(rawOptions: asDict(call.arguments!), onSuccess: result)
         default: result(FlutterMethodNotImplemented)
         }
     }

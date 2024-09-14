@@ -151,6 +151,19 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
         naverMapViewOptions!.updateWithNaverMapView(naverMap: naverMap, isFirst: false)
         onSuccess(nil)
     }
+    
+    func updateClusteringOptions(rawOptions: Dictionary<String, Any>, onSuccess: @escaping (Any?) -> Void) {
+        do {
+            let options = NaverMapClusterOptions.fromMessageable(rawOptions)
+            print(options)
+            onSuccess(nil)
+        }
+//        clusteringController.updateClusterOptions(options)
+//        onSuccess(nil)
+//        try {
+//            
+//        } catch
+    }
 
     /*
       --- sender (to dart) ---
