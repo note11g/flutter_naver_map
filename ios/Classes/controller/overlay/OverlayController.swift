@@ -1,6 +1,6 @@
 import NMapsMap
 
-internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOverlayHandler, CircleOverlayHandler, GroundOverlayHandler, InfoWindowHandler, LocationOverlayHandler, MarkerHandler, MultipartPathOverlayHandler, PathOverlayHandler, PolygonOverlayHandler, PolylineOverlayHandler {
+internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOverlayHandler, CircleOverlayHandler, GroundOverlayHandler, InfoWindowHandler, LocationOverlayHandler, MarkerHandler, MultipartPathOverlayHandler, PathOverlayHandler, PolygonOverlayHandler, PolylineOverlayHandler, ClusterMarkerHandler, ClusterableMarkerHandler {
 
     private let channel: FlutterMethodChannel
 
@@ -108,6 +108,7 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
             case .multipartPathOverlay: overlayHandleFunc = handleMultipartPathOverlay
             case .arrowheadPathOverlay:overlayHandleFunc = handleArrowheadPathOverlay
             case .locationOverlay: overlayHandleFunc = handleLocationOverlay
+            case .clusterableMarker: overlayHandleFunc = handleClusterableMarker
             }
             overlayHandleFunc(overlay, query.methodName, call.arguments, result)
         }
@@ -601,6 +602,16 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
     func getBounds(_ arrowheadPathOverlay: NMFArrowheadPath, success: (Dictionary<String, Any>) -> ()) {
         let bounds = NMGLatLngBounds(latLngs: arrowheadPathOverlay.points)
         success(bounds.toMessageable())
+    }
+        
+    /* ----- Cluster Marker handler ----- */
+        
+    func syncClusterMarker(_ marker: NMFMarker, rawClusterMarker: Any, success: (Any?) -> ()) {
+        let dictData = asDict(rawClusterMarker)
+        let clusterMarker: NMarker = asAddableOverlayFromMessageableCorrector(json: dictData, creator: NMarker.fromMessageable) as! NMarker
+//        clusterMarker.applyAtRawOverlay(marker)
+        print(clusterMarker)
+        success(nil)
     }
 
     /*

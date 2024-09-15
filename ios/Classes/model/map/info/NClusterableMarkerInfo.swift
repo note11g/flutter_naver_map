@@ -46,7 +46,7 @@ internal class NClusterableMarkerInfo: NOverlayInfo, NMCClusteringKey {
         ]) { _, v2 in v2 }
     }
     
-    static func fromMessageableToClusterableMarker(_ v: Any) -> NClusterableMarkerInfo {
+    static func fromMessageableAtClusterableMarker(_ v: Any) -> NClusterableMarkerInfo {
         let d = asDict(v)
         return NClusterableMarkerInfo(
             id: asString(d["id"]!),
