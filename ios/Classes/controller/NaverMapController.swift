@@ -5,6 +5,7 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     private let channel: FlutterMethodChannel
     private let overlayController: OverlayHandler
     private var naverMapViewOptions: NaverMapViewOptions?
+    private var clusteringController: ClusteringController!
     
     private var mapView: NMFMapView {
         naverMap.mapView
@@ -15,6 +16,7 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
         self.channel = channel
         self.overlayController = overlayController
         overlayController.initializeLocationOverlay(overlay: naverMap.mapView.locationOverlay)
+        self.clusteringController = ClusteringController(naverMap: naverMap, overlayController: self.overlayController, messageSender: self.channel.invokeMethod)
         
         channel.setMethodCallHandler(handle)
     }
@@ -137,7 +139,7 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
         
         if !clusterableMarkers.isEmpty {
             print(clusterableMarkers)
-            // clusterableController.addClusterableMarkerAll(clusterableMarkers)
+            clusteringController.addClusterableMarkerAll(clusterableMarkers)
         }
         
         onSuccess(nil)
@@ -149,15 +151,22 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     }
     
     func deleteOverlay(overlayInfo: NOverlayInfo, onSuccess: @escaping (Any?) -> ()) {
-        overlayController.deleteOverlay(info: overlayInfo)
+        switch overlayInfo.type {
+        case .clusterableMarker: clusteringController.deleteClusterableMarker(overlayInfo)
+        default: overlayController.deleteOverlay(info: overlayInfo)
+        }
         onSuccess(nil)
     }
     
     func clearOverlays(type: NOverlayType?, onSuccess: @escaping (Any?) -> ()) {
         if let type = type {
+            clusteringController.clearClusterableMarker()
             overlayController.clearOverlays(type: type)
         } else {
-            overlayController.clearOverlays()
+            switch type {
+            case .clusterableMarker: clusteringController.clearClusterableMarker()
+            default: overlayController.clearOverlays()
+            }
         }
         onSuccess(nil)
     }
@@ -176,14 +185,9 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     func updateClusteringOptions(rawOptions: Dictionary<String, Any>, onSuccess: @escaping (Any?) -> Void) {
         do {
             let options = NaverMapClusterOptions.fromMessageable(rawOptions)
-            print(options)
+            clusteringController.updateClusterOptions(options)
             onSuccess(nil)
         }
-        //        clusteringController.updateClusterOptions(options)
-        //        onSuccess(nil)
-        //        try {
-        //
-        //        } catch
     }
     
     /*

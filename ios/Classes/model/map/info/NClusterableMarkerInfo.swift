@@ -4,9 +4,7 @@ internal class NClusterableMarkerInfo: NOverlayInfo, NMCClusteringKey {
     let tags: Dictionary<String, String>
     let position: NMGLatLng
     
-//    var messageOverlayInfo: NOverlayInfo {
-//        NOverlayInfo(type: .clusterableMarker, id: id)
-//    }
+    var messageOverlayInfo: NOverlayInfo { NOverlayInfo(type: .clusterableMarker, id: id) }
     
     init(id: String, tags: Dictionary<String, String>, position: NMGLatLng) {
         self.tags = tags

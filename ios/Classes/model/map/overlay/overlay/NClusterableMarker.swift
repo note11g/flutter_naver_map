@@ -2,12 +2,18 @@ import NMapsMap
 
 internal protocol NClusterNode {}
 
-internal struct NClusterableMarker: LazyOverlay, NClusterNode {
+internal class NClusterableMarker: NSObject, LazyOverlay, NClusterNode {
     typealias OverlayType = NClusterableMarker
     typealias RealOverlayType = NMarker
     
-    let info: NOverlayInfo // todo ClusterableMarkerInfo
+    var info: NOverlayInfo { clusterInfo }
+    let clusterInfo: NClusterableMarkerInfo
     let wrappedOverlay: NMarker
+    
+    init(clusterInfo: NClusterableMarkerInfo, wrappedOverlay: NMarker) {
+        self.clusterInfo = clusterInfo
+        self.wrappedOverlay = wrappedOverlay
+    }
     
     func createMapOverlay() -> NClusterableMarker {
         self
@@ -15,18 +21,30 @@ internal struct NClusterableMarker: LazyOverlay, NClusterNode {
     
     static func fromMessageable(_ v: Any) -> NClusterableMarker{
         let d = asDict(v)
-        return NClusterableMarker(info: NClusterableMarkerInfo.fromMessageableAtClusterableMarker(d[infoName]!), wrappedOverlay: asAddableOverlayFromMessageableCorrector(json: d, creator:NMarker.fromMessageable) as! NMarker)
+        return NClusterableMarker(
+            clusterInfo: NClusterableMarkerInfo.fromMessageableAtClusterableMarker(d[infoName]!),
+            wrappedOverlay: asAddableOverlayFromMessageableCorrector(
+                json: d, creator:NMarker.fromMessageable) as! NMarker
+        )
     }
     
     private static let infoName = "info"
 }
 
-internal struct NClusterInfo: NClusterNode, Hashable {
+internal class NClusterInfo: NSObject, NClusterNode {
     let children: [NClusterableMarkerInfo]
     let clusterSize: Int
     let position: NMGLatLng
     let mergedTagKey: String?
     let mergedTag: String?
+    
+    init(children: [NClusterableMarkerInfo], clusterSize: Int, position: NMGLatLng, mergedTagKey: String?, mergedTag: String?) {
+        self.children = children
+        self.clusterSize = clusterSize
+        self.position = position
+        self.mergedTagKey = mergedTagKey
+        self.mergedTag = mergedTag
+    }
     
     var id: String { String(hashValue) }
     
@@ -43,16 +61,19 @@ internal struct NClusterInfo: NClusterNode, Hashable {
         ]
     }
     
-    static func ==(i1: NClusterInfo, i2: NClusterInfo) -> Bool {
-        if i1.children != i2.children { return false }
-        if i1.clusterSize != i2.clusterSize { return false }
-        if i1.position != i2.position { return false }
-        return true
+    override func isEqual(_ o: Any?) -> Bool {
+        guard let o = o as? NClusterInfo else { return false }
+        if self === o { return true }
+        return children == o.children
+        && clusterSize == o.clusterSize
+        && position == o.position
     }
-    
-    func hash(into hasher: inout Hasher) {
+
+    override var hash: Int {
+        var hasher = Hasher()
         hasher.combine(children)
         hasher.combine(clusterSize)
         hasher.combine(position)
+        return hasher.finalize()
     }
 }

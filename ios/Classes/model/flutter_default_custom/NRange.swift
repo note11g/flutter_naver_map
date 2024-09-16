@@ -4,7 +4,7 @@ internal struct NRange<T: Numeric & Comparable & Hashable> : Hashable {
     let includeMin: Bool
     let includeMax: Bool
 
-    func isInRange(value: T) -> Bool {
+    func isInRange(_ value: T) -> Bool {
         let minCheck: Bool
         switch min {
         case .none:
