@@ -609,8 +609,8 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
     func syncClusterMarker(_ marker: NMFMarker, rawClusterMarker: Any, success: (Any?) -> ()) {
         let dictData = asDict(rawClusterMarker)
         let clusterMarker: NMarker = asAddableOverlayFromMessageableCorrector(json: dictData, creator: NMarker.fromMessageable) as! NMarker
-//        clusterMarker.applyAtRawOverlay(marker)
-        print(clusterMarker)
+        _ = clusterMarker.applyAtRawOverlay(marker)
+        marker.hidden = false
         success(nil)
     }
 

@@ -108,6 +108,7 @@ internal class ClusteringController(
 //        marker.icon = MarkerIcons.BLACK
 
         overlayController.saveOverlay(marker, info.markerInfo.messageOverlayInfo)
+        marker.isVisible = false
         sendClusterMarkerEvent(info)
     }
 

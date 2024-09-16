@@ -80,8 +80,9 @@ internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThreshol
     }
     
     private func onClusterMarkerUpdate(_ clusterMarkerInfo: NMCClusterMarkerInfo, _ marker: NMFMarker) {
-        guard var info = clusterMarkerInfo.tag as? NClusterInfo else { return }
+        guard let info = clusterMarkerInfo.tag as? NClusterInfo else { return }
         overlayController.saveOverlay(overlay: marker, info: info.markerInfo.messageOverlayInfo)
+        marker.hidden = true
         sendClusterMarkerEvent(info: info)
     }
     

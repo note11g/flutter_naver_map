@@ -678,6 +678,7 @@ internal class OverlayController(
         val mapData = rawClusterMarker.asMap()
         val clusterMarker = AddableOverlay.fromMessageableCorrector(mapData, NMarker::fromMessageable)
         clusterMarker.applyAtRawOverlay(marker)
+        marker.isVisible = true
         success(null)
     }
 
