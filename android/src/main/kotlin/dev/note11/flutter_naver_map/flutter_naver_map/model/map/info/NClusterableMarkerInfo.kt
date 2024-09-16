@@ -43,10 +43,8 @@ internal class NClusterableMarkerInfo(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
         if (!super.equals(other)) return false
-
-        other as NClusterableMarkerInfo
+        if (other !is NOverlayInfo) return false
 
         return id == other.id
     }

@@ -20,7 +20,7 @@ internal class NClusterableMarkerInfo: NOverlayInfo, NMCClusteringKey {
     }
     
     override func isEqual(_ o: Any?) -> Bool {
-        guard let o = o as? NClusterableMarkerInfo else {
+        guard let o = o as? NOverlayInfo else {
             return false
         }
         if self === o {

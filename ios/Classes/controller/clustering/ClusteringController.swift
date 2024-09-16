@@ -1,6 +1,6 @@
 import NMapsMap
 
-internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThresholdStrategy, NMCTagMergeStrategy {
+internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThresholdStrategy, NMCTagMergeStrategy, NMCMarkerManager {
     private let naverMap: NMFNaverMapView!
     private let overlayController: OverlayHandler
     private let messageSender: (_ method: String, _ args: Any) -> Void
@@ -30,11 +30,13 @@ internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThreshol
         let builder = NMCComplexBuilder<NClusterableMarkerInfo>()
         builder.minClusteringZoom = options.enableZoomRange.min ?? Int(NMF_MIN_ZOOM)
         builder.maxClusteringZoom = options.enableZoomRange.max ?? Int(NMF_MAX_ZOOM)
+        builder.maxScreenDistance = options.mergeStrategy.maxMergeableScreenDistance
         builder.animationDuration = Double(options.animationDuration) * 0.001
         builder.thresholdStrategy = self
         builder.tagMergeStrategy = self
         builder.minIndexingZoom = 0
         builder.maxIndexingZoom = 0
+        builder.markerManager = self
         builder.clusterMarkerUpdater = clusterMarkerUpdate
         builder.leafMarkerUpdater = clusterableMarkerUpdate
         clusterer = builder.build()
@@ -81,7 +83,7 @@ internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThreshol
     
     private func onClusterMarkerUpdate(_ clusterMarkerInfo: NMCClusterMarkerInfo, _ marker: NMFMarker) {
         guard let info = clusterMarkerInfo.tag as? NClusterInfo else { return }
-        overlayController.saveOverlay(overlay: marker, info: info.markerInfo.messageOverlayInfo)
+//        overlayController.saveOverlay(overlay: marker, info: info.markerInfo.messageOverlayInfo)
         marker.hidden = true
         sendClusterMarkerEvent(info: info)
     }
@@ -92,9 +94,9 @@ internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThreshol
     
     private func onClusterableMarkerUpdate(_ clusterableMarkerInfo: NMCLeafMarkerInfo, _ marker: NMFMarker) {
         marker.iconImage = NMF_MARKER_IMAGE_BLACK
-        let nClusterableMarker: NClusterableMarker = clusterableMarkerInfo.tag as! NClusterableMarker
-        let nMarker: NMarker = nClusterableMarker.wrappedOverlay
-        _ = overlayController.saveOverlayWithAddable(creator: nMarker, createdOverlay: marker)
+       let nClusterableMarker: NClusterableMarker = clusterableMarkerInfo.tag as! NClusterableMarker
+       let nMarker: NMarker = nClusterableMarker.wrappedOverlay
+       _ = overlayController.saveOverlayWithAddable(creator: nMarker, createdOverlay: marker)
     }
     
     func getThreshold(_ zoom: Int) -> Double {
@@ -125,6 +127,33 @@ internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThreshol
             mergedTagKey: mergedTagKey,
             mergedTag: nil
         )
+    }
+    
+    func retainMarker(_ info: NMCMarkerInfo) -> NMFMarker? {
+        let marker = NMFMarker(position: info.position)
+        let data = info.tag
+        switch data {
+//         case let data as NClusterableMarker:
+//             let nMarker: NMarker = data.wrappedOverlay
+//             _ = overlayController.saveOverlayWithAddable(creator: nMarker, createdOverlay: marker)
+        case let data as NClusterInfo:
+            overlayController.saveOverlay(overlay: marker, info: data.markerInfo.messageOverlayInfo)
+        default: ()
+        }
+        
+        return marker
+    }
+    
+    func releaseMarker(_ info: NMCMarkerInfo, _ marker: NMFMarker) {
+        let data = info.tag
+        switch data {
+        case let data as NClusterableMarker:
+            overlayController.deleteOverlay(info: data.info)
+        case let data as NClusterInfo:
+            overlayController.deleteOverlay(info: data.markerInfo.messageOverlayInfo)
+        default:
+            return;
+        }
     }
 }
 

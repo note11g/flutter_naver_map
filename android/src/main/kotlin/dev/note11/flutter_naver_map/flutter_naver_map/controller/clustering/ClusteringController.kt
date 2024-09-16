@@ -5,14 +5,9 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.NaverMap.MAXIMUM_ZOOM
 import com.naver.maps.map.NaverMap.MINIMUM_ZOOM
-import com.naver.maps.map.clustering.Cluster
-import com.naver.maps.map.clustering.ClusterMarkerInfo
-import com.naver.maps.map.clustering.Clusterer
+import com.naver.maps.map.clustering.*
 import com.naver.maps.map.clustering.Clusterer.ComplexBuilder
 import com.naver.maps.map.clustering.Clusterer.DEFAULT_SCREEN_DISTANCE
-import com.naver.maps.map.clustering.DefaultClusterMarkerUpdater
-import com.naver.maps.map.clustering.DefaultLeafMarkerUpdater
-import com.naver.maps.map.clustering.LeafMarkerInfo
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.MarkerIcons
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
@@ -28,7 +23,7 @@ internal class ClusteringController(
     private val naverMap: NaverMap,
     private val overlayController: OverlayHandler,
     private val messageSender: (method: String, args: Any) -> Unit,
-) {
+) : MarkerManager {
     private lateinit var clusterOptions: NaverMapClusterOptions
 
     private lateinit var clusterer: Clusterer<NClusterableMarkerInfo>
@@ -47,12 +42,9 @@ internal class ClusteringController(
             .maxScreenDistance(options.mergeStrategy.maxMergeableScreenDistance)
             .animationDuration(options.animationDuration.toInt())
 //            .distanceStrategy(::distanceStrategy)
-            .thresholdStrategy(::thresholdStrategy)
-            .tagMergeStrategy(::tagMergeStrategy)
-            .clusterMarkerUpdater(::onClusterMarkerUpdate)
-            .leafMarkerUpdater(::onClusterableMarkerUpdate)
-            .minIndexingZoom(0)
-            .maxIndexingZoom(0) // 해도 되는지 확인 필요
+            .thresholdStrategy(::thresholdStrategy).tagMergeStrategy(::tagMergeStrategy)
+            .clusterMarkerUpdater(::onClusterMarkerUpdate).leafMarkerUpdater(::onClusterableMarkerUpdate)
+            .markerManager(this).minIndexingZoom(0).maxIndexingZoom(0) // 해도 되는지 확인 필요
 
         clusterer = builder.build().apply {
             addAll(clusterableMarkers)
@@ -103,11 +95,7 @@ internal class ClusteringController(
         DefaultClusterMarkerUpdater().updateClusterMarker(clusterMarkerInfo, marker)
         val info = clusterMarkerInfo.tag as? NClusterInfo? ?: return
 
-//        marker.captionText = clusterMarkerInfo.size.toString()
-//        marker.captionHaloColor = 0xFF000000.toInt()
-//        marker.icon = MarkerIcons.BLACK
-
-        overlayController.saveOverlay(marker, info.markerInfo.messageOverlayInfo)
+//        overlayController.saveOverlay(marker, info.markerInfo.messageOverlayInfo)
         marker.isVisible = false
         sendClusterMarkerEvent(info)
     }
@@ -123,7 +111,7 @@ internal class ClusteringController(
         marker.icon = MarkerIcons.BLACK
 
         val nClusterableMarker = clusterableMarkerInfo.tag as NClusterableMarker
-        val nMarker = nClusterableMarker.wrappedMarker //
+        val nMarker = nClusterableMarker.wrappedMarker
         overlayController.saveOverlayWithAddable(nMarker, marker)
     }
 
@@ -237,6 +225,25 @@ internal class ClusteringController(
             mergedTag = null, // kindTagKV[mergedTagKey],
             position = cluster.position,
         )
+    }
+
+    override fun retainMarker(info: MarkerInfo): Marker {
+        val marker = Marker(info.position)
+        when (val data = info.tag) {
+//            is NClusterableMarker -> {
+//                val nMarker = data.wrappedMarker
+//                overlayController.saveOverlayWithAddable(nMarker, marker)
+//            }
+            is NClusterInfo -> overlayController.saveOverlay(marker, data.markerInfo.messageOverlayInfo)
+        }
+        return marker
+    }
+
+    override fun releaseMarker(info: MarkerInfo, marker: Marker) {
+        when (val data = info.tag) {
+            is NClusterableMarker -> overlayController.deleteOverlay(data.info)
+            is NClusterInfo -> overlayController.deleteOverlay(data.markerInfo.messageOverlayInfo)
+        }
     }
 
     // --- extension functions ---
