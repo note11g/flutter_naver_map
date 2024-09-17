@@ -15,11 +15,15 @@
 
 [API Reference 바로가기](https://pub.dev/documentation/flutter_naver_map/latest/)
 
-## 1.3.0 출시 관련 안내
+## 1.3.0 Pre-Release
 
-- 7월 중에 클러스터링, 이미지 webp 지원 등을 포함한 1.3.0 버전이 출시 될 예정입니다.
+[![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=00B352&include_prereleases)](https://pub.dev/packages/flutter_naver_map/versions#prerelease)
 
-  자세한 내용은 [#207](https://github.com/note11g/flutter_naver_map/issues/207)에서 확인하실 수 있습니다.
+해당 릴리즈는 `1.3.0`의 베타 버전입니다.
+
+9월 중으로 테스트를 진행하며, 정식버전은 마지막주~10월 초에 배포할 예정입니다.
+
+주요 기능은 [변경 사항 노트](https://github.com/note11g/flutter_naver_map/blob/main/CHANGELOG.md#130-beta1)를 참고하세요.
 
 ## Version Up Guide
 
