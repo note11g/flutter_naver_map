@@ -1,4 +1,4 @@
-package dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom
+package dev.note11.flutter_naver_map.flutter_naver_map.model.base
 
 import androidx.annotation.Px
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble

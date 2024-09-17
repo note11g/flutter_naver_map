@@ -124,6 +124,7 @@ internal func asMapType(_ v: Any) -> NMFMapType {
     switch asString(v) {
     case "basic": return .basic
     case "hybrid": return .hybrid
+    case "naviHybrid": return .naviHybrid
     case "navi": return .navi
     case "satellite": return .satellite
     case "terrain": return .terrain

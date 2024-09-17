@@ -11,7 +11,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLocationTrackingMode
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
-import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
+import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NCameraUpdate
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import io.flutter.plugin.common.MethodCall
@@ -103,7 +103,12 @@ internal interface NaverMapControlHandler {
             onSuccess = result::send
         )
         "forceRefresh" -> forceRefresh(onSuccess = result::send)
-        "updateOptions" -> updateOptions(options = call.arguments.asMap(), onSuccess = result::send)
+        "updateOptions" -> updateOptions(
+            rawOptions = call.arguments.asMap(), onSuccess = result::send,
+        )
+        "updateClusteringOptions" -> updateClusteringOptions(
+            rawOptions = call.arguments.asMap(), onSuccess = result::send,
+        )
         else -> result.notImplemented()
     }
 
@@ -151,5 +156,7 @@ internal interface NaverMapControlHandler {
 
     fun forceRefresh(onSuccess: () -> Unit)
 
-    fun updateOptions(options: Map<String, Any>, onSuccess: () -> Unit)
+    fun updateOptions(rawOptions: Map<String, Any>, onSuccess: () -> Unit)
+
+    fun updateClusteringOptions(rawOptions: Map<String, Any>, onSuccess: () -> Unit)
 }

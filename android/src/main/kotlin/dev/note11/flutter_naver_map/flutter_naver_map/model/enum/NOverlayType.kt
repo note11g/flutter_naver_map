@@ -1,6 +1,6 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.model.enum
 
-internal enum class NOverlayType(private val str: String) {
+internal enum class NOverlayType(private val str: String, val isLazy: Boolean = false) {
     MARKER("ma"),
     INFO_WINDOW("in"),
     CIRCLE_OVERLAY("ci"),
@@ -10,7 +10,8 @@ internal enum class NOverlayType(private val str: String) {
     PATH_OVERLAY("pa"),
     MULTIPART_PATH_OVERLAY("mp"),
     ARROWHEAD_PATH_OVERLAY("ah"),
-    LOCATION_OVERLAY("lo");
+    LOCATION_OVERLAY("lo"),
+    CLUSTERABLE_MARKER("cm", isLazy = true);
 
     override fun toString(): String = str
 

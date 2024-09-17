@@ -1,14 +1,16 @@
 import NMapsMap
 
-internal protocol AddableOverlay {
-    associatedtype OverlayType: NMFOverlay
-
+internal protocol AddableOverlay: LazyOrAddableOverlay {
+    override associatedtype OverlayType: NMFOverlay = NMFOverlay
+    
     var info: NOverlayInfo { get }
     
     var overlayPayload: Dictionary<String, Any?> { get set }
-
-    func createMapOverlay() -> OverlayType
-
+    
+    override func createMapOverlay() -> OverlayType
+    
+    func applyAtRawOverlay(_ overlay: OverlayType) -> OverlayType
+    
     static func fromMessageable(_ v: Any) -> Self
 }
 
@@ -25,11 +27,19 @@ func asAddableOverlayFromMessageable(info: NOverlayInfo, json: Any) throws -> an
     case .pathOverlay: creator = NPathOverlay.fromMessageable
     case .multipartPathOverlay: creator = NMultipartPathOverlay.fromMessageable
     case .arrowheadPathOverlay: creator = NArrowheadPathOverlay.fromMessageable
-    case .locationOverlay: throw NSError()
+    case .locationOverlay: throw NSError(domain: "asAddableOverlay", code: 0, userInfo: [NSLocalizedDescriptionKey: "LocationOverlay can not be created from json"])
+    case .clusterableMarker: throw NSError(domain: "asAddableOverlay", code: 0, userInfo: [NSLocalizedDescriptionKey: "ClusterableMarker is not addableOverlay"])
     }
-    var addableOverlay = creator(d)
-    addableOverlay.setCommonProperties(rawArgs: d)
-    return addableOverlay
+    return asAddableOverlayFromMessageableCorrector(json: d, creator: creator)
+}
+
+func asAddableOverlayFromMessageableCorrector(
+    json: Dictionary<String, Any>,
+    creator: (Any) -> any AddableOverlay
+) -> any AddableOverlay {
+    var overlay = creator(json)
+    overlay.setCommonProperties(rawArgs: json)
+    return overlay
 }
 
 internal extension AddableOverlay {
@@ -57,7 +67,7 @@ extension NMFLocationOverlay {
             Self.subIconSizeName: NSize(width: subIconWidth, height: subIconHeight).toMessageable(),
         ].merging(overlayToMessageable(self), uniquingKeysWith: { $1 })
     }
-
+    
     private static let anchorName = "anchor"
     private static let circleColorName = "circleColor"
     private static let circleOutlineColorName = "circleOutlineColor"

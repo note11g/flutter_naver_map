@@ -27,6 +27,10 @@ internal struct NMarker: AddableOverlay {
 
     func createMapOverlay() -> OverlayType {
         let marker = NMFMarker()
+        return applyAtRawOverlay(marker)
+    }
+    
+    func applyAtRawOverlay(_ marker: NMFMarker) -> NMFMarker {
         marker.position = position
         if let icon = icon {
             marker.iconImage = icon.overlayImage

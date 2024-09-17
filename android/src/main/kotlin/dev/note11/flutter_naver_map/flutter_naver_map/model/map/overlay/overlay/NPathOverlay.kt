@@ -3,7 +3,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import androidx.annotation.ColorInt
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.PathOverlay
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asBoolean
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asInt
@@ -32,7 +32,9 @@ internal data class NPathOverlay(
 ) : AddableOverlay<PathOverlay>() {
 
 
-    override fun createMapOverlay(): PathOverlay = PathOverlay().also { g ->
+    override fun createMapOverlay(): PathOverlay = applyAtRawOverlay(PathOverlay())
+
+    override fun applyAtRawOverlay(overlay: PathOverlay) = overlay.also { g ->
         g.coords = coords
         g.width = DisplayUtil.dpToPx(widthDp)
         g.color = color

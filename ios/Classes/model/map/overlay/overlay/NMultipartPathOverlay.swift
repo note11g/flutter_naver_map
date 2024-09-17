@@ -17,6 +17,10 @@ internal struct NMultipartPathOverlay: AddableOverlay {
 
     func createMapOverlay() -> OverlayType {
         let overlay = NMFMultipartPath()
+        return applyAtRawOverlay(overlay)
+    }
+    
+    func applyAtRawOverlay(_ overlay: NMFMultipartPath) -> NMFMultipartPath {
         paths.applyLineAndColor(linePartsFun: { overlay.lineParts = $0 }, colorPartsFun: { overlay.colorParts = $0 })
         overlay.width = width
         overlay.outlineWidth = outlineWidth

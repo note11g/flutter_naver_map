@@ -4,7 +4,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'flutter_naver_map'
-  s.version          = '1.2.3'
+
+  s.version          = '1.3.0'
   s.summary          = 'flutter naver map plugin'
   s.description      = <<-DESC
 flutter naver map plugin

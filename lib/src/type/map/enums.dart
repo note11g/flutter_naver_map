@@ -17,6 +17,9 @@ enum NMapType with NMessageableWithEnum {
   /// 위성 지도와 기본 지도를 겹쳐서 한번에 볼 수 있는 혼합 지도입니다.
   hybrid,
 
+  /// 위성 지도와 네비게이션 지도를 겹쳐서 한번에 볼 수 있는 혼합 지도입니다.
+  naviHybrid,
+
   /// 지형도입니다.
   terrain,
   none
@@ -122,7 +125,8 @@ enum NOverlayType with NMessageableWithEnum {
   pathOverlay._("pa"),
   multipartPathOverlay._("mp"),
   arrowheadPathOverlay._("ah"),
-  locationOverlay._("lo");
+  locationOverlay._("lo"),
+  clusterableMarker._("cm");
 
   @override
   final String payload;

@@ -41,13 +41,16 @@ class _NOverlayExampleState extends State<NOverlayExample> {
     final cameraPosition = mapController.nowCameraPosition;
     final overlay = NOverlayMakerUtil.makeOverlay(
         type: willCreateOverlayType, cameraPosition: cameraPosition);
-    overlay.setOnTapListener((overlay) {
-      final latLng = cameraPosition.target;
-      mapController.latLngToScreenLocation(latLng).then((point) =>
-          addFlutterFloatingOverlay(
-              point: point, overlay: overlay, latLng: latLng));
-    });
-    mapController.addOverlay(overlay);
+    final latLng = cameraPosition.target;
+    for (final o in overlay) {
+      final position = o is NClusterableMarker ? o.position : latLng;
+      o.setOnTapListener((overlay) {
+        mapController.latLngToScreenLocation(position).then((point) =>
+            addFlutterFloatingOverlay(
+                point: point, overlay: overlay, latLng: latLng));
+      });
+    }
+    mapController.addOverlayAll(overlay.toSet());
   }
 
   void addFlutterFloatingOverlay({
@@ -165,6 +168,7 @@ extension NOverlayTypeExtension on NOverlayType {
       NOverlayType.multipartPathOverlay => "경로(멀티파트) 오버레이",
       NOverlayType.arrowheadPathOverlay => "경로(화살표) 오버레이",
       NOverlayType.locationOverlay => "위치 오버레이",
+      NOverlayType.clusterableMarker => "클러스터블 마커 25개"
     };
   }
 }
@@ -185,7 +189,7 @@ extension NOverlayInfoExtension on NOverlayInfo {
 }
 
 class NOverlayMakerUtil {
-  static NAddableOverlay makeOverlay({
+  static List<NAddableOverlay> makeOverlay({
     required NOverlayType type,
     required NCameraPosition cameraPosition,
     String? id,
@@ -210,47 +214,72 @@ class NOverlayMakerUtil {
 
     switch (type) {
       case NOverlayType.marker:
-        return NMarker(id: overlayId, position: point);
+        return [NMarker(id: overlayId, position: point)];
       case NOverlayType.infoWindow:
-        return NInfoWindow.onMap(
-            id: overlayId, position: point, text: '인포 윈도우');
+        return [
+          NInfoWindow.onMap(id: overlayId, position: point, text: '인포 윈도우')
+        ];
       case NOverlayType.circleOverlay:
-        return NCircleOverlay(
-            id: overlayId,
-            center: point,
-            color: Colors.green.withOpacity(0.3),
-            radius: 100,
-            outlineColor: Colors.greenAccent,
-            outlineWidth: 2);
+        return [
+          NCircleOverlay(
+              id: overlayId,
+              center: point,
+              color: Colors.green.withOpacity(0.3),
+              radius: 100,
+              outlineColor: Colors.greenAccent,
+              outlineWidth: 2)
+        ];
       case NOverlayType.groundOverlay:
         final bounds = NLatLngBounds(
             southWest: point,
             northEast: point.offsetByMeter(northMeter: 422, eastMeter: 818));
         print(bounds);
         const img = NOverlayImage.fromAssetImage('assets/ground_img.png');
-        return NGroundOverlay(
-            id: overlayId, bounds: bounds, image: img, alpha: 1);
+        return [
+          NGroundOverlay(id: overlayId, bounds: bounds, image: img, alpha: 1)
+        ];
       case NOverlayType.polygonOverlay:
-        return NPolygonOverlay(
-            id: overlayId,
-            coords: heartCoords,
-            color: Colors.redAccent.withOpacity(0.5));
+        return [
+          NPolygonOverlay(
+              id: overlayId,
+              coords: heartCoords,
+              color: Colors.redAccent.withOpacity(0.5))
+        ];
       case NOverlayType.polylineOverlay:
-        return NPolylineOverlay(
-            id: overlayId, coords: heartCoords, color: Colors.red);
+        return [
+          NPolylineOverlay(
+              id: overlayId, coords: heartCoords, color: Colors.red)
+        ];
       case NOverlayType.pathOverlay:
-        return NPathOverlay(
-            id: overlayId, coords: pathCoords, color: Colors.green);
+        return [
+          NPathOverlay(id: overlayId, coords: pathCoords, color: Colors.green)
+        ];
       case NOverlayType.multipartPathOverlay:
-        return NMultipartPathOverlay(id: overlayId, paths: [
-          NMultipartPath(coords: pathCoords, color: Colors.amber),
-          NMultipartPath(coords: secondPathCoords, color: Colors.redAccent)
-        ]);
+        return [
+          NMultipartPathOverlay(id: overlayId, paths: [
+            NMultipartPath(coords: pathCoords, color: Colors.amber),
+            NMultipartPath(coords: secondPathCoords, color: Colors.redAccent)
+          ])
+        ];
       case NOverlayType.arrowheadPathOverlay:
-        return NArrowheadPathOverlay(
-            id: overlayId, coords: pathCoords, color: Colors.purple);
+        return [
+          NArrowheadPathOverlay(
+              id: overlayId, coords: pathCoords, color: Colors.purple)
+        ];
       case NOverlayType.locationOverlay:
         throw Exception("locationOverlay is not supported");
+      case NOverlayType.clusterableMarker:
+        return [
+          for (int i = 0; i < 5; i++)
+            for (int j = 0, c = (i * 5 + 1); j < 5; j++, c++)
+              NClusterableMarker(
+                id: "${overlayId}_$c",
+                position:
+                    point.offsetByMeter(northMeter: i * -80, eastMeter: j * 80),
+                caption: NOverlayCaption(text: "$c"),
+                iconTintColor: Colors.blueAccent,
+              )
+        ];
     }
   }
 
