@@ -65,6 +65,16 @@ class _FNMapPageState extends State<FNMapPage> {
     return NaverMap(
       key: _mapKey,
       options: options.copyWith(contentPadding: mapPadding),
+      clusterOptions: NaverMapClusteringOptions(
+          clusterMarkerBuilder: (info, clusterMarker) {
+        print("[flutter] clusterMarkerBuilder: $info");
+        if (clusterIcon != null) clusterMarker.setIcon(clusterIcon!);
+        clusterMarker.setIsFlat(true);
+        clusterMarker.setCaption(NOverlayCaption(
+            text: info.size.toString(),
+            color: Colors.white,
+            haloColor: Colors.blueAccent));
+      }),
       onMapReady: onMapReady,
       onMapTapped: onMapTapped,
       onSymbolTapped: onSymbolTapped,
@@ -83,6 +93,31 @@ class _FNMapPageState extends State<FNMapPage> {
 
   void onMapTapped(NPoint point, NLatLng latLng) async {
     // ...
+    // temp examples
+    final coordData = <NLatLng>[];
+    for (int xMeter = 0; xMeter < 200; xMeter++) {
+      for (int yMeter = 0; yMeter < 100; yMeter++) {
+        final c = latLng.offsetByMeter(
+            eastMeter: xMeter.toDouble() * 100,
+            northMeter: -yMeter.toDouble() * 100);
+        coordData.add(c);
+      }
+    }
+
+    print("${coordData.length}개 마커 추가");
+
+    final markerData =
+        coordData.asMap().entries.map((entry) => NClusterableMarker(
+              id: 'marker_${entry.key}',
+              position: entry.value,
+              caption: NOverlayCaption(text: '${entry.key}'),
+              iconTintColor: Colors.green,
+            ));
+    final set = markerData.toSet();
+    final stopwatch = Stopwatch()..start();
+    await mapController.addOverlayAll(set);
+    stopwatch.stop();
+    print("마커 추가 소요 시간: ${stopwatch.elapsedMilliseconds}ms");
   }
 
   void onSymbolTapped(NSymbolInfo symbolInfo) {
@@ -102,12 +137,27 @@ class _FNMapPageState extends State<FNMapPage> {
     // ...
   }
 
+  NOverlayImage? clusterIcon;
+
   @override
   void initState() {
     GetIt.I.registerLazySingleton<Stream<NCameraUpdateReason>>(
         () => _onCameraChangeStreamController.stream);
     GetIt.I.registerLazySingleton(() => nOverlayInfoOverlayPortalController);
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      NOverlayImage.fromWidget(
+              widget: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: const BoxDecoration(
+                      color: Colors.blueAccent, shape: BoxShape.circle)),
+              size: const Size(40, 40),
+              context: context)
+          .then((value) {
+        clusterIcon = value;
+      });
+    });
   }
 
   /* ----- UI Size ----- */
