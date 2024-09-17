@@ -1,3 +1,10 @@
+## 1.3.0-dev.1
+- [All Platform] **change naver map sdk version to 3.19.1(Android) & 3.19.0(iOS)**
+- [All Platform] Add ClusterableMarker & Clustering Features
+- [All Platform] Add `NRange` API which is used for zoom range.
+- [All Platform] Support Webp Image format for `NOverlayImage`
+- [All Platform] Add `NCameraUpdateReason.contentPadding` triggered by onCameraChange when `NaverMapViewOptions.contentPadding` changed
+
 ## 1.2.3+1
 - [iOS] Update podspec file
 - [Chore] Update README.MD
