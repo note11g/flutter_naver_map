@@ -103,7 +103,10 @@ enum NCameraUpdateReason with NMessageableWithEnum {
   control._(-2),
 
   /// 사용자 위치 추적 기능에 의해 이동함을 의미합니다. ([NaverMapController.setLocationTrackingMode])
-  location._(-3);
+  location._(-3),
+
+  /// 콘텐츠 패딩의 변경에 의해 카메라가 이동함을 의미합니다.
+  contentPadding._(-4);
 
   @override
   final int payload;

@@ -1,5 +1,6 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.applier.option
 
+import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.NaverMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asBoolean
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
@@ -132,7 +133,9 @@ class NaverMapApplierImpl(
 
     override fun setContentPadding(rawEdgeInsets: Any) {
         val nEdgeInsets = NEdgeInsets.fromMessageable(rawEdgeInsets)
-        nEdgeInsets.use(naverMap::setContentPadding)
+        nEdgeInsets.use { l, t, r, b ->
+            naverMap.setContentPadding(l, t, r, b, false, CameraUpdate.REASON_CONTENT_PADDING)
+        }
     }
 
     override fun setMinZoom(rawLevel: Any) {
