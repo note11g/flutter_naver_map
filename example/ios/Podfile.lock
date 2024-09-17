@@ -2,11 +2,11 @@ PODS:
   - Flutter (1.0.0)
   - flutter_naver_map (1.3.0):
     - Flutter
-    - NMapsMap (= 3.18.0)
+    - NMapsMap (= 3.18.1)
   - integration_test (0.0.1):
     - Flutter
-  - NMapsGeometry (1.0.1)
-  - NMapsMap (3.18.0):
+  - NMapsGeometry (1.0.2)
+  - NMapsMap (3.18.1):
     - NMapsGeometry
   - path_provider_foundation (0.0.1):
     - Flutter
@@ -42,8 +42,8 @@ SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_naver_map: f9661aa502b7cf014e286339662b904dda925143
   integration_test: 252f60fa39af5e17c3aa9899d35d908a0721b573
-  NMapsGeometry: 53c573ead66466681cf123f99f698dc8071a4b83
-  NMapsMap: 36dc18a1f5f315121b33fccd2398c7a702bf0fc8
+  NMapsGeometry: 4e02554fa9880ef02ed96b075dc84355d6352479
+  NMapsMap: e879088eeee2d1e3b97f0a609076e1824dce2cad
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
 

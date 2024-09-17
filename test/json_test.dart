@@ -2,7 +2,7 @@ import "package:flutter_naver_map/flutter_naver_map.dart";
 import "package:flutter_test/flutter_test.dart";
 
 void main() {
-  test("type test", () {
+  test("option type test", () {
     const option = NaverMapViewOptions(activeLayerGroups: [
       NLayerGroup.transit,
       NLayerGroup.bicycle,
