@@ -66,20 +66,20 @@ class _FNMapPageState extends State<FNMapPage> {
       key: _mapKey,
       options: options.copyWith(contentPadding: mapPadding),
       clusterOptions: NaverMapClusteringOptions(
-        mergeStrategy: const NClusterMergeStrategy(
-          willMergedScreenDistance: {
-            NaverMapClusteringOptions.defaultClusteringZoomRange: 35,
-          },
-        ),
+          mergeStrategy: const NClusterMergeStrategy(
+            willMergedScreenDistance: {
+              NaverMapClusteringOptions.defaultClusteringZoomRange: 35,
+            },
+          ),
           clusterMarkerBuilder: (info, clusterMarker) {
-        print("[flutter] clusterMarkerBuilder: $info");
-        if (clusterIcon != null) clusterMarker.setIcon(clusterIcon!);
-        clusterMarker.setIsFlat(true);
-        clusterMarker.setCaption(NOverlayCaption(
-            text: info.size.toString(),
-            color: Colors.white,
-            haloColor: Colors.blueAccent));
-      }),
+            print("[flutter] clusterMarkerBuilder: $info");
+            if (clusterIcon != null) clusterMarker.setIcon(clusterIcon!);
+            clusterMarker.setIsFlat(true);
+            clusterMarker.setCaption(NOverlayCaption(
+                text: info.size.toString(),
+                color: Colors.white,
+                haloColor: Colors.blueAccent));
+          }),
       onMapReady: onMapReady,
       onMapTapped: onMapTapped,
       onSymbolTapped: onSymbolTapped,

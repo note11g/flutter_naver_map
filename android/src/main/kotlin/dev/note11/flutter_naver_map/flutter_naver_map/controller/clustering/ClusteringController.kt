@@ -81,7 +81,6 @@ internal class ClusteringController(
                 viewInvalidator.invoke()
             } finally {
                 nowViewInvalidationRunnable = null
-                Log.d("ClusteringController", "invalidated!")
             }
         }
         nowHandler.postDelayed(nowViewInvalidationRunnable!!, afterAnimationInvalidateDelay)
@@ -96,7 +95,6 @@ internal class ClusteringController(
         clusterer.addAll(markersWithTag)
         updateClusterer()
         clusterableMarkers.putAll(markersWithTag)
-        Log.d("ClusteringController", "클러스터블 마커 추가: $markers")
     }
 
     fun deleteClusterableMarker(overlayInfo: NOverlayInfo) {
@@ -105,7 +103,6 @@ internal class ClusteringController(
         clusterer.remove(clusterOverlayInfo)
         overlayController.deleteOverlay(overlayInfo)
         updateClusterer()
-        Log.d("ClusteringController", "클러스터블 마커 삭제: $overlayInfo")
     }
 
     fun clearClusterableMarker() {
@@ -113,7 +110,6 @@ internal class ClusteringController(
         clusterer.clear()
         overlayController.clearOverlays(NOverlayType.CLUSTERABLE_MARKER)
         updateClusterer()
-        Log.d("ClusteringController", "클러스터블 마커 전체 삭제")
     }
 
     private fun onClusterMarkerUpdate(

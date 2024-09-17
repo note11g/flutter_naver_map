@@ -37,7 +37,7 @@ internal class NaverMapController(
     private val channel: MethodChannel,
     private val applicationContext: Context,
     private val overlayController: OverlayHandler,
-    private val viewInvalidator: () -> Unit,
+    viewInvalidator: () -> Unit,
 ) : NaverMapControlSender, NaverMapControlHandler {
     private var naverMapViewOptions: NaverMapViewOptions? = null
     private val clusteringController =

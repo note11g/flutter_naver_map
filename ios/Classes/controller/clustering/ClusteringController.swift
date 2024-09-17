@@ -64,7 +64,6 @@ internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThreshol
         clusterer?.addAll(markersWithTag)
         clusterableMarkers.merge(markersWithTag, uniquingKeysWith: { $1 })
         updateClusterer()
-        print("클러스터블 마커 추가: \(markers)")
     }
     
     func deleteClusterableMarker(_ overlayInfo: NOverlayInfo) {
@@ -73,7 +72,6 @@ internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThreshol
         overlayController.deleteOverlay(info: overlayInfo)
         clusterer?.remove(clusterableOverlayInfo) // if needed use callback
         updateClusterer()
-        print("클러스터블 마커 삭제: \(overlayInfo)")
     }
     
     func clearClusterableMarker() {
@@ -81,7 +79,6 @@ internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThreshol
         overlayController.clearOverlays(type: .clusterableMarker)
         clusterer?.clear()
         updateClusterer()
-        print("클러스터블 마커 전체 삭제 \(String(describing: clusterer?.empty))")
     }
     
     private func onClusterMarkerUpdate(_ clusterMarkerInfo: NMCClusterMarkerInfo, _ marker: NMFMarker) {
