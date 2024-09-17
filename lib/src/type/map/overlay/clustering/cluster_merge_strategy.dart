@@ -60,7 +60,7 @@ class NClusterMergeStrategy with NMessageableWithMap {
     this.maxMergeableScreenDistance = 70,
     this.willMergedScreenDistance = const {},
     // this.minClusterChildCount = 2,
-  })/*: assert(minClusterChildCount >= 2)*/;
+  }) /*: assert(minClusterChildCount >= 2)*/;
 
   @override
   NPayload toNPayload() => NPayload.make({
@@ -85,7 +85,7 @@ class NClusterMergeStrategy with NMessageableWithMap {
         willMergedScreenDistance:
             willMergedScreenDistance ?? this.willMergedScreenDistance,
         maxMergeableScreenDistance:
-        maxMergeableScreenDistance ?? this.maxMergeableScreenDistance,
+            maxMergeableScreenDistance ?? this.maxMergeableScreenDistance,
         // minClusterChildCount: minClusterChildCount ?? this.minClusterChildCount,
       );
 
@@ -100,16 +100,15 @@ class NClusterMergeStrategy with NMessageableWithMap {
           //     other.mergeByEachTagEnableZoomRanges &&
           willMergedScreenDistance == other.willMergedScreenDistance &&
           maxMergeableScreenDistance == other.maxMergeableScreenDistance
-          // && minClusterChildCount == other.minClusterChildCount
-  ;
+      // && minClusterChildCount == other.minClusterChildCount
+      ;
 
   @override
   int get hashCode =>
       // mergeByEachTagEnableZoomRanges.hashCode ^
-      willMergedScreenDistance.hashCode ^
-      maxMergeableScreenDistance.hashCode
+      willMergedScreenDistance.hashCode ^ maxMergeableScreenDistance.hashCode
       // ^ minClusterChildCount.hashCode
-  ;
+      ;
 
 //endregion
 }

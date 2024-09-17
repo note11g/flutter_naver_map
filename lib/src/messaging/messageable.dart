@@ -62,9 +62,15 @@ class NPayload {
     return switch (value) {
       NMessageable() => value.payload,
       List() => value.map((e) => convertToMessageable(e!)).toList(),
-      Map<String, dynamic>() => value.map((k, v) => MapEntry(k, convertToMessageable(v))),
-      Map<NMessageable, dynamic>() => value.map((k, v) => MapEntry(k.payload, convertToMessageable(v))),
-      Locale() || EdgeInsets() || Size() || Color() => _convertFlutterTypes(value),
+      Map<String, dynamic>() =>
+        value.map((k, v) => MapEntry(k, convertToMessageable(v))),
+      Map<NMessageable, dynamic>() =>
+        value.map((k, v) => MapEntry(k.payload, convertToMessageable(v))),
+      Locale() ||
+      EdgeInsets() ||
+      Size() ||
+      Color() =>
+        _convertFlutterTypes(value),
       _ => throw ArgumentError.value(value),
     };
   }
