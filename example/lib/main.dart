@@ -93,31 +93,6 @@ class _FNMapPageState extends State<FNMapPage> {
 
   void onMapTapped(NPoint point, NLatLng latLng) async {
     // ...
-    // temp examples
-    final coordData = <NLatLng>[];
-    for (int xMeter = 0; xMeter < 200; xMeter++) {
-      for (int yMeter = 0; yMeter < 100; yMeter++) {
-        final c = latLng.offsetByMeter(
-            eastMeter: xMeter.toDouble() * 100,
-            northMeter: -yMeter.toDouble() * 100);
-        coordData.add(c);
-      }
-    }
-
-    print("${coordData.length}개 마커 추가");
-
-    final markerData =
-        coordData.asMap().entries.map((entry) => NClusterableMarker(
-              id: 'marker_${entry.key}',
-              position: entry.value,
-              caption: NOverlayCaption(text: '${entry.key}'),
-              iconTintColor: Colors.green,
-            ));
-    final set = markerData.toSet();
-    final stopwatch = Stopwatch()..start();
-    await mapController.addOverlayAll(set);
-    stopwatch.stop();
-    print("마커 추가 소요 시간: ${stopwatch.elapsedMilliseconds}ms");
   }
 
   void onSymbolTapped(NSymbolInfo symbolInfo) {
@@ -146,6 +121,9 @@ class _FNMapPageState extends State<FNMapPage> {
     GetIt.I.registerLazySingleton(() => nOverlayInfoOverlayPortalController);
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      // 고정된 이미지라면, NOverlayImage.fromAsset 혹은 NOverlayImage.fromFile 을 사용하는 것이 좋습니다.
+      // fromWidget은 비용이 비싸기 때문에, 되도록 사용하지 않되, 사용할 경우 미리 생성해둔 하나의 객체를 사용하는 것이 좋습니다.
+      // 예제에서는, 패키지의 용량을 줄이기 위해 이렇게 생성합니다.
       NOverlayImage.fromWidget(
               widget: Container(
                   width: 40,
