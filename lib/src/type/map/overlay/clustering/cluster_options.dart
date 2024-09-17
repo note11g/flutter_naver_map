@@ -83,14 +83,15 @@ class NaverMapClusteringOptions with NMessageableWithMap {
           runtimeType == other.runtimeType &&
           enableZoomRange == other.enableZoomRange &&
           animationDuration == other.animationDuration &&
-          mergeStrategy == other.mergeStrategy &&
-          clusterMarkerBuilder == other.clusterMarkerBuilder;
+          mergeStrategy == other.mergeStrategy;
+
+  // clusterMarkerBuilder is Unstable for equality (lambda)
 
   @override
   int get hashCode =>
       enableZoomRange.hashCode ^
       animationDuration.hashCode ^
-      mergeStrategy.hashCode ^
-      clusterMarkerBuilder.hashCode;
+      mergeStrategy.hashCode;
+// clusterMarkerBuilder is Unstable for equality (lambda)
 //endregion
 }
