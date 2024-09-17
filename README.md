@@ -1,7 +1,7 @@
 # flutter_naver_map
 
 [![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=4285F4)](https://pub.dev/packages/flutter_naver_map)
-[![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=00B352&include_prereleases)](https://pub.dev/packages/flutter_naver_map/versions/1.3.0-beta.1)
+[![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=00B352&include_prereleases)](https://pub.dev/packages/flutter_naver_map/versions/1.3.0-beta.2)
 [![github](https://img.shields.io/github/stars/note11g/flutter_naver_map)](https://github.com/note11g/flutter_naver_map)
 
 <a href="https://note11.dev/flutter_naver_map" alt="go to documentation page"><img src="https://github.com/note11g/flutter_naver_map/assets/67783062/72307493-2498-4e29-b6a4-232e0db8a05b"/></a>
@@ -17,13 +17,13 @@
 
 ## 1.3.0 Pre-Release
 
-[![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=00B352&include_prereleases)](https://pub.dev/packages/flutter_naver_map/versions/1.3.0-beta.1)
+[![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=00B352&include_prereleases)](https://pub.dev/packages/flutter_naver_map/versions/1.3.0-beta.2)
 
 해당 릴리즈는 `1.3.0`의 베타 버전입니다.
 
 9월 중으로 테스트를 진행하며, 정식버전은 마지막주~10월 초에 배포할 예정입니다.
 
-주요 기능은 [변경 사항 노트](https://github.com/note11g/flutter_naver_map/blob/main/CHANGELOG.md#130-beta1)를 참고하세요.
+주요 기능은 [변경 사항 노트](https://github.com/note11g/flutter_naver_map/blob/dev/1.3.0/CHANGELOG.md#130-beta1)를 참고하세요.
 
 ## Version Up Guide
 
