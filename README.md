@@ -1,6 +1,7 @@
 # flutter_naver_map
 
 [![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=4285F4)](https://pub.dev/packages/flutter_naver_map)
+[![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=00B352&include_prereleases)](https://pub.dev/packages/flutter_naver_map/versions#prerelease)
 [![github](https://img.shields.io/github/stars/note11g/flutter_naver_map)](https://github.com/note11g/flutter_naver_map)
 
 <a href="https://note11.dev/flutter_naver_map" alt="go to documentation page"><img src="https://github.com/note11g/flutter_naver_map/assets/67783062/72307493-2498-4e29-b6a4-232e0db8a05b"/></a>
