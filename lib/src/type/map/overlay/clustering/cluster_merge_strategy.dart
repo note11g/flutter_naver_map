@@ -20,9 +20,9 @@ class NClusterMergeStrategy with NMessageableWithMap {
   ///
   /// 줌 레벨에 따라 다른 거리를 지정할 수 있습니다.
   ///
-  /// 기본 값은 모든 줌 범위에서 70dp 미만의 마커는 병합한다는 전략을 뜻하는 `{NaverMapClusteringOptions.defaultClusteringZoomRange: 70.0}` 입니다.
-  ///
   /// 지정되지 않은 범위의 경우, 기본 값이 적용됩니다. (70dp)
+  ///
+  /// 기본 값은 모든 줌 범위에서 거리가 70dp 미만의 마커는 병합한다는 기본 전략을 뜻하는 `{}` 입니다.
   ///
   /// example
   ///
@@ -58,7 +58,7 @@ class NClusterMergeStrategy with NMessageableWithMap {
   const NClusterMergeStrategy({
     // this.mergeByEachTagEnableZoomRanges = const {},
     this.maxMergeableScreenDistance = 70,
-    this.willMergedScreenDistance = const {NaverMapClusteringOptions.defaultClusteringZoomRange: 70.0},
+    this.willMergedScreenDistance = const {},
     // this.minClusterChildCount = 2,
   })/*: assert(minClusterChildCount >= 2)*/;
 
