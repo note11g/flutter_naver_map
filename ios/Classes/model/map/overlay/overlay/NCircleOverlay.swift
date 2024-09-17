@@ -13,6 +13,10 @@ internal struct NCircleOverlay: AddableOverlay {
 
     func createMapOverlay() -> OverlayType {
         let overlay = NMFCircleOverlay(center, radius: radius)
+        return applyAtRawOverlay(overlay)
+    }
+    
+    func applyAtRawOverlay(_ overlay: NMFCircleOverlay) -> NMFCircleOverlay {
         overlay.fillColor = color
         overlay.outlineColor = outlineColor
         overlay.outlineWidth = outlineWidth

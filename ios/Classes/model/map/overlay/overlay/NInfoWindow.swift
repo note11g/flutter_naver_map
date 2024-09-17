@@ -14,6 +14,10 @@ internal struct NInfoWindow: AddableOverlay {
 
     func createMapOverlay() -> OverlayType {
         let infoWindow = NMFInfoWindow()
+        return applyAtRawOverlay(infoWindow)
+    }
+    
+    func applyAtRawOverlay(_ infoWindow: NMFInfoWindow) -> NMFInfoWindow {
         infoWindow.dataSource = NInfoWindow.createTextSource(text);
         infoWindow.anchor = anchor.cgPoint
         infoWindow.alpha = alpha

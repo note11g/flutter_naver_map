@@ -39,6 +39,20 @@ internal func asDict<T>(_ v: Any, valueCaster: (Any) throws -> T) -> Dictionary<
     return newDict
 }
 
+internal func asStringDict(_ v: Any) -> Dictionary<String, String> {
+    v as! Dictionary<String, String>
+}
+
+internal func asDictWithObjectKey<K, V>(_ v: Any, keyCaster: (Dictionary<String, Any>) throws -> K, valueCaster: (Any) throws -> V) -> Dictionary<K, V> {
+    let dict = v as! Dictionary<AnyHashable, Any>
+    var newDict: Dictionary<K, V> = [:]
+    for (rawK, v) in dict {
+        let k = try! keyCaster(rawK as! Dictionary<String, Any>)
+        newDict[k] = try! valueCaster(v)
+    }
+    return newDict
+}
+
 internal func asArr<T>(_ v: Any, elementCaster: (Any) throws -> T) -> Array<T> {
     let list = v as! Array<Any>
     return try! list.map(elementCaster)

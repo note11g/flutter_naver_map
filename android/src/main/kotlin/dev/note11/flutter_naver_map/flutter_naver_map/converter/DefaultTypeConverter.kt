@@ -10,6 +10,12 @@ internal object DefaultTypeConverter {
     fun Any.asMap(): Map<String, Any> = this as Map<String, Any>
 
     @Suppress("UNCHECKED_CAST")
+    fun Any.asStringMap(): Map<String, String> = this as Map<String, String>
+
+    @Suppress("UNCHECKED_CAST")
+    fun Any.asObjectKeyMap(): Map<Any, Any> = this as Map<Any, Any>
+
+    @Suppress("UNCHECKED_CAST")
     fun <T> Any.asList(elementCaster: ((Any) -> T)? = null): List<T> =
         if (elementCaster == null) this as List<T>
         else (this as List<Any>).map(elementCaster)

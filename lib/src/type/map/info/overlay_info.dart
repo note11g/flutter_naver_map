@@ -33,7 +33,7 @@ class NOverlayInfo with NMessageableWithMap implements NPickableInfo {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is NOverlayInfo &&
-          runtimeType == other.runtimeType &&
+          // runtimeType check pass (subclasses support needed)
           type == other.type &&
           id == other.id;
 

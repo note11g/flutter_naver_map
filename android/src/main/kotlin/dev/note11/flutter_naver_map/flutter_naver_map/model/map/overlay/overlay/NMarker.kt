@@ -3,7 +3,6 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.Align
 import com.naver.maps.map.overlay.Marker
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asBoolean
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asFloat
@@ -12,8 +11,8 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asAlign
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
-import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
-import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NSize
+import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
+import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NSize
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayCaption
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayImage
@@ -42,7 +41,9 @@ internal data class NMarker(
     val isHideCollidedSymbols: Boolean,
 ) : AddableOverlay<Marker>() {
 
-    override fun createMapOverlay(): Marker = Marker(position).also { m ->
+    override fun createMapOverlay(): Marker = applyAtRawOverlay(Marker(position))
+
+    override fun applyAtRawOverlay(overlay: Marker): Marker = overlay.also { m ->
         icon?.applyToOverlay(m::setIcon)
         m.iconTintColor = iconTintColor
         m.alpha = alpha

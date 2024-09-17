@@ -9,4 +9,14 @@ enum NOverlayType: String {
     case multipartPathOverlay = "mp"
     case arrowheadPathOverlay = "ah"
     case locationOverlay = "lo"
+    case clusterableMarker = "cm"
+    
+    var isLazy: Bool {
+        switch(self) {
+        case .clusterableMarker:
+            true
+        default:
+            false
+        }
+    }
 }

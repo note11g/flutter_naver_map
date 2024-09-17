@@ -13,9 +13,9 @@ part of "../../../flutter_naver_map.dart";
 /// ( range <= 7 ) => `NMapRange(null, 7)`
 ///
 @immutable
-class NRange with NMessageableWithMap {
-  final double? min;
-  final double? max;
+class NRange<T extends num> with NMessageableWithMap {
+  final T? min;
+  final T? max;
   final bool includeMin;
   final bool includeMax;
 
@@ -67,7 +67,8 @@ class NRange with NMessageableWithMap {
     return minCompare && maxCompare;
   }
 
-  NRange? intersection(NRange other) {
+  @experimental
+  NRange<T>? intersection(NRange other) {
     final bool isDisjoint =
         (min != null && other.max != null && min! > other.max!) ||
             (min != null &&
@@ -84,12 +85,12 @@ class NRange with NMessageableWithMap {
       return null;
     }
 
-    final double? newMin = (min == null || other.min == null)
+    final T? newMin = ((min == null || other.min == null)
         ? min ?? other.min
-        : math.max(min!, other.min!);
-    final double? newMax = (max == null || other.max == null)
+        : math.max(min!, other.min!)) as T?;
+    final T? newMax = ((max == null || other.max == null)
         ? max ?? other.max
-        : math.min(max!, other.max!);
+        : math.min(max!, other.max!)) as T?;
 
     final bool newIncludeMin = newMin == min ? includeMin : other.includeMin;
     final bool newIncludeMax = newMax == max ? includeMax : other.includeMax;
@@ -98,7 +99,7 @@ class NRange with NMessageableWithMap {
         includeMin: newIncludeMin, includeMax: newIncludeMax);
   }
 
-  static const mapZoomRange = NRange(0, 21);
+  static const mapZoomRange = NInclusiveRange(0, 21);
 
   @override
   NPayload toNPayload() => NPayload.make({
@@ -109,7 +110,16 @@ class NRange with NMessageableWithMap {
       });
 }
 
-class NInclusiveRange extends NRange {
+/// 네이버 맵에서 특정 범위를 나타내는 객체입니다.
+///
+/// min <= Range <= max 를 나타냅니다.
+/// NInclusiveRange<int>일 경우, range는 정수로 판별됩니다.
+///
+/// e.g.) NInclusiveRange(1, 15)일 경우, 허용되는 값: 1<= N < 16
+/// (N이 실수일 경우, N.toInt() 된 값으로 판단되기 때문입니다.)
+///
+/// 주로, 줌 레벨의 범위를 나타낼 때 사용됩니다.
+class NInclusiveRange<T extends num> extends NRange<T> {
   const NInclusiveRange(super.min, super.max)
       : super(includeMin: true, includeMax: true);
 }

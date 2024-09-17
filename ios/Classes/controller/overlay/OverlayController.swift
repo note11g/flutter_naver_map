@@ -1,6 +1,6 @@
 import NMapsMap
 
-internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOverlayHandler, CircleOverlayHandler, GroundOverlayHandler, InfoWindowHandler, LocationOverlayHandler, MarkerHandler, MultipartPathOverlayHandler, PathOverlayHandler, PolygonOverlayHandler, PolylineOverlayHandler {
+internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOverlayHandler, CircleOverlayHandler, GroundOverlayHandler, InfoWindowHandler, LocationOverlayHandler, MarkerHandler, MultipartPathOverlayHandler, PathOverlayHandler, PolygonOverlayHandler, PolylineOverlayHandler, ClusterMarkerHandler, ClusterableMarkerHandler {
 
     private let channel: FlutterMethodChannel
 
@@ -88,7 +88,8 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
         let overlay = getOverlay(info: query.info)
 
         guard let overlay else {
-            result(FlutterError(code: "overlay_not_found", message: "overlay not found", details: nil))
+            if (query.info.type == .clusterableMarker) { return }
+            result(FlutterError(code: "overlay_not_found", message: call.method, details: nil))
             return
         }
 
@@ -108,6 +109,7 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
             case .multipartPathOverlay: overlayHandleFunc = handleMultipartPathOverlay
             case .arrowheadPathOverlay:overlayHandleFunc = handleArrowheadPathOverlay
             case .locationOverlay: overlayHandleFunc = handleLocationOverlay
+            case .clusterableMarker: overlayHandleFunc = handleClusterableMarker
             }
             overlayHandleFunc(overlay, query.methodName, call.arguments, result)
         }
@@ -601,6 +603,16 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
     func getBounds(_ arrowheadPathOverlay: NMFArrowheadPath, success: (Dictionary<String, Any>) -> ()) {
         let bounds = NMGLatLngBounds(latLngs: arrowheadPathOverlay.points)
         success(bounds.toMessageable())
+    }
+        
+    /* ----- Cluster Marker handler ----- */
+        
+    func syncClusterMarker(_ marker: NMFMarker, rawClusterMarker: Any, success: (Any?) -> ()) {
+        let dictData = asDict(rawClusterMarker)
+        let clusterMarker: NMarker = asAddableOverlayFromMessageableCorrector(json: dictData, creator: NMarker.fromMessageable) as! NMarker
+        _ = clusterMarker.applyAtRawOverlay(marker)
+        marker.hidden = false
+        success(nil)
     }
 
     /*

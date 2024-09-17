@@ -40,7 +40,8 @@ class WidgetToImageUtil {
     final renderView = RenderView(
         view: view,
         configuration: ViewConfiguration(
-            size: size, devicePixelRatio: view.devicePixelRatio),
+            logicalConstraints: BoxConstraints.tight(size),
+            devicePixelRatio: view.devicePixelRatio),
         child: renderPositionedBox);
 
     final pipelineOwner = PipelineOwner()..rootNode = renderView;

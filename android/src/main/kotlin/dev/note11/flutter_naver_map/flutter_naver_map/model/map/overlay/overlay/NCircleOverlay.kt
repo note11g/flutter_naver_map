@@ -3,7 +3,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import androidx.annotation.ColorInt
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.CircleOverlay
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asInt
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
@@ -20,7 +20,9 @@ internal data class NCircleOverlay(
     val outlineWidthDp: Double,
 ) : AddableOverlay<CircleOverlay>() {
 
-    override fun createMapOverlay(): CircleOverlay = CircleOverlay().also { c ->
+    override fun createMapOverlay(): CircleOverlay = applyAtRawOverlay(CircleOverlay())
+
+    override fun applyAtRawOverlay(overlay: CircleOverlay) = overlay.also { c ->
         c.center = center
         c.radius = radius
         c.color = color

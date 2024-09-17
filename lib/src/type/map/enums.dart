@@ -125,7 +125,8 @@ enum NOverlayType with NMessageableWithEnum {
   pathOverlay._("pa"),
   multipartPathOverlay._("mp"),
   arrowheadPathOverlay._("ah"),
-  locationOverlay._("lo");
+  locationOverlay._("lo"),
+  clusterableMarker._("cm");
 
   @override
   final String payload;
