@@ -37,9 +37,11 @@ internal class NaverMapController(
     private val channel: MethodChannel,
     private val applicationContext: Context,
     private val overlayController: OverlayHandler,
+    private val viewInvalidator: () -> Unit,
 ) : NaverMapControlSender, NaverMapControlHandler {
     private var naverMapViewOptions: NaverMapViewOptions? = null
-    private val clusteringController = ClusteringController(naverMap, overlayController, channel::invokeMethod)
+    private val clusteringController =
+        ClusteringController(naverMap, overlayController, channel::invokeMethod, viewInvalidator)
 
     init {
         overlayController.initializeLocationOverlay(naverMap.locationOverlay)
@@ -182,6 +184,7 @@ internal class NaverMapController(
                     val overlay = overlayController.saveOverlayWithAddable(nOverlay)
                     overlay.map = naverMap
                 }
+
                 is NClusterableMarker -> clusterableMarkers.add(nOverlay)
                 else -> throw IllegalArgumentException("Invalid overlay type")
             }

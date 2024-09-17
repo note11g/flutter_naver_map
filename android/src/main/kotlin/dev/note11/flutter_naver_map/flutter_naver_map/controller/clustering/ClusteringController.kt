@@ -1,5 +1,7 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.controller.clustering
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.NaverMap
@@ -23,6 +25,7 @@ internal class ClusteringController(
     private val naverMap: NaverMap,
     private val overlayController: OverlayHandler,
     private val messageSender: (method: String, args: Any) -> Unit,
+    private val viewInvalidator: () -> Unit,
 ) : MarkerManager {
     private lateinit var clusterOptions: NaverMapClusterOptions
 
@@ -30,6 +33,10 @@ internal class ClusteringController(
 
     private val clusterableMarkers = mutableMapOf<NClusterableMarkerInfo, NClusterableMarker>()
     private val mergedScreenDistanceCacheArray = DoubleArray(24) // idx: zoom, distance
+
+    private val nowHandler: Handler by lazy { Handler(Looper.getMainLooper()) }
+    private var nowViewInvalidationRunnable: Runnable? = null
+    private var afterAnimationInvalidateDelay: Long = 80L
 
     // first caller (change the running in instance init time)
     fun updateClusterOptions(options: NaverMapClusterOptions) {
@@ -45,6 +52,8 @@ internal class ClusteringController(
             .thresholdStrategy(::thresholdStrategy).tagMergeStrategy(::tagMergeStrategy)
             .clusterMarkerUpdater(::onClusterMarkerUpdate).leafMarkerUpdater(::onClusterableMarkerUpdate)
             .markerManager(this).minIndexingZoom(0).maxIndexingZoom(0) // 해도 되는지 확인 필요
+
+        updateAfterAnimationInvalidateDelay(options.animationDuration)
 
         clusterer = builder.build().apply {
             addAll(clusterableMarkers)
@@ -62,6 +71,24 @@ internal class ClusteringController(
     private fun updateClusterer() {
         clusterer.map = null
         clusterer.map = naverMap
+    }
+
+    // maybe caused by TLHC frame copy failed
+    private fun scheduleInvalidateView() {
+        nowViewInvalidationRunnable?.let { nowHandler.removeCallbacks(it) }
+        nowViewInvalidationRunnable = Runnable {
+            try {
+                viewInvalidator.invoke()
+            } finally {
+                nowViewInvalidationRunnable = null
+                Log.d("ClusteringController", "invalidated!")
+            }
+        }
+        nowHandler.postDelayed(nowViewInvalidationRunnable!!, afterAnimationInvalidateDelay)
+    }
+
+    private fun updateAfterAnimationInvalidateDelay(animationDuration: Long) {
+        afterAnimationInvalidateDelay = if (animationDuration > 50) animationDuration else 50L
     }
 
     fun addClusterableMarkerAll(markers: List<NClusterableMarker>) {
@@ -98,6 +125,7 @@ internal class ClusteringController(
 //        overlayController.saveOverlay(marker, info.markerInfo.messageOverlayInfo)
         marker.isVisible = false
         sendClusterMarkerEvent(info)
+        scheduleInvalidateView()
     }
 
     private fun sendClusterMarkerEvent(info: NClusterInfo) {
@@ -113,6 +141,7 @@ internal class ClusteringController(
         val nClusterableMarker = clusterableMarkerInfo.tag as NClusterableMarker
         val nMarker = nClusterableMarker.wrappedMarker
         overlayController.saveOverlayWithAddable(nMarker, marker)
+        scheduleInvalidateView()
     }
 
 //    private fun distanceStrategy(zoom: Int, node: Node, node1: Node): Double {
