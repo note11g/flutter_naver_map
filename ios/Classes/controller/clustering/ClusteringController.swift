@@ -39,7 +39,10 @@ internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThreshol
         builder.markerManager = self
         builder.clusterMarkerUpdater = clusterMarkerUpdate
         builder.leafMarkerUpdater = clusterableMarkerUpdate
-        clusterer = builder.build()
+        let newClusterer = builder.build()
+        newClusterer.addAll(clusterableMarkers)
+        newClusterer.mapView = naverMap.mapView
+        clusterer = newClusterer
     }
     
     private func cacheScreenDistance(_ willMergedScreenDistance: Dictionary<NRange<Int>, Double>) {
