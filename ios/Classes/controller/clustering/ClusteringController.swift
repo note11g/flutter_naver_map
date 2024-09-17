@@ -1,12 +1,12 @@
 import NMapsMap
 
 internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThresholdStrategy, NMCTagMergeStrategy, NMCMarkerManager {
-    private let naverMap: NMFNaverMapView!
+    private let naverMapView: NMFMapView!
     private let overlayController: OverlayHandler
     private let messageSender: (_ method: String, _ args: Any) -> Void
     
-    init(naverMap: NMFNaverMapView!, overlayController: OverlayHandler, messageSender: @escaping (_: String, _: Any) -> Void) {
-        self.naverMap = naverMap
+    init(naverMapView: NMFMapView!, overlayController: OverlayHandler, messageSender: @escaping (_: String, _: Any) -> Void) {
+        self.naverMapView = naverMapView
         self.overlayController = overlayController
         self.messageSender = messageSender
     }
@@ -41,7 +41,7 @@ internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThreshol
         builder.leafMarkerUpdater = clusterableMarkerUpdate
         let newClusterer = builder.build()
         newClusterer.addAll(clusterableMarkers)
-        newClusterer.mapView = naverMap.mapView
+        newClusterer.mapView = naverMapView
         clusterer = newClusterer
     }
     
@@ -55,7 +55,7 @@ internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThreshol
     
     private func updateClusterer() {
         clusterer!.mapView = nil
-        clusterer!.mapView = naverMap.mapView
+        clusterer!.mapView = naverMapView
     }
     
     func addClusterableMarkerAll(_ markers: [NClusterableMarker]) {
@@ -81,7 +81,7 @@ internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThreshol
         overlayController.clearOverlays(type: .clusterableMarker)
         clusterer?.clear()
         updateClusterer()
-        print("클러스터블 마커 전체 삭제 \(clusterer?.empty)")
+        print("클러스터블 마커 전체 삭제 \(String(describing: clusterer?.empty))")
     }
     
     private func onClusterMarkerUpdate(_ clusterMarkerInfo: NMCClusterMarkerInfo, _ marker: NMFMarker) {
@@ -157,6 +157,13 @@ internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThreshol
         default:
             return;
         }
+    }
+    
+    deinit {
+        clusterer?.mapView = nil
+        clusterer?.clear()
+        clusterer = nil
+        clusterableMarkers.removeAll()
     }
 }
 

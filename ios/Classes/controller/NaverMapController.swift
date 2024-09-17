@@ -16,7 +16,7 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
         self.channel = channel
         self.overlayController = overlayController
         overlayController.initializeLocationOverlay(overlay: naverMap.mapView.locationOverlay)
-        self.clusteringController = ClusteringController(naverMap: naverMap, overlayController: self.overlayController, messageSender: self.channel.invokeMethod)
+        self.clusteringController = ClusteringController(naverMapView: naverMap.mapView, overlayController: self.overlayController, messageSender: self.channel.invokeMethod)
         
         channel.setMethodCallHandler(handle)
     }
@@ -160,13 +160,13 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     
     func clearOverlays(type: NOverlayType?, onSuccess: @escaping (Any?) -> ()) {
         if let type = type {
-            clusteringController.clearClusterableMarker()
-            overlayController.clearOverlays(type: type)
-        } else {
             switch type {
-            case .clusterableMarker: clusteringController.clearClusterableMarker()
-            default: overlayController.clearOverlays()
+            case .clusterableMarker: clusteringController.clearClusterableMarker()  // check needed todo
+            default: overlayController.clearOverlays(type: type)
             }
+        } else {
+            clusteringController.clearClusterableMarker( ) // check needed todo
+            overlayController.clearOverlays()
         }
         onSuccess(nil)
     }
