@@ -7,3 +7,5 @@ doc/
 build/
 .fvm/
 .dart_tool/
+./local.properties
+./readme_summary.webp

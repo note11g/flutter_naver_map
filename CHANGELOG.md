@@ -1,3 +1,6 @@
+## 1.3.0-beta.3
+- [Chore] Fix Incompatible issue with Flutter 3.22.0
+
 ## 1.3.0-beta.2
 - [Chore] Update README.MD (fix link broken)
 

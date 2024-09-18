@@ -2,7 +2,7 @@
 
 ## 1.3.0 Beta Release
 
-[![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=00B352&include_prereleases)](https://pub.dev/packages/flutter_naver_map/versions/1.3.0-beta.2)
+[![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=00B352&include_prereleases)](https://pub.dev/packages/flutter_naver_map/versions/1.3.0-beta.3)
 
 해당 릴리즈는 `1.3.0`의 베타 버전입니다.
 
@@ -15,7 +15,7 @@
 [![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=4285F4)](https://pub.dev/packages/flutter_naver_map)
 [![github](https://img.shields.io/github/stars/note11g/flutter_naver_map)](https://github.com/note11g/flutter_naver_map)
 
-<a href="https://pub.dev/documentation/flutter_naver_map/1.3.0-beta.2/" alt="go to documentation page"><img width="676" src="https://raw.githubusercontent.com/note11g/flutter_naver_map/dev/1.3.0/readme_summary.webp"/></a>
+<a href="https://pub.dev/documentation/flutter_naver_map/1.3.0-beta.3/" alt="go to documentation page"><img width="676" src="https://raw.githubusercontent.com/note11g/flutter_naver_map/dev/1.3.0/readme_summary.webp"/></a>
 
 
 <a href="https://note11.dev/flutter_naver_map" alt="go to documentation page"><img src="https://github.com/note11g/flutter_naver_map/assets/67783062/f3c9c433-0a45-4d35-95b6-3baf753878e0"/></a><a href="https://github.com/note11g/flutter_naver_map/issues" alt="go to github issue page"><img src="https://github.com/note11g/flutter_naver_map/assets/67783062/89efa17d-bf96-413d-b910-0f38e9c36c3f"/></a><a href="https://github.com/users/note11g/projects/2/views/2" alt="go to issue tracker page"><img src="https://github.com/note11g/flutter_naver_map/assets/67783062/4bb00306-85e6-4e4d-9329-6129d6f344f6"/></a>
