@@ -1,3 +1,6 @@
+## 1.3.0-beta.4
+- [Fix] fix runtime cast failed by setOnTapListener on `ClusterableMarker` or `NClusterMarker` ([ebdb0ba](https://github.com/note11g/flutter_naver_map/commit/ebdb0badf3a638c5171987ccd7bc734215424e4e))
+
 ## 1.3.0-beta.3
 - [Chore] Fix Incompatible issue with Flutter 3.22.0
 
