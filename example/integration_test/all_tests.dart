@@ -1,4 +1,5 @@
 import 'camera_update_test.dart';
+import 'clustering_test.dart';
 import 'now_camera_position_test.dart';
 import 'overlay_test.dart';
 import 'widget_to_image_test.dart';
@@ -12,4 +13,5 @@ void main() {
   overlayTests();
   nowCameraPositionTests();
   widgetToImageTests();
+  clusteringTests();
 }

@@ -50,8 +50,7 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
 
   @override
   void setOnTapListener(Function(Self overlay) listener) {
-    super.setOnTapListener(
-        listener as Function(NMarker)); // todo check: no error here
+    super.setOnTapListener((overlay) => listener(overlay as Self));
   }
 
   final NMarker _marker;
