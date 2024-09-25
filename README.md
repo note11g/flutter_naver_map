@@ -1,6 +1,7 @@
 # flutter_naver_map
 
 [![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=4285F4)](https://pub.dev/packages/flutter_naver_map)
+[![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=00B352&include_prereleases)](https://pub.dev/packages/flutter_naver_map/versions/1.3.0-beta.4)
 [![github](https://img.shields.io/github/stars/note11g/flutter_naver_map)](https://github.com/note11g/flutter_naver_map)
 
 <a href="https://pub.dev/documentation/flutter_naver_map/1.3.0-beta.4/" alt="go to documentation page"><img width="676" src="https://raw.githubusercontent.com/note11g/flutter_naver_map/dev/1.3.0/readme_summary.webp"/></a>
@@ -13,6 +14,7 @@
 현재는 문서보다, API Reference가 권장됩니다. 문서는 out-dated된 내용이 있으니, 참고하세요.
 
 [API Reference 바로가기](https://pub.dev/documentation/flutter_naver_map/latest/)
+
 
 ## 1.3.0 신규 기능
 
