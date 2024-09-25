@@ -1,3 +1,6 @@
+## 1.3.0+1
+[Chore] fix readme document link broken
+
 ## 1.3.0
 - [Chore] **Release 1.3.0**
 - [All Platform] **Add ClusterableMarker & Clustering Features**
