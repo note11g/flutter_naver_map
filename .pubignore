@@ -5,3 +5,5 @@
 .github/
 doc/
 build/
+.fvm/
+.dart_tool/

@@ -22,7 +22,6 @@ import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInf
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NPickableInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NSymbolInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
-import dev.note11.flutter_naver_map.flutter_naver_map.view.forceRefresh
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
 import java.io.FileOutputStream

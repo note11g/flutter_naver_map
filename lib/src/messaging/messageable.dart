@@ -51,33 +51,35 @@ class NPayload {
     if (value.isDefaultType) return value;
 
     assert(value is NMessageable ||
-        value is List ||
+        value is Iterable ||
         value is Locale ||
         value is EdgeInsets ||
         value is Size ||
         value is Color);
 
-    if (value is NMessageable) return value.payload;
-    if (value is List) {
-      return value.map((e) => convertToMessageable(e!)).toList();
+    switch (value) {
+      case NMessageable():
+        return value.payload;
+      case Iterable():
+        return value.map((e) => convertToMessageable(e!)).toList();
+      default:
+        final result = _tryConvertFlutterUITypes(value);
+        if (result == null) {
+          throw UnsupportedError(
+              "Unsupported Messaging Type: ${value.runtimeType}");
+        }
+        return result;
     }
-    return _convertFlutterTypes(value);
   }
 
-  static dynamic _convertFlutterTypes(Object value) {
-    if (value is Color) return value.value;
-
-    late final NMessageable nMessageable;
-
-    if (value is Locale) {
-      nMessageable = NLocale.fromLocale(value);
-    } else if (value is EdgeInsets) {
-      nMessageable = NEdgeInsets.fromEdgeInsets(value);
-    } else if (value is Size) {
-      nMessageable = NSize.fromSize(value);
-    }
-
-    return nMessageable.payload;
+  static dynamic _tryConvertFlutterUITypes(Object value) {
+    return switch (value) {
+      Locale() => NLocale.fromLocale(value).payload,
+      EdgeInsets() => NEdgeInsets.fromEdgeInsets(value).payload,
+      Size() => NSize.fromSize(value).payload,
+      Color() => value.value,
+      _ => null,
+    };
   }
 
   @override

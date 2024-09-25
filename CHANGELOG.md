@@ -1,34 +1,31 @@
+## 1.2.3+1
+- [iOS] Update podspec file
+- [Chore] Update README.MD
+
+## 1.2.3
+- [All Platform] **change naver map sdk version to 3.18.0(Android) & 3.18.1(iOS) + No additional features (feature add will be in 1.3.0)**
+- [All Platform] **change minimum flutter sdk version to 3.22.0**
+- [All Platform] Fix: fix Set type doesn't supported on NPayload (issue: [#217](https://github.com/note11g/flutter_naver_map/issues/217), PR: [#219](https://github.com/note11g/flutter_naver_map/issues/219))
+- [Chore] update NOverlayImage.fromWidget api description
+
 ## 1.2.2+flutter3.22
-- support flutter 3.22 (if you using under 3.22, using `flutter_naver_map 1.2.2`)
+- [All Platform] support flutter 3.22 (if you using under 3.22, using `flutter_naver_map 1.2.2`)
 
 ## 1.2.2
 ### Fix
 - [Android] Fix Only One Start Frame from Android TextureView Doesn't Copied to Flutter Platform View(TLHC) (issue: [#195](https://github.com/note11g/flutter_naver_map/issues/195), PR: [#212](https://github.com/note11g/flutter_naver_map/pull/212))
-
-### Improve
-- [All Platform] Add / Improve APIs
-  - Add: Add `NLocationOverlay.defaultIcon`, `defaultSubIcon`, `faceModeSubIcon`
-  - Improve: Change return type of method `NaverMapController.getLocationOverlay` to non-async (Future<NLocationOverlay> -> double)
-  - Improve: migrate `NOverlay`, `NAddableOverlay`, `NPickableInfo` Abstract Class to Sealed Class
-  - AddForTesting: Add NaverMap.forceHybridComposition, forceGLSurfaceView for testing
-- [Android] Apply migrate about android gradle plugin update (issue: [#198](https://github.com/note11g/flutter_naver_map/issues/198))
-- [All Platform] Change to no such overlay assertion instead NPE when delete overlay with info (issue: [#192](https://github.com/note11g/flutter_naver_map/issues/192))
-- [API Reference] Add API Reference about most of the APIs. (PR: [#193](https://github.com/note11g/flutter_naver_map/pull/193))
-
-
-## 1.2.2-pre.1
-### Improve
-- [All Platform] Add / Improve APIs
-  - Add: Add `NLocationOverlay.defaultIcon`, `defaultSubIcon`, `faceModeSubIcon`
-  - Improve: Change return type of method `NaverMapController.getLocationOverlay` to non-async (Future<NLocationOverlay> -> double)
-  - Improve: migrate `NOverlay`, `NAddableOverlay`, `NPickableInfo` Abstract Class to Sealed Class
-  - AddForTesting: Add NaverMap.forceHybridComposition, forceGLSurfaceView for testing
-- [Android] Apply migrate about android gradle plugin update (issue: [#198](https://github.com/note11g/flutter_naver_map/issues/198))
-- [All Platform] Change to no such overlay assertion instead NPE when delete overlay with info (issue: [#192](https://github.com/note11g/flutter_naver_map/issues/192))
-- [API Reference] Add API Reference about most of the APIs. (PR: [#193](https://github.com/note11g/flutter_naver_map/pull/193))
-
-### Fix
 - [All Platform] Fix LateInitializationError when Widget disposed before onMapReady (issue: [#197](https://github.com/note11g/flutter_naver_map/issues/197))
+
+### Improve
+- [All Platform] Add / Improve APIs
+  - Add: Add `NLocationOverlay.defaultIcon`, `defaultSubIcon`, `faceModeSubIcon`
+  - Improve: Change return type of method `NaverMapController.getLocationOverlay` to non-async (Future<NLocationOverlay> -> double)
+  - Improve: migrate `NOverlay`, `NAddableOverlay`, `NPickableInfo` Abstract Class to Sealed Class
+  - AddForTesting: Add NaverMap.forceHybridComposition, forceGLSurfaceView for testing
+- [Android] Apply migrate about android gradle plugin update (issue: [#198](https://github.com/note11g/flutter_naver_map/issues/198))
+- [All Platform] Change to no such overlay assertion instead NPE when delete overlay with info (issue: [#192](https://github.com/note11g/flutter_naver_map/issues/192))
+- [API Reference] Add API Reference about most of the APIs. (PR: [#193](https://github.com/note11g/flutter_naver_map/pull/193))
+
 
 ## 1.2.1
 ### Improve

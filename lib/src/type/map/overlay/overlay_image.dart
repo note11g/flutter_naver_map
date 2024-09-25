@@ -45,6 +45,9 @@ class NOverlayImage with NMessageableWithMap {
   /// 위젯을 지도의 이미지로 생성합니다. (캐시를 사용합니다)
   ///
   /// 위젯을 이미지로 변환한 후 사용하므로, 인터렉션이 불가능함을 알아두세요.
+  ///
+  /// 위젯의 내부에 절대 이미지 위젯을 사용하지 마세요. (성능 이슈 및 로드가 되지 않는 현상이 발생합니다)
+  /// 대신 `NOverlayImage.fromAssetImage` 또는 `.fromFile` 혹은 `.fromByteArray` 생성자를 사용하세요.
   static Future<NOverlayImage> fromWidget({
     required Widget widget,
     required Size size,
