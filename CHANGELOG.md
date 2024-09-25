@@ -1,3 +1,12 @@
+## 1.3.0
+- [Chore] **Release 1.3.0**
+- [All Platform] **Add ClusterableMarker & Clustering Features**
+- [All Platform] **change naver map sdk version to 3.19.1(Android) & 3.19.0(iOS)**
+- [All Platform] Add `NRange` API which is used for zoom range.
+- [All Platform] Support Webp Image format for `NOverlayImage`
+- [All Platform] Add `NCameraUpdateReason.contentPadding` triggered by onCameraChange when `NaverMapViewOptions.contentPadding` changed
+- [Chore] Update README.MD
+
 ## 1.3.0-beta.4
 - [Fix] fix runtime cast failed by setOnTapListener on `ClusterableMarker` or `NClusterMarker` ([ebdb0ba](https://github.com/note11g/flutter_naver_map/commit/ebdb0badf3a638c5171987ccd7bc734215424e4e))
 
