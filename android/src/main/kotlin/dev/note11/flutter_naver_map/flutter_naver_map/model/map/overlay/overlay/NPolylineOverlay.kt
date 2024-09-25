@@ -5,7 +5,7 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.PolylineOverlay
 import com.naver.maps.map.overlay.PolylineOverlay.LineCap
 import com.naver.maps.map.overlay.PolylineOverlay.LineJoin
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asInt
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asList
@@ -28,7 +28,9 @@ internal data class NPolylineOverlay(
 
 
 
-    override fun createMapOverlay(): PolylineOverlay = PolylineOverlay().also { g ->
+    override fun createMapOverlay(): PolylineOverlay = applyAtRawOverlay(PolylineOverlay())
+
+    override fun applyAtRawOverlay(overlay: PolylineOverlay) = overlay.also { g ->
         g.coords = coords
         g.color = color
         g.width = DisplayUtil.dpToPx(widthDp)

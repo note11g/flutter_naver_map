@@ -4,7 +4,7 @@
 [![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=00B352&include_prereleases)](https://pub.dev/packages/flutter_naver_map/versions/1.3.0-beta.4)
 [![github](https://img.shields.io/github/stars/note11g/flutter_naver_map)](https://github.com/note11g/flutter_naver_map)
 
-<a href="https://note11.dev/flutter_naver_map" alt="go to documentation page"><img src="https://github.com/note11g/flutter_naver_map/assets/67783062/72307493-2498-4e29-b6a4-232e0db8a05b"/></a>
+<a href="https://pub.dev/documentation/flutter_naver_map/1.3.0-beta.4/" alt="go to documentation page"><img width="676" src="https://raw.githubusercontent.com/note11g/flutter_naver_map/dev/1.3.0/readme_summary.webp"/></a>
 
 
 <a href="https://note11.dev/flutter_naver_map" alt="go to documentation page"><img src="https://github.com/note11g/flutter_naver_map/assets/67783062/f3c9c433-0a45-4d35-95b6-3baf753878e0"/></a><a href="https://github.com/note11g/flutter_naver_map/issues" alt="go to github issue page"><img src="https://github.com/note11g/flutter_naver_map/assets/67783062/89efa17d-bf96-413d-b910-0f38e9c36c3f"/></a><a href="https://github.com/users/note11g/projects/2/views/2" alt="go to issue tracker page"><img src="https://github.com/note11g/flutter_naver_map/assets/67783062/4bb00306-85e6-4e4d-9329-6129d6f344f6"/></a>
@@ -15,19 +15,20 @@
 
 [API Reference 바로가기](https://pub.dev/documentation/flutter_naver_map/latest/)
 
-## 1.3.0 Pre-Release
 
-[![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=00B352&include_prereleases)](https://pub.dev/packages/flutter_naver_map/versions/1.3.0-beta.4)
+## 1.3.0 신규 기능
 
-해당 릴리즈는 `1.3.0`의 베타 버전입니다.
+클러스터링 기능을 포함한 여러 기능이 추가되었습니다.
 
-9월 중으로 테스트를 진행하며, 정식버전은 마지막주~10월 초에 배포할 예정입니다.
+주요 변경 사항은 [변경 사항 노트](https://github.com/note11g/flutter_naver_map/blob/main/CHANGELOG.md#130)를 참고하세요.
 
-주요 기능은 [변경 사항 노트](https://github.com/note11g/flutter_naver_map/blob/dev/1.3.0/CHANGELOG.md#130-beta1)를 참고하세요.
 
 ## Version Up Guide
 
 - **`1.2.3` 이상 버전으로 업데이트 하시려면, 다음 과정을 한번 수행해주셔야 합니다.**
+
+  (`1.2.3` -> `1.3.0` 포함)
+
     ```shell
     cd ios # 프로젝트의 ios 폴더로 이동
     pod update NMapsMap
@@ -47,11 +48,13 @@
     Windows
     ```shell
     cd android && gradlew.bat clean && gradlew.bat --refresh-dependencies
-    ```
-- 
+    ``` 
 
-- `1.2.3`부터는 Flutter SDK 최소 지원 버전이 `3.22.0`으로 변경되었습니다. 
 
+- `1.2.3`부터는 Flutter SDK 최소 지원 버전이 `3.22.0`으로 변경되었습니다.
+
+- `1.3.0`부터는 iOS SDK 최소 지원 버전이 `12.0`으로 변경되었습니다.
+  
 - `1.1.0 이하` -> `1.1.1 이상`으로 업그레이드 할 경우, 해당 코드를 다음과 같이 지워주세요.<br>(편의상 주석처리로 표시해두었지만, 그냥 지워주세요)
     [관련 이슈](https://github.com/note11g/flutter_naver_map/issues/56)가 해결되어, 더 이상 필요하지 않습니다.
 

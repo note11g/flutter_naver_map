@@ -66,10 +66,10 @@ class NLatLngBounds with NMessageableWithMap {
   NLatLngBounds expand(NLatLng point) {
     if (containsPoint(point)) return this;
 
-    final northLatitude = max(this.northLatitude, point.latitude);
-    final eastLongitude = max(this.eastLongitude, point.longitude);
-    final southLatitude = min(this.southLatitude, point.latitude);
-    final westLongitude = min(this.westLongitude, point.longitude);
+    final northLatitude = math.max(this.northLatitude, point.latitude);
+    final eastLongitude = math.max(this.eastLongitude, point.longitude);
+    final southLatitude = math.min(this.southLatitude, point.latitude);
+    final westLongitude = math.min(this.westLongitude, point.longitude);
 
     return NLatLngBounds(
         southWest: NLatLng(southLatitude, westLongitude),
@@ -80,10 +80,10 @@ class NLatLngBounds with NMessageableWithMap {
   NLatLngBounds union(NLatLngBounds bounds) {
     if (containsBounds(bounds)) return this;
 
-    final northLatitude = max(this.northLatitude, bounds.northLatitude);
-    final eastLongitude = max(this.eastLongitude, bounds.eastLongitude);
-    final southLatitude = min(this.southLatitude, bounds.southLatitude);
-    final westLongitude = min(this.westLongitude, bounds.westLongitude);
+    final northLatitude = math.max(this.northLatitude, bounds.northLatitude);
+    final eastLongitude = math.max(this.eastLongitude, bounds.eastLongitude);
+    final southLatitude = math.min(this.southLatitude, bounds.southLatitude);
+    final westLongitude = math.min(this.westLongitude, bounds.westLongitude);
 
     return NLatLngBounds(
         southWest: NLatLng(southLatitude, westLongitude),
@@ -92,13 +92,13 @@ class NLatLngBounds with NMessageableWithMap {
 
   /// 영역과 다른 영역([bounds])이 겹치는 영역을 반환합니다. (교집합)
   NLatLngBounds? intersection(NLatLngBounds bounds) {
-    final maxWest = max(westLongitude, bounds.westLongitude);
-    final minEast = min(eastLongitude, bounds.eastLongitude);
+    final maxWest = math.max(westLongitude, bounds.westLongitude);
+    final minEast = math.min(eastLongitude, bounds.eastLongitude);
     if (minEast < maxWest) {
       return null;
     } else {
-      final maxSouth = max(southLatitude, bounds.southLatitude);
-      final minNorth = min(northLatitude, bounds.northLatitude);
+      final maxSouth = math.max(southLatitude, bounds.southLatitude);
+      final minNorth = math.min(northLatitude, bounds.northLatitude);
       return minNorth < maxSouth
           ? null
           : NLatLngBounds(

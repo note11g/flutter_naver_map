@@ -19,7 +19,6 @@ internal object ApplyUtil {
         return this
     }
 
-    @Suppress("SuspiciousCallableReferenceInLambda") // Android Studio Linter Bugs. Fix in future. (PR Merged)
     private val optionApplyFuncMap: Map<String, ((NaverMapOptionApplier) -> ((Any) -> Unit))> =
         mapOf(
             "initialCameraPosition" to { it::setInitialCameraPosition },

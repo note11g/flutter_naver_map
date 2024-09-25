@@ -17,6 +17,9 @@ enum NMapType with NMessageableWithEnum {
   /// 위성 지도와 기본 지도를 겹쳐서 한번에 볼 수 있는 혼합 지도입니다.
   hybrid,
 
+  /// 위성 지도와 네비게이션 지도를 겹쳐서 한번에 볼 수 있는 혼합 지도입니다.
+  naviHybrid,
+
   /// 지형도입니다.
   terrain,
   none
@@ -100,7 +103,10 @@ enum NCameraUpdateReason with NMessageableWithEnum {
   control._(-2),
 
   /// 사용자 위치 추적 기능에 의해 이동함을 의미합니다. ([NaverMapController.setLocationTrackingMode])
-  location._(-3);
+  location._(-3),
+
+  /// 콘텐츠 패딩의 변경에 의해 카메라가 이동함을 의미합니다.
+  contentPadding._(-4);
 
   @override
   final int payload;
@@ -122,7 +128,8 @@ enum NOverlayType with NMessageableWithEnum {
   pathOverlay._("pa"),
   multipartPathOverlay._("mp"),
   arrowheadPathOverlay._("ah"),
-  locationOverlay._("lo");
+  locationOverlay._("lo"),
+  clusterableMarker._("cm");
 
   @override
   final String payload;

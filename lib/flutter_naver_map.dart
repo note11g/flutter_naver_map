@@ -5,7 +5,7 @@ library flutter_naver_map;
 import "dart:async";
 import 'dart:developer' show log;
 import 'dart:io' show File, Platform;
-import 'dart:math' show Point, min, max;
+import 'dart:math' as math show Point, min, max;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -53,13 +53,15 @@ part 'src/initializer/flutter_naver_map_sdk_initializer_impl.dart';
   --- type ---
 */
 
-part 'src/type/default/locale.dart';
+part 'src/type/base/locale.dart';
 
-part 'src/type/default/padding.dart';
+part 'src/type/base/padding.dart';
 
-part 'src/type/default/point.dart';
+part 'src/type/base/point.dart';
 
-part 'src/type/default/size.dart';
+part 'src/type/base/size.dart';
+
+part 'src/type/base/range.dart';
 
 part 'src/type/map/camera/camera_position.dart';
 
@@ -99,6 +101,8 @@ part 'src/type/map/overlay/overlay/addable/info_window.dart';
 
 part 'src/type/map/overlay/overlay/addable/marker.dart';
 
+part 'src/type/map/overlay/overlay/addable/marker_wrapper.dart';
+
 part 'src/type/map/overlay/overlay/addable/path_overlay/arrow_head_path_overlay.dart';
 
 part 'src/type/map/overlay/overlay/addable/path_overlay/multipart_path.dart';
@@ -118,6 +122,17 @@ part 'src/type/map/overlay/overlay/overlay.dart';
 part 'src/type/map/overlay/overlay_caption.dart';
 
 part 'src/type/map/overlay/overlay_image.dart';
+
+part 'src/type/map/overlay/clustering/cluster_options.dart';
+
+part 'src/type/map/overlay/clustering/cluster_info.dart';
+
+part 'src/type/map/overlay/clustering/cluster_merge_strategy.dart';
+
+part 'src/type/map/overlay/clustering/cluster_marker.dart';
+
+part 'src/type/map/overlay/clustering/clusterable_marker.dart';
+
 /*
   --- widget ---
 */

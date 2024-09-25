@@ -31,3 +31,7 @@ build/
 
 # FVM Version Cache
 .fvm/
+
+# Android build folder
+local.properties
+

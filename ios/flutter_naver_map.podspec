@@ -4,7 +4,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'flutter_naver_map'
-  s.version          = '1.2.3'
+
+  s.version          = '1.3.0'
   s.summary          = 'flutter naver map plugin'
   s.description      = <<-DESC
 flutter naver map plugin
@@ -15,8 +16,8 @@ flutter naver map plugin
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'NMapsMap','3.18.1'
-  s.platform = :ios, '11.0'
+  s.dependency 'NMapsMap','3.19.0'
+  s.platform = :ios, '12.0'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

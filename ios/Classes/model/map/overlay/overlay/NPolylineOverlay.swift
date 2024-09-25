@@ -14,6 +14,10 @@ internal struct NPolylineOverlay: AddableOverlay {
 
     func createMapOverlay() -> OverlayType {
         let polyline = NMFPolylineOverlay()
+        return applyAtRawOverlay(polyline)
+    }
+    
+    func applyAtRawOverlay(_ polyline: NMFPolylineOverlay) -> NMFPolylineOverlay {
         polyline.line = NMGLineString(points: coords)
         polyline.color = color
         polyline.width = CGFloat(width)

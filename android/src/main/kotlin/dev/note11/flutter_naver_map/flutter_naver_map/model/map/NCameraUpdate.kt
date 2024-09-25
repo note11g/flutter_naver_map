@@ -12,8 +12,8 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asCameraAnimation
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLng
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLngBounds
-import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NEdgeInsets
-import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NPoint
+import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NEdgeInsets
+import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
 
 internal data class NCameraUpdate(
     val signature: String,

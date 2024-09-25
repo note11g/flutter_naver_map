@@ -1,5 +1,6 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.applier.option
 
+import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.NaverMap
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asBoolean
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
@@ -7,8 +8,8 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConve
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLatLngBounds
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asLogoAlign
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.asMapType
-import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NEdgeInsets
-import dev.note11.flutter_naver_map.flutter_naver_map.model.flutter_default_custom.NLocale
+import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NEdgeInsets
+import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NLocale
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NLayerGroups
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 
@@ -132,7 +133,9 @@ class NaverMapApplierImpl(
 
     override fun setContentPadding(rawEdgeInsets: Any) {
         val nEdgeInsets = NEdgeInsets.fromMessageable(rawEdgeInsets)
-        nEdgeInsets.use(naverMap::setContentPadding)
+        nEdgeInsets.use { l, t, r, b ->
+            naverMap.setContentPadding(l, t, r, b, false, CameraUpdate.REASON_CONTENT_PADDING)
+        }
     }
 
     override fun setMinZoom(rawLevel: Any) {

@@ -7,6 +7,13 @@ class NaverMap extends StatefulWidget {
   /// 기본 값은 `NaverMapViewOptions()`입니다.
   final NaverMapViewOptions options;
 
+  /// 클러스터링 기능에 대한 옵션들입니다.
+  ///
+  /// 이 옵션들은 클러스터링 기능을 사용할 때, 즉 `NClusterableMarker`가 추가 되었을 때 확인할 수 있습니다.
+  ///
+  /// 기본 값은 `NaverMapClusterOptions()`입니다.
+  final NaverMapClusteringOptions clusterOptions;
+
   /// 스크롤 가능한 뷰 안에서 사용할 때, 지도에 제스처가 먼저 전달되도록 하는 옵션입니다.
   ///
   /// 기본값은 `false`입니다.
@@ -61,6 +68,7 @@ class NaverMap extends StatefulWidget {
   const NaverMap({
     super.key,
     this.options = const NaverMapViewOptions(),
+    this.clusterOptions = const NaverMapClusteringOptions(),
     this.forceGesture = false,
     this.onMapReady,
     this.onMapTapped,
@@ -83,22 +91,16 @@ class _NaverMapState extends State<NaverMap>
   late final NaverMapController controller;
   final controllerCompleter = Completer<void>();
   late NaverMapViewOptions nowViewOptions = widget.options;
+  NaverMapClusteringOptions? nowClusterOptions;
   final mapSdk = NaverMapSdk.instance;
+  final onMapReadyTasksQueue = <Future Function()>[];
+  bool isMapReady = false;
 
   @override
   Widget build(BuildContext context) {
     assert(mapSdk._isInitialized);
 
-    if (mounted && nowViewOptions != widget.options) {
-      nowViewOptions = widget.options;
-
-      void updateOptionClosure([void _]) =>
-          controller._updateOptions(nowViewOptions);
-
-      controllerCompleter.isCompleted
-          ? updateOptionClosure()
-          : controllerCompleter.future.then(updateOptionClosure);
-    }
+    _updateOptionsIfNeeded();
 
     return _PlatformViewCreator.createPlatformView(
       viewType: NChannel.naverMapNativeView.str,
@@ -116,7 +118,6 @@ class _NaverMapState extends State<NaverMap>
     controller = NaverMapController._createController(channel,
         viewId: id,
         initialCameraPosition: widget.options.initialCameraPosition);
-    controllerCompleter.complete();
   }
 
   Set<Factory<OneSequenceGestureRecognizer>> _createGestureRecognizers(
@@ -129,12 +130,52 @@ class _NaverMapState extends State<NaverMap>
     return gestureRecognizers;
   }
 
+  void _updateOptionsIfNeeded() {
+    final List<Future Function()> updateQueue = [];
+    if (nowViewOptions != widget.options) {
+      nowViewOptions = widget.options;
+      updateQueue.add(() => controller._updateOptions(nowViewOptions));
+    }
+    if (nowClusterOptions != widget.clusterOptions) {
+      nowClusterOptions = widget.clusterOptions;
+      updateQueue
+          .add(() => controller._updateClusteringOptions(nowClusterOptions!));
+    }
+
+    if (updateQueue.isNotEmpty) {
+      if (isMapReady) {
+        for (final update in updateQueue) {
+          update.call();
+        }
+      } else {
+        onMapReadyTasksQueue.addAll(updateQueue);
+      }
+    }
+  }
+
+  Future<void> _runOnMapReadyTasks() async {
+    final tasks = List<Future Function()>.from(onMapReadyTasksQueue);
+    onMapReadyTasksQueue.clear();
+    for (final task in tasks) {
+      try {
+        await task();
+      } catch (e) {
+        debugPrint("Error on running onMapReadyTasks: $e");
+      }
+    }
+  }
+
   /*
     --- handler ---
   */
 
   @override
-  void onMapReady() => widget.onMapReady?.call(controller);
+  void onMapReady() async {
+    controllerCompleter.complete();
+    await _runOnMapReadyTasks();
+    isMapReady = true;
+    widget.onMapReady?.call(controller);
+  }
 
   @override
   void onMapTapped(NPoint point, NLatLng latLng) =>
@@ -162,6 +203,16 @@ class _NaverMapState extends State<NaverMap>
 
   @override
   void onCameraIdle() => widget.onCameraIdle?.call();
+
+  @override
+  void onAnotherMethod(String methodName, dynamic args) {
+    switch (methodName) {
+      case "clusterMarkerBuilder":
+        nowClusterOptions?._handleClusterMarkerBuilder(
+            args, (controller as _NaverMapControllerImpl).overlayController);
+        break;
+    }
+  }
 
   @override
   void dispose() {

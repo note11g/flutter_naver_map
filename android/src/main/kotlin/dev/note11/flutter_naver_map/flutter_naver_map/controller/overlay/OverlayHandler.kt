@@ -2,7 +2,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay
 
 import com.naver.maps.map.overlay.LocationOverlay
 import com.naver.maps.map.overlay.Overlay
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.AddableOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import io.flutter.plugin.common.MethodChannel
@@ -21,16 +21,23 @@ internal interface OverlayHandler {
 
     fun initializeLocationOverlay(overlay: LocationOverlay)
 
-    fun <T : Overlay> saveOverlayWithAddable(creator: AddableOverlay<out T>): T {
+    fun <T : Overlay> saveOverlayWithAddable(
+        creator: AddableOverlay<T>,
+        createdOverlay: T? = null,
+    ): T {
         if (hasOverlay(creator.info)) deleteOverlay(creator.info)
 
-        return creator.createMapOverlay().also { overlay ->
-            creator.applyCommonProperties { name, arg ->
-                handleOverlay(overlay, name, arg, null)
-            }
+        val overlay =
+            if (createdOverlay is T) creator.applyAtRawOverlay(createdOverlay)
+            else creator.createMapOverlay()
 
-            saveOverlay(overlay, creator.info)
+        creator.applyCommonProperties { name, arg ->
+            handleOverlay(overlay, name, arg, null)
         }
+
+        saveOverlay(overlay, creator.info)
+
+        return overlay
     }
 
     /*

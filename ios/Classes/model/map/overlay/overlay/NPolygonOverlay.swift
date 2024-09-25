@@ -13,10 +13,14 @@ internal struct NPolygonOverlay: AddableOverlay {
 
     func createMapOverlay() -> OverlayType {
         let polygon = NMGPolygon(
-                ring: NMGLineString(points: coords),
-                interiorRings: holes.map({ NMGLineString(points: $0) })
+            ring: NMGLineString(points: coords),
+            interiorRings: holes.map({ NMGLineString(points: $0) })
         )
         let overlay = NMFPolygonOverlay(polygon as! NMGPolygon<AnyObject>)!
+        return applyAtRawOverlay(overlay)
+    }
+    
+    func applyAtRawOverlay(_ overlay: NMFPolygonOverlay) -> NMFPolygonOverlay {
         overlay.fillColor = color
         overlay.outlineColor = outlineColor
         overlay.outlineWidth = UInt(round(outlineWidth))

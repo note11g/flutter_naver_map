@@ -15,6 +15,10 @@ internal struct NArrowheadPathOverlay: AddableOverlay {
 
     func createMapOverlay() -> OverlayType {
         let path = NMFArrowheadPath()
+        return applyAtRawOverlay(path)
+    }
+    
+    func applyAtRawOverlay(_ path: NMFArrowheadPath) -> NMFArrowheadPath {
         path.points = coords
         path.width = width
         path.color = color
