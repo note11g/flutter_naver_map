@@ -19,6 +19,14 @@ internal class NaverMapView: NSObject, FlutterPlatformView {
     private func onMapReady() {
         setMapTapListener()
         naverMapControlSender.onMapReady()
+        deactivateLogo()
+    }
+    
+    private func deactivateLogo() {
+        let subviews = naverMap.mapView.subviews
+        print("subViews: \(subviews.debugDescription)")
+        let logoIncludedView = subviews[1]
+        logoIncludedView.isHidden = true
     }
 
     private func setMapTapListener() {
