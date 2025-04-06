@@ -2,7 +2,7 @@ group 'dev.note11.flutter_naver_map.flutter_naver_map'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.7.20'
+    ext.kotlin_version = '1.9.20'
     repositories {
         google()
         mavenCentral()
@@ -30,7 +30,7 @@ apply plugin: 'kotlin-android'
 android {
     namespace "dev.note11.flutter_naver_map.flutter_naver_map"
 
-    compileSdk 34
+    compileSdk 35
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
