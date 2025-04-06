@@ -180,6 +180,25 @@ class _NaverMapControllerImpl
   }
 
   /*
+    --- internal methods ---
+   */
+
+  @override
+  Future<void> openMapOpenSourceLicense() async {
+    await invokeMethod("openMapOpenSourceLicense");
+  }
+
+  @override
+  Future<void> openLegend() async {
+    await invokeMethod("openLegend");
+  }
+
+  @override
+  Future<void> openLegalNotice() async {
+    await invokeMethod("openLegalNotice");
+  }
+
+  /*
     --- private methods ---
   */
   @override

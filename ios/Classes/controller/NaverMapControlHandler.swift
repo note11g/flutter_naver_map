@@ -49,6 +49,12 @@ internal protocol NaverMapControlHandler {
     func updateOptions(options: Dictionary<String, Any>, onSuccess: @escaping (Any?) -> Void)
     
     func updateClusteringOptions(rawOptions: Dictionary<String, Any>, onSuccess: @escaping (Any?) -> Void)
+    
+    func openMapOpenSourceLicense(onSuccess: @escaping (Any?) -> Void)
+    
+    func openLegend(onSuccess: @escaping (Any?) -> Void)
+    
+    func openLegalNotice(onSuccess: @escaping (Any?) -> Void)
 }
 
 internal extension  NaverMapControlHandler {
@@ -95,6 +101,9 @@ internal extension  NaverMapControlHandler {
         case "forceRefresh": forceRefresh(onSuccess: result)
         case "updateOptions": updateOptions(options: asDict(call.arguments!), onSuccess: result)
         case "updateClusteringOptions": updateClusteringOptions(rawOptions: asDict(call.arguments!), onSuccess: result)
+        case "openMapOpenSourceLicense": openMapOpenSourceLicense(onSuccess: result)
+        case "openLegend": openLegend(onSuccess: result)
+        case "openLegalNotice": openLegalNotice(onSuccess: result)
         default: result(FlutterMethodNotImplemented)
         }
     }

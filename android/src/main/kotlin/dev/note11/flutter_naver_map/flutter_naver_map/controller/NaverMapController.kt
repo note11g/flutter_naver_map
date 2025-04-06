@@ -1,6 +1,7 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.controller
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
@@ -8,6 +9,9 @@ import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.Projection
 import com.naver.maps.map.Symbol
+import com.naver.maps.map.app.LegalNoticeActivity
+import com.naver.maps.map.app.LegendActivity
+import com.naver.maps.map.app.OpenSourceLicenseActivity
 import com.naver.maps.map.indoor.IndoorSelection
 import com.naver.maps.map.overlay.LocationOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.clustering.ClusteringController
@@ -240,6 +244,26 @@ internal class NaverMapController(
         } catch (e: Exception) {
             throw e
         }
+    }
+
+    override fun openMapOpenSourceLicense(onSuccess: () -> Unit) {
+        val intent = Intent(applicationContext, OpenSourceLicenseActivity::class.java)
+        // 전체 화면?
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        applicationContext.startActivity(intent)
+        onSuccess()
+    }
+
+    override fun openLegend(onSuccess: () -> Unit) {
+        val intent = Intent(applicationContext, LegendActivity::class.java)
+        applicationContext.startActivity(intent)
+        onSuccess()
+    }
+
+    override fun openLegalNotice(onSuccess: () -> Unit) {
+        val intent = Intent(applicationContext, LegalNoticeActivity::class.java)
+        applicationContext.startActivity(intent)
+        onSuccess()
     }
 
     /*
