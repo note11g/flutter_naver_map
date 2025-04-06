@@ -16,6 +16,7 @@ import 'package:flutter_naver_map/src/messaging/messaging.dart';
 import 'package:flutter_naver_map/src/util/image_util.dart';
 import 'package:flutter_naver_map/src/util/math.dart';
 import 'package:flutter_naver_map/src/util/widget_to_image.dart';
+import "package:flutter_naver_map/src/widget/elements/naver_logo_widget.dart";
 import "package:meta/meta.dart";
 
 /*
@@ -141,4 +142,4 @@ part 'src/widget/map_widget.dart';
 
 part 'src/widget/platform_view.dart';
 
-part 'src/widget/control_widget/zoom_control_widget.dart';
+part 'src/widget/elements/zoom_control_widget.dart';

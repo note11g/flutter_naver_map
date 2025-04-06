@@ -89,7 +89,7 @@ class _NaverMapState extends State<NaverMap>
   @override
   late final MethodChannel channel;
   late final NaverMapController controller;
-  final controllerCompleter = Completer<void>();
+  final controllerCompleter = Completer<NaverMapController>();
   late NaverMapViewOptions nowViewOptions = widget.options;
   NaverMapClusteringOptions? nowClusterOptions;
   final mapSdk = NaverMapSdk.instance;
@@ -102,15 +102,28 @@ class _NaverMapState extends State<NaverMap>
 
     _updateOptionsIfNeeded();
 
-    return _PlatformViewCreator.createPlatformView(
-      viewType: NChannel.naverMapNativeView.str,
-      gestureRecognizers: _createGestureRecognizers(widget.forceGesture),
-      creationParams: widget.options.toNPayload(),
-      onPlatformViewCreated: _onPlatformViewCreated,
-      androidSdkVersion: mapSdk._androidSdkVersion,
-      forceHybridComposition: widget.forceHybridComposition,
-      forceGLSurfaceView: widget.forceGLSurfaceView,
-    );
+    return Stack(children: [
+      Positioned.fill(
+          child: _PlatformViewCreator.createPlatformView(
+        viewType: NChannel.naverMapNativeView.str,
+        gestureRecognizers: _createGestureRecognizers(widget.forceGesture),
+        creationParams: widget.options.toNPayload(),
+        onPlatformViewCreated: _onPlatformViewCreated,
+        androidSdkVersion: mapSdk._androidSdkVersion,
+        forceHybridComposition: widget.forceHybridComposition,
+        forceGLSurfaceView: widget.forceGLSurfaceView,
+      )),
+      Positioned(
+          left: (widget.options.logoMargin?.left ?? 11) +
+              (widget.options.contentPadding.left), // todo: default margin
+          bottom: (widget.options.logoMargin?.bottom ?? 15) +
+              (widget.options.contentPadding.bottom),
+          child: FutureBuilder(
+              future: controllerCompleter.future,
+              builder: (context, snapshot) {
+                return NMapLogoWidget(naverMapController: snapshot.data, logoClickEnable: widget.options.logoClickEnable);
+              })),
+    ]);
   }
 
   void _onPlatformViewCreated(int id) {
@@ -171,7 +184,7 @@ class _NaverMapState extends State<NaverMap>
 
   @override
   void onMapReady() async {
-    controllerCompleter.complete();
+    controllerCompleter.complete(controller);
     await _runOnMapReadyTasks();
     isMapReady = true;
     widget.onMapReady?.call(controller);
