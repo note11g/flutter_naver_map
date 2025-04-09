@@ -249,6 +249,7 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     
     func removeChannel() {
         channel.setMethodCallHandler(nil)
+        clusteringController.dispose()
         overlayController.removeChannel()
     }
 }

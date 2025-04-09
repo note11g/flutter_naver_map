@@ -17,8 +17,12 @@ internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThreshol
     
     private var clusterableMarkers: [NClusterableMarkerInfo: NClusterableMarker] = [:]
     private var mergedScreenDistanceCacheArray: [Double] = Array(repeating: NMC_DEFAULT_SCREEN_DISTANCE, count: 24) // idx: zoom, distance
-    private lazy var clusterMarkerUpdate = ClusterMarkerUpdater(callback: self.onClusterMarkerUpdate)
-    private lazy var clusterableMarkerUpdate = ClusterableMarkerUpdater(callback: self.onClusterableMarkerUpdate)
+    private lazy var clusterMarkerUpdate = ClusterMarkerUpdater(callback: { [weak self] info, marker in
+        self?.onClusterMarkerUpdate(info, marker)
+    })
+    private lazy var clusterableMarkerUpdate = ClusterableMarkerUpdater(callback: { [weak self] info, marker in
+        self?.onClusterableMarkerUpdate(info, marker)
+    })
     
     func updateClusterOptions(_ options: NaverMapClusterOptions) {
         clusterOptions = options
@@ -156,11 +160,15 @@ internal class ClusteringController: NMCDefaultClusterMarkerUpdater, NMCThreshol
         }
     }
     
-    deinit {
+    func dispose() {
         clusterer?.mapView = nil
         clusterer?.clear()
         clusterer = nil
         clusterableMarkers.removeAll()
+    }
+    
+    deinit {
+        dispose()
     }
 }
 

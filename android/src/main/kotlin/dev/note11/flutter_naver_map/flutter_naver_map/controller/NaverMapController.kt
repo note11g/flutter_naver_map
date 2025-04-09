@@ -313,6 +313,7 @@ internal class NaverMapController(
 
     fun remove() {
         channel.setMethodCallHandler(null)
+        clusteringController.dispose()
         overlayController.remove()
     }
 }
