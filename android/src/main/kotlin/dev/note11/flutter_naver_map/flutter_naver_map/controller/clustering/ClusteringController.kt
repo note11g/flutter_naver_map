@@ -45,13 +45,15 @@ internal class ClusteringController(
 
         cacheScreenDistance(options.mergeStrategy.willMergedScreenDistance)
 
-        val builder = ComplexBuilder<NClusterableMarkerInfo>().applyEnableZoomLevel(options.enableZoomRange)
-            .maxScreenDistance(options.mergeStrategy.maxMergeableScreenDistance)
-            .animationDuration(options.animationDuration.toInt())
+        val builder =
+            ComplexBuilder<NClusterableMarkerInfo>().applyEnableZoomLevel(options.enableZoomRange)
+                .maxScreenDistance(options.mergeStrategy.maxMergeableScreenDistance)
+                .animationDuration(options.animationDuration.toInt())
 //            .distanceStrategy(::distanceStrategy)
-            .thresholdStrategy(::thresholdStrategy).tagMergeStrategy(::tagMergeStrategy)
-            .clusterMarkerUpdater(::onClusterMarkerUpdate).leafMarkerUpdater(::onClusterableMarkerUpdate)
-            .markerManager(this).minIndexingZoom(0).maxIndexingZoom(0) // 해도 되는지 확인 필요
+                .thresholdStrategy(::thresholdStrategy).tagMergeStrategy(::tagMergeStrategy)
+                .clusterMarkerUpdater(::onClusterMarkerUpdate)
+                .leafMarkerUpdater(::onClusterableMarkerUpdate)
+                .markerManager(this).minIndexingZoom(0).maxIndexingZoom(0) // 해도 되는지 확인 필요
 
         updateAfterAnimationInvalidateDelay(options.animationDuration)
 
@@ -63,7 +65,8 @@ internal class ClusteringController(
 
     private fun cacheScreenDistance(willMergedScreenDistance: Map<NRange<Int>, Double>) {
         for (i in MINIMUM_ZOOM..MAXIMUM_ZOOM) { // 0 ~ 21
-            val firstMatchedDistance = willMergedScreenDistance.entries.firstOrNull { it.key.isInRange(i) }?.value
+            val firstMatchedDistance =
+                willMergedScreenDistance.entries.firstOrNull { it.key.isInRange(i) }?.value
             mergedScreenDistanceCacheArray[i] = firstMatchedDistance ?: DEFAULT_SCREEN_DISTANCE
         }
     }
@@ -91,7 +94,8 @@ internal class ClusteringController(
     }
 
     fun addClusterableMarkerAll(markers: List<NClusterableMarker>) {
-        val markersWithTag: Map<NClusterableMarkerInfo, NClusterableMarker> = markers.associateBy { it.info }
+        val markersWithTag: Map<NClusterableMarkerInfo, NClusterableMarker> =
+            markers.associateBy { it.info }
         clusterer.addAll(markersWithTag)
         updateClusterer()
         clusterableMarkers.putAll(markersWithTag)
@@ -259,7 +263,10 @@ internal class ClusteringController(
 //                val nMarker = data.wrappedMarker
 //                overlayController.saveOverlayWithAddable(nMarker, marker)
 //            }
-            is NClusterInfo -> overlayController.saveOverlay(marker, data.markerInfo.messageOverlayInfo)
+            is NClusterInfo -> overlayController.saveOverlay(
+                marker,
+                data.markerInfo.messageOverlayInfo
+            )
         }
         return marker
     }
@@ -271,10 +278,26 @@ internal class ClusteringController(
         }
     }
 
+    fun dispose() {
+        if (::clusterer.isInitialized) {
+            clusterer.map = null
+            clusterer.clear()
+        }
+        // strict remove reference (callback remove, if needed)
+//        val builder = ComplexBuilder<NClusterableMarkerInfo>()
+//        clusterer = builder.build()
+//        clusterer.map = naverMap
+//        clusterer.map = null
+//        clusterer.clear()
+
+        clusterableMarkers.clear()
+    }
+
     // --- extension functions ---
     private fun ComplexBuilder<NClusterableMarkerInfo>.applyEnableZoomLevel(range: NRange<Int>): ComplexBuilder<NClusterableMarkerInfo> {
         val min = range.min ?: MINIMUM_ZOOM
         val max = range.max ?: MAXIMUM_ZOOM
-        return minClusteringZoom(min).maxClusteringZoom(max).minIndexingZoom(min).maxIndexingZoom(max)
+        return minClusteringZoom(min).maxClusteringZoom(max).minIndexingZoom(min)
+            .maxIndexingZoom(max)
     }
 }
