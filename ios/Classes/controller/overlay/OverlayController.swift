@@ -611,6 +611,13 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
         let dictData = asDict(rawClusterMarker)
         let clusterMarker: NMarker = asAddableOverlayFromMessageableCorrector(json: dictData, creator: NMarker.fromMessageable) as! NMarker
         _ = clusterMarker.applyAtRawOverlay(marker)
+        let hasCustomOnTapListener = castOrNull(dictData[hasOnTapListenerName], caster: asBool) == true
+        if (hasCustomOnTapListener) {
+            marker.touchHandler = { [weak self] overlay in
+                self?.onOverlayTapped(info: NOverlayInfo.fromOverlay(overlay))
+                return true
+            }
+        }
         marker.hidden = false
         success(nil)
     }

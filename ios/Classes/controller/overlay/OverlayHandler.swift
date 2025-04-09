@@ -51,7 +51,7 @@ let maxZoomName = "maxZoom"
 let isMinZoomInclusiveName = "isMinZoomInclusive"
 let isMaxZoomInclusiveName = "isMaxZoomInclusive"
 private let performClickName = "performClick"
-private let hasOnTapListenerName = "hasOnTapListener"
+let hasOnTapListenerName = "hasOnTapListener"
 let onTapName = "onTap"
 let allPropertyNames = [
     zIndexName,
