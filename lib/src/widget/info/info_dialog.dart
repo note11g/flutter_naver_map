@@ -132,18 +132,18 @@ class _NMapInfoDialogState extends State<NMapInfoDialog> {
           crossAxisAlignment: CrossAxisAlignment.baseline,
           textBaseline: TextBaseline.alphabetic,
           children: [
-        Text(title,
-            style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 14 * -0.02)),
-        const SizedBox(width: 6),
-        Text("version $version",
-            style: const TextStyle(
-                fontSize: 10,
-                color: _descriptionColor,
-                letterSpacing: 10 * -0.02)),
-      ]),
+            Text(title,
+                style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 14 * -0.02)),
+            const SizedBox(width: 6),
+            Text("version $version",
+                style: const TextStyle(
+                    fontSize: 10,
+                    color: _descriptionColor,
+                    letterSpacing: 10 * -0.02)),
+          ]),
       const SizedBox(height: 6),
       Text(description,
           style: const TextStyle(
@@ -165,9 +165,10 @@ class _NMapInfoDialogState extends State<NMapInfoDialog> {
             Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Text(title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 13,
-                  fontWeight: FontWeight.w500,
+                  fontWeight:
+                      Platform.isIOS ? FontWeight.w600 : FontWeight.w500,
                   letterSpacing: 13 * -0.02)),
           const SizedBox(height: 2),
           Text(engTitle,
