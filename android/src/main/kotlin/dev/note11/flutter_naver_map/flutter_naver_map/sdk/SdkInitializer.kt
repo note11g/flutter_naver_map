@@ -44,8 +44,7 @@ internal class SdkInitializer(
         onFailure: (Exception) -> Unit
     ) {
         val clientId = args["clientId"]?.toString()
-        val hasAuthFailedListener = args["setAuthFailedListener"]!!.asBoolean()
-
+        val hasAuthFailedListener = args["setAuthFailedListener"]?.asBoolean() ?: false
         try {
             val sdk = NaverMapSdk.getInstance(context)
             sdk.onAuthFailedListener = OnAuthFailedListener { ex ->
