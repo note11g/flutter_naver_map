@@ -1,3 +1,11 @@
+## 1.3.1
+- [All Platform, Update] change naver map sdk version to 3.21.0
+- [All Platform, Add] **Add new auth api `FlutterNaverMap().init`** ([#291](https://github.com/note11g/flutter_naver_map/issues/291)), Add detail exception classes. (with sealed class)
+- [All Platform, Remove] Deprecate `NaverMapSdk.instance.initialize` (changed to Legacy. see [here](https://www.ncloud.com/support/notice/guide/1930))
+- [All Platform, Fix] Fix Memory Leak ([#299](https://github.com/note11g/flutter_naver_map/pull/299) [#275](https://github.com/note11g/flutter_naver_map/issues/275))
+- [All Platform, Fix] Fix NClusterableMarker sometimes not running _set method ([#276](https://github.com/note11g/flutter_naver_map/issues/276))
+- [Android, Fix] Fix appCompat with gradle transitive dependency issue ([#225](https://github.com/note11g/flutter_naver_map/issues/225))
+
 ## 1.3.0+1
 [Chore] fix readme document link broken
 

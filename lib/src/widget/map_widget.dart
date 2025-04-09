@@ -89,28 +89,51 @@ class _NaverMapState extends State<NaverMap>
   @override
   late final MethodChannel channel;
   late final NaverMapController controller;
-  final controllerCompleter = Completer<void>();
+  final controllerCompleter = Completer<NaverMapController>();
   late NaverMapViewOptions nowViewOptions = widget.options;
   NaverMapClusteringOptions? nowClusterOptions;
-  final mapSdk = NaverMapSdk.instance;
+  final legacyMapInitializer = NaverMapSdk.instance;
   final onMapReadyTasksQueue = <Future Function()>[];
   bool isMapReady = false;
 
   @override
   Widget build(BuildContext context) {
-    assert(mapSdk._isInitialized);
+    assert(
+        FlutterNaverMap._isInitialized || legacyMapInitializer._isInitialized);
 
     _updateOptionsIfNeeded();
 
-    return _PlatformViewCreator.createPlatformView(
-      viewType: NChannel.naverMapNativeView.str,
-      gestureRecognizers: _createGestureRecognizers(widget.forceGesture),
-      creationParams: widget.options.toNPayload(),
-      onPlatformViewCreated: _onPlatformViewCreated,
-      androidSdkVersion: mapSdk._androidSdkVersion,
-      forceHybridComposition: widget.forceHybridComposition,
-      forceGLSurfaceView: widget.forceGLSurfaceView,
-    );
+    return Stack(children: [
+      Positioned.fill(
+          child: _PlatformViewCreator.createPlatformView(
+        viewType: NChannel.naverMapNativeView.str,
+        gestureRecognizers: _createGestureRecognizers(widget.forceGesture),
+        creationParams: widget.options.toNPayload(),
+        onPlatformViewCreated: _onPlatformViewCreated,
+        androidSdkVersion: FlutterNaverMap._androidSdkVersion ??
+            legacyMapInitializer._androidSdkVersion,
+        forceHybridComposition: widget.forceHybridComposition,
+        forceGLSurfaceView: widget.forceGLSurfaceView,
+      )),
+      _naverLogo(widget.options),
+    ]);
+  }
+
+  Widget _naverLogo(final NaverMapViewOptions options) {
+    final align = options.logoAlign;
+    final fullPadding = options.contentPadding + options.logoMargin;
+    return Positioned(
+        left: align.isLeft ? fullPadding.left : null,
+        right: align.isRight ? fullPadding.right : null,
+        top: align.isTop ? fullPadding.top : null,
+        bottom: align.isBottom ? fullPadding.bottom : null,
+        child: FutureBuilder(
+            future: controllerCompleter.future,
+            builder: (context, snapshot) {
+              return NMapLogoWidget(
+                  naverMapController: snapshot.data,
+                  logoClickEnable: options.logoClickEnable);
+            }));
   }
 
   void _onPlatformViewCreated(int id) {
@@ -171,7 +194,7 @@ class _NaverMapState extends State<NaverMap>
 
   @override
   void onMapReady() async {
-    controllerCompleter.complete();
+    controllerCompleter.complete(controller);
     await _runOnMapReadyTasks();
     isMapReady = true;
     widget.onMapReady?.call(controller);

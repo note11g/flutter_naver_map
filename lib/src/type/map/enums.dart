@@ -87,7 +87,12 @@ enum NLogoAlign with NMessageableWithEnum {
   leftBottom,
   rightBottom,
   leftTop,
-  rightTop
+  rightTop;
+
+  bool get isLeft => this == leftBottom || this == leftTop;
+  bool get isRight => this == rightBottom || this == rightTop;
+  bool get isTop => this == leftTop || this == rightTop;
+  bool get isBottom => this == leftBottom || this == rightBottom;
 }
 
 /// 지도에서 사용자에게 보여주는 위치/영역이 바뀐 이유를 나타내는 enum입니다.

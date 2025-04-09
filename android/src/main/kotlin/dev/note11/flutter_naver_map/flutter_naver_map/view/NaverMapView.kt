@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.view.View
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
-import dev.note11.flutter_naver_map.flutter_naver_map.R
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapControlSender
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapController
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
@@ -53,7 +52,6 @@ internal class NaverMapView(
     private var rawNaverMapOptionTempCache: Any? = null
 
     init {
-        setActivityThemeAppCompat()
         registerLifecycleCallback()
         TextureSurfaceViewUtil.installInvalidator(mapView)
     }
@@ -71,6 +69,12 @@ internal class NaverMapView(
 
         mapView.onCreate(null)
         naverMapControlSender.onMapReady()
+        deactivateLogo()
+    }
+
+    private fun deactivateLogo() {
+        val logoView = mapView.findViewById<View>(com.naver.maps.map.R.id.navermap_logo) ?: return
+        logoView.visibility = View.GONE
     }
 
     private fun initializeMapController() {
@@ -126,12 +130,6 @@ internal class NaverMapView(
         }
 
         (naverMapControlSender as NaverMapController).remove()
-    }
-
-    // Using AppCompat Theme.
-    // default flutter android theme not support naverMap's AppCompatDialog.
-    private fun setActivityThemeAppCompat() {
-        activity.setTheme(R.style.Theme_AppCompat_Light)
     }
 
     private fun registerLifecycleCallback() {

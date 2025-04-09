@@ -11,10 +11,26 @@ internal class SdkInitializer: NSObject, NMFAuthManagerDelegate {
     }
 
     private func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        if (call.method == "initialize") {
+        if (call.method == "initializeNcp") {
+            initializeWithNcp(asDict(call.arguments!), onSuccess: result)
+        } else if (call.method == "initialize") {
             initialize(asDict(call.arguments!), onSuccess: result)
         }
     }
+    
+    private func initializeWithNcp(_ args: Dictionary<String, Any>, onSuccess: (Any?) -> Void) {
+        let clientId = castOrNull(args["clientId"], caster: asString)
+        
+        let hasAuthFailedListener = asBool(args["setAuthFailedListener"]!)
+        if hasAuthFailedListener { setOnAuthFailedListener() }
+        
+        let sdk = NMFAuthManager.shared()
+        if let clientId = clientId { sdk.ncpKeyId = clientId }
+        
+        onSuccess(nil)
+    }
+    
+    // MARK: Legacy -----
 
     private func initialize(_ args: Dictionary<String, Any>, onSuccess: (Any?) -> Void) {
         let clientId = castOrNull(args["clientId"], caster: asString)
@@ -38,6 +54,8 @@ internal class SdkInitializer: NSObject, NMFAuthManagerDelegate {
             nAuthManager.govClientId = clientId
         }
     }
+    
+    // MARK: End Legacy -----
 
     private func setOnAuthFailedListener() {
         NMFAuthManager.shared().delegate = self

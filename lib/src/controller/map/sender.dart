@@ -92,6 +92,16 @@ abstract class _NaverMapControlSender {
   Future<void> forceRefresh();
 
   /*
+    --- internal methods ---
+   */
+
+  Future<void> openMapOpenSourceLicense();
+
+  Future<void> openLegend();
+
+  Future<void> openLegalNotice();
+
+  /*
     --- private methods ---
   */
   Future<void> _updateOptions(NaverMapViewOptions options);

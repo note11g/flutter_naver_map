@@ -190,6 +190,22 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
         }
     }
     
+    func openMapOpenSourceLicense(onSuccess: @escaping (Any?) -> Void) {
+        mapView.showOpenSourceLicense()
+        onSuccess(nil)
+    }
+    
+    func openLegend(onSuccess: @escaping (Any?) -> Void) {
+//        mapView.showLegend() // > ??
+         // todo.
+        onSuccess(nil)
+    }
+    
+    func openLegalNotice(onSuccess: @escaping (Any?) -> Void) {
+        mapView.showLegalNotice()
+        onSuccess(nil)
+    }
+    
     /*
      --- sender (to dart) ---
      */
@@ -233,6 +249,7 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     
     func removeChannel() {
         channel.setMethodCallHandler(nil)
+        clusteringController.dispose()
         overlayController.removeChannel()
     }
 }

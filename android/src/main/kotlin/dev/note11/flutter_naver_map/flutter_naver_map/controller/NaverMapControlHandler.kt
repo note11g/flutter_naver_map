@@ -109,6 +109,9 @@ internal interface NaverMapControlHandler {
         "updateClusteringOptions" -> updateClusteringOptions(
             rawOptions = call.arguments.asMap(), onSuccess = result::send,
         )
+        "openMapOpenSourceLicense" -> openMapOpenSourceLicense(result::send)
+        "openLegend" -> openLegend(result::send)
+        "openLegalNotice" -> openLegalNotice(result::send)
         else -> result.notImplemented()
     }
 
@@ -159,4 +162,10 @@ internal interface NaverMapControlHandler {
     fun updateOptions(rawOptions: Map<String, Any>, onSuccess: () -> Unit)
 
     fun updateClusteringOptions(rawOptions: Map<String, Any>, onSuccess: () -> Unit)
+
+    fun openMapOpenSourceLicense(onSuccess: () -> Unit)
+
+    fun openLegend(onSuccess: () -> Unit)
+
+    fun openLegalNotice(onSuccess: () -> Unit)
 }

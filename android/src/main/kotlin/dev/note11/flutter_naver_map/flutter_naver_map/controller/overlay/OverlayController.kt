@@ -678,6 +678,13 @@ internal class OverlayController(
         val mapData = rawClusterMarker.asMap()
         val clusterMarker = AddableOverlay.fromMessageableCorrector(mapData, NMarker::fromMessageable)
         clusterMarker.applyAtRawOverlay(marker)
+        val hasCustomOnTapListener = mapData[OverlayHandler.hasOnTapListenerName]?.asBoolean() == true
+        if (hasCustomOnTapListener) {
+            marker.onClickListener = Overlay.OnClickListener {
+                onOverlayTapped(info = NOverlayInfo.fromOverlay(it))
+                true
+            }
+        }
         marker.isVisible = true
         success(null)
     }

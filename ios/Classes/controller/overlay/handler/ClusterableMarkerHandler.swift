@@ -19,7 +19,7 @@ internal extension ClusterableMarkerHandler {
         }
         
         switch method {
-        default: result(FlutterMethodNotImplemented)
+        default: handleMarker(marker: marker, method: method, args: arg, result: result)
         }
     }
 }
