@@ -37,7 +37,7 @@ class NMapLogoWidget extends StatelessWidget {
                     borderRadius: borderRadius,
                     child: Center(
                       child: CustomPaint(
-                          size: const Size(35, 6.72),
+                          size: const Size(35, 7.2),
                           painter: _NaverLogoPainter()),
                     ))),
           )),

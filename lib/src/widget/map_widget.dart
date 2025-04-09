@@ -115,17 +115,25 @@ class _NaverMapState extends State<NaverMap>
         forceHybridComposition: widget.forceHybridComposition,
         forceGLSurfaceView: widget.forceGLSurfaceView,
       )),
-      Positioned(
-          left: (widget.options.logoMargin?.left ?? 11) +
-              (widget.options.contentPadding.left), // todo: default margin
-          bottom: (widget.options.logoMargin?.bottom ?? 15) +
-              (widget.options.contentPadding.bottom),
-          child: FutureBuilder(
-              future: controllerCompleter.future,
-              builder: (context, snapshot) {
-                return NMapLogoWidget(naverMapController: snapshot.data, logoClickEnable: widget.options.logoClickEnable);
-              })),
+      _naverLogo(widget.options),
     ]);
+  }
+
+  Widget _naverLogo(final NaverMapViewOptions options) {
+    final align = options.logoAlign;
+    final fullPadding = options.contentPadding + options.logoMargin;
+    return Positioned(
+        left: align.isLeft ? fullPadding.left : null,
+        right: align.isRight ? fullPadding.right : null,
+        top: align.isTop ? fullPadding.top : null,
+        bottom: align.isBottom ? fullPadding.bottom : null,
+        child: FutureBuilder(
+            future: controllerCompleter.future,
+            builder: (context, snapshot) {
+              return NMapLogoWidget(
+                  naverMapController: snapshot.data,
+                  logoClickEnable: options.logoClickEnable);
+            }));
   }
 
   void _onPlatformViewCreated(int id) {
