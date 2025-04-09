@@ -147,8 +147,8 @@ class NaverMapViewOptions with NMessageableWithMap {
 
   /// 로고의 마진을 설정합니다.
   ///
-  /// 기본값은 `null`
-  final EdgeInsets? logoMargin;
+  /// 기본값은 `defaultLogoMargin`
+  final EdgeInsets logoMargin;
 
   /// 콘텐츠의 패딩을 설정합니다.
   ///
@@ -203,7 +203,7 @@ class NaverMapViewOptions with NMessageableWithMap {
     this.locationButtonEnable = false,
     this.logoClickEnable = true,
     this.logoAlign = NLogoAlign.leftBottom,
-    this.logoMargin,
+    this.logoMargin = defaultLogoMargin,
     this.contentPadding = EdgeInsets.zero,
     this.minZoom = minimumZoom,
     this.maxZoom = maximumZoom,
@@ -342,6 +342,8 @@ class NaverMapViewOptions with NMessageableWithMap {
   static const defaultScrollGesturesFriction = 0.088;
   static const defaultZoomGesturesFriction = 0.12375;
   static const defaultRotationGesturesFriction = 0.19333;
+  static const defaultLogoMargin =
+      EdgeInsets.symmetric(horizontal: 12, vertical: 16);
 
   /*
     --- Equal ---
