@@ -47,9 +47,11 @@ part 'src/exceptions/exceptions.dart';
   --- initializer ---
 */
 
-part 'src/initializer/flutter_naver_map_sdk_initializer.dart';
+part 'src/initializer/flutter_naver_map_initializer.dart';
 
-part 'src/initializer/flutter_naver_map_sdk_initializer_impl.dart';
+part 'src/initializer/flutter_naver_map_legacy_initializer.dart';
+
+part 'src/initializer/flutter_naver_map_legacy_initializer_impl.dart';
 /*
   --- type ---
 */

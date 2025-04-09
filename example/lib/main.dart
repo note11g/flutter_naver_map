@@ -14,11 +14,16 @@ import 'design/theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await NaverMapSdk.instance.initialize(
-      clientId: '2vkiu8dsqb',
-      onAuthFailed: (error) {
-        print('Auth failed: $error');
-      });
+  await FlutterNaverMap().init(
+      clientId: 'dzx1zs89q6',
+      onAuthFailed: (ex) => switch (ex) {
+            NQuotaExceededException(:final message) =>
+              print("사용량 초과 (message: $message)"),
+            NUnauthorizedClientException() ||
+            NClientUnspecifiedException() ||
+            NAnotherAuthFailedException() =>
+              print("인증 실패: $ex"),
+          });
 
   runApp(const MyApp());
 }

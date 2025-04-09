@@ -38,7 +38,7 @@ class _NaverMapSdkImpl implements NaverMapSdk {
     if (call.method == "onAuthFailed" && onAuthFailed != null) {
       final code = call.arguments["code"];
       final message = call.arguments["message"];
-      onAuthFailed!.call(NAuthFailedException._(code, message));
+      onAuthFailed!.call(NAuthFailedException._internal(code, message));
     }
   }
 }

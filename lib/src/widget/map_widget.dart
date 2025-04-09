@@ -92,13 +92,14 @@ class _NaverMapState extends State<NaverMap>
   final controllerCompleter = Completer<NaverMapController>();
   late NaverMapViewOptions nowViewOptions = widget.options;
   NaverMapClusteringOptions? nowClusterOptions;
-  final mapSdk = NaverMapSdk.instance;
+  final legacyMapInitializer = NaverMapSdk.instance;
   final onMapReadyTasksQueue = <Future Function()>[];
   bool isMapReady = false;
 
   @override
   Widget build(BuildContext context) {
-    assert(mapSdk._isInitialized);
+    assert(
+        FlutterNaverMap._isInitialized || legacyMapInitializer._isInitialized);
 
     _updateOptionsIfNeeded();
 
@@ -109,7 +110,8 @@ class _NaverMapState extends State<NaverMap>
         gestureRecognizers: _createGestureRecognizers(widget.forceGesture),
         creationParams: widget.options.toNPayload(),
         onPlatformViewCreated: _onPlatformViewCreated,
-        androidSdkVersion: mapSdk._androidSdkVersion,
+        androidSdkVersion: FlutterNaverMap._androidSdkVersion ??
+            legacyMapInitializer._androidSdkVersion,
         forceHybridComposition: widget.forceHybridComposition,
         forceGLSurfaceView: widget.forceGLSurfaceView,
       )),
