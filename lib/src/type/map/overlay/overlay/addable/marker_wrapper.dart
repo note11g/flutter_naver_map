@@ -68,7 +68,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   NLatLng get position => _marker.position;
 
   @override
-  void setPosition(NLatLng value) => _marker.setPosition(value);
+  void setPosition(NLatLng value) {
+    _position = value;
+    _set(NMarker._positionName, _position);
+  }
 
   //endregion
 
@@ -80,7 +83,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   set _icon(NOverlayImage? v) => _marker._icon = v;
 
   @override
-  void setIcon(NOverlayImage? value) => _marker.setIcon(value);
+  void setIcon(NOverlayImage? value) {
+    _icon = value;
+    _set(NMarker._iconName, _icon);
+  }
 
   //endregion
 
@@ -95,7 +101,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   Color get iconTintColor => _marker.iconTintColor;
 
   @override
-  void setIconTintColor(Color value) => _marker.setIconTintColor(value);
+  void setIconTintColor(Color value) {
+    _iconTintColor = value;
+    _set(NMarker._iconTintColorName, _iconTintColor);
+  }
 
   //endregion
 
@@ -110,7 +119,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   double get alpha => _marker.alpha;
 
   @override
-  void setAlpha(double value) => _marker.setAlpha(value);
+  void setAlpha(double value) {
+    _alpha = value;
+    _set(NMarker._alphaName, _alpha);
+  }
 
   //endregion
 
@@ -125,7 +137,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   double get angle => _marker.angle;
 
   @override
-  void setAngle(double value) => _marker.setAngle(value);
+  void setAngle(double value) {
+    _angle = value;
+    _set(NMarker._angleName, _angle);
+  }
 
   //endregion
 
@@ -140,7 +155,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   NPoint get anchor => _marker.anchor;
 
   @override
-  void setAnchor(NPoint value) => _marker.setAnchor(value);
+  void setAnchor(NPoint value) {
+    _anchor = value;
+    _set(NMarker._anchorName, _anchor);
+  }
 
   //endregion
 
@@ -155,7 +173,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   Size get size => _marker.size;
 
   @override
-  void setSize(Size value) => _marker.setSize(value);
+  void setSize(Size value) {
+    _size = value;
+    _set(NMarker._sizeName, _size);
+  }
 
   //endregion
 
@@ -170,7 +191,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   NOverlayCaption? get caption => _marker.caption;
 
   @override
-  void setCaption(NOverlayCaption? value) => _marker.setCaption(value);
+  void setCaption(NOverlayCaption? value) {
+    _caption = value;
+    _set(NMarker._captionName, _caption);
+  }
 
   //endregion
 
@@ -185,7 +209,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   NOverlayCaption? get subCaption => _marker._subCaption;
 
   @override
-  void setSubCaption(NOverlayCaption? value) => _marker.setSubCaption(value);
+  void setSubCaption(NOverlayCaption? value) {
+    _subCaption = value;
+    _set(NMarker._subCaptionName, _subCaption);
+  }
 
   //endregion
 
@@ -200,8 +227,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   List<NAlign> get captionAligns => _marker.captionAligns;
 
   @override
-  void setCaptionAligns(Iterable<NAlign> value) =>
-      _marker.setCaptionAligns(value);
+  void setCaptionAligns(Iterable<NAlign> value) {
+    _captionAligns = value;
+    _set(NMarker._captionAlignsName, _captionAligns);
+  }
 
   //endregion
 
@@ -217,7 +246,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   double get captionOffset => _marker.captionOffset;
 
   @override
-  void setCaptionOffset(double value) => _marker.setCaptionOffset(value);
+  void setCaptionOffset(double value) {
+    _captionOffset = value;
+    _set(NMarker._captionOffsetName, _captionOffset);
+  }
 
   //endregion
 
@@ -234,8 +266,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   bool get isCaptionPerspectiveEnabled => _marker.isCaptionPerspectiveEnabled;
 
   @override
-  void setIsCaptionPerspectiveEnabled(bool value) =>
-      _marker.setIsCaptionPerspectiveEnabled(value);
+  void setIsCaptionPerspectiveEnabled(bool value) {
+    _isCaptionPerspectiveEnabled = value;
+    _set(NMarker._isCaptionPerspectiveEnabledName, _isCaptionPerspectiveEnabled);
+  }
 
   //endregion
 
@@ -252,8 +286,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   bool get isIconPerspectiveEnabled => _marker.isIconPerspectiveEnabled;
 
   @override
-  void setIsIconPerspectiveEnabled(bool value) =>
-      _marker.setIsIconPerspectiveEnabled(value);
+  void setIsIconPerspectiveEnabled(bool value) {
+    _isIconPerspectiveEnabled = value;
+    _set(NMarker._isIconPerspectiveEnabledName, _isIconPerspectiveEnabled);
+  }
 
   //endregion
 
@@ -269,7 +305,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   bool get isFlat => _marker.isFlat;
 
   @override
-  void setIsFlat(bool value) => _marker.setIsFlat(value);
+  void setIsFlat(bool value) {
+    _isFlat = value;
+    _set(NMarker._isFlatName, _isFlat);
+  }
 
   //endregion
 
@@ -285,8 +324,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   bool get isForceShowCaption => _marker.isForceShowCaption;
 
   @override
-  void setIsForceShowCaption(bool value) =>
-      _marker.setIsForceShowCaption(value);
+  void setIsForceShowCaption(bool value) {
+    _isForceShowCaption = value;
+    _set(NMarker._isForceShowCaptionName, _isForceShowCaption);
+  }
 
   //endregion
 
@@ -302,7 +343,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   bool get isForceShowIcon => _marker.isForceShowIcon;
 
   @override
-  void setIsForceShowIcon(bool value) => _marker.setIsForceShowIcon(value);
+  void setIsForceShowIcon(bool value) {
+    _isForceShowIcon = value;
+    _set(NMarker._isForceShowIconName, _isForceShowIcon);
+  }
 
   //endregion
 
@@ -318,8 +362,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   bool get isHideCollidedCaptions => _marker.isHideCollidedCaptions;
 
   @override
-  void setIsHideCollidedCaptions(bool value) =>
-      _marker.setIsHideCollidedCaptions(value);
+  void setIsHideCollidedCaptions(bool value) {
+    _isHideCollidedCaptions = value;
+    _set(NMarker._isHideCollidedCaptionsName, _isHideCollidedCaptions);
+  }
 
   //endregion
 
@@ -335,8 +381,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   bool get isHideCollidedMarkers => _marker.isHideCollidedMarkers;
 
   @override
-  void setIsHideCollidedMarkers(bool value) =>
-      _marker.setIsHideCollidedMarkers(value);
+  void setIsHideCollidedMarkers(bool value) {
+    _isHideCollidedMarkers = value;
+    _set(NMarker._isHideCollidedMarkersName, _isHideCollidedMarkers);
+  }
 
   //endregion
 
@@ -352,8 +400,10 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   bool get isHideCollidedSymbols => _marker.isHideCollidedSymbols;
 
   @override
-  void setHideCollidedSymbols(bool value) =>
-      _marker.setHideCollidedSymbols(value);
+  void setHideCollidedSymbols(bool value) {
+    _isHideCollidedSymbols = value;
+    _set(NMarker._isHideCollidedSymbolsName, _isHideCollidedSymbols);
+  }
 
   //endregion
 
@@ -383,3 +433,4 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
 
 //endregion
 }
+
