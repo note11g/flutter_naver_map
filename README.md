@@ -16,18 +16,21 @@
 [API Reference 바로가기](https://pub.dev/documentation/flutter_naver_map/latest/)
 
 
-## 1.3.0 신규 기능
+## 1.3.1 변경사항
 
-클러스터링 기능을 포함한 여러 기능이 추가되었습니다.
+Naver Cloud Platform 신규 서비스 인증 지원 및 버그 수정이 이루어졌습니다.
 
-주요 변경 사항은 [변경 사항 노트](https://github.com/note11g/flutter_naver_map/blob/main/CHANGELOG.md#130)를 참고하세요.
+신규 서비스 인증의 경우, 기존 레거시 인증 방식인 `NaverMapSdk.instance.initialize` 메서드가 곧 사용 중단되므로, 미리 대응 하시기 바랍니다.
+신규 인증 API는 [API Reference](https://pub.dev/documentation/flutter_naver_map/latest/flutter_naver_map/FlutterNaverMap/init.html)를 참고하세요.
+
+1.3.1 버전의 더 자세한 변경 사항은 [변경 사항 노트](https://github.com/note11g/flutter_naver_map/blob/main/CHANGELOG.md#131)를 참고하세요.
 
 
 ## Version Up Guide
 
 - **`1.2.3` 이상 버전으로 업데이트 하시려면, 다음 과정을 한번 수행해주셔야 합니다.**
 
-  (`1.2.3` -> `1.3.0` 포함)
+  (`1.3.0` -> `1.3.1` 포함)
 
     ```shell
     cd ios # 프로젝트의 ios 폴더로 이동
@@ -67,14 +70,6 @@
     //    }
     // }
     ```
-
-## Known issues
-
-~~- Android Impeller Engine 지원 안함 (Android 기본 값은 Skia) [#133](https://github.com/note11g/flutter_naver_map/issues/133)~~
-  ~~- 해당 이슈에 대해 레포트를 받고 있습니다. 테스트 결과를 [이슈 페이지](https://github.com/note11g/flutter_naver_map/issues/133)에 코멘트로 남겨주시면 감사하겠습니다.~~
-  - 해당 이슈에 대한 확인 중입니다. 정식 지원은 아니지만, 사용 가능한 것으로 확인되었습니다. 이슈가 있으신 분들은 [#133](https://github.com/note11g/flutter_naver_map/issues/133)으로 레포트 부탁드립니다.
-
-이슈 제보는 언제나 환영입니다:)
 
 ## Contribution Guide
 
