@@ -92,7 +92,7 @@ internal interface OverlayHandler {
         const val isMinZoomInclusiveName = "isMinZoomInclusive"
         const val isMaxZoomInclusiveName = "isMaxZoomInclusive"
         private const val performClickName = "performClick"
-        private const val hasOnTapListenerName = "hasOnTapListener"
+        const val hasOnTapListenerName = "hasOnTapListener"
         const val onTapName = "onTap"
         val allPropertyNames = listOf(
             zIndexName,
