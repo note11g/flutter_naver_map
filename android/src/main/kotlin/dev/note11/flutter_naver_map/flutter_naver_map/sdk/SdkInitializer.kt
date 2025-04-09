@@ -3,6 +3,8 @@ package dev.note11.flutter_naver_map.flutter_naver_map.sdk
 import android.content.Context
 import android.os.Build
 import com.naver.maps.map.NaverMapSdk
+import com.naver.maps.map.NaverMapSdk.NcpKeyClient
+import com.naver.maps.map.NaverMapSdk.OnAuthFailedListener
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asBoolean
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import io.flutter.plugin.common.MethodCall
@@ -17,13 +19,48 @@ internal class SdkInitializer(
     }
 
     private fun handle(call: MethodCall, result: MethodChannel.Result) {
-        if (call.method == "initialize") {
-            initialize(call.arguments.asMap(),
+        if (call.method == "initializeNcp") {
+            initializeWithNcp(
+                call.arguments.asMap(),
+                onSuccess = result::success,
+                onFailure = {
+                    result.error(
+                        if (it is NaverMapSdk.AuthFailedException) it.errorCode else it.javaClass.name,
+                        it.message,
+                        null
+                    )
+                })
+        } else if (call.method == "initialize") {
+            initialize(
+                call.arguments.asMap(),
                 onSuccess = result::success,
                 onFailure = { result.error(it.errorCode, it.message, null) })
         }
     }
 
+    private fun initializeWithNcp(
+        args: Map<String, Any>,
+        onSuccess: (Any?) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        val clientId = args["clientId"]?.toString()
+        val hasAuthFailedListener = args["setAuthFailedListener"]!!.asBoolean()
+
+        try {
+            val sdk = NaverMapSdk.getInstance(context)
+            sdk.onAuthFailedListener = OnAuthFailedListener { ex ->
+                if (hasAuthFailedListener) onAuthFailedListener(ex) else onFailure(ex)
+            }
+            val sendPayload = mapOf("androidSdkVersion" to Build.VERSION.SDK_INT)
+            if (clientId != null) sdk.client = NcpKeyClient(clientId)
+            onSuccess(sendPayload)
+        } catch (e: Exception) {
+            onFailure(e)
+        }
+    }
+
+    /// --- Legacy ---
+    @Deprecated("Use initializeWithNcp instead")
     private fun initialize(
         args: Map<String, Any>,
         onSuccess: (Any?) -> Unit,
@@ -43,6 +80,7 @@ internal class SdkInitializer(
         }
     }
 
+    @Deprecated("Use initializeNcpMapSdk instead")
     private fun initializeMapSdk(
         context: Context,
         clientId: String,
@@ -54,6 +92,8 @@ internal class SdkInitializer(
 
     private fun setOnAuthFailedListener() =
         NaverMapSdk.getInstance(context).setOnAuthFailedListener(::onAuthFailedListener)
+
+    /// --- end legacy ---
 
     private fun onAuthFailedListener(ex: NaverMapSdk.AuthFailedException) {
         channel.invokeMethod(
