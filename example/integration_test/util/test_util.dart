@@ -101,8 +101,6 @@ void expectCameraPosition(NCameraPosition actual, NCameraPosition expected) {
 
 @visibleForTesting
 void expectLatLng(NLatLng actual, NLatLng expected) {
-  expect(
-      actual.latitude, closeTo(expected.latitude, 0.000001));
-  expect(actual.longitude,
-      closeTo(expected.longitude, 0.000001));
+  expect(actual.latitude, closeTo(expected.latitude, 0.000001));
+  expect(actual.longitude, closeTo(expected.longitude, 0.000001));
 }

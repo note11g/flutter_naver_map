@@ -11,6 +11,7 @@ abstract class NaverMapSdk {
   Function(NAuthFailedException ex)? get onAuthFailed;
 
   @Deprecated("Use [FlutterNaverMap.init] method instead")
+
   /// [FlutterNaverMap.init] 메서드를 대신 사용하세요.
   ///
   /// 지도 사용 전에 호출해야 하는 초기화 메서드입니다.

@@ -62,7 +62,8 @@ void overlayTests() {
 
       expectLatLng(controller.nowCameraPosition.target, testPoints.last);
 
-      await tester.runGoldenTest(fileName: "golden/location_overlay_sync_test.png");
+      await tester.runGoldenTest(
+          fileName: "golden/location_overlay_sync_test.png");
     });
   });
 

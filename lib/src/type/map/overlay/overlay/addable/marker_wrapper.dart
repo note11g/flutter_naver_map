@@ -268,7 +268,8 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   @override
   void setIsCaptionPerspectiveEnabled(bool value) {
     _isCaptionPerspectiveEnabled = value;
-    _set(NMarker._isCaptionPerspectiveEnabledName, _isCaptionPerspectiveEnabled);
+    _set(
+        NMarker._isCaptionPerspectiveEnabledName, _isCaptionPerspectiveEnabled);
   }
 
   //endregion
@@ -433,4 +434,3 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
 
 //endregion
 }
-
