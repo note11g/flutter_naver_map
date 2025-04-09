@@ -48,6 +48,10 @@ class _NMapInfoDialogState extends State<NMapInfoDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+        backgroundColor: switch (Theme.of(context).brightness) {
+          Brightness.dark => Colors.grey.shade900,
+          Brightness.light => Colors.white,
+        },
         insetPadding: const EdgeInsets.symmetric(horizontal: 24),
         shape: ShapeBorder.lerp(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -184,5 +188,5 @@ class _NMapInfoDialogState extends State<NMapInfoDialog> {
   }
 
   static const _descriptionColor = Color(0xFF808080);
-  static const _dividerColor = Color(0xFFD9D9D9);
+  static const _dividerColor = Color(0x42808080);
 }
