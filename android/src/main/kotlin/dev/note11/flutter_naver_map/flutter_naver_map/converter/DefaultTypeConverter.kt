@@ -1,6 +1,7 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.converter
 
 internal object DefaultTypeConverter {
+    fun Any.asString(): String = this as String
     fun Any.asBoolean(): Boolean = this as Boolean
     fun Any.asDouble(): Double = if (this is Int) toDouble() else this as Double
     fun Any.asFloat(): Float = if (this is Double) toFloat() else this as Float

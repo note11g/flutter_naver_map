@@ -1,6 +1,7 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.applier.option
 
 import com.naver.maps.map.NaverMapOptions
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asString
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asBoolean
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asFloat
@@ -154,5 +155,9 @@ class NaverMapOptionApplierImpl(
     override fun setLocale(rawLocale: Any) {
         val nLocale = NLocale.fromMessageable(rawLocale)
         options.locale(nLocale?.toLocale())
+    }
+
+    override fun setCustomStyleId(rawCustomStyleId: Any) {
+        options.customStyleId(rawCustomStyleId.toString())
     }
 }

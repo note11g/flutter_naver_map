@@ -54,5 +54,6 @@ internal object ApplyUtil {
             "maxZoom" to { it::setMaxZoom },
             "maxTilt" to { it::setMaxTilt },
             "locale" to { it::setLocale },
+            "customStyleId" to { it::setCustomStyleId },
         )
 }
