@@ -153,4 +153,8 @@ internal class NaverMapApplierImpl: NaverMapOptionApplier {
     func setLocale(_ rawLocale: Any) {
         mapView.locale = NLocale.fromMessageable(rawLocale)?.localeStr
     }
+
+    func setCustomStyleId(_ rawCustomStyleId: Any) {
+        mapView.customStyleId = asString(rawCustomStyleId)
+    }
 }
