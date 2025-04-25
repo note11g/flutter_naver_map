@@ -33,4 +33,5 @@ internal interface NaverMapOptionApplier {
     fun setMaxZoom(rawLevel: Any)
     fun setMaxTilt(rawTilt: Any)
     fun setLocale(rawLocale: Any)
+    fun setCustomStyleId(rawCustomStyleId: Any)
 }
