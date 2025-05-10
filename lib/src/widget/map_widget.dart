@@ -196,8 +196,10 @@ class _NaverMapState extends State<NaverMap>
   void onMapReady() async {
     controllerCompleter.complete(controller);
     await _runOnMapReadyTasks();
-    isMapReady = true;
-    widget.onMapReady?.call(controller);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      isMapReady = true;
+      widget.onMapReady?.call(controller);
+    });
   }
 
   @override
