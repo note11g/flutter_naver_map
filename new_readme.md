@@ -55,8 +55,7 @@ Widget build(BuildContext context) {
         body: NaverMap(
             options: NaverMapViewOptions(
                 contentPadding: safeAreaPadding, // 화면의 SafeArea에 중요 지도 요소가 들어가지 않도록 설정하는 Padding. 필요한 경우에만 사용하세요.
-                initialCameraPosition: NCameraPosition(
-                    target: seoulCityHall, zoom: 14),
+                initialCameraPosition: NCameraPosition(target: seoulCityHall, zoom: 14),
             ), 
             onMapReady: (controller) {
                 final marker = NMarker(
