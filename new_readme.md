@@ -3,6 +3,16 @@
 [![pub package](https://img.shields.io/pub/v/flutter_naver_map.svg?color=4285F4)](https://pub.dev/packages/flutter_naver_map)
 [![github](https://img.shields.io/github/stars/note11g/flutter_naver_map)](https://github.com/note11g/flutter_naver_map)
 
+> **[중요 마이그레이션 안내]**
+> 
+> 1.3.1부터 Naver Cloud Platform의 지도 서비스가 일부 변경됨에 따라, 신규 인증 API가 추가되었습니다.
+> 
+> 기존 인증 방식(API)으로 제공되는 서비스는 25년 7월 1일부터 무료 이용량 제공이 중단될 예정이니
+> 
+> 이점 참고하시어, 빠르게 마이그레이션 하시길 권장드립니다.
+> 
+> [신규 서비스 인증 관련 상세 내용 보기 >](https://github.com/note11g/flutter_naver_map/issues/311)
+
 ## Getting Started
 
 ###  1. 네이버 클라우드 플랫폼 콘솔에서 사용 신청
