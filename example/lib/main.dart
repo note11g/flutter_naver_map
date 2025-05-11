@@ -144,7 +144,6 @@ class _FNMapPageState extends State<FNMapPage> {
                   height: 40,
                   decoration: const BoxDecoration(
                       color: Colors.blueAccent, shape: BoxShape.circle)),
-              size: const Size(40, 40),
               context: context)
           .then((value) {
         clusterIcon = value;
