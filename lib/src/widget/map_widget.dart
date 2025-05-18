@@ -29,10 +29,19 @@ class NaverMap extends StatefulWidget {
     --- Events ---
   */
 
-  /// 지도가 조작할 수 있는 첫 시점에 실행 되는 함수입니다.
+  /// 지도를 조작할 수 있는 첫 시점에 실행 되는 함수입니다.
+  ///
   /// 위젯 첫 빌드 시에 한 번만 실행 됩니다.
+  ///
   /// 이 콜백을 통해, [NaverMapController]를 매개변수로 얻을 수 있습니다.
   final void Function(NaverMapController controller)? onMapReady;
+
+  /// 지도의 데이터가 모두 로딩되어 최초로 화면에 나타난 후에 실행되는 함수입니다.
+  ///
+  /// 데이터가 모두 로드되어야 실행되므로, [onMapReady] 이후에 한번만 실행됩니다.
+  ///
+  /// 네트워크 속도가 느리거나, 연결에 실패한 경우에는 실행되지 않을 수 있음을 유의해주세요.
+  final void Function()? onMapLoaded;
 
   /// 지도가 사용자에 의해 터치 되었을 때 실행 되는 함수입니다.
   ///
@@ -71,6 +80,7 @@ class NaverMap extends StatefulWidget {
     this.clusterOptions = const NaverMapClusteringOptions(),
     this.forceGesture = false,
     this.onMapReady,
+    this.onMapLoaded,
     this.onMapTapped,
     this.onSymbolTapped,
     this.onCameraChange,
@@ -201,6 +211,9 @@ class _NaverMapState extends State<NaverMap>
       widget.onMapReady?.call(controller);
     });
   }
+
+  @override
+  void onMapLoaded() => widget.onMapLoaded?.call();
 
   @override
   void onMapTapped(NPoint point, NLatLng latLng) =>
