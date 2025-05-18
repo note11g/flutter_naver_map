@@ -2,6 +2,8 @@ import NMapsMap
 
 internal protocol NaverMapControlSender : AnyObject {
     func onMapReady()
+    
+    func onMapLoaded()
 
     func onMapTapped(nPoint: NPoint, latLng: NMGLatLng)
 

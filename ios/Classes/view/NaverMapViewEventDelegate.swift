@@ -1,6 +1,6 @@
 import NMapsMap
 
-internal class NaverMapViewEventDelegate: NSObject, NMFMapViewTouchDelegate, NMFMapViewCameraDelegate, NMFIndoorSelectionDelegate {
+internal class NaverMapViewEventDelegate: NSObject, NMFMapViewTouchDelegate, NMFMapViewCameraDelegate, NMFIndoorSelectionDelegate, NMFMapViewLoadDelegate {
     private weak var sender: NaverMapControlSender?
 
     private let initializeConsumeSymbolTapEvents: Bool
@@ -40,16 +40,22 @@ internal class NaverMapViewEventDelegate: NSObject, NMFMapViewTouchDelegate, NMF
     func indoorSelectionDidChanged(_ indoorSelection: NMFIndoorSelection?) {
         sender?.onSelectedIndoorChanged(selectedIndoor: indoorSelection)
     }
+    
+    func mapViewDidFinishLoadingMap(_ mapView: NMFMapView) {
+        sender?.onMapLoaded()
+    }
 
     func registerDelegates(mapView: NMFMapView) {
         mapView.touchDelegate = self
         mapView.addCameraDelegate(delegate: self)
         mapView.addIndoorSelectionDelegate(delegate: self)
+        mapView.addLoadDelegate(delegate: self)
     }
 
     func unregisterDelegates(mapView: NMFMapView) {
         mapView.touchDelegate = nil
         mapView.removeCameraDelegate(delegate: self)
         mapView.removeIndoorSelectionDelegate(delegate: self)
+        mapView.removeLoadDelegate(delegate: self)
     }
 }
