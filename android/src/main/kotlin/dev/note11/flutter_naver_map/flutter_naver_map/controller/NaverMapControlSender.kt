@@ -8,6 +8,8 @@ import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
 internal interface NaverMapControlSender {
     fun onMapReady()
 
+    fun onMapLoaded()
+
     fun onMapTapped(nPoint: NPoint, latLng: LatLng)
 
     fun onSymbolTapped(symbol: Symbol): Boolean?

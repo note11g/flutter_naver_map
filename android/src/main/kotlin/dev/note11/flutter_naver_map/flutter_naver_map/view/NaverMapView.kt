@@ -65,7 +65,7 @@ internal class NaverMapView(
     private fun onMapReady() {
         initializeMapController()
         setLocationSource()
-        setMapTapListener()
+        setMapEventListeners()
 
         mapView.onCreate(null)
         naverMapControlSender.onMapReady()
@@ -89,7 +89,7 @@ internal class NaverMapView(
         naverMap.locationSource = NLocationSource(activity)
     }
 
-    private fun setMapTapListener() {
+    private fun setMapEventListeners() {
         isListenerRegistered = true
         naverMap.run {
             setOnMapClickListener { pointFPx, latLng ->
@@ -102,10 +102,11 @@ internal class NaverMapView(
             addOnCameraChangeListener(naverMapControlSender::onCameraChange)
             addOnCameraIdleListener(naverMapControlSender::onCameraIdle)
             addOnIndoorSelectionChangeListener(naverMapControlSender::onSelectedIndoorChanged)
+            addOnLoadListener(naverMapControlSender::onMapLoaded)
         }
     }
 
-    private fun removeMapTapListener() {
+    private fun removeMapEventListeners() {
         if (isListenerRegistered) {
             naverMap.run {
                 onMapClickListener = null
@@ -113,6 +114,7 @@ internal class NaverMapView(
                 removeOnCameraChangeListener(naverMapControlSender::onCameraChange)
                 removeOnCameraIdleListener(naverMapControlSender::onCameraIdle)
                 removeOnIndoorSelectionChangeListener(naverMapControlSender::onSelectedIndoorChanged)
+                removeOnLoadListener(naverMapControlSender::onMapLoaded)
             }
         }
     }
@@ -121,7 +123,7 @@ internal class NaverMapView(
 
     override fun dispose() {
         unRegisterLifecycleCallback()
-        removeMapTapListener()
+        removeMapEventListeners()
 
         mapView.run {
             onPause()
@@ -180,6 +182,7 @@ internal class NaverMapView(
 
     override fun onConfigurationChanged(newConfig: Configuration) {}
 
+    @Deprecated("Deprecated in Java")
     override fun onLowMemory() {
         mapView.onLowMemory()
     }
