@@ -187,6 +187,9 @@ class _NaverMapState extends State<NaverMap>
   }
 
   Future<void> _runOnMapReadyTasks() async {
+    if (onMapReadyTasksQueue.isEmpty) {
+      return Future.value();
+    }
     final tasks = List<Future Function()>.from(onMapReadyTasksQueue);
     onMapReadyTasksQueue.clear();
     for (final task in tasks) {
@@ -205,15 +208,21 @@ class _NaverMapState extends State<NaverMap>
   @override
   void onMapReady() async {
     controllerCompleter.complete(controller);
-    await _runOnMapReadyTasks();
+    await _runOnMapReadyTasks().then((_) => isMapReady = true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      isMapReady = true;
       widget.onMapReady?.call(controller);
     });
   }
 
   @override
-  void onMapLoaded() => widget.onMapLoaded?.call();
+  void onMapLoaded() async {
+    if (!controllerCompleter.isCompleted) {
+      await controllerCompleter.future;
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.onMapLoaded?.call();
+    });
+  }
 
   @override
   void onMapTapped(NPoint point, NLatLng latLng) =>
