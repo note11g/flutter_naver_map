@@ -90,6 +90,7 @@ class _FNMapPageState extends State<FNMapPage> {
                 haloColor: Colors.blueAccent));
           }),
       onMapReady: onMapReady,
+      onMapLoaded: onMapLoaded,
       onMapTapped: onMapTapped,
       onSymbolTapped: onSymbolTapped,
       onCameraChange: onCameraChange,
@@ -103,6 +104,13 @@ class _FNMapPageState extends State<FNMapPage> {
   void onMapReady(NaverMapController controller) {
     mapController = controller;
     GetIt.I.registerSingleton(controller);
+  }
+
+  void onMapLoaded() {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("onMapLoaded"),
+      backgroundColor: Colors.black87,
+    ));
   }
 
   void onMapTapped(NPoint point, NLatLng latLng) async {
