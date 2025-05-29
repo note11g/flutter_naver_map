@@ -428,7 +428,7 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
     
     func setOutlinePattern(_ polygonOverlay: NMFPolygonOverlay, patternList: Any) {
         polygonOverlay.outlinePattern = asArr(patternList) { pattern in
-            NSNumber(value: asRoundInt(rawFloat: pattern))
+            NSNumber(value: DisplayUtil.dpToPx(dp: asDouble(pattern)))
         }
     }
 
@@ -461,7 +461,7 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
 
     func setPattern(_ polylineOverlay: NMFPolylineOverlay, patternList: Any) {
         polylineOverlay.pattern = asArr(patternList) { pattern in
-            NSNumber(value: asRoundInt(rawFloat: pattern))
+            NSNumber(value: asDouble(pattern))
         }
     }
 
