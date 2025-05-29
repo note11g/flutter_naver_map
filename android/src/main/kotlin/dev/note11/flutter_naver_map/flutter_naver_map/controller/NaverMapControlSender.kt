@@ -12,6 +12,8 @@ internal interface NaverMapControlSender {
 
     fun onMapTapped(nPoint: NPoint, latLng: LatLng)
 
+    fun onMapLongTapped(nPoint: NPoint, latLng: LatLng)
+
     fun onSymbolTapped(symbol: Symbol): Boolean?
 
     fun onCameraChange(cameraUpdateReason: Int, animated: Boolean)
