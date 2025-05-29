@@ -115,7 +115,10 @@ class _FNMapPageState extends State<FNMapPage> {
   }
 
   void onMapTapped(NPoint point, NLatLng latLng) async {
-    // ...
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("onMapTapped\n$latLng"),
+      backgroundColor: Colors.black87,
+    ));
   }
 
   void onMapLongTapped(NPoint point, NLatLng latLng) async {
@@ -126,7 +129,10 @@ class _FNMapPageState extends State<FNMapPage> {
   }
 
   void onSymbolTapped(NSymbolInfo symbolInfo) {
-    // ...
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("onSymbolTapped: ${symbolInfo.caption}\n${symbolInfo.position}"),
+      backgroundColor: Colors.black87,
+    ));
   }
 
   void onCameraChange(NCameraUpdateReason reason, bool isGesture) {
