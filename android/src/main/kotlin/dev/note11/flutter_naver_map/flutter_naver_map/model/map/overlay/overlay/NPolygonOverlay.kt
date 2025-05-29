@@ -18,7 +18,7 @@ internal data class NPolygonOverlay(
     val holes: List<List<LatLng>>,
     @ColorInt val outlineColor: Int,
     val outlineWidthDp: Double,
-    val outlinePatternDp: List<Int>,
+    val outlinePatternDp: List<Double>,
 ) : AddableOverlay<PolygonOverlay>() {
 
 
@@ -31,7 +31,7 @@ internal data class NPolygonOverlay(
         g.holes = holes
         g.outlineColor = outlineColor
         g.outlineWidth = DisplayUtil.dpToPx(outlineWidthDp)
-        g.setOutlinePattern(*outlinePatternDp.map { DisplayUtil.dpToPx(it.toDouble()) }.toIntArray())
+        g.setOutlinePattern(*outlinePatternDp.map { DisplayUtil.dpToPx(it) }.toIntArray())
     }
 
     companion object {
@@ -45,7 +45,7 @@ internal data class NPolygonOverlay(
                 },
                 outlineColor = it[outlineColorName]!!.asInt(),
                 outlineWidthDp = it[outlineWidthName]!!.asDouble(),
-                outlinePatternDp = it[outlinePatternName]!!.asList { p -> p.asInt() },
+                outlinePatternDp = it[outlinePatternName]!!.asList { p -> p.asDouble() },
             )
         }
 
