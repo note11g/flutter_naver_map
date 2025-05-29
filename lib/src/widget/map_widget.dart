@@ -53,6 +53,9 @@ class NaverMap extends StatefulWidget {
   /// [options.consumeSymbolTapEvents]을 `false`로 설정하세요.
   final void Function(NPoint point, NLatLng latLng)? onMapTapped;
 
+  /// 지도가 사용자에 의해 길게 터치 되었을 때 실행되는 함수입니다.
+  final void Function(NPoint point, NLatLng latLng)? onMapLongTapped;
+
   /// 심볼이 사용자에 의해 터치될 때, 실행 되는 함수입니다.
   /// 사용자가 터치한 심볼의 정보인 [NSymbolInfo]를 매개변수로 제공합니다.
   final void Function(NSymbolInfo symbolInfo)? onSymbolTapped;
@@ -82,6 +85,7 @@ class NaverMap extends StatefulWidget {
     this.onMapReady,
     this.onMapLoaded,
     this.onMapTapped,
+    this.onMapLongTapped,
     this.onSymbolTapped,
     this.onCameraChange,
     this.onCameraIdle,
@@ -227,6 +231,10 @@ class _NaverMapState extends State<NaverMap>
   @override
   void onMapTapped(NPoint point, NLatLng latLng) =>
       widget.onMapTapped?.call(point, latLng);
+
+  @override
+  void onMapLongTapped(NPoint point, NLatLng latLng) =>
+      widget.onMapLongTapped?.call(point, latLng);
 
   @override
   void onSymbolTapped(NSymbolInfo symbol) =>
