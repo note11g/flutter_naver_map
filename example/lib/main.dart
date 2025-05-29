@@ -92,6 +92,7 @@ class _FNMapPageState extends State<FNMapPage> {
       onMapReady: onMapReady,
       onMapLoaded: onMapLoaded,
       onMapTapped: onMapTapped,
+      onMapLongTapped: onMapLongTapped,
       onSymbolTapped: onSymbolTapped,
       onCameraChange: onCameraChange,
       onCameraIdle: onCameraIdle,
@@ -115,6 +116,13 @@ class _FNMapPageState extends State<FNMapPage> {
 
   void onMapTapped(NPoint point, NLatLng latLng) async {
     // ...
+  }
+
+  void onMapLongTapped(NPoint point, NLatLng latLng) async {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("onMapLongTapped\n$latLng"),
+      backgroundColor: Colors.black87,
+    ));
   }
 
   void onSymbolTapped(NSymbolInfo symbolInfo) {
