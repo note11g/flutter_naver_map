@@ -6,14 +6,10 @@
 //
 
 internal struct DisplayUtil {
-    static private lazy var _density: CGFloat = {
-        return UIScreen.main.scale
-    }
+    static private var _scale: CGFloat = UIScreen.main.scale
     
     static var scale: CGFloat {
-        get {
-            return _density
-        }
+        return _scale
     }
     
     static func dpToPx(dp: Double) -> Double {
