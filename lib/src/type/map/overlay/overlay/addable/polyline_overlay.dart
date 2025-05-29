@@ -100,7 +100,7 @@ class NPolylineOverlay extends NAddableOverlay<NPolylineOverlay> {
     _set(_lineJoinName, lineJoin);
   }
 
-  /// 선 오버래이의 점선 패턴을 지정합니다.
+  /// 선 오버레이의 점선 패턴을 지정합니다.
   ///
   /// 패턴은 짝수번째 요소는 실선의 길이, 홀수번째 요소는 공백의 길이를 나타냅니다.
   ///
