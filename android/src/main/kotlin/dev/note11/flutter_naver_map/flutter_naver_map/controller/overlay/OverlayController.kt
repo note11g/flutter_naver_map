@@ -470,6 +470,11 @@ internal class OverlayController(
         polygonOverlay.outlineWidth = dpToPx(rawWidthDp.asDouble())
     }
 
+    override fun setOutlinePattern(polygonOverlay: PolygonOverlay, rawPatternDpList: Any) {
+        val patternList = rawPatternDpList.asList { dpToPx(it.asDouble()) }
+        polygonOverlay.setOutlinePattern(*patternList.toIntArray())
+    }
+
     override fun getBounds(
         polygonOverlay: PolygonOverlay,
         success: (bounds: Map<String, Any>) -> Unit,
