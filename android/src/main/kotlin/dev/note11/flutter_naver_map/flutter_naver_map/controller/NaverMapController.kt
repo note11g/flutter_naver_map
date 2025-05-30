@@ -286,6 +286,15 @@ internal class NaverMapController(
         )
     }
 
+    override fun onMapLongTapped(nPoint: NPoint, latLng: LatLng) {
+        channel.invokeMethod(
+            "onMapLongTapped", mapOf(
+                "nPoint" to nPoint.toMessageable(),
+                "latLng" to latLng.toMessageable(),
+            )
+        )
+    }
+
     override fun onSymbolTapped(symbol: Symbol): Boolean? {
         val symbolInfo = NSymbolInfo(symbol)
         channel.invokeMethod("onSymbolTapped", symbolInfo.toMessageable())

@@ -224,6 +224,13 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
         ])
     }
     
+    func onMapLongTapped(nPoint: NPoint, latLng: NMGLatLng) {
+        channel.invokeMethod("onMapLongTapped", arguments: [
+            "nPoint": nPoint.toMessageable(),
+            "latLng": latLng.toMessageable()
+        ])
+    }
+    
     func onSymbolTapped(symbol: NMFSymbol) -> Bool? {
         let symbolInfo = NSymbolInfo(symbol: symbol)
         channel.invokeMethod("onSymbolTapped", arguments: symbolInfo.toMessageable())

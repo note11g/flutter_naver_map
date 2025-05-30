@@ -14,6 +14,10 @@ internal class NaverMapViewEventDelegate: NSObject, NMFMapViewTouchDelegate, NMF
     func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
         sender?.onMapTapped(nPoint: NPoint.fromCGPointWithDisplay(point), latLng: latlng)
     }
+    
+    func mapView(_ mapView: NMFMapView, didLongTapMap latlng: NMGLatLng, point: CGPoint) {
+        sender?.onMapLongTapped(nPoint: NPoint.fromCGPointWithDisplay(point), latLng: latlng)
+    }
 
     func mapView(_ mapView: NMFMapView, didTap symbol: NMFSymbol) -> Bool {
         sender?.onSymbolTapped(symbol: symbol) ?? initializeConsumeSymbolTapEvents

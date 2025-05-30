@@ -95,6 +95,9 @@ internal class NaverMapView(
             setOnMapClickListener { pointFPx, latLng ->
                 naverMapControlSender.onMapTapped(NPoint.fromPointFWithPx(pointFPx), latLng)
             }
+            setOnMapLongClickListener { pointFPx, latLng ->
+                naverMapControlSender.onMapLongTapped(NPoint.fromPointFWithPx(pointFPx), latLng)
+            }
             setOnSymbolClickListener {
                 naverMapControlSender.onSymbolTapped(it)
                     ?: naverMapViewOptions.consumeSymbolTapEvents
@@ -110,6 +113,7 @@ internal class NaverMapView(
         if (isListenerRegistered) {
             naverMap.run {
                 onMapClickListener = null
+                onMapLongClickListener = null
                 onSymbolClickListener = null
                 removeOnCameraChangeListener(naverMapControlSender::onCameraChange)
                 removeOnCameraIdleListener(naverMapControlSender::onCameraIdle)

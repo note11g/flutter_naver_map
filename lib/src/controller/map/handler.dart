@@ -7,6 +7,8 @@ mixin _NaverMapControlHandler {
 
   void onMapTapped(NPoint point, NLatLng latLng);
 
+  void onMapLongTapped(NPoint point, NLatLng latLng);
+
   void onSymbolTapped(NSymbolInfo symbol);
 
   @Deprecated("use `onCameraChangeWithCameraPosition` instead")
@@ -32,6 +34,13 @@ mixin _NaverMapControlHandler {
       case "onMapTapped":
         final args = call.arguments;
         onMapTapped(
+          NPoint._fromMessageable(args["nPoint"]),
+          NLatLng._fromMessageable(args["latLng"]),
+        );
+        break;
+      case "onMapLongTapped":
+        final args = call.arguments;
+        onMapLongTapped(
           NPoint._fromMessageable(args["nPoint"]),
           NLatLng._fromMessageable(args["latLng"]),
         );
