@@ -1,15 +1,37 @@
+import "dart:async";
+
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 
 class ScaleBarWidget extends StatelessWidget {
   final int currentMeter;
-  final int barWidth; // 40~80dp
+  final double barWidth;
 
   const ScaleBarWidget({
     super.key,
     required this.currentMeter,
     required this.barWidth,
   });
+
+  factory ScaleBarWidget.fromMeterPerDp(double meterPerDp) {
+    final currentStep = _findCurrentStep(meterPerDp);
+    return ScaleBarWidget(
+        currentMeter: currentStep, barWidth: currentStep / meterPerDp);
+  }
+
+  static int _findCurrentStep(double meterPerDp) {
+    final maxDisplayMeter = meterPerDp * _maxWidth;
+    for (final meterScale in _meterScaleSteps.reversed) {
+      if (meterScale <= maxDisplayMeter) return meterScale;
+    }
+    return _meterScaleSteps.first;
+  }
+
+  static const _maxWidth = 80.0;
+
+  // @formatter:off
+  static const _meterScaleSteps = [2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000, 2000000, 5000000];
+  // @formatter:on
 
   static Future<void> prepareFont() => _ScaleBarFontLoader.init();
 
@@ -27,33 +49,30 @@ class ScaleBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _ScaleBarFontLoader.init();
-    return Container(
-        margin: const EdgeInsets.only(bottom: 32),
-        child: SizedBox(
-            width: barWidth + _scaleBarInnerPadding.horizontal,
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(children: [
-                    const Text("0", style: _textStyle),
-                    const Spacer(),
-                    Text(
-                        currentMeter >= 1000
-                            ? "${currentMeter ~/ 1000}km"
-                            : "${currentMeter}m",
-                        textAlign: TextAlign.right,
-                        style: _textStyle),
-                  ]),
-                  const SizedBox(height: 1),
-                  const Padding(
-                      padding: _scaleBarInnerPadding,
-                      child: CustomPaint(painter: _ScaleBarPainter())),
-                ])));
+    return SizedBox(
+        width: barWidth + _scaleBarInnerPadding.horizontal,
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Row(children: [
+            const Text("0", style: _textStyle),
+            Expanded(
+                child: Text(
+                    currentMeter >= 1000
+                        ? "${currentMeter ~/ 1000}km"
+                        : "${currentMeter}m",
+                    textAlign: TextAlign.right,
+                    style: _textStyle)),
+          ]),
+          const SizedBox(height: 1),
+          const Padding(
+              padding: _scaleBarInnerPadding,
+              child: CustomPaint(painter: _ScaleBarPainter())),
+          const SizedBox(height: 4),
+        ]));
   }
 }
 
 class _ScaleBarPainter extends CustomPainter {
-  // final double width;
   final double barHeight;
 
   const _ScaleBarPainter({
@@ -61,14 +80,13 @@ class _ScaleBarPainter extends CustomPainter {
   });
 
   static const barColor = Color(0xFF444444);
-
   static const barBorderColor = Color(0x80FFFFFF);
 
   @override
   void paint(Canvas canvas, Size size) {
-    const double borderThickness = 1.0; // 테두리 두께 1dp
-    const double barThickness = 1.0; // 내부 막대 두께 1dp
-    final double barWidth = size.width; // 막대 길이
+    const double borderThickness = 1.0;
+    const double barThickness = 1.0;
+    final double barWidth = size.width;
 
     final Paint barPaint = Paint()
       ..color = barColor
@@ -104,16 +122,14 @@ class _ScaleBarPainter extends CustomPainter {
 
 abstract class _ScaleBarFontLoader {
   static const fontFamily = "FNMScaleBar";
-
-  static bool _isLoaded = false;
+  static bool _tryLoad = false;
 
   static Future<void> init() async {
-    if (_isLoaded) return;
+    if (_tryLoad) return;
     final loader = FontLoader(fontFamily);
     loader.addFont(rootBundle.load(
         "packages/flutter_naver_map/assets/font/Inter-fnm-scalebar-ss540.otf"));
+    _tryLoad = true;
     await loader.load();
-    print("ScaleBarFontLoader.init: done");
-    _isLoaded = true;
   }
 }
