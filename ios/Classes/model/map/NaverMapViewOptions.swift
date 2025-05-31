@@ -12,6 +12,8 @@ internal struct NaverMapViewOptions {
     func updateWithNaverMapView(naverMap: NMFNaverMapView, isFirst: Bool) {
         naverMap.showCompass = false
         naverMap.showZoomControls = false
+        naverMap.showScaleBar = false
+        naverMap.mapView.logoInteractionEnabled = false
 
         let applier = NaverMapApplierImpl(naverMap, isFirst: isFirst)
         try! applier.applyOptions(args: args)
