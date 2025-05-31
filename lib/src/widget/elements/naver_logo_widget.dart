@@ -12,6 +12,9 @@ class NMapLogoWidget extends StatelessWidget {
     required this.logoClickEnable,
   });
 
+  static const width = 48.0;
+  static const height = 17.0;
+
   @override
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.circular(99);
@@ -27,19 +30,20 @@ class NMapLogoWidget extends StatelessWidget {
                       NMapInfoDialog(naverMapController: naverMapController))
               : null,
           borderRadius: borderRadius,
-          child: Padding(
-            padding: const EdgeInsets.all(1),
-            child: SizedBox(
-                width: 46,
-                height: 15,
-                child: Material(
+          child: SizedBox(
+            width: width,
+            height: height,
+            child: Padding(
+              padding: const EdgeInsets.all(1),
+              child: Material(
                     color: Colors.white,
                     borderRadius: borderRadius,
                     child: Center(
                       child: CustomPaint(
                           size: const Size(35, 7.2),
                           painter: _NaverLogoPainter()),
-                    ))),
+                    )),
+            ),
           )),
     );
   }
