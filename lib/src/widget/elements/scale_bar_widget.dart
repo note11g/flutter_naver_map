@@ -1,7 +1,24 @@
-import "dart:async";
+part of "../../../flutter_naver_map.dart";
 
-import "package:flutter/material.dart";
-import "package:flutter/services.dart";
+class NMapScaleBarWidget extends StatelessWidget {
+  final NaverMapController? naverMapController;
+  final NCameraPosition? initCameraPosition;
+
+  const NMapScaleBarWidget(
+      {super.key, this.naverMapController, this.initCameraPosition});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+        stream: naverMapController?._nowCameraPositionStream,
+        builder: (context, snapshot) {
+          final cameraPosition = snapshot.data ?? initCameraPosition;
+          if (cameraPosition == null) return const SizedBox.shrink();
+          return ScaleBarWidget.fromMeterPerDp(MathUtil.calcMeterPerDp(
+              cameraPosition.target.latitude, cameraPosition.zoom));
+        });
+  }
+}
 
 class ScaleBarWidget extends StatelessWidget {
   final int currentMeter;
@@ -67,7 +84,6 @@ class ScaleBarWidget extends StatelessWidget {
           const Padding(
               padding: _scaleBarInnerPadding,
               child: CustomPaint(painter: _ScaleBarPainter())),
-          const SizedBox(height: 4),
         ]));
   }
 }

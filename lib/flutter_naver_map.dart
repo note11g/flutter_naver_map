@@ -146,3 +146,5 @@ part 'src/widget/map_widget.dart';
 part 'src/widget/platform_view.dart';
 
 part 'src/widget/elements/zoom_control_widget.dart';
+
+part 'src/widget/elements/scale_bar_widget.dart';
