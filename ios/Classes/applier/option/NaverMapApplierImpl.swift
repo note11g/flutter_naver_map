@@ -121,10 +121,6 @@ internal class NaverMapApplierImpl: NaverMapOptionApplier {
         naverMapView.showLocationButton = asBool(rawEnable)
     }
 
-    func setLogoClickEnable(_ rawEnable: Any) {
-        mapView.logoInteractionEnabled = asBool(rawEnable)
-    }
-
     func setLogoAlign(_ rawAlign: Any) {
         mapView.logoAlign = asLogoAlign(rawAlign)
     }

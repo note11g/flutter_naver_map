@@ -130,6 +130,7 @@ class _NaverMapState extends State<NaverMap>
         forceGLSurfaceView: widget.forceGLSurfaceView,
       )),
       _naverLogo(widget.options),
+      if (widget.options.scaleBarEnable) _scaleBar(widget.options),
     ]);
   }
 
@@ -148,6 +149,25 @@ class _NaverMapState extends State<NaverMap>
                   naverMapController: snapshot.data,
                   logoClickEnable: options.logoClickEnable);
             }));
+  }
+
+  Widget _scaleBar(final NaverMapViewOptions options) {
+    final fullPadding = options.contentPadding + options.logoMargin;
+    return Positioned(
+        left: fullPadding.left + NMapLogoWidget.width + 16,
+        bottom: fullPadding.bottom,
+        child: SizedBox(
+          height: NMapLogoWidget.height,
+          child: Center(
+            child: FutureBuilder(
+                future: controllerCompleter.future,
+                builder: (context, snapshot) {
+                  return NMapScaleBarWidget(
+                      naverMapController: snapshot.data,
+                      initCameraPosition: options.initialCameraPosition);
+                }),
+          ),
+        ));
   }
 
   void _onPlatformViewCreated(int id) {
@@ -244,11 +264,10 @@ class _NaverMapState extends State<NaverMap>
   void onCameraChange(NCameraUpdateReason reason, bool animated) =>
       widget.onCameraChange?.call(reason, animated);
 
-  // like hot stream. (if needed, migrate to stream based event handling)
   @override
   void onCameraChangeWithCameraPosition(
       NCameraUpdateReason reason, bool animated, NCameraPosition position) {
-    controller._updateNowCameraPositionData(position);
+    controller._updateNowCameraPositionData(position); // stream update.
     widget.onCameraChange?.call(reason, animated);
   }
 

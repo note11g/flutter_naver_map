@@ -53,6 +53,8 @@ internal data class NaverMapViewOptions(
             val options = NaverMapOptions().apply {
                 compassEnabled(false)
                 zoomControlEnabled(false)
+                scaleBarEnabled(false)
+                logoClickEnabled(false)
             }
 
             val applier = NaverMapOptionApplierImpl(options)

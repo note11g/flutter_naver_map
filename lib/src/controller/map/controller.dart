@@ -20,6 +20,8 @@ abstract class NaverMapController implements _NaverMapControlSender {
   @experimental
   NCameraPosition get nowCameraPosition;
 
+  Stream<NCameraPosition> get _nowCameraPositionStream;
+
   void _updateNowCameraPositionData(NCameraPosition position);
 }
 
@@ -32,10 +34,21 @@ class _NaverMapControllerImpl
   final _NOverlayController overlayController;
 
   @override
-  NCameraPosition nowCameraPosition;
+  NCameraPosition get nowCameraPosition =>
+      _nowCameraPositionStreamController.currentData;
 
-  _NaverMapControllerImpl(
-      this.channel, this.overlayController, this.nowCameraPosition);
+  @override
+  Stream<NCameraPosition> get _nowCameraPositionStream =>
+      _nowCameraPositionStreamController.stream;
+
+  final NValueHoldHotStreamController<NCameraPosition>
+      _nowCameraPositionStreamController;
+
+  _NaverMapControllerImpl(this.channel, this.overlayController,
+      NCameraPosition initialCameraPosition)
+      : _nowCameraPositionStreamController =
+            NValueHoldHotStreamController<NCameraPosition>(
+                initialCameraPosition);
 
   @override
   Future<bool> updateCamera(NCameraUpdate cameraUpdate) async {
@@ -213,7 +226,7 @@ class _NaverMapControllerImpl
 
   @override
   void _updateNowCameraPositionData(NCameraPosition position) {
-    nowCameraPosition = position;
+    _nowCameraPositionStreamController.add(position);
   }
 
   /*
@@ -226,5 +239,6 @@ class _NaverMapControllerImpl
   @override
   void dispose() {
     overlayController.disposeChannel();
+    _nowCameraPositionStreamController.close();
   }
 }
