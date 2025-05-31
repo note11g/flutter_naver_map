@@ -38,6 +38,20 @@ class NCameraPosition with NMessageableWithMap {
       );
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is NCameraPosition &&
+          runtimeType == other.runtimeType &&
+          target == other.target &&
+          zoom == other.zoom &&
+          tilt == other.tilt &&
+          bearing == other.bearing;
+
+  @override
+  int get hashCode =>
+      target.hashCode ^ zoom.hashCode ^ tilt.hashCode ^ bearing.hashCode;
+
+  @override
   String toString() => "$runtimeType: ${toNPayload().map}";
 
   @override
