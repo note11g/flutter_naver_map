@@ -19,6 +19,7 @@ import 'package:flutter_naver_map/src/util/math.dart';
 import 'package:flutter_naver_map/src/util/widget_to_image.dart';
 import "package:flutter_naver_map/src/widget/elements/naver_logo_widget.dart";
 import "package:meta/meta.dart";
+import 'package:flutter_naver_map/src/widget/elements/util/canvas_util.dart';
 
 /*
   --- controller ---
@@ -148,3 +149,5 @@ part 'src/widget/platform_view.dart';
 part 'src/widget/elements/zoom_control_widget.dart';
 
 part 'src/widget/elements/scale_bar_widget.dart';
+
+part 'src/widget/elements/my_location_button_widget.dart';
