@@ -5,7 +5,8 @@ class NMyLocationButtonWidget extends StatelessWidget {
   final NaverMapController? mapController;
   final NLocationTrackingMode mode;
   final bool nightMode;
-  final double roundness;
+  final BorderRadius borderRadius;
+  final double elevation;
   final double size;
   final bool isLoading;
 
@@ -13,7 +14,8 @@ class NMyLocationButtonWidget extends StatelessWidget {
     super.key,
     required this.mapController,
     required this.mode,
-    this.roundness = 2,
+    this.borderRadius = const BorderRadius.all(Radius.circular(2)),
+    this.elevation = 1,
     this.size = 44,
     this.nightMode = false,
     this.isLoading = false,
@@ -31,43 +33,44 @@ class NMyLocationButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: size,
-      height: size,
-      child: Material(
-        clipBehavior: Clip.hardEdge,
-        borderRadius: BorderRadius.circular(roundness),
-        color: buttonColor,
-        elevation: 1,
-        child: Stack(children: [
-          Positioned.fill(
-              child: Center(
-            child: CustomPaint(
-              size: _baseIconSize,
-              foregroundPainter: mode == NLocationTrackingMode.face
-                  ? _MyLocationFaceIconPainter(backgroundColor: buttonColor)
-                  : null,
-              painter: switch (mode) {
-                NLocationTrackingMode.none =>
-                  _MyLocationDefaultIconPainter(color: inactiveIconColor),
-                _ => _MyLocationDefaultIconPainter(color: activeIconColor),
-              },
-            ),
-          )),
-          if (mode == NLocationTrackingMode.follow)
-            Positioned.fill(
-                bottom: _baseIconSize.height,
-                child: Center(
-                  child: SizedBox.fromSize(
-                      size: const Size(12, 12),
-                      child: Image.asset(
-                        NLocationOverlay.defaultSubIcon._path,
-                        color: activeIconColor,
-                      )),
-                )),
-          if (isLoading) Positioned.fill(child: _progressIndicator())
-        ]),
-      ),
-    );
+        width: size,
+        height: size,
+        child: Material(
+            clipBehavior: Clip.hardEdge,
+            borderRadius: borderRadius,
+            color: buttonColor,
+            elevation: elevation,
+            child: InkWell(
+                onTap: onTap,
+                child: Stack(children: [
+                  Positioned.fill(
+                      child: Center(
+                          child: CustomPaint(
+                              size: _baseIconSize,
+                              foregroundPainter:
+                                  mode == NLocationTrackingMode.face
+                                      ? const _MyLocationFaceIconPainter()
+                                      : null,
+                              painter: switch (mode) {
+                                NLocationTrackingMode.none =>
+                                  _MyLocationDefaultIconPainter(
+                                      color: inactiveIconColor),
+                                NLocationTrackingMode m =>
+                                  _MyLocationDefaultIconPainter(
+                                      color: activeIconColor,
+                                      isFace: m == NLocationTrackingMode.face),
+                              }))),
+                  if (mode == NLocationTrackingMode.follow)
+                    Positioned.fill(
+                        bottom: _baseIconSize.height,
+                        child: Center(
+                            child: SizedBox.fromSize(
+                                size: const Size(12, 12),
+                                child: Image.asset(
+                                    NLocationOverlay.defaultSubIcon._path,
+                                    color: activeIconColor)))),
+                  if (isLoading) Positioned.fill(child: _progressIndicator()),
+                ]))));
   }
 
   Widget _progressIndicator() {
@@ -79,12 +82,17 @@ class NMyLocationButtonWidget extends StatelessWidget {
       ),
     );
   }
+
+  void onTap() {
+    // todo
+  }
 }
 
 class _MyLocationDefaultIconPainter extends CustomPainter {
   final Color color;
+  final bool isFace;
 
-  _MyLocationDefaultIconPainter({required this.color});
+  _MyLocationDefaultIconPainter({required this.color, this.isFace = false});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -102,10 +110,19 @@ class _MyLocationDefaultIconPainter extends CustomPainter {
     final double innerRadius =
         math.min(size.width, size.height) / 2 - strokePaint.strokeWidth / 2;
 
-    canvas.drawCircle(center, innerRadius, strokePaint);
+    if (!isFace) {
+      canvas.drawCircle(center, innerRadius, strokePaint);
+    } else {
+      final Rect rect = Rect.fromCircle(center: center, radius: innerRadius);
+      const fullRad = (2 * math.pi);
+      const double startAngle = fullRad * (-0.25 / 2);
+      const double sweepAngle = fullRad * 0.75;
+      canvas.drawArc(rect, startAngle, sweepAngle, false, strokePaint);
+    }
 
     final double tickLength = innerRadius * tickLengthRatio;
     for (final axis in AxisDirection.values) {
+      if (isFace && axis == AxisDirection.up) continue;
       drawTick(canvas, axis, tickLength, innerRadius, size, strokePaint);
     }
 
@@ -151,13 +168,11 @@ class _MyLocationDefaultIconPainter extends CustomPainter {
 
 class _MyLocationFaceIconPainter extends CustomPainter {
   final Color color;
-  final Color backgroundColor;
   static const double _viewBox = 20.0;
   static const double _margin = 2.4;
 
   const _MyLocationFaceIconPainter({
     this.color = const Color(0xFF0086FF),
-    this.backgroundColor = Colors.white,
   });
 
   @override
@@ -194,19 +209,6 @@ class _MyLocationFaceIconPainter extends CustomPainter {
       ..cubicTo(10.4181, 7.01877, 9.57361, 7.01877, 8.06731, 7.75002)
       ..lineTo(3.29616, -0.451039)
       ..close();
-
-    final expandedBackground = Path.combine(
-        PathOperation.union,
-        Path.combine(
-            PathOperation.union, face, face.shift(const Offset(-_margin, 0))),
-        face.shift(const Offset(_margin, 0)));
-
-    final transformedExpandedBackground = expandedBackground.transform(matrix);
-    canvas.drawPath(
-        transformedExpandedBackground,
-        Paint()
-          ..style = PaintingStyle.fill
-          ..color = backgroundColor);
 
     final Paint bluePaint = Paint()
       ..style = PaintingStyle.fill
