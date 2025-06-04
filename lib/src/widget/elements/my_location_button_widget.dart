@@ -3,22 +3,18 @@ part of "../../../flutter_naver_map.dart";
 /// 내 위치 추적 모드(`NLocationTrackingMode`)를 컨트롤할 수 있는 버튼 위젯입니다.
 class NMyLocationButtonWidget extends StatelessWidget {
   final NaverMapController? mapController;
-  final NLocationTrackingMode mode;
   final bool nightMode;
   final BorderRadius borderRadius;
   final double elevation;
   final double size;
-  final bool isLoading;
 
   const NMyLocationButtonWidget({
     super.key,
     required this.mapController,
-    required this.mode,
     this.borderRadius = const BorderRadius.all(Radius.circular(2)),
     this.elevation = 1,
     this.size = 44,
     this.nightMode = false,
-    this.isLoading = false,
   });
 
   Color get buttonColor => nightMode ? Colors.grey.shade900 : Colors.white;
@@ -32,59 +28,82 @@ class NMyLocationButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: size,
-        height: size,
-        child: Material(
-            clipBehavior: Clip.hardEdge,
-            borderRadius: borderRadius,
-            color: buttonColor,
-            elevation: elevation,
-            child: InkWell(
-                onTap: onTap,
-                child: Stack(children: [
+    final stream = mapController?._locationTrackingModeStream;
+    return StreamBuilder(
+        stream: stream,
+        builder: (context, snapshot) {
+          final mode = snapshot.data ?? NLocationTrackingMode.none;
+          return _button(
+              onTap: () => onTap(mode),
+              child: Stack(children: [
+                Positioned.fill(
+                    child: Center(
+                        child: CustomPaint(
+                            size: _baseIconSize,
+                            foregroundPainter:
+                                mode == NLocationTrackingMode.face
+                                    ? const _MyLocationFaceIconPainter()
+                                    : null,
+                            painter: switch (mode) {
+                              NLocationTrackingMode.none =>
+                                _MyLocationDefaultIconPainter(
+                                    color: inactiveIconColor),
+                              NLocationTrackingMode m =>
+                                _MyLocationDefaultIconPainter(
+                                    color: activeIconColor,
+                                    isFace: m == NLocationTrackingMode.face),
+                            }))),
+                if (mode == NLocationTrackingMode.follow)
                   Positioned.fill(
+                      bottom: _baseIconSize.height,
                       child: Center(
-                          child: CustomPaint(
-                              size: _baseIconSize,
-                              foregroundPainter:
-                                  mode == NLocationTrackingMode.face
-                                      ? const _MyLocationFaceIconPainter()
-                                      : null,
-                              painter: switch (mode) {
-                                NLocationTrackingMode.none =>
-                                  _MyLocationDefaultIconPainter(
-                                      color: inactiveIconColor),
-                                NLocationTrackingMode m =>
-                                  _MyLocationDefaultIconPainter(
-                                      color: activeIconColor,
-                                      isFace: m == NLocationTrackingMode.face),
-                              }))),
-                  if (mode == NLocationTrackingMode.follow)
-                    Positioned.fill(
-                        bottom: _baseIconSize.height,
-                        child: Center(
-                            child: SizedBox.fromSize(
-                                size: const Size(12, 12),
-                                child: Image.asset(
-                                    NLocationOverlay.defaultSubIcon._path,
-                                    color: activeIconColor)))),
-                  if (isLoading) Positioned.fill(child: _progressIndicator()),
-                ]))));
+                          child: SizedBox.fromSize(
+                              size: const Size(12, 12),
+                              child: Image.asset(
+                                  NLocationOverlay.defaultSubIcon._path,
+                                  color: activeIconColor)))),
+                if (mapController?.myLocationTracker
+                    case NMyLocationTracker(:final isLoading))
+                  Positioned.fill(
+                      child: ValueListenableBuilder(
+                          valueListenable: isLoading,
+                          builder: (context, isLoading, child) =>
+                              Offstage(offstage: !isLoading, child: child!),
+                          child: _progressIndicator())),
+              ]));
+        });
+  }
+
+  Widget _button({required VoidCallback onTap, required Widget child}) {
+    return Builder(builder: (context) {
+      return SizedBox(
+          width: size,
+          height: size,
+          child: Material(
+              clipBehavior: Clip.hardEdge,
+              borderRadius: borderRadius,
+              color: buttonColor,
+              elevation: elevation,
+              child: InkWell(onTap: onTap, child: child)));
+    });
   }
 
   Widget _progressIndicator() {
     return const Padding(
-      padding: EdgeInsets.all(4),
-      child: CircularProgressIndicator(
-        color: activeIconColor,
-        strokeWidth: 1,
-      ),
-    );
+        padding: EdgeInsets.all(4),
+        child:
+            CircularProgressIndicator(color: activeIconColor, strokeWidth: 1));
   }
 
-  void onTap() {
-    // todo
+  void onTap(NLocationTrackingMode mode) {
+    final nextMode = switch (mode) {
+      NLocationTrackingMode.face => NLocationTrackingMode.none,
+      NLocationTrackingMode.follow => NLocationTrackingMode.face,
+      NLocationTrackingMode.noFollow ||
+      NLocationTrackingMode.none =>
+        NLocationTrackingMode.follow,
+    };
+    mapController?.setLocationTrackingMode(nextMode);
   }
 }
 
