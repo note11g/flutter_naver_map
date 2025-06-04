@@ -69,12 +69,16 @@ abstract class _NaverMapControlSender {
       {bool showControls = true, int compressQuality = 80});
 
   /// 위치 추적 모드를 설정합니다.
-  Future<void> setLocationTrackingMode(NLocationTrackingMode mode);
+  void setLocationTrackingMode(NLocationTrackingMode mode);
 
   /// 현재 설정된 위치 추적 모드를 가져옵니다.
   ///
   /// 반환값: 현재 위치 추적 모드
-  Future<NLocationTrackingMode> getLocationTrackingMode();
+  NLocationTrackingMode get locationTrackingMode;
+
+  void setMyLocationTracker(NMyLocationTracker? tracker);
+
+  NMyLocationTracker? get myLocationTracker;
 
   /// 새로운 오버레이를 추가합니다.
   Future<void> addOverlay(NAddableOverlay overlay);
