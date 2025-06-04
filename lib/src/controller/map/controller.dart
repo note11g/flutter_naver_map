@@ -151,16 +151,37 @@ class _NaverMapControllerImpl with NChannelWrapper implements NaverMapController
     return File(path);
   }
 
+  final _trackingModeStreamController =
+      NValueHoldHotStreamController(NLocationTrackingMode.none);
+
   @override
-  Future<void> setLocationTrackingMode(NLocationTrackingMode mode) async {
-    await invokeMethod("setLocationTrackingMode", mode);
+  Stream<NLocationTrackingMode> get _locationTrackingModeStream =>
+      _trackingModeStreamController.stream;
+
+  @override
+  NLocationTrackingMode get locationTrackingMode =>
+      _trackingModeStreamController.currentData;
+
+  @override
+  void setLocationTrackingMode(NLocationTrackingMode mode) {
+    if (locationTrackingMode == mode) return; // guard distinct
+    if (myLocationTracker case final tracker?) {
+      final oldMode = locationTrackingMode;
+      _trackingModeStreamController.add(mode);
+      tracker._onChangeTrackingMode(getLocationOverlay(), this, mode, oldMode);
+    } else {
+      // todo: default Location Tracker.
+      throw Exception(
+          "myLocationTracker is not set. NaverMapController.setMyLocationTracker first.");
+    }
   }
 
   @override
-  Future<NLocationTrackingMode> getLocationTrackingMode() async {
-    final rawLocationTrackingMode =
-        await invokeMethod("getLocationTrackingMode");
-    return NLocationTrackingMode._fromMessageable(rawLocationTrackingMode);
+  NMyLocationTracker? myLocationTracker;
+
+  @override
+  void setMyLocationTracker(NMyLocationTracker? tracker) {
+    myLocationTracker = tracker;
   }
 
   @override
@@ -248,7 +269,9 @@ class _NaverMapControllerImpl with NChannelWrapper implements NaverMapController
 
   @override
   void dispose() {
+    myLocationTracker?.disposeLocationService();
     overlayController.disposeChannel();
     _nowCameraPositionStreamController.close();
+    _trackingModeStreamController.close();
   }
 }
