@@ -1,5 +1,10 @@
 part of "../../../flutter_naver_map.dart";
 
+typedef _OnCameraChangedParams = ({
+  NCameraPosition position,
+  NCameraUpdateReason reason
+});
+
 abstract class NaverMapController implements _NaverMapControlSender {
   static NaverMapController _createController(MethodChannel controllerChannel,
       {required int viewId, required NCameraPosition initialCameraPosition}) {
@@ -20,14 +25,15 @@ abstract class NaverMapController implements _NaverMapControlSender {
   @experimental
   NCameraPosition get nowCameraPosition;
 
-  Stream<NCameraPosition> get _nowCameraPositionStream;
+  Stream<_OnCameraChangedParams> get _nowCameraPositionStream;
 
-  void _updateNowCameraPositionData(NCameraPosition position);
+  Stream<NLocationTrackingMode> get _locationTrackingModeStream;
+
+  void _updateNowCameraPositionData(
+      NCameraPosition position, NCameraUpdateReason reason);
 }
 
-class _NaverMapControllerImpl
-    with NChannelWrapper
-    implements NaverMapController {
+class _NaverMapControllerImpl with NChannelWrapper implements NaverMapController {
   @override
   final MethodChannel channel;
 
@@ -35,20 +41,22 @@ class _NaverMapControllerImpl
 
   @override
   NCameraPosition get nowCameraPosition =>
-      _nowCameraPositionStreamController.currentData;
+      _nowCameraPositionStreamController.currentData.position;
 
   @override
-  Stream<NCameraPosition> get _nowCameraPositionStream =>
+  Stream<_OnCameraChangedParams> get _nowCameraPositionStream =>
       _nowCameraPositionStreamController.stream;
 
-  final NValueHoldHotStreamController<NCameraPosition>
+  final NValueHoldHotStreamController<_OnCameraChangedParams>
       _nowCameraPositionStreamController;
 
   _NaverMapControllerImpl(this.channel, this.overlayController,
       NCameraPosition initialCameraPosition)
       : _nowCameraPositionStreamController =
-            NValueHoldHotStreamController<NCameraPosition>(
-                initialCameraPosition);
+            NValueHoldHotStreamController<_OnCameraChangedParams>((
+          position: initialCameraPosition,
+          reason: NCameraUpdateReason.developer
+        ));
 
   @override
   Future<bool> updateCamera(NCameraUpdate cameraUpdate) async {
@@ -225,8 +233,10 @@ class _NaverMapControllerImpl
   }
 
   @override
-  void _updateNowCameraPositionData(NCameraPosition position) {
-    _nowCameraPositionStreamController.add(position);
+  void _updateNowCameraPositionData(
+      NCameraPosition position, NCameraUpdateReason reason) {
+    _nowCameraPositionStreamController
+        .add((position: position, reason: reason));
   }
 
   /*

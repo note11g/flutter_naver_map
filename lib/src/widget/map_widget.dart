@@ -267,7 +267,7 @@ class _NaverMapState extends State<NaverMap>
   @override
   void onCameraChangeWithCameraPosition(
       NCameraUpdateReason reason, bool animated, NCameraPosition position) {
-    controller._updateNowCameraPositionData(position); // stream update.
+    controller._updateNowCameraPositionData(position, reason); // stream update.
     widget.onCameraChange?.call(reason, animated);
   }
 
