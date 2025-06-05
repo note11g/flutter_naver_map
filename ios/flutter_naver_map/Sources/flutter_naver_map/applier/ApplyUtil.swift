@@ -87,9 +87,7 @@ internal class ApplyUtil {
         "indoorLevelPickerEnable": {
             $0.setIndoorLevelPickerEnable
         },
-        "locationButtonEnable": {
-            $0.setLocationButtonEnable
-        },
+        "locationButtonEnable": { _ in { _ in /* removed*/ } },
         "logoClickEnable": { _ in { _ in /* removed*/ } },
         "logoAlign": {
             $0.setLogoAlign

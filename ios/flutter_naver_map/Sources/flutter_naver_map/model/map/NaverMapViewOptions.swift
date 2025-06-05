@@ -13,6 +13,7 @@ internal struct NaverMapViewOptions {
         naverMap.showCompass = false
         naverMap.showZoomControls = false
         naverMap.showScaleBar = false
+        naverMap.showLocationButton = false
         naverMap.mapView.logoInteractionEnabled = false
 
         let applier = NaverMapApplierImpl(naverMap, isFirst: isFirst)
