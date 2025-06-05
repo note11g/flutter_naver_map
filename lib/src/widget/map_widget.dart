@@ -129,46 +129,80 @@ class _NaverMapState extends State<NaverMap>
         forceHybridComposition: widget.forceHybridComposition,
         forceGLSurfaceView: widget.forceGLSurfaceView,
       )),
-      _naverLogo(widget.options),
-      if (widget.options.scaleBarEnable) _scaleBar(widget.options),
+      Positioned.fill(child: _uiLayer(widget.options)),
     ]);
   }
 
-  Widget _naverLogo(final NaverMapViewOptions options) {
-    final align = options.logoAlign;
-    final fullPadding = options.contentPadding + options.logoMargin;
+  Widget _uiLayer(final NaverMapViewOptions options) {
+    final uiLayerMargin = options.logoMargin;
+    final padding = options.contentPadding + uiLayerMargin;
+    return Padding(
+      padding: padding,
+      child: Stack(children: [
+        _naverLogo(
+            align: options.logoAlign, clickEnable: options.logoClickEnable),
+        if (options.scaleBarEnable)
+          _scaleBar(initCameraPosition: options.initialCameraPosition),
+        if (options.locationButtonEnable)
+          _locationButton(nightModeEnable: options.nightModeEnable),
+      ]),
+    );
+  }
+
+  /*
+  --- UI Layer Elements ---
+   */
+
+  Widget _naverLogo({required NLogoAlign align, required bool clickEnable}) {
     return Positioned(
-        left: align.isLeft ? fullPadding.left : null,
-        right: align.isRight ? fullPadding.right : null,
-        top: align.isTop ? fullPadding.top : null,
-        bottom: align.isBottom ? fullPadding.bottom : null,
+        left: align.isLeft ? 0 : null,
+        right: align.isRight ? 0 : null,
+        top: align.isTop ? 0 : null,
+        bottom: align.isBottom ? 0 : null,
         child: FutureBuilder(
             future: controllerCompleter.future,
             builder: (context, snapshot) {
               return NMapLogoWidget(
                   naverMapController: snapshot.data,
-                  logoClickEnable: options.logoClickEnable);
+                  logoClickEnable: clickEnable);
             }));
   }
 
-  Widget _scaleBar(final NaverMapViewOptions options) {
-    final fullPadding = options.contentPadding + options.logoMargin;
+  Widget _scaleBar({required NCameraPosition? initCameraPosition}) {
     return Positioned(
-        left: fullPadding.left + NMapLogoWidget.width + 16,
-        bottom: fullPadding.bottom,
+        left: NMapLogoWidget.width + 16,
+        bottom: 0,
         child: SizedBox(
-          height: NMapLogoWidget.height,
-          child: Center(
-            child: FutureBuilder(
-                future: controllerCompleter.future,
-                builder: (context, snapshot) {
-                  return NMapScaleBarWidget(
-                      naverMapController: snapshot.data,
-                      initCameraPosition: options.initialCameraPosition);
-                }),
-          ),
-        ));
+            height: NMapLogoWidget.height,
+            child: Center(
+                child: FutureBuilder(
+                    future: controllerCompleter.future,
+                    builder: (context, snapshot) {
+                      return NMapScaleBarWidget(
+                          naverMapController: snapshot.data,
+                          initCameraPosition: initCameraPosition);
+                    }))));
   }
+
+  Widget _locationButton({required bool nightModeEnable}) {
+    return Positioned(
+        left: 0,
+        bottom: NMapLogoWidget.height + 12,
+        child: SizedBox(
+            width: NMapLogoWidget.width,
+            child: Center(
+                child: FutureBuilder(
+                    future: controllerCompleter.future,
+                    builder: (context, snapshot) {
+                      return NMyLocationButtonWidget(
+                          mapController: snapshot.data,
+                          nightMode: nightModeEnable);
+                    }))));
+  }
+
+  /*
+  --- End of UI Layer Elements ---
+   */
 
   void _onPlatformViewCreated(int id) {
     initChannel(NChannel.naverMapNativeView, id: id, handler: handle);
