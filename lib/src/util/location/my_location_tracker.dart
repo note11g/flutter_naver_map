@@ -1,6 +1,6 @@
 part of "../../../flutter_naver_map.dart";
 
-abstract class NMyLocationTracker {
+abstract class NMyLocationTracker with WidgetsBindingObserver {
   Stream<NLatLng> get locationStream;
 
   Stream<double> get headingStream;
@@ -27,18 +27,10 @@ abstract class NMyLocationTracker {
     locationOverlay.setIsVisible(mode != NLocationTrackingMode.none);
   }
 
-  // mark: called by [NaverMapControllerImpl]
-  void disposeLocationService() {
-    _cancelCameraChangedSubscription();
-    _cancelLocationStream();
-    _cancelHeadingStream();
-  }
+  void disposeLocationService() {}
 
-  void onLocationChanged(
-      NLocationOverlay locationOverlay,
-      NaverMapController controller,
-      NLatLng latLng,
-      NLocationTrackingMode mode) {
+  void onLocationChanged(NLatLng latLng, NLocationOverlay locationOverlay,
+      NaverMapController controller, NLocationTrackingMode mode) {
     locationOverlay.setPosition(latLng);
     if (mode case NLocationTrackingMode.follow || NLocationTrackingMode.face) {
       controller.updateCamera(NCameraUpdate.withParams(target: latLng)
@@ -46,11 +38,8 @@ abstract class NMyLocationTracker {
     }
   }
 
-  void onHeadingChanged(
-      NLocationOverlay locationOverlay,
-      NaverMapController controller,
-      double heading,
-      NLocationTrackingMode mode) {
+  void onHeadingChanged(double heading, NLocationOverlay locationOverlay,
+      NaverMapController controller, NLocationTrackingMode mode) {
     locationOverlay.setBearing(heading);
     if (mode case NLocationTrackingMode.face) {
       controller.updateCamera(NCameraUpdate.withParams(bearing: heading)
@@ -59,10 +48,10 @@ abstract class NMyLocationTracker {
   }
 
   void onCameraChanged(
-      NLocationOverlay locationOverlay,
-      NaverMapController controller,
       NCameraPosition position,
       NCameraUpdateReason reason,
+      NLocationOverlay locationOverlay,
+      NaverMapController controller,
       NLocationTrackingMode mode) {
     if (reason case NCameraUpdateReason.location) return;
     if (mode
@@ -85,6 +74,26 @@ abstract class NMyLocationTracker {
   StreamSubscription<double>? _headingStreamSub;
   StreamSubscription<_OnCameraChangedParams>? _onCameraChangedSubscription;
 
+  FutureOr<bool> _start(NLocationTrackingMode mode,
+      NLocationOverlay locationOverlay, NaverMapController controller) async {
+    _isLoading.value = true;
+    final currentLocation = await startLocationService()
+        .whenComplete(() => _isLoading.value = false);
+    if (currentLocation == null) return false; // guard
+    WidgetsBinding.instance.addObserver(this);
+    onLocationChanged(currentLocation, locationOverlay, controller, mode);
+    return true;
+  }
+
+  FutureOr<void> _stop() async {
+    WidgetsBinding.instance.removeObserver(this);
+    _cancelCameraChangedSubscription();
+    _cancelLocationSubscription();
+    _cancelHeadingSubscription();
+    disposeLocationService();
+    _isLoading.value = false;
+  }
+
   // mark: called by [NaverMapControllerImpl.setLocationTrackingMode]
   FutureOr<void> _onChangeTrackingMode(
       NLocationOverlay locationOverlay,
@@ -94,57 +103,128 @@ abstract class NMyLocationTracker {
     if (oldMode == mode) return; // guard distinct
 
     final needStart = !_nowTracking && mode != NLocationTrackingMode.none;
+    final needStop = _nowTracking && mode == NLocationTrackingMode.none;
     if (needStart) {
-      assert(mode != NLocationTrackingMode.none);
-      _isLoading.value = true;
-      final currentLocation = await startLocationService()
-          .whenComplete(() => _isLoading.value = false);
-      if (currentLocation == null) return; // guard
+      final started = await _start(mode, locationOverlay, controller);
+      if (!started) return;
       _nowTracking = true;
+    } else if (needStop) {
+      _stop();
+      _nowTracking = false;
     }
 
     onChangeTrackingMode(locationOverlay, mode);
+    if (mode case NLocationTrackingMode.none) return;
 
-    // todo:
-    //    - lifecycle callback (when background, stop subscription)
-
-    if (mode != NLocationTrackingMode.none) {
-      _locationStreamSub?.cancel();
-      _locationStreamSub = locationStream.listen((location) =>
-          onLocationChanged(locationOverlay, controller, location, mode));
-      _onCameraChangedSubscription?.cancel();
-      _onCameraChangedSubscription = controller._nowCameraPositionStream.listen(
-          (e) => onCameraChanged(
-              locationOverlay, controller, e.position, e.reason, mode));
-    } else {
-      _cancelLocationStream();
-      _cancelCameraChangedSubscription();
-    }
+    _startLocationSubscription(locationOverlay, controller, mode);
+    _startCameraChangedSubscription(locationOverlay, controller, mode);
 
     if (mode case NLocationTrackingMode.follow || NLocationTrackingMode.face) {
-      _headingStreamSub?.cancel();
-      _headingStreamSub = headingStream.listen((heading) =>
-          onHeadingChanged(locationOverlay, controller, heading, mode));
+      _startHeadingSubscription(locationOverlay, controller, mode);
     } else {
-      _cancelHeadingStream();
+      _cancelHeadingSubscription();
     }
   }
 
-  void _cancelLocationStream() {
+  void Function(NLatLng)? _currentCapturedLocationLambda;
+  void Function(double)? _currentCapturedHeadingLambda;
+
+  /* --- LocationStream --- */
+  void _startLocationSubscription(NLocationOverlay locationOverlay,
+      NaverMapController controller, NLocationTrackingMode mode) {
+    _locationStreamSub?.cancel();
+    _currentCapturedLocationLambda = (NLatLng location) =>
+        onLocationChanged(location, locationOverlay, controller, mode);
+    _locationStreamSub = locationStream.listen(_currentCapturedLocationLambda!);
+  }
+
+  bool _pauseLocationSubscription() {
+    if (_locationStreamSub case StreamSubscription<NLatLng> sub) {
+      log("pause locationSubscription", name: "NMyLocationTracker");
+      sub.cancel();
+      _locationStreamSub = null;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool get _isPausedLocationSubscription {
+    return _locationStreamSub == null && _currentCapturedLocationLambda != null;
+  }
+
+  void _resumeLocationSubscription() {
+    if (!_isPausedLocationSubscription) return;
+    log("resume LocationSubscription", name: "NMyLocationTracker");
+    _locationStreamSub = locationStream.listen(_currentCapturedLocationLambda!);
+  }
+
+  void _cancelLocationSubscription() {
     _locationStreamSub?.cancel();
     _locationStreamSub = null;
+    _currentCapturedLocationLambda = null;
     _nowTracking = false;
   }
 
-  void _cancelHeadingStream() {
+  /* --- HeadingStream --- */
+  void _startHeadingSubscription(NLocationOverlay locationOverlay,
+      NaverMapController controller, NLocationTrackingMode mode) {
+    _headingStreamSub?.cancel();
+    _currentCapturedHeadingLambda = (double heading) =>
+        onHeadingChanged(heading, locationOverlay, controller, mode);
+    _headingStreamSub = headingStream.listen(_currentCapturedHeadingLambda!);
+  }
+
+  bool _pauseHeadingSubscription() {
+    if (_headingStreamSub case StreamSubscription<double> sub) {
+      log("pause headingSubscription", name: "NMyLocationTracker");
+      sub.cancel();
+      _headingStreamSub = null;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool get _isPausedHeadingSubscription {
+    return _headingStreamSub == null && _currentCapturedHeadingLambda != null;
+  }
+
+  void _resumeHeadingSubscription() {
+    if (!_isPausedHeadingSubscription) return;
+    log("resume headingSubscription", name: "NMyLocationTracker");
+    _headingStreamSub = headingStream.listen(_currentCapturedHeadingLambda!);
+  }
+
+  void _cancelHeadingSubscription() {
     _headingStreamSub?.cancel();
     _headingStreamSub = null;
+    _currentCapturedHeadingLambda = null;
+  }
+
+  /* --- CameraChangedStream --- */
+
+  void _startCameraChangedSubscription(NLocationOverlay locationOverlay,
+      NaverMapController controller, NLocationTrackingMode mode) {
+    _onCameraChangedSubscription?.cancel();
+    _onCameraChangedSubscription = controller._nowCameraPositionStream.listen(
+        (e) => onCameraChanged(
+            e.position, e.reason, locationOverlay, controller, mode));
   }
 
   void _cancelCameraChangedSubscription() {
     _onCameraChangedSubscription?.cancel();
     _onCameraChangedSubscription = null;
   }
-}
 
-// todo: NDefaultMyLocationTracker
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      if (_locationStreamSub != null) _pauseLocationSubscription();
+      if (_headingStreamSub != null) _pauseHeadingSubscription();
+    } else if (state == AppLifecycleState.resumed) {
+      if (_isPausedLocationSubscription) _resumeLocationSubscription();
+      if (_isPausedHeadingSubscription) _resumeHeadingSubscription();
+    }
+  }
+}
