@@ -26,6 +26,9 @@ dependencies:
   go_router: ^13.2.1
   get_it: ^7.6.7
 
+  geolocator: ^14.0.1
+  lat_compass: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
