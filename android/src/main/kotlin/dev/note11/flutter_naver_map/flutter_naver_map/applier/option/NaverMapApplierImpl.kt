@@ -110,10 +110,6 @@ class NaverMapApplierImpl(
         naverMap.uiSettings.isIndoorLevelPickerEnabled = rawEnable.asBoolean()
     }
 
-    override fun setLocationButtonEnable(rawEnable: Any) {
-        naverMap.uiSettings.isLocationButtonEnabled = rawEnable.asBoolean()
-    }
-
     override fun setLogoAlign(rawAlign: Any) {
         naverMap.uiSettings.logoGravity = rawAlign.asLogoAlign()
     }
