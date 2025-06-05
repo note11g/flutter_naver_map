@@ -6,6 +6,7 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_naver_map_example/design/custom_widget.dart';
 import 'package:flutter_naver_map_example/pages/others/example_page_data.dart';
 import 'package:flutter_naver_map_example/pages/others/routes.dart';
+import 'package:flutter_naver_map_example/util/example_location_tracker.dart';
 import 'package:flutter_naver_map_example/util/overlay_portal_util.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -105,6 +106,7 @@ class _FNMapPageState extends State<FNMapPage> {
   void onMapReady(NaverMapController controller) {
     mapController = controller;
     GetIt.I.registerSingleton(controller);
+    controller.setMyLocationTracker(NExampleMyLocationTracker());
   }
 
   void onMapLoaded() {
