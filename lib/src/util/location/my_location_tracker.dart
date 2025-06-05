@@ -118,6 +118,7 @@ abstract class NMyLocationTracker {
               locationOverlay, controller, e.position, e.reason, mode));
     } else {
       _cancelLocationStream();
+      _cancelCameraChangedSubscription();
     }
 
     if (mode case NLocationTrackingMode.follow || NLocationTrackingMode.face) {
