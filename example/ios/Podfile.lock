@@ -1,20 +1,26 @@
 PODS:
   - Flutter (1.0.0)
+  - lat_compass (0.0.1):
+    - Flutter
   - permission_handler_apple (9.3.0):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - lat_compass (from `.symlinks/plugins/lat_compass/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  lat_compass:
+    :path: ".symlinks/plugins/lat_compass/ios"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  lat_compass: eadcaf7fa6194ac03e557b3c0ee7168b5415ff43
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
 
 PODFILE CHECKSUM: 865bfa77219454a712543ad6494f6458c48be43e
