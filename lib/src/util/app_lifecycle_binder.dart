@@ -14,6 +14,7 @@ mixin AppLifeCycleBinder {
   void unbindAppLifecycleChange() {
     if (_helper == null) return;
     WidgetsBinding.instance.removeObserver(_helper!);
+    _helper = null;
   }
 
   void didChangeAppLifecycleState(AppLifecycleState state) {}
