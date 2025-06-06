@@ -269,7 +269,7 @@ class _NaverMapControllerImpl with NChannelWrapper implements NaverMapController
 
   @override
   void dispose() {
-    myLocationTracker?.disposeLocationService();
+    myLocationTracker?._stopTracking();
     overlayController.disposeChannel();
     _nowCameraPositionStreamController.close();
     _trackingModeStreamController.close();

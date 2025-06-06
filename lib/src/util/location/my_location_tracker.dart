@@ -74,7 +74,7 @@ abstract class NMyLocationTracker with WidgetsBindingObserver {
   StreamSubscription<double>? _headingStreamSub;
   StreamSubscription<_OnCameraChangedParams>? _onCameraChangedSubscription;
 
-  FutureOr<bool> _start(NLocationTrackingMode mode,
+  FutureOr<bool> _startTracking(NLocationTrackingMode mode,
       NLocationOverlay locationOverlay, NaverMapController controller) async {
     _isLoading.value = true;
     final currentLocation = await startLocationService()
@@ -85,7 +85,7 @@ abstract class NMyLocationTracker with WidgetsBindingObserver {
     return true;
   }
 
-  FutureOr<void> _stop() async {
+  FutureOr<void> _stopTracking() async {
     WidgetsBinding.instance.removeObserver(this);
     _cancelCameraChangedSubscription();
     _cancelLocationSubscription();
@@ -105,11 +105,11 @@ abstract class NMyLocationTracker with WidgetsBindingObserver {
     final needStart = !_nowTracking && mode != NLocationTrackingMode.none;
     final needStop = _nowTracking && mode == NLocationTrackingMode.none;
     if (needStart) {
-      final started = await _start(mode, locationOverlay, controller);
+      final started = await _startTracking(mode, locationOverlay, controller);
       if (!started) return;
       _nowTracking = true;
     } else if (needStop) {
-      _stop();
+      _stopTracking();
       _nowTracking = false;
     }
 
