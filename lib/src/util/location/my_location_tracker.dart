@@ -1,6 +1,6 @@
 part of "../../../flutter_naver_map.dart";
 
-abstract class NMyLocationTracker with WidgetsBindingObserver {
+abstract class NMyLocationTracker with AppLifeCycleBinder {
   Stream<NLatLng> get locationStream;
 
   Stream<double> get headingStream;
@@ -80,13 +80,13 @@ abstract class NMyLocationTracker with WidgetsBindingObserver {
     final currentLocation = await startLocationService()
         .whenComplete(() => _isLoading.value = false);
     if (currentLocation == null) return false; // guard
-    WidgetsBinding.instance.addObserver(this);
+    bindAppLifecycleChange();
     onLocationChanged(currentLocation, locationOverlay, controller, mode);
     return true;
   }
 
   FutureOr<void> _stopTracking() async {
-    WidgetsBinding.instance.removeObserver(this);
+    unbindAppLifecycleChange();
     _cancelCameraChangedSubscription();
     _cancelLocationSubscription();
     _cancelHeadingSubscription();
