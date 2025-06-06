@@ -1,10 +1,19 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.util.location
 
+import android.Manifest
+import android.app.Activity
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.naver.maps.geometry.LatLng
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
+import io.flutter.plugin.common.PluginRegistry
 
-class NDefaultMyLocationTracker(messenger: BinaryMessenger) : NDefaultMyLocationTrackerHandler {
+class NDefaultMyLocationTracker(messenger: BinaryMessenger, val activity: Activity) :
+    NDefaultMyLocationTrackerHandler {
     private val methodChannel = MethodChannel(messenger, "NDefaultMyLocationTracker")
     private val locationEventChannel =
         EventChannel(messenger, "NDefaultMyLocationTracker.locationStream")
