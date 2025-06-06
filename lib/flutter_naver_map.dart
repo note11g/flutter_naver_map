@@ -16,6 +16,7 @@ import 'package:flutter_naver_map/src/messaging/messaging.dart';
 import "package:flutter_naver_map/src/util/custom_data_stream.dart";
 import 'package:flutter_naver_map/src/util/image_util.dart';
 import "package:flutter_naver_map/src/util/app_lifecycle_binder.dart";
+import "package:flutter_naver_map/src/util/location/builtin/default_my_location_tracker.dart";
 import 'package:flutter_naver_map/src/util/math.dart';
 import 'package:flutter_naver_map/src/util/widget_to_image.dart';
 import "package:flutter_naver_map/src/widget/elements/naver_logo_widget.dart";

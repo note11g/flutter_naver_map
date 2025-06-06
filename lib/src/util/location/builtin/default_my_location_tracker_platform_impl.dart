@@ -5,29 +5,29 @@ import "default_my_location_tracker_platform_interface.dart";
 
 mixin class NDefaultMyLocationTrackerPlatformImplMixin
     implements NDefaultMyLocationTrackerPlatformInterface {
-  final _methodChannel =
-      const MethodChannel("NDefaultMyLocationTracker"); // todo: native
-  final _locationEventChannel = const EventChannel(
-      "NDefaultMyLocationTracker.locationStream"); // todo: native
-  final _headingEventChannel = const EventChannel(
-      "NDefaultMyLocationTracker.headingStream"); // todo: native
+  // using static for every channel. because of sensor/gps is only has one provider.
+  static const _methodChannel = MethodChannel("NDefaultMyLocationTracker");
+  static const _locationEventChannel =
+      EventChannel("NDefaultMyLocationTracker.locationStream");
+  static const _headingEventChannel =
+      EventChannel("NDefaultMyLocationTracker.headingStream");
 
-  Stream<NLatLng>? _locationStream;
-  Stream<double>? _headingStream;
+  static Stream<NLatLng>? _locationStream;
+  static Stream<double>? _headingStream;
 
   @override
   Future<NDefaultMyLocationTrackerPermissionStatus>
       requestLocationPermission() {
     return _methodChannel
-        .invokeMethod<String>("checkLocationPermission") // todo: native
+        .invokeMethod<String>("requestLocationPermission")
         .then((v) =>
             NDefaultMyLocationTrackerPermissionStatus.fromMessageable(v));
   }
 
   @override
   Future<NLatLng> getCurrentPositionOnce() async {
-    final rawLatLng = await _methodChannel
-        .invokeMethod("getCurrentPositionOnce"); // todo: native
+    final rawLatLng =
+        await _methodChannel.invokeMethod("getCurrentPositionOnce");
     return NLatLng.fromMessageable(rawLatLng);
   }
 
