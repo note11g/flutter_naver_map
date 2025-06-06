@@ -90,7 +90,7 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
   }
 
   Future<NLatLng> getPosition() async {
-    return _getAsyncWithCast(_positionName, NLatLng._fromMessageable);
+    return _getAsyncWithCast(_positionName, NLatLng.fromMessageable);
   }
 
   void setPosition(NLatLng position) {

@@ -80,7 +80,7 @@ class _NaverMapControllerImpl with NChannelWrapper implements NaverMapController
   Future<NLatLngBounds> getContentBounds({bool withPadding = false}) async {
     final messageable = NMessageable.forOnce(withPadding);
     final rawLatLngBounds = await invokeMethod("getContentBounds", messageable);
-    return NLatLngBounds._fromMessageable(rawLatLngBounds);
+    return NLatLngBounds.fromMessageable(rawLatLngBounds);
   }
 
   @override
@@ -88,7 +88,7 @@ class _NaverMapControllerImpl with NChannelWrapper implements NaverMapController
     final messageable = NMessageable.forOnce(withPadding);
     final rawLatLngs = await invokeMethod("getContentRegion", messageable)
         .then((rawList) => rawList as List);
-    return rawLatLngs.map(NLatLng._fromMessageable).toList();
+    return rawLatLngs.map(NLatLng.fromMessageable).toList();
   }
 
   @override
@@ -104,7 +104,7 @@ class _NaverMapControllerImpl with NChannelWrapper implements NaverMapController
   @override
   Future<NLatLng> screenLocationToLatLng(NPoint point) {
     return invokeMethod("screenLocationToLatLng", point)
-        .then((rawLatLng) => NLatLng._fromMessageable(rawLatLng));
+        .then((rawLatLng) => NLatLng.fromMessageable(rawLatLng));
   }
 
   @override

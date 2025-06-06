@@ -17,7 +17,7 @@ class NCameraPosition with NMessageableWithMap {
 
   factory NCameraPosition._fromMessageable(dynamic map) {
     return NCameraPosition(
-      target: NLatLng._fromMessageable(map["target"]),
+      target: NLatLng.fromMessageable(map["target"]),
       zoom: map["zoom"],
       tilt: map["tilt"],
       bearing: map["bearing"],

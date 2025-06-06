@@ -72,7 +72,7 @@ class NCircleOverlay extends NAddableOverlay<NCircleOverlay> {
 
   /// 원 오버레이가 나타내는 최소 사각형 영역을 반환합니다.
   Future<NLatLngBounds> getBounds() =>
-      _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
+      _getAsyncWithCast(_boundsName, NLatLngBounds.fromMessageable);
 
   @override
   NPayload toNPayload() => NPayload.make({

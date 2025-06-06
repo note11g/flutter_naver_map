@@ -99,7 +99,7 @@ class NMultipartPathOverlay extends NAddableOverlay<NMultipartPathOverlay> {
   }
 
   Future<NLatLngBounds> getBounds() {
-    return _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
+    return _getAsyncWithCast(_boundsName, NLatLngBounds.fromMessageable);
   }
 
   @override
