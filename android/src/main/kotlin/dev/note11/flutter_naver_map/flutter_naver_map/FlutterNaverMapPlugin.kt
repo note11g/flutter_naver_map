@@ -1,9 +1,8 @@
 package dev.note11.flutter_naver_map.flutter_naver_map
 
-import android.app.Activity
 import android.content.Context
-import android.os.Build
 import dev.note11.flutter_naver_map.flutter_naver_map.sdk.SdkInitializer
+import dev.note11.flutter_naver_map.flutter_naver_map.util.location.NDefaultMyLocationTracker
 import dev.note11.flutter_naver_map.flutter_naver_map.view.NaverMapViewFactory
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterAssets
@@ -14,17 +13,23 @@ import io.flutter.plugin.common.MethodChannel
 internal class FlutterNaverMapPlugin : FlutterPlugin, ActivityAware {
     private lateinit var pluginBinding: FlutterPlugin.FlutterPluginBinding
     private lateinit var sdkInitializer: SdkInitializer
+    private lateinit var defaultMyLocationTracker: NDefaultMyLocationTracker
     private val context: Context get() = pluginBinding.applicationContext
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         pluginBinding = flutterPluginBinding
         flutterAssets = flutterPluginBinding.flutterAssets
         initializeSdkChannel()
+        initializeDefaultMyLocationTracker()
     }
 
     private fun initializeSdkChannel() {
         val sdkChannel = MethodChannel(pluginBinding.binaryMessenger, SDK_CHANNEL_NAME)
         sdkInitializer = SdkInitializer(context, sdkChannel)
+    }
+
+    private fun initializeDefaultMyLocationTracker() {
+        defaultMyLocationTracker = NDefaultMyLocationTracker(pluginBinding.binaryMessenger)
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) = Unit
@@ -44,6 +49,7 @@ internal class FlutterNaverMapPlugin : FlutterPlugin, ActivityAware {
 
     override fun onDetachedFromActivity() {
         sdkInitializer.dispose()
+        defaultMyLocationTracker.dispose()
     }
 
     companion object {
