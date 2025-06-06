@@ -1,5 +1,4 @@
 import "package:flutter_naver_map/flutter_naver_map.dart";
-import "default_my_location_tracker_platform_interface.dart";
 import "default_my_location_tracker_platform_impl.dart";
 
 class NDefaultMyLocationTracker extends NMyLocationTracker

@@ -22,6 +22,10 @@ import "package:flutter_naver_map/src/widget/elements/naver_logo_widget.dart";
 import "package:meta/meta.dart";
 import 'package:flutter_naver_map/src/widget/elements/util/canvas_util.dart';
 
+export 'src/util/location/builtin/default_my_location_tracker.dart';
+export 'src/util/location/builtin/default_my_location_tracker_platform_interface.dart'
+    show NDefaultMyLocationTrackerPermissionStatus;
+
 /*
   --- controller ---
 */
