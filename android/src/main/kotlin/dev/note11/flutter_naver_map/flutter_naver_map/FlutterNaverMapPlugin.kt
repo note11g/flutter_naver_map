@@ -42,7 +42,9 @@ internal class FlutterNaverMapPlugin : FlutterPlugin, ActivityAware {
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) = Unit
 
-    override fun onDetachedFromActivity() = Unit
+    override fun onDetachedFromActivity() {
+        sdkInitializer.dispose()
+    }
 
     companion object {
         private const val SDK_CHANNEL_NAME = "flutter_naver_map_sdk"
