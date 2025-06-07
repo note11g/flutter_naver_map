@@ -25,7 +25,9 @@ class NDefaultMyLocationTracker(messenger: BinaryMessenger, val activity: Activi
         EventChannel(messenger, "NDefaultMyLocationTracker.locationStream")
     private val headingEventChannel =
         EventChannel(messenger, "NDefaultMyLocationTracker.headingStream")
-    private val locationStreamHandler = NDefaultMyLocationTrackerLocationStreamHandler()
+
+    private val locationStreamHandler =
+        NDefaultMyLocationTrackerLocationStreamHandler({ fusedLocationProviderClient })
     private val headingStreamHandler = NDefaultMyLocationTrackerHeadingStreamHandler()
 
     private val fusedLocationProviderClient: FusedLocationProviderClient by lazy {
