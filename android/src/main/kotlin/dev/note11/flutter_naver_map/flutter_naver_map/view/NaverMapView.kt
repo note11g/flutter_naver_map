@@ -16,7 +16,6 @@ import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
-import dev.note11.flutter_naver_map.flutter_naver_map.util.NLocationSource
 import dev.note11.flutter_naver_map.flutter_naver_map.util.TextureSurfaceViewUtil
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
@@ -64,7 +63,6 @@ internal class NaverMapView(
 
     private fun onMapReady() {
         initializeMapController()
-        setLocationSource()
         setMapEventListeners()
 
         mapView.onCreate(null)
@@ -83,10 +81,6 @@ internal class NaverMapView(
         ).apply {
             rawNaverMapOptionTempCache?.let { updateOptions(it.asMap()) {} }
         }
-    }
-
-    private fun setLocationSource() {
-        naverMap.locationSource = NLocationSource(activity)
     }
 
     private fun setMapEventListeners() {
