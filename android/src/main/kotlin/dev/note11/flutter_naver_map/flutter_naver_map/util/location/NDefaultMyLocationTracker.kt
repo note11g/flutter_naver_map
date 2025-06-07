@@ -2,7 +2,9 @@ package dev.note11.flutter_naver_map.flutter_naver_map.util.location
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
+import android.hardware.SensorManager
 import androidx.annotation.RequiresPermission
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -10,7 +12,6 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
-import com.google.android.gms.tasks.Task
 import com.naver.maps.geometry.LatLng
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
 import io.flutter.plugin.common.BinaryMessenger
@@ -27,8 +28,14 @@ class NDefaultMyLocationTracker(messenger: BinaryMessenger, val activity: Activi
         EventChannel(messenger, "NDefaultMyLocationTracker.headingStream")
 
     private val locationStreamHandler =
-        NDefaultMyLocationTrackerLocationStreamHandler({ fusedLocationProviderClient })
-    private val headingStreamHandler = NDefaultMyLocationTrackerHeadingStreamHandler()
+        NDefaultMyLocationTrackerLocationStreamHandler(
+            fusedLocationProviderClientFactory = { fusedLocationProviderClient },
+            onLocationChangedCallback = { headingStreamHandler.onLocationChanged(it) },
+        )
+    private val headingStreamHandler =
+        NDefaultMyLocationTrackerHeadingStreamHandler(sensorManagerFactory = {
+            activity.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        })
 
     private val fusedLocationProviderClient: FusedLocationProviderClient by lazy {
         LocationServices.getFusedLocationProviderClient(activity)
