@@ -3,8 +3,14 @@ package dev.note11.flutter_naver_map.flutter_naver_map.util.location
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
+import androidx.annotation.RequiresPermission
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.Task
 import com.naver.maps.geometry.LatLng
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
 import io.flutter.plugin.common.BinaryMessenger
@@ -22,6 +28,10 @@ class NDefaultMyLocationTracker(messenger: BinaryMessenger, val activity: Activi
     private val locationStreamHandler = NDefaultMyLocationTrackerLocationStreamHandler()
     private val headingStreamHandler = NDefaultMyLocationTrackerHeadingStreamHandler()
 
+    private val fusedLocationProviderClient: FusedLocationProviderClient by lazy {
+        LocationServices.getFusedLocationProviderClient(activity)
+    }
+    private var cancellationTokenSources: MutableMap<Int, CancellationTokenSource> = mutableMapOf()
     private var permissionHandlerCallback: ((result: NDefaultMyLocationTrackerPermissionStatus) -> Unit)? =
         null
 
@@ -90,10 +100,36 @@ class NDefaultMyLocationTracker(messenger: BinaryMessenger, val activity: Activi
         return false
     }
 
+    @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     override fun getCurrentPositionOnce(result: MethodChannel.Result) {
-        // todo: impl
-        result.success(LatLng(37.5666102, 126.9783881).toMessageable()) // todo: remove code for test
+        val cancellationTokenSource = CancellationTokenSource()
+        val tokenHash = cancellationTokenSource.token.hashCode()
+        cancellationTokenSources[tokenHash] = cancellationTokenSource
+
+        fusedLocationProviderClient.getCurrentLocation(
+            Priority.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token
+        )
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    location.run { result.success(LatLng(latitude, longitude).toMessageable()) }
+                } else {
+                    result.error("LocationError", "Location is null", null)
+                }
+                cancellationTokenSources.remove(tokenHash)
+            }.addOnFailureListener {
+                result.error("LocationError", it.message, null)
+                cancellationTokenSources.remove(tokenHash)
+            }.addOnCanceledListener {
+                cancellationTokenSources.remove(tokenHash)
+            }
     }
+
+    override fun cancelAllWaitingGetCurrentPositionOnceTask() {
+        cancellationTokenSources.forEach {
+            it.value.cancel()
+        }
+    }
+
 
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 706
