@@ -14,6 +14,7 @@ import io.flutter.plugin.common.EventChannel
 
 class NDefaultMyLocationTrackerLocationStreamHandler(
     private val fusedLocationProviderClientFactory: () -> FusedLocationProviderClient,
+    private val onLocationChangedCallback: ((Location) -> Unit)? = null
 ) : EventChannel.StreamHandler, LocationListener {
     private val fusedLocationProviderClient: FusedLocationProviderClient get() = fusedLocationProviderClientFactory()
     private var events: EventChannel.EventSink? = null
@@ -24,13 +25,14 @@ class NDefaultMyLocationTrackerLocationStreamHandler(
     ) {
         val locationRequest = LocationRequest.Builder(1000).apply {
             setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+            setMinUpdateDistanceMeters(3.0f)
         }.build()
         if (events == null) {
             onCancel(null)
             return
         }
 
-        events.let { this.events = it }
+        this.events = events
 
         fusedLocationProviderClient.requestLocationUpdates(
             locationRequest, this, Looper.getMainLooper()
@@ -40,11 +42,11 @@ class NDefaultMyLocationTrackerLocationStreamHandler(
     override fun onLocationChanged(location: Location) {
         val latLng = LatLng(location.latitude, location.longitude)
         events?.success(latLng.toMessageable())
+        onLocationChangedCallback?.invoke(location)
     }
 
     override fun onCancel(arguments: Any?) {
         fusedLocationProviderClient.removeLocationUpdates(this)
-        fusedLocationProviderClient.flushLocations()
         events?.endOfStream()
         events = null
     }
