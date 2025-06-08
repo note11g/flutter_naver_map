@@ -114,5 +114,8 @@ internal class ApplyUtil {
         "locale": {
             $0.setLocale
         },
+        "customStyleId": {
+            $0.setCustomStyleId
+        }
     ]
 }
