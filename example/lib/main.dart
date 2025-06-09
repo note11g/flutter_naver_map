@@ -106,7 +106,7 @@ class _FNMapPageState extends State<FNMapPage> {
   void onMapReady(NaverMapController controller) {
     mapController = controller;
     GetIt.I.registerSingleton(controller);
-    controller.setMyLocationTracker(NExampleMyLocationTracker());
+    // controller.setMyLocationTracker(NExampleMyLocationTracker());
   }
 
   void onMapLoaded() {
