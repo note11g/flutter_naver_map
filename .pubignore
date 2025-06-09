@@ -5,6 +5,7 @@
 .github/
 doc/
 build/
+docs_asset/
 .fvm/
 .dart_tool/
 ./local.properties
