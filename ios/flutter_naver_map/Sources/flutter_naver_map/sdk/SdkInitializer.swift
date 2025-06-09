@@ -10,6 +10,10 @@ internal class SdkInitializer: NSObject, NMFAuthManagerDelegate {
 
         channel.setMethodCallHandler(handle)
     }
+    
+    deinit {
+        channel.setMethodCallHandler(nil)
+    }
 
     private func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         if (call.method == "initializeNcp") {

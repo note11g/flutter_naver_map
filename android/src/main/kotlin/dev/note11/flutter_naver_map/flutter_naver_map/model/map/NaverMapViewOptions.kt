@@ -55,6 +55,7 @@ internal data class NaverMapViewOptions(
                 zoomControlEnabled(false)
                 scaleBarEnabled(false)
                 logoClickEnabled(false)
+                locationButtonEnabled(false)
             }
 
             val applier = NaverMapOptionApplierImpl(options)

@@ -12,7 +12,7 @@ class NMapScaleBarWidget extends StatelessWidget {
     return StreamBuilder(
         stream: naverMapController?._nowCameraPositionStream,
         builder: (context, snapshot) {
-          final cameraPosition = snapshot.data ?? initCameraPosition;
+          final cameraPosition = snapshot.data?.position ?? initCameraPosition;
           if (cameraPosition == null) return const SizedBox.shrink();
           return ScaleBarWidget.fromMeterPerDp(MathUtil.calcMeterPerDp(
               cameraPosition.target.latitude, cameraPosition.zoom));

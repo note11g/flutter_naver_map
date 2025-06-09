@@ -45,7 +45,7 @@ internal object ApplyUtil {
             "consumeSymbolTapEvents" to { { /** @see NaverMapView.setMapTapListener method */ } },
             "scaleBarEnable" to { { /* removed*/ } },
             "indoorLevelPickerEnable" to { it::setIndoorLevelPickerEnable },
-            "locationButtonEnable" to { it::setLocationButtonEnable },
+            "locationButtonEnable" to { { /* removed*/ } },
             "logoClickEnable" to { { /* removed*/ } },
             "logoAlign" to { it::setLogoAlign },
             "logoMargin" to { it::setLogoMargin },

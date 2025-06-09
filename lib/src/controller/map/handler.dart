@@ -35,14 +35,14 @@ mixin _NaverMapControlHandler {
         final args = call.arguments;
         onMapTapped(
           NPoint._fromMessageable(args["nPoint"]),
-          NLatLng._fromMessageable(args["latLng"]),
+          NLatLng.fromMessageable(args["latLng"]),
         );
         break;
       case "onMapLongTapped":
         final args = call.arguments;
         onMapLongTapped(
           NPoint._fromMessageable(args["nPoint"]),
-          NLatLng._fromMessageable(args["latLng"]),
+          NLatLng.fromMessageable(args["latLng"]),
         );
         break;
       case "onSymbolTapped":

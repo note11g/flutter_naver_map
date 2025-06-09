@@ -90,7 +90,7 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
   }
 
   Future<NLatLng> getPosition() async {
-    return _getAsyncWithCast(_positionName, NLatLng._fromMessageable);
+    return _getAsyncWithCast(_positionName, NLatLng.fromMessageable);
   }
 
   void setPosition(NLatLng position) {
@@ -135,7 +135,7 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
 
   static const defaultAnchor = NPoint.relativeCenter;
   static const defaultSubAnchor = NPoint(0.5, 1.0);
-  static const defaultCircleColor = Color(0x3D1666F0);
+  static const defaultCircleColor = Color(0x141666F0);
   static const defaultCircleRadius = 18.0;
   static const autoSize = Size(0, 0);
   static const defaultIcon = NOverlayImage.fromAssetImage(

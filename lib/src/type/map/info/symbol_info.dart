@@ -9,6 +9,6 @@ class NSymbolInfo implements NPickableInfo {
 
   factory NSymbolInfo._fromMessageable(dynamic map) => NSymbolInfo._(
         map["caption"]!.toString(),
-        NLatLng._fromMessageable(map["position"]!),
+        NLatLng.fromMessageable(map["position"]!),
       );
 }

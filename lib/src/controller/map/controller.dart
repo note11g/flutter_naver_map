@@ -1,5 +1,10 @@
 part of "../../../flutter_naver_map.dart";
 
+typedef _OnCameraChangedParams = ({
+  NCameraPosition position,
+  NCameraUpdateReason reason
+});
+
 abstract class NaverMapController implements _NaverMapControlSender {
   static NaverMapController _createController(MethodChannel controllerChannel,
       {required int viewId, required NCameraPosition initialCameraPosition}) {
@@ -20,9 +25,12 @@ abstract class NaverMapController implements _NaverMapControlSender {
   @experimental
   NCameraPosition get nowCameraPosition;
 
-  Stream<NCameraPosition> get _nowCameraPositionStream;
+  Stream<_OnCameraChangedParams> get _nowCameraPositionStream;
 
-  void _updateNowCameraPositionData(NCameraPosition position);
+  Stream<NLocationTrackingMode> get _locationTrackingModeStream;
+
+  void _updateNowCameraPositionData(
+      NCameraPosition position, NCameraUpdateReason reason);
 }
 
 class _NaverMapControllerImpl
@@ -35,20 +43,22 @@ class _NaverMapControllerImpl
 
   @override
   NCameraPosition get nowCameraPosition =>
-      _nowCameraPositionStreamController.currentData;
+      _nowCameraPositionStreamController.currentData.position;
 
   @override
-  Stream<NCameraPosition> get _nowCameraPositionStream =>
+  Stream<_OnCameraChangedParams> get _nowCameraPositionStream =>
       _nowCameraPositionStreamController.stream;
 
-  final NValueHoldHotStreamController<NCameraPosition>
+  final NValueHoldHotStreamController<_OnCameraChangedParams>
       _nowCameraPositionStreamController;
 
   _NaverMapControllerImpl(this.channel, this.overlayController,
       NCameraPosition initialCameraPosition)
       : _nowCameraPositionStreamController =
-            NValueHoldHotStreamController<NCameraPosition>(
-                initialCameraPosition);
+            NValueHoldHotStreamController<_OnCameraChangedParams>((
+          position: initialCameraPosition,
+          reason: NCameraUpdateReason.developer
+        ));
 
   @override
   Future<bool> updateCamera(NCameraUpdate cameraUpdate) async {
@@ -72,7 +82,7 @@ class _NaverMapControllerImpl
   Future<NLatLngBounds> getContentBounds({bool withPadding = false}) async {
     final messageable = NMessageable.forOnce(withPadding);
     final rawLatLngBounds = await invokeMethod("getContentBounds", messageable);
-    return NLatLngBounds._fromMessageable(rawLatLngBounds);
+    return NLatLngBounds.fromMessageable(rawLatLngBounds);
   }
 
   @override
@@ -80,7 +90,7 @@ class _NaverMapControllerImpl
     final messageable = NMessageable.forOnce(withPadding);
     final rawLatLngs = await invokeMethod("getContentRegion", messageable)
         .then((rawList) => rawList as List);
-    return rawLatLngs.map(NLatLng._fromMessageable).toList();
+    return rawLatLngs.map(NLatLng.fromMessageable).toList();
   }
 
   @override
@@ -96,7 +106,7 @@ class _NaverMapControllerImpl
   @override
   Future<NLatLng> screenLocationToLatLng(NPoint point) {
     return invokeMethod("screenLocationToLatLng", point)
-        .then((rawLatLng) => NLatLng._fromMessageable(rawLatLng));
+        .then((rawLatLng) => NLatLng.fromMessageable(rawLatLng));
   }
 
   @override
@@ -143,16 +153,32 @@ class _NaverMapControllerImpl
     return File(path);
   }
 
+  final _trackingModeStreamController =
+      NValueHoldHotStreamController(NLocationTrackingMode.none);
+
   @override
-  Future<void> setLocationTrackingMode(NLocationTrackingMode mode) async {
-    await invokeMethod("setLocationTrackingMode", mode);
+  Stream<NLocationTrackingMode> get _locationTrackingModeStream =>
+      _trackingModeStreamController.stream;
+
+  @override
+  NLocationTrackingMode get locationTrackingMode =>
+      _trackingModeStreamController.currentData;
+
+  @override
+  void setLocationTrackingMode(NLocationTrackingMode mode) {
+    if (locationTrackingMode == mode) return; // guard distinct
+    final oldMode = locationTrackingMode;
+    _trackingModeStreamController.add(mode);
+    myLocationTracker._onChangeTrackingMode(
+        getLocationOverlay(), this, mode, oldMode);
   }
 
   @override
-  Future<NLocationTrackingMode> getLocationTrackingMode() async {
-    final rawLocationTrackingMode =
-        await invokeMethod("getLocationTrackingMode");
-    return NLocationTrackingMode._fromMessageable(rawLocationTrackingMode);
+  NMyLocationTracker myLocationTracker = NDefaultMyLocationTracker();
+
+  @override
+  void setMyLocationTracker(NMyLocationTracker tracker) {
+    myLocationTracker = tracker;
   }
 
   @override
@@ -225,8 +251,10 @@ class _NaverMapControllerImpl
   }
 
   @override
-  void _updateNowCameraPositionData(NCameraPosition position) {
-    _nowCameraPositionStreamController.add(position);
+  void _updateNowCameraPositionData(
+      NCameraPosition position, NCameraUpdateReason reason) {
+    _nowCameraPositionStreamController
+        .add((position: position, reason: reason));
   }
 
   /*
@@ -238,7 +266,9 @@ class _NaverMapControllerImpl
 
   @override
   void dispose() {
+    myLocationTracker?._stopTracking();
     overlayController.disposeChannel();
     _nowCameraPositionStreamController.close();
+    _trackingModeStreamController.close();
   }
 }

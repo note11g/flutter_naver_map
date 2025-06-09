@@ -21,7 +21,6 @@ internal protocol NaverMapOptionApplier {
     func setZoomGesturesFriction(_ rawFriction: Any)
     func setRotationGesturesFriction(_ rawFriction: Any)
     func setIndoorLevelPickerEnable(_ rawEnable: Any)
-    func setLocationButtonEnable(_ rawEnable: Any)
     func setLogoAlign(_ rawAlign: Any)
     func setLogoMargin(_ rawEdgeInsets: Any)
     func setContentPadding(_ rawEdgeInsets: Any)
