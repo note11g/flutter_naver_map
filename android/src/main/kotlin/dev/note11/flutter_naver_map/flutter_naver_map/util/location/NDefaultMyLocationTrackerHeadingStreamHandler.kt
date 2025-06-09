@@ -49,7 +49,6 @@ class NDefaultMyLocationTrackerHeadingStreamHandler(
             sensorManager.unregisterListener(this, rotationVector)
         }
         events?.endOfStream()
-        sensorManager.unregisterListener(this)
         events = null
     }
 
