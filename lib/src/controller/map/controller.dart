@@ -33,7 +33,9 @@ abstract class NaverMapController implements _NaverMapControlSender {
       NCameraPosition position, NCameraUpdateReason reason);
 }
 
-class _NaverMapControllerImpl with NChannelWrapper implements NaverMapController {
+class _NaverMapControllerImpl
+    with NChannelWrapper
+    implements NaverMapController {
   @override
   final MethodChannel channel;
 
@@ -165,22 +167,17 @@ class _NaverMapControllerImpl with NChannelWrapper implements NaverMapController
   @override
   void setLocationTrackingMode(NLocationTrackingMode mode) {
     if (locationTrackingMode == mode) return; // guard distinct
-    if (myLocationTracker case final tracker?) {
-      final oldMode = locationTrackingMode;
-      _trackingModeStreamController.add(mode);
-      tracker._onChangeTrackingMode(getLocationOverlay(), this, mode, oldMode);
-    } else {
-      // todo: default Location Tracker.
-      throw Exception(
-          "myLocationTracker is not set. NaverMapController.setMyLocationTracker first.");
-    }
+    final oldMode = locationTrackingMode;
+    _trackingModeStreamController.add(mode);
+    myLocationTracker._onChangeTrackingMode(
+        getLocationOverlay(), this, mode, oldMode);
   }
 
   @override
-  NMyLocationTracker? myLocationTracker;
+  NMyLocationTracker myLocationTracker = NDefaultMyLocationTracker();
 
   @override
-  void setMyLocationTracker(NMyLocationTracker? tracker) {
+  void setMyLocationTracker(NMyLocationTracker tracker) {
     myLocationTracker = tracker;
   }
 
