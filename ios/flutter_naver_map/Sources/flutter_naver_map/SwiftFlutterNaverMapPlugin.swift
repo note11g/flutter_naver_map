@@ -3,6 +3,7 @@ import UIKit
 
 public class SwiftFlutterNaverMapPlugin: NSObject, FlutterPlugin {
     private static var registrar: FlutterPluginRegistrar!
+    private static var sdkInitializer: SdkInitializer?
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         self.registrar = registrar
@@ -14,10 +15,13 @@ public class SwiftFlutterNaverMapPlugin: NSObject, FlutterPlugin {
                 withId: MAP_VIEW_TYPE_ID,
                 gestureRecognizersBlockingPolicy: FlutterPlatformViewGestureRecognizersBlockingPolicyWaitUntilTouchesEnded)
     }
+    public func detachFromEngine(for registrar: any FlutterPluginRegistrar) {
+        SwiftFlutterNaverMapPlugin.sdkInitializer = nil
+    }
 
     private static func initializeSdkChannel(binaryMessenger: FlutterBinaryMessenger) {
         let sdkChannel = FlutterMethodChannel(name: SwiftFlutterNaverMapPlugin.SDK_CHANNEL_NAME, binaryMessenger: binaryMessenger)
-        _ = SdkInitializer(channel: sdkChannel)
+        sdkInitializer = SdkInitializer(channel: sdkChannel)
     }
 
     private static let SDK_CHANNEL_NAME = "flutter_naver_map_sdk"
