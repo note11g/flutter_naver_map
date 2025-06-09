@@ -4,18 +4,27 @@ import UIKit
 public class SwiftFlutterNaverMapPlugin: NSObject, FlutterPlugin {
     private static var registrar: FlutterPluginRegistrar!
     private static var sdkInitializer: SdkInitializer?
+    private static var defaultMyLocationTracker: NDefaultMyLocationTracker?
+
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         self.registrar = registrar
 
         initializeSdkChannel(binaryMessenger: registrar.messenger())
+        initializeDefaultMyLocationTracker(messenger: registrar.messenger())
 
         let naverMapFactory = NaverMapFactory(messenger: registrar.messenger())
         registrar.register(naverMapFactory,
                 withId: MAP_VIEW_TYPE_ID,
                 gestureRecognizersBlockingPolicy: FlutterPlatformViewGestureRecognizersBlockingPolicyWaitUntilTouchesEnded)
     }
+    
+    private static func initializeDefaultMyLocationTracker(messenger: FlutterBinaryMessenger) {
+        defaultMyLocationTracker = NDefaultMyLocationTracker(messenger: messenger)
+    }
+    
     public func detachFromEngine(for registrar: any FlutterPluginRegistrar) {
+        SwiftFlutterNaverMapPlugin.defaultMyLocationTracker = nil
         SwiftFlutterNaverMapPlugin.sdkInitializer = nil
     }
 
