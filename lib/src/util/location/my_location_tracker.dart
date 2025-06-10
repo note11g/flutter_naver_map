@@ -18,8 +18,10 @@ abstract class NMyLocationTracker with AppLifeCycleBinder {
       NLocationOverlay locationOverlay, NLocationTrackingMode mode) {
     final subIcon = switch (mode) {
       NLocationTrackingMode.face => NLocationOverlay.faceModeSubIcon,
-      NLocationTrackingMode.follow => NLocationOverlay.defaultSubIcon,
-      NLocationTrackingMode.noFollow || NLocationTrackingMode.none => null,
+      NLocationTrackingMode.follow ||
+      NLocationTrackingMode.noFollow =>
+        NLocationOverlay.defaultSubIcon,
+      NLocationTrackingMode.none => null,
     };
 
     locationOverlay.setIcon(NLocationOverlay.defaultIcon);
@@ -119,10 +121,10 @@ abstract class NMyLocationTracker with AppLifeCycleBinder {
     _startLocationSubscription(locationOverlay, controller, mode);
     _startCameraChangedSubscription(locationOverlay, controller, mode);
 
-    if (mode case NLocationTrackingMode.follow || NLocationTrackingMode.face) {
-      _startHeadingSubscription(locationOverlay, controller, mode);
-    } else {
+    if (mode case NLocationTrackingMode.none) {
       _cancelHeadingSubscription();
+    } else {
+      _startHeadingSubscription(locationOverlay, controller, mode);
     }
   }
 
