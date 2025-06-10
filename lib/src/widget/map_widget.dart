@@ -104,11 +104,13 @@ class _NaverMapState extends State<NaverMap>
   late final MethodChannel channel;
   late final NaverMapController controller;
   final controllerCompleter = Completer<NaverMapController>();
+  final onMapReadyCompleter = Completer<void>();
   late NaverMapViewOptions nowViewOptions = widget.options;
   NaverMapClusteringOptions? nowClusterOptions;
   final legacyMapInitializer = NaverMapSdk.instance;
   final onMapReadyTasksQueue = <Future Function()>[];
   bool isMapReady = false;
+  bool isCalledOnMapLoaded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -269,17 +271,18 @@ class _NaverMapState extends State<NaverMap>
     await _runOnMapReadyTasks().then((_) => isMapReady = true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.onMapReady?.call(controller);
+      onMapReadyCompleter.complete();
     });
   }
 
   @override
   void onMapLoaded() async {
-    if (!controllerCompleter.isCompleted) {
-      await controllerCompleter.future;
+    if (isCalledOnMapLoaded) return; // prevent duplicate call.
+    isCalledOnMapLoaded = true;
+    if (!onMapReadyCompleter.isCompleted) {
+      await onMapReadyCompleter.future;
     }
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.onMapLoaded?.call();
-    });
+    widget.onMapLoaded?.call();
   }
 
   @override
