@@ -109,7 +109,7 @@ class _NaverMapState extends State<NaverMap>
   NaverMapClusteringOptions? nowClusterOptions;
   final legacyMapInitializer = NaverMapSdk.instance;
   final onMapReadyTasksQueue = <Future Function()>[];
-  bool isMapReady = false;
+  bool isUpdatedBeforeMapReadyWithUpdateQueue = false;
   bool isCalledOnMapLoaded = false;
 
   @override
@@ -236,7 +236,7 @@ class _NaverMapState extends State<NaverMap>
     }
 
     if (updateQueue.isNotEmpty) {
-      if (isMapReady) {
+      if (isUpdatedBeforeMapReadyWithUpdateQueue) {
         for (final update in updateQueue) {
           update.call();
         }
@@ -247,12 +247,8 @@ class _NaverMapState extends State<NaverMap>
   }
 
   Future<void> _runOnMapReadyTasks() async {
-    if (onMapReadyTasksQueue.isEmpty) {
-      return Future.value();
-    }
-    final tasks = List<Future Function()>.from(onMapReadyTasksQueue);
-    onMapReadyTasksQueue.clear();
-    for (final task in tasks) {
+    while (onMapReadyTasksQueue.isNotEmpty) {
+      final task = onMapReadyTasksQueue.removeAt(0);
       try {
         await task();
       } catch (e) {
@@ -268,7 +264,8 @@ class _NaverMapState extends State<NaverMap>
   @override
   void onMapReady() async {
     controllerCompleter.complete(controller);
-    await _runOnMapReadyTasks().then((_) => isMapReady = true);
+    await _runOnMapReadyTasks()
+        .then((_) => isUpdatedBeforeMapReadyWithUpdateQueue = true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.onMapReady?.call(controller);
       onMapReadyCompleter.complete();
