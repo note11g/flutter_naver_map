@@ -6,16 +6,20 @@ mixin NChannelWrapper {
   // optional implementation
   set channel(MethodChannel channel) {}
 
+  // flag state
+  bool isChannelInitialized = false;
+
   void initChannel(
     NChannel channelType, {
     required int id,
     Future<dynamic> Function(MethodCall)? handler,
   }) {
     channel = channelType._create(id)..setMethodCallHandler(handler);
+    isChannelInitialized = true;
   }
 
   void disposeChannel() {
-    channel.setMethodCallHandler(null);
+    if (isChannelInitialized) channel.setMethodCallHandler(null);
   }
 
   Future<T?> invokeMethod<T>(String funcName, [NMessageable? arg]) {
