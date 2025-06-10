@@ -142,10 +142,13 @@ class _NaverMapControllerImpl
   }
 
   @override
-  Future<File> takeSnapshot(
-      {bool showControls = true, int compressQuality = 80}) async {
+  Future<File> takeSnapshot({
+    @Deprecated("showControls is not supported from 1.4.0")
+    bool showControls = false,
+    int compressQuality = 80,
+  }) async {
     final messageable = NMessageable.forOnceWithMap({
-      "showControls": showControls,
+      "showControls": showControls, // deprecated
       "compressQuality": compressQuality,
     });
     final path = await invokeMethod("takeSnapshot", messageable)
