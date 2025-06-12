@@ -15,19 +15,38 @@
 
 ## Getting Started
 
-###  1. 네이버 클라우드 플랫폼 콘솔에서 사용 신청
+### 0. 네이버 클라우드 플랫폼 콘솔에서 사용 신청
 
-![네이버 클라우드 플랫폼 콘솔 사용 신청 방법](/docs_asset/start_1.png)
+<details>
+<summary>Mobile Dynamic Map 서비스 사용 신청 방법 자세히 보기</summary>
+
+#### 1. Console에서 [Services > Application Services > Maps](https://console.ncloud.com/maps/application) 으로 이동
+![](./docs_asset/start_0_1.png)
+
+#### 2. Application 등록하기
+Application 등록 > Application 이름 입력 > API 선택에서 “Dynamic Map” 선택 > 서비스 환경 등록 - Android 앱 패키지 이름, iOS Bundle ID 입력 > 등록
+![](./docs_asset/start_0_2.png)
+
+#### 3. 등록한 Application의 “인증정보”에서 “Client ID”를 확인
+![](./docs_asset/start_0_3.png)
+
+</details>
+
+### 1. 버전 호환성 확인
+
+flutter_naver_map은 Android 6.0(SDK 23), iOS 12.0부터 지원합니다.
+
+이 라이브러리를 사용하기 위해서는, Minimum SDK 버전을 해당 버전으로 올려주세요.
 
 ### 2. 초기화 함수 실행
 
-1-3에서 가져온 Client ID를 사용합니다.
+네이버 클라우드 플랫폼 콘솔에서 가져온 Client ID를 사용합니다. (Client ID 확인 방법은 [0-3 섹션](#0-네이버-클라우드-플랫폼-콘솔에서-사용-신청) 참고)
 
 ```dart
 // 꼭 main 함수에서 실행할 필요는 없으나, 
 // 최초로 NaverMap 위젯이 실행되기 이전에 초기화가 꼭 필요합니다.
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // main 함수에서 실행할 때만 필요
+  WidgetsFlutterBinding.ensureInitialized(); // runApp 실행 이전이면 필요
 
   await FlutterNaverMap().init(
       clientId: '방금 발급받은 Client ID',
@@ -80,3 +99,36 @@ Widget build(BuildContext context) {
     );
 }
 ```
+
+
+## Version Up Guide
+
+- **`1.2.3` 이상 버전으로 업데이트하시면, 다음 과정을 한번 수행해주셔야 합니다.**
+
+  (`1.3.0` -> `1.3.1` 포함)
+
+    ```shell
+    cd ios # 프로젝트의 ios 폴더로 이동
+    pod update NMapsMap
+  
+    cd .. # 프로젝트 루트로 이동 (optional)
+  
+    cd android # 프로젝트의 android 폴더로 이동
+    ./gradlew clean
+    ./gradlew --refresh-dependencies
+    ```
+
+  이 명령어를 프로젝트 루트에서 실행하면, 한번에 수행하실 수 있습니다.
+    <details>
+    <summary>MacOS</summary>
+
+    ```shell
+    (cd ios && pod update NMapsMap) && (cd android && ./gradlew clean && ./gradlew --refresh-dependencies)
+    ```
+    </details>
+    <details>
+    <summary>Windows</summary> 
+    ```shell
+    cd android && gradlew.bat clean && gradlew.bat --refresh-dependencies
+    ```
+    </details>
