@@ -10,6 +10,7 @@ class NMultipartPathOverlay extends NAddableOverlay<NMultipartPathOverlay> {
   double get outlineWidth => _outlineWidth;
   double _outlineWidth;
 
+  NOverlayImage? get patternImage => _patternImage;
   NOverlayImage? _patternImage;
 
   double get patternInterval => _patternInterval;

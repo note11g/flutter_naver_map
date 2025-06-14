@@ -8,6 +8,10 @@ class NMarker extends NAddableOverlay<NMarker> {
   NLatLng get position => _position;
   NLatLng _position;
 
+  /// 마커의 아이콘을 나타냅니다.
+  /// `null`로 지정하는 경우, 기본 마커 아이콘을 사용합니다.
+  ///
+  NOverlayImage? get icon => _icon;
   NOverlayImage? _icon;
 
   /// 마커의 아이콘에 덧씌우는(혼합) 색상을 나타냅니다. (가산혼합)
@@ -218,6 +222,7 @@ class NMarker extends NAddableOverlay<NMarker> {
   }
 
   /// 마커의 아이콘을 지정합니다.
+  ///
   /// `null`로 지정하는 경우, 기본 마커 아이콘을 사용합니다.
   void setIcon(NOverlayImage? value) {
     _icon = value;
