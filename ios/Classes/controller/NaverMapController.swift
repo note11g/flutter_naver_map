@@ -213,19 +213,8 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
         channel.invokeMethod("onMapReady", arguments: nil)
     }
     
-    func onMapLoaded() {
-        channel.invokeMethod("onMapLoaded", arguments: nil)
-    }
-    
     func onMapTapped(nPoint: NPoint, latLng: NMGLatLng) {
         channel.invokeMethod("onMapTapped", arguments: [
-            "nPoint": nPoint.toMessageable(),
-            "latLng": latLng.toMessageable()
-        ])
-    }
-    
-    func onMapLongTapped(nPoint: NPoint, latLng: NMGLatLng) {
-        channel.invokeMethod("onMapLongTapped", arguments: [
             "nPoint": nPoint.toMessageable(),
             "latLng": latLng.toMessageable()
         ])

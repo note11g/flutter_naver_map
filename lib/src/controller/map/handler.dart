@@ -3,11 +3,7 @@ part of "../../../flutter_naver_map.dart";
 mixin _NaverMapControlHandler {
   void onMapReady();
 
-  void onMapLoaded();
-
   void onMapTapped(NPoint point, NLatLng latLng);
-
-  void onMapLongTapped(NPoint point, NLatLng latLng);
 
   void onSymbolTapped(NSymbolInfo symbol);
 
@@ -32,19 +28,9 @@ mixin _NaverMapControlHandler {
       case "onMapReady":
         onMapReady();
         break;
-      case "onMapLoaded":
-        onMapLoaded();
-        break;
       case "onMapTapped":
         final args = call.arguments;
         onMapTapped(
-          NPoint._fromMessageable(args["nPoint"]),
-          NLatLng._fromMessageable(args["latLng"]),
-        );
-        break;
-      case "onMapLongTapped":
-        final args = call.arguments;
-        onMapLongTapped(
           NPoint._fromMessageable(args["nPoint"]),
           NLatLng._fromMessageable(args["latLng"]),
         );
