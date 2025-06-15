@@ -37,7 +37,7 @@ internal struct NPolylineOverlay: AddableOverlay {
                 lineCap: asLineCap(d[lineCapName]!),
                 lineJoin: asLineJoin(d[lineJoinName]!),
                 pattern: asArr(d[patternName]!) {
-                    NSNumber(value: asDouble($0))
+                    NSNumber(value: asRoundInt(rawFloat: $0))
                 }
         )
     }

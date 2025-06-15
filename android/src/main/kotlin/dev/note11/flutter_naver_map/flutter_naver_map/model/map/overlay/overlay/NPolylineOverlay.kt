@@ -23,7 +23,7 @@ internal data class NPolylineOverlay(
     val widthDp: Double,
     val lineCap: LineCap,
     val lineJoin: LineJoin,
-    val patternDp: List<Double>,
+    val patternDp: List<Int>,
 ) : AddableOverlay<PolylineOverlay>() {
 
 
@@ -36,7 +36,7 @@ internal data class NPolylineOverlay(
         g.width = DisplayUtil.dpToPx(widthDp)
         g.capType = lineCap
         g.joinType = lineJoin
-        g.setPattern(*patternDp.map { DisplayUtil.dpToPx(it) }.toIntArray())
+        g.setPattern(*patternDp.map { DisplayUtil.dpToPx(it.toDouble()) }.toIntArray())
     }
 
     companion object {
@@ -48,7 +48,7 @@ internal data class NPolylineOverlay(
                 widthDp = it[widthName]!!.asDouble(),
                 lineCap = it[lineCapName]!!.asLineCap(),
                 lineJoin = it[lineJoinName]!!.asLineJoin(),
-                patternDp = it[patternName]!!.asList { p -> p.asDouble() },
+                patternDp = it[patternName]!!.asList { p -> p.asInt() },
             )
         }
 

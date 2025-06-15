@@ -17,7 +17,6 @@ internal interface PolygonOverlayHandler : OverlayHandler {
             NPolygonOverlay.holesName -> setHoles(p, arg!!)
             NPolygonOverlay.outlineColorName -> setOutlineColor(p, arg!!)
             NPolygonOverlay.outlineWidthName -> setOutlineWidth(p, arg!!)
-            NPolygonOverlay.outlinePatternName -> setOutlinePattern(p, arg!!)
             getterName(NPolygonOverlay.boundsName) -> getBounds(p, result::success)
             else -> result.notImplemented()
         }
@@ -32,8 +31,6 @@ internal interface PolygonOverlayHandler : OverlayHandler {
     fun setOutlineColor(polygonOverlay: PolygonOverlay, rawColor: Any)
 
     fun setOutlineWidth(polygonOverlay: PolygonOverlay, rawWidthDp: Any)
-
-    fun setOutlinePattern(polygonOverlay: PolygonOverlay, rawPatternDpList: Any)
 
     fun getBounds(polygonOverlay: PolygonOverlay, success: (bounds: Map<String, Any>) -> Unit)
 }
