@@ -10,6 +10,7 @@ internal struct NPolygonOverlay: AddableOverlay {
     let holes: Array<Array<NMGLatLng>>
     let outlineColor: UIColor
     let outlineWidth: Double
+    let outlinePatternPx: Array<NSNumber>
 
     func createMapOverlay() -> OverlayType {
         let polygon = NMGPolygon(
@@ -24,6 +25,7 @@ internal struct NPolygonOverlay: AddableOverlay {
         overlay.fillColor = color
         overlay.outlineColor = outlineColor
         overlay.outlineWidth = UInt(round(outlineWidth))
+        overlay.outlinePattern = outlinePatternPx
         return overlay
     }
 
@@ -35,7 +37,10 @@ internal struct NPolygonOverlay: AddableOverlay {
                 color: asUIColor(d[colorName]!),
                 holes: asArr(d[holesName]!, elementCaster: { asArr($0, elementCaster: asLatLng) }),
                 outlineColor: asUIColor(d[outlineColorName]!),
-                outlineWidth: asDouble(d[outlineWidthName]!)
+                outlineWidth: asDouble(d[outlineWidthName]!),
+                outlinePatternPx: asArr(d[outlinePatternName]!) {
+                    NSNumber(value: DisplayUtil.dpToPx(dp: asDouble($0)))
+                }
         )
     }
 
@@ -48,5 +53,6 @@ internal struct NPolygonOverlay: AddableOverlay {
     static let holesName = "holes"
     static let outlineColorName = "outlineColor"
     static let outlineWidthName = "outlineWidth"
+    static let outlinePatternName = "outlinePattern"
     static let boundsName = "bounds"
 }

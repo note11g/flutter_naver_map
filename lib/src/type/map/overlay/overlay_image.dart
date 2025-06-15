@@ -37,11 +37,15 @@ class NOverlayImage with NMessageableWithMap {
   ///
   /// 위젯을 이미지로 변환한 후 사용하므로, 인터렉션이 불가능함을 알아두세요.
   ///
-  /// 위젯의 내부에 절대 이미지 위젯을 사용하지 마세요. (성능 이슈 및 로드가 되지 않는 현상이 발생합니다)
+  /// [size]가 `null`일 경우, 위젯의 사이즈에 맞춰 렌더링됩니다.
+  ///
+  /// [size]를 `null`로 설정함과 동시에 constraint가 `infinity`가 되지 않도록 유의하세요.
+  ///
+  /// 위젯의 내부에 되도록 이미지 위젯을 사용하지 마세요. (성능 이슈 및 로드가 되지 않는 현상이 발생합니다. 꼭 필요하다면, pre-load가 선행되어야 합니다.)
   /// 대신 `NOverlayImage.fromAssetImage` 또는 `.fromFile` 혹은 `.fromByteArray` 생성자를 사용하세요.
   static Future<NOverlayImage> fromWidget({
     required Widget widget,
-    required Size size,
+    Size? size,
     required BuildContext context,
   }) async {
     assert(

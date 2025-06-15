@@ -65,7 +65,7 @@ internal class NaverMapView(
     private fun onMapReady() {
         initializeMapController()
         setLocationSource()
-        setMapTapListener()
+        setMapEventListeners()
 
         mapView.onCreate(null)
         naverMapControlSender.onMapReady()
@@ -89,12 +89,15 @@ internal class NaverMapView(
         naverMap.locationSource = NLocationSource(activity)
     }
 
-    private fun setMapTapListener() {
+    private fun setMapEventListeners() {
         isListenerRegistered = true
 
         naverMap.run {
             setOnMapClickListener { pointFPx, latLng ->
                 naverMapControlSender.onMapTapped(NPoint.fromPointFWithPx(pointFPx), latLng)
+            }
+            setOnMapLongClickListener { pointFPx, latLng ->
+                naverMapControlSender.onMapLongTapped(NPoint.fromPointFWithPx(pointFPx), latLng)
             }
             setOnSymbolClickListener {
                 naverMapControlSender.onSymbolTapped(it)
@@ -103,7 +106,6 @@ internal class NaverMapView(
             addOnCameraChangeListener(naverMapControlSender::onCameraChange)
             addOnCameraIdleListener(naverMapControlSender::onCameraIdle)
             addOnIndoorSelectionChangeListener(naverMapControlSender::onSelectedIndoorChanged)
-
 
             /** Tap Listener 는 아니지만, 따로 setInitHandler와 같이 메소드를 만들지 않고, 기존 메소드에 추가. Listener 종류가 많아지면 용도에 맞게 분리되면 좋을 것 같음 */
             customStyleId = naverMapViewOptions.naverMapOptions.getCustomStyleId() // nullable
@@ -119,14 +121,16 @@ internal class NaverMapView(
         }
     }
 
-    private fun removeMapTapListener() {
+    private fun removeMapEventListeners() {
         if (isListenerRegistered) {
             naverMap.run {
                 onMapClickListener = null
+                onMapLongClickListener = null
                 onSymbolClickListener = null
                 removeOnCameraChangeListener(naverMapControlSender::onCameraChange)
                 removeOnCameraIdleListener(naverMapControlSender::onCameraIdle)
                 removeOnIndoorSelectionChangeListener(naverMapControlSender::onSelectedIndoorChanged)
+                removeOnLoadListener(naverMapControlSender::onMapLoaded)
             }
         }
     }
@@ -135,7 +139,7 @@ internal class NaverMapView(
 
     override fun dispose() {
         unRegisterLifecycleCallback()
-        removeMapTapListener()
+        removeMapEventListeners()
 
         mapView.run {
             onPause()
@@ -194,6 +198,7 @@ internal class NaverMapView(
 
     override fun onConfigurationChanged(newConfig: Configuration) {}
 
+    @Deprecated("Deprecated in Java")
     override fun onLowMemory() {
         mapView.onLowMemory()
     }

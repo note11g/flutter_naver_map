@@ -13,16 +13,16 @@ internal struct NOverlayImage {
 
     private func makeOverlayImageWithPath() -> NMFOverlayImage {
         let image = UIImage(contentsOfFile: path)
-        let scaledImage = UIImage(data: image!.pngData()!, scale: UIScreen.main.scale)
+        let scaledImage = UIImage(data: image!.pngData()!, scale: DisplayUtil.scale)
         let overlayImg = NMFOverlayImage(image: scaledImage!)
         return overlayImg
     }
-
+    
     private func makeOverlayImageWithAssetPath() -> NMFOverlayImage {
         let key = SwiftFlutterNaverMapPlugin.getAssets(path: path)
         let assetPath = Bundle.main.path(forResource: key, ofType: nil) ?? ""
         let image = UIImage(contentsOfFile: assetPath)
-        let scaledImage = UIImage(data: image!.pngData()!, scale: UIScreen.main.scale)
+        let scaledImage = UIImage(data: image!.pngData()!, scale: DisplayUtil.scale)
         let overlayImg = NMFOverlayImage(image: scaledImage!, reuseIdentifier: assetPath)
         return overlayImg
     }
