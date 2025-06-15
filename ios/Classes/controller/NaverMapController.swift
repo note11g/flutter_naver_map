@@ -253,14 +253,6 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     func onSelectedIndoorChanged(selectedIndoor: NMFIndoorSelection?) {
         channel.invokeMethod("onSelectedIndoorChanged", arguments: selectedIndoor?.toMessageable())
     }
-
-    func onCustomStyleLoaded() {
-        channel.invokeMethod("onCustomStyleLoaded", arguments: nil)
-    }
-
-    func onCustomStyleLoadFailed(exception: any Error) {
-        channel.invokeMethod("onCustomStyleLoadFailed", arguments: exception)
-    }
     
     /*
      --- deinit ---
