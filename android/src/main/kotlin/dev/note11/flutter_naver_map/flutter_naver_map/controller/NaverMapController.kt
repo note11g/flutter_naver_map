@@ -307,6 +307,14 @@ internal class NaverMapController(
         channel.invokeMethod("onSelectedIndoorChanged", selectedIndoor?.toMessageable())
     }
 
+    override fun onCustomStyleLoaded() {
+        channel.invokeMethod("onCustomStyleLoaded", null)
+    }
+
+    override fun onCustomStyleLoadFailed(exception: Exception) {
+        channel.invokeMethod("onCustomStyleLoadFailed", exception)
+    }
+
     /*
       --- remove ---
     */

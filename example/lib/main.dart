@@ -91,6 +91,8 @@ class _FNMapPageState extends State<FNMapPage> {
       onCameraChange: onCameraChange,
       onCameraIdle: onCameraIdle,
       onSelectedIndoorChanged: onSelectedIndoorChanged,
+      onCustomStyleLoaded: onCustomStyleLoaded,
+      onCustomStyleLoadFailed: onCustomStyleLoadFailed,
     );
   }
 
@@ -119,6 +121,14 @@ class _FNMapPageState extends State<FNMapPage> {
   }
 
   void onSelectedIndoorChanged(NSelectedIndoor? selectedIndoor) {
+    // ...
+  }
+
+  void onCustomStyleLoaded() {
+    // ...
+  }
+
+  void onCustomStyleLoadFailed(Exception exception) {
     // ...
   }
 
