@@ -91,6 +91,7 @@ internal class NaverMapView(
 
     private fun setMapEventListeners() {
         isListenerRegistered = true
+
         naverMap.run {
             setOnMapClickListener { pointFPx, latLng ->
                 naverMapControlSender.onMapTapped(NPoint.fromPointFWithPx(pointFPx), latLng)
@@ -105,7 +106,18 @@ internal class NaverMapView(
             addOnCameraChangeListener(naverMapControlSender::onCameraChange)
             addOnCameraIdleListener(naverMapControlSender::onCameraIdle)
             addOnIndoorSelectionChangeListener(naverMapControlSender::onSelectedIndoorChanged)
-            addOnLoadListener(naverMapControlSender::onMapLoaded)
+
+            /** Tap Listener 는 아니지만, 따로 setInitHandler와 같이 메소드를 만들지 않고, 기존 메소드에 추가. Listener 종류가 많아지면 용도에 맞게 분리되면 좋을 것 같음 */
+            customStyleId = naverMapViewOptions.naverMapOptions.getCustomStyleId() // nullable
+            setCustomStyleId(customStyleId, object : NaverMap.OnCustomStyleLoadCallback {
+                override fun onCustomStyleLoaded() {
+                    naverMapControlSender.onCustomStyleLoaded()
+                }
+
+                override fun onCustomStyleLoadFailed(exception: Exception) {
+                    naverMapControlSender.onCustomStyleLoadFailed(exception)
+                }
+            })
         }
     }
 

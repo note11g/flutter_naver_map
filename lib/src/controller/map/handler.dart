@@ -21,6 +21,10 @@ mixin _NaverMapControlHandler {
 
   void onSelectedIndoorChanged(NSelectedIndoor? selectedIndoor);
 
+  void onCustomStyleLoaded();
+
+  void onCustomStyleLoadFailed(Exception exception);
+
   void onAnotherMethod(String methodName, dynamic args) {}
 
   Future<dynamic> handle(MethodCall call) async {
@@ -63,6 +67,12 @@ mixin _NaverMapControlHandler {
             ? NSelectedIndoor._fromMessageable(call.arguments)
             : null;
         onSelectedIndoorChanged(selectedIndoor);
+        break;
+      case "onCustomStyleLoaded":
+        onCustomStyleLoaded();
+        break;
+      case "onCustomStyleLoadFailed":
+        onCustomStyleLoadFailed(Exception(call.arguments));
         break;
       default:
         onAnotherMethod(call.method, call.arguments);
