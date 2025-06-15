@@ -53,16 +53,7 @@ internal class NaverMapViewEventDelegate: NSObject, NMFMapViewTouchDelegate, NMF
         mapView.touchDelegate = self
         mapView.addCameraDelegate(delegate: self)
         mapView.addIndoorSelectionDelegate(delegate: self)
-
-        mapView.setCustomStyleId(
-            mapView.customStyleId,
-            loadHandler: { [weak self] in
-                self?.sender?.onCustomStyleLoaded()
-            },
-            failHandler: { [weak self] exception in
-                self?.sender?.onCustomStyleLoadFailed(exception: exception)
-            }
-        )
+        mapView.addLoadDelegate(delegate: self)
     }
 
     func unregisterDelegates(mapView: NMFMapView) {
