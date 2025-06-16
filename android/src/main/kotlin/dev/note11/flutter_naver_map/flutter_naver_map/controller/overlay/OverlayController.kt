@@ -1,6 +1,7 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay
 
 import android.content.Context
+import androidx.annotation.MainThread
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.*
 import com.naver.maps.map.util.MarkerIcons
@@ -31,6 +32,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil.dpToPx
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
+import java.util.concurrent.ConcurrentHashMap
 
 internal class OverlayController(
     private val channel: MethodChannel,
@@ -55,11 +57,11 @@ internal class OverlayController(
 
     /* ----- overlay storage ----- */
 
-    private val overlays: MutableMap<NOverlayInfo, Overlay> = mutableMapOf()
+    private val overlays: ConcurrentHashMap<NOverlayInfo, Overlay> = ConcurrentHashMap()
 
-    override fun saveOverlay(overlay: Overlay, info: NOverlayInfo) {
+    override fun saveOverlay(overlay: Overlay, info: NOverlayInfo, duplicateRemoval: Boolean) {
         info.saveAtOverlay(overlay)
-        detachOverlay(info)
+        if (duplicateRemoval) detachOverlay(info)
         overlays[info] = overlay
     }
 
@@ -83,9 +85,10 @@ internal class OverlayController(
         overlay?.let(::detachOverlay)
     }
 
+    @MainThread
     private fun detachOverlay(overlay: Overlay) {
         if (overlay is InfoWindow) overlay.close()
-        else overlay.map = null
+        else overlay.map = null // UI Thread(Main) required.
     }
 
     override fun clearOverlays() {

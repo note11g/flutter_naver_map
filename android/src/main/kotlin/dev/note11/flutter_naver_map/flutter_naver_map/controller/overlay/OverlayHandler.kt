@@ -6,12 +6,16 @@ import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import io.flutter.plugin.common.MethodChannel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.withContext
 
 internal interface OverlayHandler {
 
     fun hasOverlay(info: NOverlayInfo): Boolean
 
-    fun saveOverlay(overlay: Overlay, info: NOverlayInfo)
+    fun saveOverlay(overlay: Overlay, info: NOverlayInfo, duplicateRemoval: Boolean = true)
 
     fun deleteOverlay(info: NOverlayInfo)
 
@@ -25,8 +29,49 @@ internal interface OverlayHandler {
         creator: AddableOverlay<T>,
         createdOverlay: T? = null,
     ): T {
-        if (hasOverlay(creator.info)) deleteOverlay(creator.info)
+        if (hasOverlay(creator.info)) deleteOverlay(creator.info) // UI Thread
 
+        val overlay = createOrApplyPropertiesOverlay(creator, createdOverlay)
+        saveOverlay(overlay, creator.info)
+
+        return overlay
+    }
+
+    suspend fun saveMultipleOverlaysWithAddableOverlays(
+        creators: List<AddableOverlay<out Overlay>>,
+    ): List<Overlay> {
+        val alreadyExists = mutableSetOf<NOverlayInfo>()
+
+        for (creator in creators) {
+            if (hasOverlay(creator.info)) alreadyExists.add(creator.info)
+        }
+
+        if (alreadyExists.isNotEmpty()) {
+            withContext(Dispatchers.Main) {
+                for (it in alreadyExists) deleteOverlay(it)
+            }
+        }
+
+        val chunks = creators.chunked(100)
+        val overlays = withContext(Dispatchers.IO) {
+            return@withContext chunks.map { chunk ->
+                async {
+                    chunk.map { creator ->
+                        val overlay = createOrApplyPropertiesOverlay(creator, null)
+                        saveOverlay(overlay, creator.info, duplicateRemoval = false)
+                        return@map overlay
+                    }
+                }
+            }.awaitAll()
+        }
+
+        return overlays.flatten()
+    }
+
+    fun <T : Overlay> createOrApplyPropertiesOverlay(
+        creator: AddableOverlay<T>,
+        createdOverlay: T? = null,
+    ): T {
         val overlay =
             if (createdOverlay is T) creator.applyAtRawOverlay(createdOverlay)
             else creator.createMapOverlay()
@@ -34,8 +79,6 @@ internal interface OverlayHandler {
         creator.applyCommonProperties { name, arg ->
             handleOverlay(overlay, name, arg, null)
         }
-
-        saveOverlay(overlay, creator.info)
 
         return overlay
     }

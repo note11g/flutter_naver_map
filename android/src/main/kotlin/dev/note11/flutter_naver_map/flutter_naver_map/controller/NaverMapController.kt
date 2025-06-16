@@ -3,6 +3,8 @@ package dev.note11.flutter_naver_map.flutter_naver_map.controller
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.os.SystemClock
+import android.util.Log
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationTrackingMode
@@ -14,6 +16,7 @@ import com.naver.maps.map.app.LegendActivity
 import com.naver.maps.map.app.OpenSourceLicenseActivity
 import com.naver.maps.map.indoor.IndoorSelection
 import com.naver.maps.map.overlay.LocationOverlay
+import com.naver.maps.map.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.clustering.ClusteringController
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageable
@@ -21,7 +24,6 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NClusterableMarkerInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NPickableInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NSymbolInfo
@@ -35,6 +37,7 @@ import io.flutter.plugin.common.MethodChannel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import kotlinx.coroutines.*
 
 internal class NaverMapController(
     private val naverMap: NaverMap,
@@ -46,6 +49,9 @@ internal class NaverMapController(
     private var naverMapViewOptions: NaverMapViewOptions? = null
     private val clusteringController =
         ClusteringController(naverMap, overlayController, channel::invokeMethod, viewInvalidator)
+
+    private val controllerJob = SupervisorJob()
+    private val scope = CoroutineScope(controllerJob + Dispatchers.Main.immediate)
 
     init {
         overlayController.initializeLocationOverlay(naverMap.locationOverlay)
@@ -175,30 +181,69 @@ internal class NaverMapController(
         rawOverlays: List<Map<String, Any>>,
         onSuccess: () -> Unit,
     ) {
-        val clusterableMarkers = mutableListOf<NClusterableMarker>()
+        val startTime = SystemClock.elapsedRealtime()
+        scope.launch(Dispatchers.IO) {
+            Log.d(
+                "NaverMapController",
+                "Adding ${rawOverlays.size} overlays, start time: $startTime"
+            )
+            val chunks = rawOverlays.chunked(100)
+            val chunkResults = chunks.map { chunk ->
+                async {
+                    val nonClusterableOverlays = mutableListOf<AddableOverlay<*>>()
+                    val clusterableMarkers = mutableListOf<NClusterableMarker>()
+                    for (rawOverlay in chunk) {
+                        val nOverlay = parseOverlay(rawOverlay)
 
-        for (rawOverlay in rawOverlays) {
-            val overlayInfo = NOverlayInfo.fromMessageable(rawOverlay["info"]!!)
-            val nOverlay = LazyOrAddableOverlay.fromMessageable(
-                info = overlayInfo, args = rawOverlay, context = applicationContext
+                        when (nOverlay) {
+                            is AddableOverlay<*> -> nonClusterableOverlays.add(nOverlay)
+                            is NClusterableMarker -> clusterableMarkers.add(nOverlay)
+                            else -> throw IllegalArgumentException("Invalid overlay type")
+                        }
+                    }
+                    return@async Pair(nonClusterableOverlays, clusterableMarkers)
+                }
+            }.awaitAll()
+
+            val nonClusterableOverlays = mutableListOf<AddableOverlay<out Overlay>>()
+            val clusterableMarkers = mutableListOf<NClusterableMarker>()
+            for (result in chunkResults) {
+                nonClusterableOverlays.addAll(result.first)
+                clusterableMarkers.addAll(result.second)
+            }
+            Log.d(
+                "NaverMapController",
+                "Overlay parsing completed, elapsed time: ${SystemClock.elapsedRealtime() - startTime} ms"
             )
 
-            when (nOverlay) {
-                is AddableOverlay<*> -> {
-                    val overlay = overlayController.saveOverlayWithAddable(nOverlay)
-                    overlay.map = naverMap
+            val secondaryStartTime = SystemClock.elapsedRealtime()
+
+            val mapOverlays =
+                overlayController.saveMultipleOverlaysWithAddableOverlays(nonClusterableOverlays)
+
+            withContext(Dispatchers.Main.immediate) {
+                for (mapOverlay in mapOverlays) {
+                    mapOverlay.map = naverMap // running on main thread required
                 }
 
-                is NClusterableMarker -> clusterableMarkers.add(nOverlay)
-                else -> throw IllegalArgumentException("Invalid overlay type")
+                if (clusterableMarkers.isNotEmpty()) {
+                    clusteringController.addClusterableMarkerAll(clusterableMarkers)
+                }
+                Log.d(
+                    "NaverMapController",
+                    "Overlay addition completed, elapsed time: ${SystemClock.elapsedRealtime() - secondaryStartTime} ms"
+                )
+                onSuccess()
             }
         }
+    }
 
-        if (clusterableMarkers.isNotEmpty()) {
-            clusteringController.addClusterableMarkerAll(clusterableMarkers)
-        }
-
-        onSuccess()
+    private fun parseOverlay(rawOverlay: Map<String, Any>): LazyOrAddableOverlay {
+        val overlayInfo = NOverlayInfo.fromMessageable(rawOverlay["info"]!!)
+        val nOverlay = LazyOrAddableOverlay.fromMessageable(
+            info = overlayInfo, args = rawOverlay, context = applicationContext
+        )
+        return nOverlay
     }
 
     override fun deleteOverlay(overlayInfo: NOverlayInfo, onSuccess: () -> Unit) {
@@ -325,6 +370,7 @@ internal class NaverMapController(
     */
 
     fun remove() {
+        controllerJob.cancel()
         channel.setMethodCallHandler(null)
         clusteringController.dispose()
         overlayController.remove()
