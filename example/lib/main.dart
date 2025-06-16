@@ -116,8 +116,28 @@ class _FNMapPageState extends State<FNMapPage> {
   }
 
   void onMapTapped(NPoint point, NLatLng latLng) async {
+    // stress test
+
+    final markers = List.generate(50000, (index) {
+      final xMeter = (index % 1000) * 10.0;
+      final yMeter = (index ~/ 1000) * 10.0;
+      return NMarker(
+          id: '$index',
+          position:
+              latLng.offsetByMeter(eastMeter: xMeter, northMeter: -yMeter));
+    }).toSet();
+    showDialog(
+        context: context,
+        builder: (context) => const Center(child: CircularProgressIndicator()));
+    final stopwatch = Stopwatch()..start();
+    print("Adding ${markers.length} markers...");
+    await mapController.addOverlayAll(markers);
+    print(
+        "Added ${markers.length} markers in ${stopwatch.elapsedMilliseconds}ms");
+    Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text("onMapTapped\n$latLng"),
+      content: Text(
+          "marker added: ${markers.length} in ${stopwatch.elapsedMilliseconds}ms\n$latLng"),
     ));
   }
 
