@@ -233,7 +233,7 @@ class _NaverMapState extends State<NaverMap>
   void onCustomStyleLoaded() => widget.onCustomStyleLoaded?.call();
 
   @override
-  void onCustomStyleLoadFailed(Exception exception) =>
+  void onCustomStyleLoadFailed(NStyleLoadFailedException exception) =>
       widget.onCustomStyleLoadFailed?.call(exception);
 
   @override

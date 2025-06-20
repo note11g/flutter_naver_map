@@ -19,7 +19,7 @@ mixin _NaverMapControlHandler {
 
   void onCustomStyleLoaded();
 
-  void onCustomStyleLoadFailed(Exception exception);
+  void onCustomStyleLoadFailed(NStyleLoadFailedException exception);
 
   void onAnotherMethod(String methodName, dynamic args) {}
 
@@ -58,7 +58,8 @@ mixin _NaverMapControlHandler {
         onCustomStyleLoaded();
         break;
       case "onCustomStyleLoadFailed":
-        onCustomStyleLoadFailed(Exception(call.arguments));
+        onCustomStyleLoadFailed(
+            NStyleLoadFailedException._fromMessageable(call.arguments));
         break;
       default:
         onAnotherMethod(call.method, call.arguments);
