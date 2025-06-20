@@ -7,6 +7,7 @@ import com.naver.maps.map.NaverMapSdk.NcpKeyClient
 import com.naver.maps.map.NaverMapSdk.OnAuthFailedListener
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asBoolean
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
+import dev.note11.flutter_naver_map.flutter_naver_map.model.exception.NFlutterException
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
@@ -21,9 +22,7 @@ internal class SdkInitializer(
     private fun handle(call: MethodCall, result: MethodChannel.Result) {
         if (call.method == "initializeNcp") {
             initializeWithNcp(
-                call.arguments.asMap(),
-                onSuccess = result::success,
-                onFailure = {
+                call.arguments.asMap(), onSuccess = result::success, onFailure = {
                     result.error(
                         if (it is NaverMapSdk.AuthFailedException) it.errorCode else it.javaClass.name,
                         it.message,
@@ -39,9 +38,7 @@ internal class SdkInitializer(
     }
 
     private fun initializeWithNcp(
-        args: Map<String, Any>,
-        onSuccess: (Any?) -> Unit,
-        onFailure: (Exception) -> Unit
+        args: Map<String, Any>, onSuccess: (Any?) -> Unit, onFailure: (Exception) -> Unit
     ) {
         val clientId = args["clientId"]?.toString()
         val hasAuthFailedListener = args["setAuthFailedListener"]?.asBoolean() ?: false
@@ -96,10 +93,8 @@ internal class SdkInitializer(
 
     private fun onAuthFailedListener(ex: NaverMapSdk.AuthFailedException) {
         channel.invokeMethod(
-            "onAuthFailed", mapOf(
-                "code" to ex.errorCode,
-                "message" to ex.message,
-            )
+            "onAuthFailed",
+            NFlutterException(code = ex.errorCode, message = ex.message).toMessageable()
         )
     }
 }
