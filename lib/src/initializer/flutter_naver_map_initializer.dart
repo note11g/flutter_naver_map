@@ -40,9 +40,7 @@ class FlutterNaverMap {
 
   Future<void> _handler(MethodCall call) async {
     if (call.method == "onAuthFailed" && onAuthFailed != null) {
-      final code = call.arguments["code"];
-      final message = call.arguments["message"];
-      onAuthFailed!.call(NAuthFailedException._internal(code, message));
+      onAuthFailed!.call(NAuthFailedException._fromMessageable(call.arguments));
     }
   }
 }
