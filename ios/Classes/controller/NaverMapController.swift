@@ -248,7 +248,11 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     }
 
     func onCustomStyleLoadFailed(exception: any Error) {
-        channel.invokeMethod("onCustomStyleLoadFailed", arguments: exception)
+        let isInvalidCustomStyleIdError = exception._code == 900 && exception.localizedDescription.contains("(400)")
+        let flutterError = isInvalidCustomStyleIdError
+        ? NFlutterException(code: "400", message: exception.localizedDescription)
+        : NFlutterException(error: exception)
+        channel.invokeMethod("onCustomStyleLoadFailed", arguments: flutterError.toMessageable())
     }
     
     /*
