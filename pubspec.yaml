@@ -35,4 +35,4 @@ flutter:
     - ./assets/icon/location_overlay_sub_icon.png
     - ./assets/icon/location_overlay_sub_icon_face.png
     - ./assets/font/Inter-fnm-scalebar-ss540.otf
-    - ./pubspec.yaml
+    - ./version.json
