@@ -10,7 +10,7 @@ abstract class NaverMapController implements _NaverMapControlSender {
 
   void dispose();
 
-  /// 이 프로퍼티는 지금 카메라가 보여주고 있는 위치를 나타냅니다.
+  /// 이 프로퍼티는 지금 카메라가 보여주고 있는 위치를 나타냅니다
   ///
   /// This property allows you to retrieve the position of the camera currently displayed on the map.
   ///
