@@ -202,7 +202,7 @@ class _NaverMapControllerImpl
     --- private methods ---
   */
   @override
-  Future<void> _updateOptions(NaverMapViewOptions options) {
+  Future<void> updateOptions(NaverMapViewOptions options) {
     return invokeMethod("updateOptions", options);
   }
 
