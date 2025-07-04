@@ -157,7 +157,7 @@ class _NaverMapState extends State<NaverMap>
     final List<Future Function()> updateQueue = [];
     if (nowViewOptions != widget.options) {
       nowViewOptions = widget.options;
-      updateQueue.add(() => controller._updateOptions(nowViewOptions));
+      updateQueue.add(() => controller.updateOptions(nowViewOptions));
     }
     if (nowClusterOptions != widget.clusterOptions) {
       nowClusterOptions = widget.clusterOptions;
