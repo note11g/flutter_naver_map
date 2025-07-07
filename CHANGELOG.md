@@ -4,6 +4,9 @@
 - [All Platform, Not Working Impact] **Migrated built-in location tracking to be widget-based.** ([PR #322](https://github.com/note11g/flutter_naver_map/pull/322))
   - The `locationButtonEnable` option in `NaverMapViewOptions` has been removed and replaced with the `NMyLocationButtonWidget`.
   - Location tracking APIs are now provided through the `NMyLocationTracker`.
+  - NaverMapController.setLocationTrackingMode(NLocationTrackingMode)'s return type change from `Future<void>` to `void`
+  - `Future<NLocationTrackingMode> NaverMapController.getLocationTrackingMode()` api exposing change to `NLocationTrackingMode NaverMapController.locationTrackingMode` getter
+  - change `color.alpha` on `NLocationOverlay.defaultCircleColor` 24% to 8%
 - [All Platform, Not Working Impact] **Migrated ScaleBar to be a widget.** ([Fix #297](https://github.com/note11g/flutter_naver_map/issues/297), [PR #319](https://github.com/note11g/flutter_naver_map/pull/319))
   - The `scaleBarEnable` option in `NaverMapViewOptions` has been removed and replaced with the `NMapScaleBarWidget`.
 - [All Platform] The `showControls` argument in `NaverMapController.takeSnapshot` has been removed as it is no longer supported by the native SDK since version 1.4.0.
