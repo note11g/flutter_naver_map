@@ -16,7 +16,12 @@ class NMapInfoDialog extends StatefulWidget {
 
 class _NMapInfoDialogState extends State<NMapInfoDialog> {
   final ValueNotifier<String> _version = ValueNotifier<String>("");
-  final ValueNotifier<String> _naverMapVersion = ValueNotifier<String>("");
+  final ValueNotifier<Map<String, String>> _dependencies =
+      ValueNotifier<Map<String, String>>({});
+  final currentYear = DateTime.now().year;
+
+  String? get _naverMapVersion => _dependencies
+      .value[Platform.isIOS ? "NMapsMap" : "com.naver.maps:map-sdk"];
 
   @override
   void initState() {
@@ -24,9 +29,9 @@ class _NMapInfoDialogState extends State<NMapInfoDialog> {
     _getVersionInfo().then((version) {
       if (version != null) {
         _version.value = version.packageVersion;
-        _naverMapVersion.value = Platform.isIOS
-            ? version.nativeVersion.naverMapIOSVersion
-            : version.nativeVersion.naverMapAndroidVersion;
+        _dependencies.value = Platform.isIOS
+            ? version.nativeVersion.iosDependencies
+            : version.nativeVersion.androidDependencies;
       }
     });
   }
@@ -69,17 +74,19 @@ class _NMapInfoDialogState extends State<NMapInfoDialog> {
                       builder: (context, fMapVersion, child) => _versionInfo(
                           title: "flutter_naver_map",
                           version: fMapVersion,
-                          description: "Copyright © 2023-2025 note11g\n"
+                          description: "Copyright © 2023-$currentYear note11g\n"
                               "This library is licensed under the BSD-3-Clause License.")),
                   const SizedBox(height: 14),
                   ValueListenableBuilder(
-                      valueListenable: _naverMapVersion,
-                      builder: (context, naverSdkVer, child) => _versionInfo(
-                          title:
-                              "Naver Map ${Platform.isIOS ? "iOS" : "Android"} SDK",
-                          version: naverSdkVer,
-                          description:
-                              "Copyright © 2018-2025 NAVER Corp.\nAll rights reserved.")),
+                      valueListenable: _dependencies,
+                      builder: (context, _, child) {
+                        return _versionInfo(
+                            title:
+                                "Naver Map ${Platform.isIOS ? "iOS" : "Android"} SDK",
+                            version: _naverMapVersion ?? "Unknown",
+                            description:
+                                "Copyright © 2018-$currentYear NAVER Corp.\nAll rights reserved.");
+                      }),
                 ])),
             Positioned(
                 top: 0,
@@ -216,23 +223,25 @@ class _VersionInfo {
 }
 
 class _NativeDependencyVersion {
-  final String naverMapAndroidVersion;
-  final String naverMapIOSVersion;
+  final Map<String, String> androidDependencies;
+  final Map<String, String> iosDependencies;
 
   _NativeDependencyVersion({
-    required this.naverMapAndroidVersion,
-    required this.naverMapIOSVersion,
+    required this.androidDependencies,
+    required this.iosDependencies,
   });
 
   factory _NativeDependencyVersion.fromJson(Map<String, dynamic> json) {
     return _NativeDependencyVersion(
-      naverMapAndroidVersion: json["naver_map_android"] as String,
-      naverMapIOSVersion: json["naver_map_ios"] as String,
+      androidDependencies: (json["android"] as Map<String, dynamic>)
+          .map((k, v) => MapEntry(k, v as String)),
+      iosDependencies: (json["ios"] as Map<String, dynamic>)
+          .map((k, v) => MapEntry(k, v as String)),
     );
   }
 
   @override
   String toString() {
-    return "{Android: $naverMapAndroidVersion, iOS: $naverMapIOSVersion}";
+    return "{Android: $androidDependencies, iOS: $iosDependencies}";
   }
 }
