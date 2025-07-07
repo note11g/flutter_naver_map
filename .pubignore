@@ -6,6 +6,7 @@
 doc/
 build/
 docs_asset/
+tool/
 .fvm/
 .dart_tool/
 ./local.properties
