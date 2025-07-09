@@ -3,7 +3,11 @@ internal struct NLocale {
     let countryCode: String?
 
     var localeStr: String {
-        languageCode
+        if (countryCode != nil && countryCode?.isEmpty == false) {
+            return "\(languageCode)-\(countryCode!)"
+        } else {
+            return languageCode
+        }
     }
 
     static func fromMessageable(_ args: Any) -> NLocale? {
