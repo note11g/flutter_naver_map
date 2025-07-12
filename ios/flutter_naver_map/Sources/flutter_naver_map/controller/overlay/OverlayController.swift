@@ -207,6 +207,10 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
         overlay.iconWidth = size.width
         overlay.iconHeight = size.height
     }
+    
+    func setIconAlpha(_ overlay: NMFLocationOverlay, rawAlpha: Any) {
+        overlay.iconAlpha = asCGFloat(rawAlpha)
+    }
 
     func getPosition(_ overlay: NMFLocationOverlay, success: (Dictionary<String, Any>) -> ()) {
         success(overlay.location.toMessageable())
@@ -228,6 +232,10 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
         let size = NSize.fromMessageable(rawSize)
         overlay.subIconWidth = size.width
         overlay.subIconHeight = size.height
+    }
+    
+    func setSubIconAlpha(_ overlay: NMFLocationOverlay, rawAlpha: Any) {
+        overlay.subIconAlpha = asCGFloat(rawAlpha)
     }
 
     /* ----- Marker handler ----- */

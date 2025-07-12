@@ -17,6 +17,8 @@ internal protocol LocationOverlayHandler: OverlayHandler {
     func setIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any)
 
     func setIconSize(_ overlay: NMFLocationOverlay, rawSize: Any)
+    
+    func setIconAlpha(_ overlay: NMFLocationOverlay, rawAlpha: Any)
 
     func setPosition(_ overlay: NMFLocationOverlay, rawLatLng: Any)
 
@@ -25,6 +27,8 @@ internal protocol LocationOverlayHandler: OverlayHandler {
     func setSubIcon(_ overlay: NMFLocationOverlay, rawNOverlayImage: Any?)
 
     func setSubIconSize(_ overlay: NMFLocationOverlay, rawSize: Any)
+    
+    func setSubIconAlpha(_ overlay: NMFLocationOverlay, rawAlpha: Any)
 
     func getBearing(_ overlay: NMFLocationOverlay, success: (_ bearing: Double) -> Void)
 
@@ -39,10 +43,12 @@ private let circleOutlineWidthName = "circleOutlineWidth"
 private let circleRadiusName = "circleRadius"
 private let iconName = "icon"
 private let iconSizeName = "iconSize"
+private let iconAlphaName = "iconAlpha"
 private let positionName = "position"
 private let subAnchorName = "subAnchor"
 private let subIconName = "subIcon"
 private let subIconSizeName = "subIconSize"
+private let subIconAlphaName = "subIconAlpha"
 
 internal extension  LocationOverlayHandler {
     func handleLocationOverlay(locationOverlay: NMFOverlay,
@@ -59,10 +65,12 @@ internal extension  LocationOverlayHandler {
         case circleRadiusName: setCircleRadius(locationOverlay, rawRadius: args!)
         case iconName: setIcon(locationOverlay, rawNOverlayImage: args!)
         case iconSizeName: setIconSize(locationOverlay, rawSize: args!)
+        case iconAlphaName: setIconAlpha(locationOverlay, rawAlpha: args!)
         case positionName: setPosition(locationOverlay, rawLatLng: args!)
         case subAnchorName: setSubAnchor(locationOverlay, rawNPoint: args!)
         case subIconName: setSubIcon(locationOverlay, rawNOverlayImage: args)
         case subIconSizeName: setSubIconSize(locationOverlay, rawSize: args!)
+        case subIconAlphaName: setSubIconAlpha(locationOverlay, rawAlpha: args!)
         case getterName(bearingName): getBearing(locationOverlay, success: result)
         case getterName(positionName): getPosition(locationOverlay, success: result)
         default: result(FlutterMethodNotImplemented)
