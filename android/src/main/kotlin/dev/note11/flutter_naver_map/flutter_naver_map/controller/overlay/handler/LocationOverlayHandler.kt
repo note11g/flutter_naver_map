@@ -19,10 +19,12 @@ internal interface LocationOverlayHandler : OverlayHandler {
             circleRadiusName -> setCircleRadius(l, arg!!)
             iconName -> setIcon(l, arg!!)
             iconSizeName -> setIconSize(l, arg!!)
+            iconAlphaName -> setIconAlpha(l, arg!!)
             positionName -> setPosition(l, arg!!)
             subAnchorName -> setSubAnchor(l, arg!!)
             subIconName -> setSubIcon(l, arg)
             subIconSizeName -> setSubIconSize(l, arg!!)
+            subIconAlphaName -> setSubIconAlpha(l, arg!!)
             getterName(bearingName) -> getBearing(l, result::success)
             getterName(positionName) -> getPosition(l, result::success)
             else -> result.notImplemented()
@@ -45,6 +47,8 @@ internal interface LocationOverlayHandler : OverlayHandler {
 
     fun setIconSize(overlay: LocationOverlay, rawSize: Any)
 
+    fun setIconAlpha(overlay: LocationOverlay, rawAlpha: Any)
+
     fun setPosition(overlay: LocationOverlay, rawLatLng: Any)
 
     fun setSubAnchor(overlay: LocationOverlay, rawNPoint: Any)
@@ -52,6 +56,8 @@ internal interface LocationOverlayHandler : OverlayHandler {
     fun setSubIcon(overlay: LocationOverlay, rawNOverlayImage: Any?)
 
     fun setSubIconSize(overlay: LocationOverlay, rawSize: Any)
+
+    fun setSubIconAlpha(overlay: LocationOverlay, rawAlpha: Any)
 
     fun getBearing(overlay: LocationOverlay, success: (bearing: Float) -> Unit)
 
@@ -68,9 +74,11 @@ internal interface LocationOverlayHandler : OverlayHandler {
         private const val circleRadiusName = "circleRadius"
         private const val iconName = "icon"
         private const val iconSizeName = "iconSize"
+        private const val iconAlphaName = "iconAlpha"
         private const val positionName = "position"
         private const val subAnchorName = "subAnchor"
         private const val subIconName = "subIcon"
         private const val subIconSizeName = "subIconSize"
+        private const val subIconAlphaName = "subIconAlpha"
     }
 }
