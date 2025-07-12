@@ -16,6 +16,7 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.VERSION }}
       pr_body: ${{ steps.pr_body.outputs.PR_BODY }}
+      pr_number: ${{ steps.pr_body.outputs.PR_NUMBER }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@main
@@ -54,10 +55,47 @@ jobs:
       - name: 'Extract PR body for release notes'
         id: pr_body
         run: |
-          PR_BODY="${{ github.event.pull_request.body }}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # Use current PR body
+            PR_BODY="${{ github.event.pull_request.body }}"
+            PR_NUMBER="${{ github.event.pull_request.number }}"
+          else
+            # Fallback: find last merged PR with release/prerelease label
+            echo "Finding last merged PR with release/prerelease label..."
+            
+            # Get current branch
+            CURRENT_BRANCH="${{ github.ref_name }}"
+            if [ -z "$CURRENT_BRANCH" ]; then
+              CURRENT_BRANCH="main"
+            fi
+            
+            # Search for last merged PR with release or prerelease label
+            PR_DATA=$(gh pr list \
+              --base "$CURRENT_BRANCH" \
+              --state merged \
+              --label "release,prerelease" \
+              --limit 10 \
+              --json number,title,body,labels \
+              | jq -r '.[0] // empty')
+            
+            if [ -n "$PR_DATA" ]; then
+              PR_BODY=$(echo "$PR_DATA" | jq -r '.body // "No description provided"')
+              PR_NUMBER=$(echo "$PR_DATA" | jq -r '.number')
+              echo "Found PR #$PR_NUMBER for release notes"
+            else
+              PR_BODY="Manual release via workflow_dispatch"
+              PR_NUMBER="N/A"
+              echo "No recent release PR found, using default message"
+            fi
+          fi
+          
           echo "PR_BODY<<EOF" >> $GITHUB_OUTPUT
           echo "$PR_BODY" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+          
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish:
     needs: prepare
@@ -84,7 +122,7 @@ jobs:
             ${{ needs.prepare.outputs.pr_body }}
             
             ---
-            This release was automatically created from PR #${{ github.event.pull_request.number }}
+            This release was automatically created from PR #${{ needs.prepare.outputs.pr_number }}
           draft: false
           prerelease: ${{ contains(github.event.pull_request.labels.*.name, 'prerelease') }}
 
