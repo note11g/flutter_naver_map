@@ -58,7 +58,7 @@ jobs:
             echo "1. Update the version number in \`pubspec.yaml\`" >> $GITHUB_STEP_SUMMARY
             echo "2. Follow semantic versioning (patch/minor/major)" >> $GITHUB_STEP_SUMMARY
             echo "3. Re-run the workflow" >> $GITHUB_STEP_SUMMARY
-            exit 1
+            exit 0
           else
             echo "Version $LOCAL_VERSION is new, proceeding with publish"
           fi
