@@ -46,7 +46,17 @@ jobs:
           
           # Check if version already exists on pub.dev
           if curl -s "https://pub.dev/api/packages/flutter_naver_map/versions/$LOCAL_VERSION" | grep -q "version"; then
-            echo "Version $LOCAL_VERSION already exists on pub.dev"
+            echo "::error title=Duplicate Version Detected::Version $LOCAL_VERSION already exists on pub.dev"
+            echo "## ⚠️ Version Check Failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Version $LOCAL_VERSION already exists on pub.dev**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Please update the version in \`pubspec.yaml\` before publishing." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Next Steps:" >> $GITHUB_STEP_SUMMARY
+            echo "1. Update the version number in \`pubspec.yaml\`" >> $GITHUB_STEP_SUMMARY
+            echo "2. Follow semantic versioning (patch/minor/major)" >> $GITHUB_STEP_SUMMARY
+            echo "3. Re-run the workflow" >> $GITHUB_STEP_SUMMARY
             exit 1
           else
             echo "Version $LOCAL_VERSION is new, proceeding with publish"
