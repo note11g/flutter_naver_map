@@ -4,12 +4,13 @@ on:
   pull_request:
     branches:
       - main
+      - pre-release
     types:
       - closed
 
 jobs:
   if_merged_publishing:
-    if: ${{ (github.event.pull_request.merged == true) && (contains(github.event.pull_request.labels.*.name, 'release')) }}
+    if: ${{ (github.event.pull_request.merged == true) && (contains(github.event.pull_request.labels.*.name, 'release') || contains(github.event.pull_request.labels.*.name, 'prerelease')) }}
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
@@ -55,4 +56,4 @@ jobs:
             ---
             This release was automatically created from PR #${{ github.event.pull_request.number }}
           draft: false
-          prerelease: false
+          prerelease: ${{ contains(github.event.pull_request.labels.*.name, 'prerelease') }}
