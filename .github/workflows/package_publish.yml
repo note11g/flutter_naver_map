@@ -1,4 +1,4 @@
-name: Publish to Pub.dev
+name: Publish to Pub.dev and Create Release
 
 on:
   pull_request:
@@ -18,6 +18,12 @@ jobs:
       - name: 'Update version.json'
         run: dart run ./tool/update_version.dart
 
+      - name: 'Get version from pubspec.yaml'
+        id: version
+        run: |
+          VERSION=$(grep "^version:" pubspec.yaml | sed 's/version: //')
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
       - name: 'Publish Package'
         uses: k-paxian/dart-package-publisher@master
         with:
@@ -27,3 +33,26 @@ jobs:
           format: true
           skipTests: true
           force: true
+
+      - name: 'Extract PR body for release notes'
+        id: pr_body
+        run: |
+          PR_BODY="${{ github.event.pull_request.body }}"
+          echo "PR_BODY<<EOF" >> $GITHUB_OUTPUT
+          echo "$PR_BODY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: 'Create GitHub Release'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.version.outputs.VERSION }}
+          release_name: Release v${{ steps.version.outputs.VERSION }}
+          body: |
+            ${{ steps.pr_body.outputs.PR_BODY }}
+            
+            ---
+            This release was automatically created from PR #${{ github.event.pull_request.number }}
+          draft: false
+          prerelease: false
