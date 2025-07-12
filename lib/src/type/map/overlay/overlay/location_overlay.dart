@@ -41,11 +41,17 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
   Size get iconSize => _iconSize;
   Size _iconSize = autoSize;
 
+  double get iconAlpha => _iconAlpha;
+  double _iconAlpha = 1.0;
+
   NPoint get subAnchor => _subAnchor;
   NPoint _subAnchor = defaultSubAnchor;
 
   Size get subIconSize => _subIconSize;
   Size _subIconSize = autoSize;
+
+  double get subIconAlpha => _subIconAlpha;
+  double _subIconAlpha = 1.0;
 
   // --- Setters ---
 
@@ -89,6 +95,11 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
     _set(_iconSizeName, size);
   }
 
+  void setIconAlpha(double alpha) {
+    _iconAlpha = alpha;
+    _set(_iconAlphaName, alpha);
+  }
+
   Future<NLatLng> getPosition() async {
     return _getAsyncWithCast(_positionName, NLatLng.fromMessageable);
   }
@@ -111,6 +122,11 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
     _set(_subIconSizeName, size);
   }
 
+  void setSubIconAlpha(double alpha) {
+    _subIconAlpha = alpha;
+    _set(_subIconAlphaName, alpha);
+  }
+
   void _allSyncByDefaultForPlatformDiffProperties() {
     setIcon(defaultIcon);
     setCircleColor(defaultCircleColor);
@@ -128,10 +144,12 @@ class NLocationOverlay extends NOverlay<NLocationOverlay> {
   static const _circleRadiusName = "circleRadius";
   static const _iconName = "icon";
   static const _iconSizeName = "iconSize";
+  static const _iconAlphaName = "iconAlpha";
   static const _positionName = "position";
   static const _subAnchorName = "subAnchor";
   static const _subIconName = "subIcon";
   static const _subIconSizeName = "subIconSize";
+  static const _subIconAlphaName = "subIconAlpha";
 
   static const defaultAnchor = NPoint.relativeCenter;
   static const defaultSubAnchor = NPoint(0.5, 1.0);
