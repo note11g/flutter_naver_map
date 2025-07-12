@@ -16,6 +16,11 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@main
 
+      - name: 'Setup Flutter'
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
       - name: 'Update version.json'
         run: dart run ./tool/update_version.dart
 
