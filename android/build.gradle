@@ -9,7 +9,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.4.2'
+        classpath 'com.android.tools.build:gradle:8.11.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -30,7 +30,7 @@ apply plugin: 'kotlin-android'
 android {
     namespace "dev.note11.flutter_naver_map.flutter_naver_map"
 
-    compileSdk 35
+    compileSdk 36
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -50,8 +50,7 @@ android {
     }
 
     dependencies {
-        implementation 'com.naver.maps:map-sdk:3.21.0'
-        implementation 'com.google.android.gms:play-services-location:21.0.1'
-        debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
+        implementation 'com.naver.maps:map-sdk:3.22.0'
+        implementation 'com.google.android.gms:play-services-location:21.3.0'
     }
 }
