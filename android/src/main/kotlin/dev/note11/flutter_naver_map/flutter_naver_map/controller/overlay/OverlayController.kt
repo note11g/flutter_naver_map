@@ -218,6 +218,10 @@ internal class OverlayController(
             .run { useAsPixelSize(overlay::setIconWidth, overlay::setIconHeight) }
     }
 
+    override fun setIconAlpha(overlay: LocationOverlay, rawAlpha: Any) {
+        overlay.iconAlpha = rawAlpha.asFloat()
+    }
+
     override fun getPosition(
         overlay: LocationOverlay,
         success: (latLng: Map<String, Any>) -> Unit,
@@ -247,6 +251,10 @@ internal class OverlayController(
         NSize.fromMessageable(rawSize).run {
             useAsPixelSize(overlay::setSubIconWidth, overlay::setSubIconHeight)
         }
+    }
+
+    override fun setSubIconAlpha(overlay: LocationOverlay, rawAlpha: Any) {
+        overlay.subIconAlpha = rawAlpha.asFloat()
     }
 
     /* ----- Marker handler ----- */
@@ -468,6 +476,11 @@ internal class OverlayController(
 
     override fun setOutlineWidth(polygonOverlay: PolygonOverlay, rawWidthDp: Any) {
         polygonOverlay.outlineWidth = dpToPx(rawWidthDp.asDouble())
+    }
+
+    override fun setOutlinePattern(polygonOverlay: PolygonOverlay, rawPatternDpList: Any) {
+        val patternList = rawPatternDpList.asList { dpToPx(it.asDouble()) }
+        polygonOverlay.setOutlinePattern(*patternList.toIntArray())
     }
 
     override fun getBounds(

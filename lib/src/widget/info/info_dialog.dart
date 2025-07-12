@@ -1,3 +1,4 @@
+import "dart:convert" show jsonDecode;
 import "dart:io";
 
 import "package:flutter/material.dart";
@@ -15,34 +16,39 @@ class NMapInfoDialog extends StatefulWidget {
 
 class _NMapInfoDialogState extends State<NMapInfoDialog> {
   final ValueNotifier<String> _version = ValueNotifier<String>("");
-  final ValueNotifier<String> _naverMapVersion = ValueNotifier<String>("");
+  final ValueNotifier<Map<String, String>> _dependencies =
+      ValueNotifier<Map<String, String>>({});
+  final currentYear = DateTime.now().year;
+
+  String? get _naverMapVersion => _dependencies
+      .value[Platform.isIOS ? "NMapsMap" : "com.naver.maps:map-sdk"];
 
   @override
   void initState() {
     super.initState();
-    _getPluginVersion().then((version) => _version.value = version ?? "");
-    _getNaverMapVersion()
-        .then((version) => _naverMapVersion.value = version ?? "");
+    _getVersionInfo().then((version) {
+      if (version != null) {
+        _version.value = version.packageVersion;
+        _dependencies.value = Platform.isIOS
+            ? version.nativeVersion.iosDependencies
+            : version.nativeVersion.androidDependencies;
+      }
+    });
   }
 
-  static Future<String?> _getPluginVersion() async {
+  static Future<_VersionInfo?> _getVersionInfo() async {
     final fileContent =
-        await rootBundle.loadString("packages/flutter_naver_map/pubspec.yaml");
-
+        await rootBundle.loadString("packages/flutter_naver_map/version.json");
     if (fileContent.isNotEmpty) {
-      String versionStr = fileContent.substring(
-          fileContent.indexOf("version:"), fileContent.length);
-      versionStr = versionStr.substring(0, versionStr.indexOf("\n"));
-      return versionStr
-          .substring(versionStr.indexOf(":") + 1, versionStr.length)
-          .trim();
+      try {
+        final json = await Future(() => jsonDecode(fileContent));
+        final versionInfo = _VersionInfo.fromJson(json as Map<String, dynamic>);
+        return versionInfo;
+      } catch (e) {
+        debugPrint("Error parsing version.json: $e");
+      }
     }
     return null;
-  }
-
-  static Future<String?> _getNaverMapVersion() async {
-    // todo
-    return "3.21.0";
   }
 
   @override
@@ -68,17 +74,19 @@ class _NMapInfoDialogState extends State<NMapInfoDialog> {
                       builder: (context, fMapVersion, child) => _versionInfo(
                           title: "flutter_naver_map",
                           version: fMapVersion,
-                          description: "Copyright © 2023-2025 note11g\n"
+                          description: "Copyright © 2023-$currentYear note11g\n"
                               "This library is licensed under the BSD-3-Clause License.")),
                   const SizedBox(height: 14),
                   ValueListenableBuilder(
-                      valueListenable: _naverMapVersion,
-                      builder: (context, naverSdkVer, child) => _versionInfo(
-                          title:
-                              "Naver Map ${Platform.isIOS ? "iOS" : "Android"} SDK",
-                          version: naverSdkVer,
-                          description:
-                              "Copyright © 2018-2025 NAVER Corp.\nAll rights reserved.")),
+                      valueListenable: _dependencies,
+                      builder: (context, _, child) {
+                        return _versionInfo(
+                            title:
+                                "Naver Map ${Platform.isIOS ? "iOS" : "Android"} SDK",
+                            version: _naverMapVersion ?? "Unknown",
+                            description:
+                                "Copyright © 2018-$currentYear NAVER Corp.\nAll rights reserved.");
+                      }),
                 ])),
             Positioned(
                 top: 0,
@@ -189,4 +197,51 @@ class _NMapInfoDialogState extends State<NMapInfoDialog> {
 
   static const _descriptionColor = Color(0xFF808080);
   static const _dividerColor = Color(0x42808080);
+}
+
+class _VersionInfo {
+  final String packageVersion;
+  final _NativeDependencyVersion nativeVersion;
+
+  _VersionInfo({
+    required this.packageVersion,
+    required this.nativeVersion,
+  });
+
+  factory _VersionInfo.fromJson(Map<String, dynamic> json) {
+    return _VersionInfo(
+      packageVersion: json["package_version"] as String,
+      nativeVersion: _NativeDependencyVersion.fromJson(
+          json["native_dependency_version"] as Map<String, dynamic>),
+    );
+  }
+
+  @override
+  String toString() {
+    return "{Package Version: $packageVersion, Native Version: $nativeVersion}";
+  }
+}
+
+class _NativeDependencyVersion {
+  final Map<String, String> androidDependencies;
+  final Map<String, String> iosDependencies;
+
+  _NativeDependencyVersion({
+    required this.androidDependencies,
+    required this.iosDependencies,
+  });
+
+  factory _NativeDependencyVersion.fromJson(Map<String, dynamic> json) {
+    return _NativeDependencyVersion(
+      androidDependencies: (json["android"] as Map<String, dynamic>)
+          .map((k, v) => MapEntry(k, v as String)),
+      iosDependencies: (json["ios"] as Map<String, dynamic>)
+          .map((k, v) => MapEntry(k, v as String)),
+    );
+  }
+
+  @override
+  String toString() {
+    return "{Android: $androidDependencies, iOS: $iosDependencies}";
+  }
 }

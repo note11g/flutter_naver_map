@@ -17,7 +17,7 @@ class NCameraPosition with NMessageableWithMap {
 
   factory NCameraPosition._fromMessageable(dynamic map) {
     return NCameraPosition(
-      target: NLatLng._fromMessageable(map["target"]),
+      target: NLatLng.fromMessageable(map["target"]),
       zoom: map["zoom"],
       tilt: map["tilt"],
       bearing: map["bearing"],
@@ -36,6 +36,20 @@ class NCameraPosition with NMessageableWithMap {
         bearing: bearing ?? this.bearing,
         tilt: tilt ?? this.tilt,
       );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is NCameraPosition &&
+          runtimeType == other.runtimeType &&
+          target == other.target &&
+          zoom == other.zoom &&
+          tilt == other.tilt &&
+          bearing == other.bearing;
+
+  @override
+  int get hashCode =>
+      target.hashCode ^ zoom.hashCode ^ tilt.hashCode ^ bearing.hashCode;
 
   @override
   String toString() => "$runtimeType: ${toNPayload().map}";

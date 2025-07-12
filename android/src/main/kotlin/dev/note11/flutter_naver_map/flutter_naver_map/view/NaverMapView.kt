@@ -16,7 +16,6 @@ import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.Overlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
 import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
-import dev.note11.flutter_naver_map.flutter_naver_map.util.NLocationSource
 import dev.note11.flutter_naver_map.flutter_naver_map.util.TextureSurfaceViewUtil
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
@@ -64,8 +63,7 @@ internal class NaverMapView(
 
     private fun onMapReady() {
         initializeMapController()
-        setLocationSource()
-        setMapTapListener()
+        setMapEventListeners()
 
         mapView.onCreate(null)
         naverMapControlSender.onMapReady()
@@ -85,15 +83,14 @@ internal class NaverMapView(
         }
     }
 
-    private fun setLocationSource() {
-        naverMap.locationSource = NLocationSource(activity)
-    }
-
-    private fun setMapTapListener() {
+    private fun setMapEventListeners() {
         isListenerRegistered = true
         naverMap.run {
             setOnMapClickListener { pointFPx, latLng ->
                 naverMapControlSender.onMapTapped(NPoint.fromPointFWithPx(pointFPx), latLng)
+            }
+            setOnMapLongClickListener { pointFPx, latLng ->
+                naverMapControlSender.onMapLongTapped(NPoint.fromPointFWithPx(pointFPx), latLng)
             }
             setOnSymbolClickListener {
                 naverMapControlSender.onSymbolTapped(it)
@@ -102,17 +99,20 @@ internal class NaverMapView(
             addOnCameraChangeListener(naverMapControlSender::onCameraChange)
             addOnCameraIdleListener(naverMapControlSender::onCameraIdle)
             addOnIndoorSelectionChangeListener(naverMapControlSender::onSelectedIndoorChanged)
+            addOnLoadListener(naverMapControlSender::onMapLoaded)
         }
     }
 
-    private fun removeMapTapListener() {
+    private fun removeMapEventListeners() {
         if (isListenerRegistered) {
             naverMap.run {
                 onMapClickListener = null
+                onMapLongClickListener = null
                 onSymbolClickListener = null
                 removeOnCameraChangeListener(naverMapControlSender::onCameraChange)
                 removeOnCameraIdleListener(naverMapControlSender::onCameraIdle)
                 removeOnIndoorSelectionChangeListener(naverMapControlSender::onSelectedIndoorChanged)
+                removeOnLoadListener(naverMapControlSender::onMapLoaded)
             }
         }
     }
@@ -121,7 +121,7 @@ internal class NaverMapView(
 
     override fun dispose() {
         unRegisterLifecycleCallback()
-        removeMapTapListener()
+        removeMapEventListeners()
 
         mapView.run {
             onPause()
@@ -180,6 +180,7 @@ internal class NaverMapView(
 
     override fun onConfigurationChanged(newConfig: Configuration) {}
 
+    @Deprecated("Deprecated in Java")
     override fun onLowMemory() {
         mapView.onLowMemory()
     }

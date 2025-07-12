@@ -273,9 +273,22 @@ internal class NaverMapController(
         channel.invokeMethod("onMapReady", null)
     }
 
+    override fun onMapLoaded() {
+        channel.invokeMethod("onMapLoaded", null)
+    }
+
     override fun onMapTapped(nPoint: NPoint, latLng: LatLng) {
         channel.invokeMethod(
             "onMapTapped", mapOf(
+                "nPoint" to nPoint.toMessageable(),
+                "latLng" to latLng.toMessageable(),
+            )
+        )
+    }
+
+    override fun onMapLongTapped(nPoint: NPoint, latLng: LatLng) {
+        channel.invokeMethod(
+            "onMapLongTapped", mapOf(
                 "nPoint" to nPoint.toMessageable(),
                 "latLng" to latLng.toMessageable(),
             )

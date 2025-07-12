@@ -80,6 +80,9 @@ class _NMarkerWrapper<Self extends NMarker> extends NAddableOverlay<NMarker>
   NOverlayImage? get _icon => _marker._icon;
 
   @override
+  NOverlayImage? get icon => _marker.icon;
+
+  @override
   set _icon(NOverlayImage? v) => _marker._icon = v;
 
   @override

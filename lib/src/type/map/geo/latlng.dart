@@ -53,7 +53,8 @@ class NLatLng with NMessageableWithMap {
   @override
   NPayload toNPayload() => NPayload.make({"lat": latitude, "lng": longitude});
 
-  factory NLatLng._fromMessageable(dynamic m) => NLatLng(m["lat"], m["lng"]);
+  @internal
+  factory NLatLng.fromMessageable(dynamic m) => NLatLng(m["lat"], m["lng"]);
 
   /*
     --- static constant ---

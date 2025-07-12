@@ -2,8 +2,8 @@ package dev.note11.flutter_naver_map.flutter_naver_map
 
 import android.app.Activity
 import android.content.Context
-import android.os.Build
 import dev.note11.flutter_naver_map.flutter_naver_map.sdk.SdkInitializer
+import dev.note11.flutter_naver_map.flutter_naver_map.util.location.NDefaultMyLocationTracker
 import dev.note11.flutter_naver_map.flutter_naver_map.view.NaverMapViewFactory
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterAssets
@@ -14,6 +14,7 @@ import io.flutter.plugin.common.MethodChannel
 internal class FlutterNaverMapPlugin : FlutterPlugin, ActivityAware {
     private lateinit var pluginBinding: FlutterPlugin.FlutterPluginBinding
     private lateinit var sdkInitializer: SdkInitializer
+    private lateinit var defaultMyLocationTracker: NDefaultMyLocationTracker
     private val context: Context get() = pluginBinding.applicationContext
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
@@ -27,6 +28,11 @@ internal class FlutterNaverMapPlugin : FlutterPlugin, ActivityAware {
         sdkInitializer = SdkInitializer(context, sdkChannel)
     }
 
+    private fun initializeDefaultMyLocationTracker(activity: Activity) {
+        defaultMyLocationTracker =
+            NDefaultMyLocationTracker(pluginBinding.binaryMessenger, activity)
+    }
+
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) = Unit
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
@@ -36,13 +42,17 @@ internal class FlutterNaverMapPlugin : FlutterPlugin, ActivityAware {
         pluginBinding.platformViewRegistry.registerViewFactory(
             MAP_VIEW_TYPE_ID, naverMapViewFactory
         )
+        initializeDefaultMyLocationTracker(activity)
     }
 
     override fun onDetachedFromActivityForConfigChanges() = Unit
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) = Unit
 
-    override fun onDetachedFromActivity() = Unit
+    override fun onDetachedFromActivity() {
+        sdkInitializer.dispose()
+        if (::defaultMyLocationTracker.isInitialized) defaultMyLocationTracker.dispose()
+    }
 
     companion object {
         private const val SDK_CHANNEL_NAME = "flutter_naver_map_sdk"
