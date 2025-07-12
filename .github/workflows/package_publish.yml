@@ -19,6 +19,9 @@ jobs:
       - name: 'Update version.json'
         run: dart run ./tool/update_version.dart
 
+      - name: 'Update README images for current branch'
+        run: dart run ./tool/update_readme_images.dart
+
       - name: 'Get version from pubspec.yaml'
         id: version
         run: |
