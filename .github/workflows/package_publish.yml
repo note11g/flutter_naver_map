@@ -26,6 +26,7 @@ jobs:
         with:
           channel: 'stable'
           cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:"
 
       - name: 'Update version.json'
         run: dart run ./tool/update_version.dart
