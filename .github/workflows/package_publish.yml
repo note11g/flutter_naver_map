@@ -58,7 +58,7 @@ jobs:
             echo "1. Update the version number in \`pubspec.yaml\`" >> $GITHUB_STEP_SUMMARY
             echo "2. Follow semantic versioning (patch/minor/major)" >> $GITHUB_STEP_SUMMARY
             echo "3. Re-run the workflow" >> $GITHUB_STEP_SUMMARY
-            exit 0
+            exit 1
           else
             echo "Version $LOCAL_VERSION is new, proceeding with publish"
           fi
@@ -110,11 +110,28 @@ jobs:
 
   publish:
     needs: prepare
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
-    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
-    with:
-      working-directory: '.'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@main
+
+      - name: 'Setup Flutter (Reuse from prepare job)'
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:"
+
+      - name: 'Install dependencies'
+        run: flutter pub get
+
+      - name: 'Dry run publish'
+        run: flutter pub publish --dry-run
+
+      - name: 'Publish to pub.dev'
+        run: flutter pub publish --force
 
   create-release:
     needs: [prepare, publish]
