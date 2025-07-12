@@ -10,9 +10,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  publishing:
+  prepare:
     if: ${{ github.event_name == 'pull_request' && (github.event.pull_request.merged == true) && (contains(github.event.pull_request.labels.*.name, 'release') || contains(github.event.pull_request.labels.*.name, 'prerelease')) || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.VERSION }}
+      pr_body: ${{ steps.pr_body.outputs.PR_BODY }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@main
@@ -21,6 +24,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          cache: true
 
       - name: 'Update version.json'
         run: dart run ./tool/update_version.dart
@@ -34,15 +38,18 @@ jobs:
           VERSION=$(grep "^version:" pubspec.yaml | sed 's/version: //')
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: 'Publish Package'
-        uses: k-paxian/dart-package-publisher@master
-        with:
-          accessToken: ${{ secrets.OAUTH_ACCESS_TOKEN }}
-          refreshToken: ${{ secrets.OAUTH_REFRESH_TOKEN }}
-          flutter: true
-          format: true
-          skipTests: true
-          force: true
+      - name: 'Check Package Version'
+        run: |
+          LOCAL_VERSION=$(grep "^version:" pubspec.yaml | sed 's/version: //' | tr -d ' ')
+          echo "Local version: $LOCAL_VERSION"
+          
+          # Check if version already exists on pub.dev
+          if curl -s "https://pub.dev/api/packages/flutter_naver_map/versions/$LOCAL_VERSION" | grep -q "version"; then
+            echo "Version $LOCAL_VERSION already exists on pub.dev"
+            exit 1
+          else
+            echo "Version $LOCAL_VERSION is new, proceeding with publish"
+          fi
 
       - name: 'Extract PR body for release notes'
         id: pr_body
@@ -52,15 +59,29 @@ jobs:
           echo "$PR_BODY" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
+  publish:
+    needs: prepare
+    permissions:
+      id-token: write
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    with:
+      working-directory: '.'
+
+  create-release:
+    needs: [prepare, publish]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
       - name: 'Create GitHub Release'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.version.outputs.VERSION }}
-          release_name: Release v${{ steps.version.outputs.VERSION }}
+          tag_name: v${{ needs.prepare.outputs.version }}
+          release_name: Release v${{ needs.prepare.outputs.version }}
           body: |
-            ${{ steps.pr_body.outputs.PR_BODY }}
+            ${{ needs.prepare.outputs.pr_body }}
             
             ---
             This release was automatically created from PR #${{ github.event.pull_request.number }}
