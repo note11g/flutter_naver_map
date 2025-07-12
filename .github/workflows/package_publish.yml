@@ -66,3 +66,4 @@ jobs:
             This release was automatically created from PR #${{ github.event.pull_request.number }}
           draft: false
           prerelease: ${{ contains(github.event.pull_request.labels.*.name, 'prerelease') }}
+
