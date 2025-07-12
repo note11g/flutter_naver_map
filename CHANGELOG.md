@@ -1,3 +1,15 @@
+## 1.4.0-dev.2
+
+### Update
+- [All Platform] **Update Naver Map SDK to 3.22.0** ([PR #329](https://github.com/note11g/flutter_naver_map/pull/329))
+
+### Add (New Features)
+- [All Platform] add new api `iconAlpha`, `subIconAlpha`, `setIconAlpha`, `setSubIconAlpha` on `NLocationOverlay`
+
+### Fix
+- [All Platform] Fix NLocale.countryCode support is missing (Fix [#325](https://github.com/note11g/flutter_naver_map/issues/325), [PR #328](https://github.com/note11g/flutter_naver_map/pull/328))
+
+
 ## 1.4.0-dev.1
 
 ### Breaking Change
