@@ -9,11 +9,11 @@ internal struct NaverMapViewOptions {
         return NaverMapViewOptions(args: messageableDict, consumeSymbolTapEvents: consumeSymbolTapEvents)
     }
 
-    func updateWithNaverMapView(naverMap: NMFNaverMapView, isFirst: Bool) {
+    func updateWithNaverMapView(naverMap: NMFNaverMapView, isFirst: Bool, customStyleCallbacks: CustomStyleCallbacks? = nil) {
         naverMap.showCompass = false
         naverMap.showZoomControls = false
 
-        let applier = NaverMapApplierImpl(naverMap, isFirst: isFirst)
+        let applier = NaverMapApplierImpl(naverMap, isFirst: isFirst, customStyleCallbacks: customStyleCallbacks)
         try! applier.applyOptions(args: args)
     }
 }

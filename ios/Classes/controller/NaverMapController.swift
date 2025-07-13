@@ -178,7 +178,7 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     
     func updateOptions(options: Dictionary<String, Any?>, onSuccess: @escaping (Any?) -> ()) {
         naverMapViewOptions = NaverMapViewOptions.fromMessageable(options)
-        naverMapViewOptions!.updateWithNaverMapView(naverMap: naverMap, isFirst: false)
+        naverMapViewOptions!.updateWithNaverMapView(naverMap: naverMap, isFirst: false, customStyleCallbacks: getCustomStyleCallback())
         onSuccess(nil)
     }
     

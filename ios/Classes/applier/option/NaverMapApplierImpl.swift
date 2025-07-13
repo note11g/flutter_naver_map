@@ -3,13 +3,15 @@ import NMapsMap
 internal class NaverMapApplierImpl: NaverMapOptionApplier {
     private let isFirst: Bool
     private let naverMapView: NMFNaverMapView
+    private let customStyleCallbacks: CustomStyleCallbacks?
     private var mapView: NMFMapView {
         naverMapView.mapView
     }
 
-    init(_ mapView: NMFNaverMapView, isFirst: Bool) {
+    init(_ mapView: NMFNaverMapView, isFirst: Bool, customStyleCallbacks: CustomStyleCallbacks? = nil) {
         naverMapView = mapView
         self.isFirst = isFirst
+        self.customStyleCallbacks = customStyleCallbacks
     }
 
     func setInitialCameraPosition(_ rawPosition: Any) {
@@ -159,6 +161,11 @@ internal class NaverMapApplierImpl: NaverMapOptionApplier {
     }
 
     func setCustomStyleId(_ rawCustomStyleId: Any?) {
-        mapView.customStyleId = castOrNull(rawCustomStyleId, caster: asString) ?? "" /// todo: SDK 업데이트 후 fallback empty string 지우기. 현재는 임시 조치 (정상 동작은 함)
+        let styleId = castOrNull(rawCustomStyleId, caster: asString) ?? ""  /// todo: SDK 업데이트 후 fallback empty string 지우기. 현재는 임시 조치 (정상 동작은 함)
+        mapView.setCustomStyleId(
+            styleId,
+            loadHandler: customStyleCallbacks?.loadHandler,
+            failHandler: customStyleCallbacks?.failHandler
+        )
     }
 }
