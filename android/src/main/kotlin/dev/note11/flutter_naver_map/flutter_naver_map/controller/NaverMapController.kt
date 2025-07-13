@@ -7,6 +7,7 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
+import com.naver.maps.map.NaverMapSdk
 import com.naver.maps.map.Projection
 import com.naver.maps.map.Symbol
 import com.naver.maps.map.app.LegalNoticeActivity
@@ -20,8 +21,8 @@ import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.MapTypeConverter.toMessageableString
 import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
+import dev.note11.flutter_naver_map.flutter_naver_map.model.exception.NFlutterException
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NClusterableMarkerInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NPickableInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NSymbolInfo
@@ -230,9 +231,10 @@ internal class NaverMapController(
         onSuccess()
     }
 
-    override fun updateOptions(rawOptions: Map<String, Any>, onSuccess: () -> Unit) {
-        naverMapViewOptions =
-            NaverMapViewOptions.updateNaverMapFromMessageable(naverMap, rawOptions)
+    override fun updateOptions(rawOptions: Map<String, Any?>, onSuccess: () -> Unit) {
+        naverMapViewOptions = NaverMapViewOptions.updateNaverMapFromMessageable(
+            naverMap, rawOptions, getCustomStyleCallback()
+        )
         onSuccess()
     }
 
@@ -307,11 +309,32 @@ internal class NaverMapController(
         channel.invokeMethod("onSelectedIndoorChanged", selectedIndoor?.toMessageable())
     }
 
+    override fun onCustomStyleLoaded() {
+        channel.invokeMethod("onCustomStyleLoaded", null)
+    }
+
+    override fun onCustomStyleLoadFailed(exception: Exception) {
+        val flutterError = when (exception) {
+            is NaverMapSdk.AuthFailedException ->
+                if (exception.errorCode == "400") NFlutterException(
+                    code = "400",
+                    message = "Invalid custom style ID: ${exception.message}"
+                )
+                else NFlutterException(
+                    code = exception.errorCode,
+                    message = "Custom style load failed: ${exception.message}"
+                )
+            /// in iOS, 900 is no handling error code, so we use 900 here too
+            else -> NFlutterException(code = "900", message = exception.message)
+        }
+        channel.invokeMethod("onCustomStyleLoadFailed", flutterError.toMessageable())
+    }
+
     /*
       --- remove ---
     */
 
-    fun remove() {
+    override fun dispose() {
         channel.setMethodCallHandler(null)
         clusteringController.dispose()
         overlayController.remove()

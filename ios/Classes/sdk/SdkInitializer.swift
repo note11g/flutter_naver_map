@@ -63,10 +63,9 @@ internal class SdkInitializer: NSObject, NMFAuthManagerDelegate {
 
     func authorized(_ state: NMFAuthState, error: Error?) {
         if let error = error {
-            channel.invokeMethod("onAuthFailed", arguments: [
-                "code": String(error._code),
-                "message": error.localizedDescription
-            ])
+            DispatchQueue.main.async { [weak self] in
+                self?.channel.invokeMethod("onAuthFailed", arguments: NFlutterException(error: error).toMessageable())
+            }
         }
     }
 }

@@ -17,4 +17,10 @@ internal interface NaverMapControlSender {
     fun onCameraIdle()
 
     fun onSelectedIndoorChanged(selectedIndoor: IndoorSelection?)
+
+    fun onCustomStyleLoaded()
+
+    fun onCustomStyleLoadFailed(exception: Exception)
+
+    fun dispose()
 }

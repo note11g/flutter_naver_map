@@ -12,4 +12,10 @@ internal protocol NaverMapControlSender : AnyObject {
     func onCameraIdle()
 
     func onSelectedIndoorChanged(selectedIndoor: NMFIndoorSelection?)
+
+    func onCustomStyleLoaded()
+
+    func onCustomStyleLoadFailed(exception: any Error)
+    
+    func dispose()
 }

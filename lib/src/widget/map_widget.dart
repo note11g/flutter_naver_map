@@ -65,6 +65,9 @@ class NaverMap extends StatefulWidget {
   /// 실내 지도 옵션[option.indoorEnable]이 설정되어 있는 경우에만 실행됩니다.
   final void Function(NSelectedIndoor? selectedIndoor)? onSelectedIndoorChanged;
 
+  final void Function()? onCustomStyleLoaded;
+  final void Function(Exception exception)? onCustomStyleLoadFailed;
+
   const NaverMap({
     super.key,
     this.options = const NaverMapViewOptions(),
@@ -76,6 +79,8 @@ class NaverMap extends StatefulWidget {
     this.onCameraChange,
     this.onCameraIdle,
     this.onSelectedIndoorChanged,
+    this.onCustomStyleLoaded,
+    this.onCustomStyleLoadFailed,
     @visibleForTesting this.forceHybridComposition,
     @visibleForTesting this.forceGLSurfaceView,
   });
@@ -223,6 +228,13 @@ class _NaverMapState extends State<NaverMap>
   @override
   void onSelectedIndoorChanged(NSelectedIndoor? selectedIndoor) =>
       widget.onSelectedIndoorChanged?.call(selectedIndoor);
+
+  @override
+  void onCustomStyleLoaded() => widget.onCustomStyleLoaded?.call();
+
+  @override
+  void onCustomStyleLoadFailed(NStyleLoadFailedException exception) =>
+      widget.onCustomStyleLoadFailed?.call(exception);
 
   @override
   void onCameraIdle() => widget.onCameraIdle?.call();

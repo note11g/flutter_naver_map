@@ -12,8 +12,9 @@ import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapControlSender
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapController
+import dev.note11.flutter_naver_map.flutter_naver_map.controller.getCustomStyleCallback
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asNullableMap
 import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
 import dev.note11.flutter_naver_map.flutter_naver_map.util.NLocationSource
@@ -81,7 +82,7 @@ internal class NaverMapView(
         naverMapControlSender = NaverMapController(
             naverMap, channel, flutterProvidedContext, overlayController, mapView::invalidate
         ).apply {
-            rawNaverMapOptionTempCache?.let { updateOptions(it.asMap()) {} }
+            rawNaverMapOptionTempCache?.let { updateOptions(it.asNullableMap()) {} }
         }
     }
 
@@ -91,6 +92,7 @@ internal class NaverMapView(
 
     private fun setMapTapListener() {
         isListenerRegistered = true
+
         naverMap.run {
             setOnMapClickListener { pointFPx, latLng ->
                 naverMapControlSender.onMapTapped(NPoint.fromPointFWithPx(pointFPx), latLng)
@@ -102,6 +104,11 @@ internal class NaverMapView(
             addOnCameraChangeListener(naverMapControlSender::onCameraChange)
             addOnCameraIdleListener(naverMapControlSender::onCameraIdle)
             addOnIndoorSelectionChangeListener(naverMapControlSender::onSelectedIndoorChanged)
+
+            naverMap.setCustomStyleId(
+                naverMapViewOptions.naverMapOptions.customStyleId,
+                naverMapControlSender.getCustomStyleCallback()
+            )
         }
     }
 
@@ -129,7 +136,7 @@ internal class NaverMapView(
             onDestroy()
         }
 
-        (naverMapControlSender as NaverMapController).remove()
+        naverMapControlSender.dispose()
     }
 
     private fun registerLifecycleCallback() {

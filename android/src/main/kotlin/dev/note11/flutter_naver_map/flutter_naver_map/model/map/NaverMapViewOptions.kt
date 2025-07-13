@@ -29,7 +29,7 @@ internal data class NaverMapViewOptions(
     companion object {
         // factory constructor
         fun fromMessageable(
-            args: Map<String, Any>,
+            args: Map<String, Any?>,
             convertNaverMapOptions: Boolean = true,
         ): NaverMapViewOptions {
             val options = if (convertNaverMapOptions) naverMapOptionFromMessageable(args) else null
@@ -40,15 +40,16 @@ internal data class NaverMapViewOptions(
 
         fun updateNaverMapFromMessageable(
             naverMap: NaverMap,
-            args: Map<String, Any>,
+            args: Map<String, Any?>,
+            customStyleCallback: NaverMap.OnCustomStyleLoadCallback? = null,
         ): NaverMapViewOptions {
-            val applier = NaverMapApplierImpl(naverMap)
+            val applier = NaverMapApplierImpl(naverMap, customStyleCallback)
             applier.applyOptions(args)
             return fromMessageable(args, false)
         }
 
         private fun naverMapOptionFromMessageable(
-            args: Map<String, Any>,
+            args: Map<String, Any?>,
         ): NaverMapOptions {
             val options = NaverMapOptions().apply {
                 compassEnabled(false)

@@ -176,9 +176,9 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
         onSuccess(nil)
     }
     
-    func updateOptions(options: Dictionary<String, Any>, onSuccess: @escaping (Any?) -> ()) {
+    func updateOptions(options: Dictionary<String, Any?>, onSuccess: @escaping (Any?) -> ()) {
         naverMapViewOptions = NaverMapViewOptions.fromMessageable(options)
-        naverMapViewOptions!.updateWithNaverMapView(naverMap: naverMap, isFirst: false)
+        naverMapViewOptions!.updateWithNaverMapView(naverMap: naverMap, isFirst: false, customStyleCallbacks: getCustomStyleCallback())
         onSuccess(nil)
     }
     
@@ -242,12 +242,24 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     func onSelectedIndoorChanged(selectedIndoor: NMFIndoorSelection?) {
         channel.invokeMethod("onSelectedIndoorChanged", arguments: selectedIndoor?.toMessageable())
     }
+
+    func onCustomStyleLoaded() {
+        channel.invokeMethod("onCustomStyleLoaded", arguments: nil)
+    }
+
+    func onCustomStyleLoadFailed(exception: any Error) {
+        let isInvalidCustomStyleIdError = exception._code == 900 && exception.localizedDescription.contains("(400)")
+        let flutterError = isInvalidCustomStyleIdError
+        ? NFlutterException(code: "400", message: exception.localizedDescription)
+        : NFlutterException(error: exception)
+        channel.invokeMethod("onCustomStyleLoadFailed", arguments: flutterError.toMessageable())
+    }
     
     /*
      --- deinit ---
      */
     
-    func removeChannel() {
+    func dispose() {
         channel.setMethodCallHandler(nil)
         clusteringController.dispose()
         overlayController.removeChannel()

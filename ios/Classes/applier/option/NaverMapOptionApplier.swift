@@ -1,6 +1,6 @@
 internal protocol NaverMapOptionApplier {
     func setInitialCameraPosition(_ rawPosition: Any)
-    func setExtent(_ rawLatLngBounds: Any)
+    func setExtent(_ rawLatLngBounds: Any?)
     func setMapType(_ rawMapType: Any)
     func setLiteModeEnable(_ rawEnable: Any)
     func setNightModeEnable(_ rawEnable: Any)
@@ -31,4 +31,5 @@ internal protocol NaverMapOptionApplier {
     func setMaxZoom(_ rawLevel: Any)
     func setMaxTilt(_ rawTilt: Any)
     func setLocale(_ rawLocale: Any)
+    func setCustomStyleId(_ rawCustomStyleId: Any?)
 }

@@ -1,118 +1,149 @@
 internal extension  NaverMapOptionApplier {
-    func applyOptions(args: Dictionary<String, Any>) throws {
+    func applyOptions(args: Dictionary<String, Any?>) throws {
         for (funcName, arg) in args {
             let fun = ApplyUtil.optionApplyFuncMap[funcName]?(self)
             if let fun = fun {
-                fun(arg)
+                do {
+                    try fun(arg)
+                } catch let error as NSError {
+                    if error.domain == "NullPointerException" {
+                        throw NSError(domain: "IllegalArgumentException", code: 0, userInfo: [
+                            NSLocalizedDescriptionKey: "Invalid argument for \"\(funcName)\". Please check the type of the argument: \(String(describing: arg)). this option really can be null?"
+                        ])
+                    } else {
+                        throw NSError(domain: "RuntimeException", code: 0, userInfo: [
+                            NSLocalizedDescriptionKey: "Failed to apply option \"\(funcName)\" with argument: \(String(describing: arg))",
+                            NSUnderlyingErrorKey: error
+                        ])
+                    }
+                }
             } else {
-                throw NSError()
+                throw NSError(domain: "NoSuchMethodException", code: 0, userInfo: [
+                    NSLocalizedDescriptionKey: "No such method \"\(funcName)\". Please check the handling of this method."
+                ])
             }
         }
     }
 }
 
 internal class ApplyUtil {
-    static let optionApplyFuncMap: Dictionary<String, (NaverMapOptionApplier) -> (Any) -> Void> = [
-        "initialCameraPosition": {
+    static let optionApplyFuncMap: Dictionary<String, (NaverMapOptionApplier) -> (Any?) throws -> Void> = [
+        "initialCameraPosition": nonNullFunc {
             $0.setInitialCameraPosition
         },
         "extent": {
             $0.setExtent
         },
-        "mapType": {
+        "mapType": nonNullFunc {
             $0.setMapType
         },
-        "liteModeEnable": {
+        "liteModeEnable": nonNullFunc {
             $0.setLiteModeEnable
         },
-        "nightModeEnable": {
+        "nightModeEnable": nonNullFunc {
             $0.setNightModeEnable
         },
-        "indoorEnable": {
+        "indoorEnable": nonNullFunc {
             $0.setIndoorEnable
         },
-        "activeLayerGroups": {
+        "activeLayerGroups": nonNullFunc {
             $0.setActiveLayerGroups
         },
-        "buildingHeight": {
+        "buildingHeight": nonNullFunc {
             $0.setBuildingHeight
         },
-        "lightness": {
+        "lightness": nonNullFunc {
             $0.setLightness
         },
-        "symbolScale": {
+        "symbolScale": nonNullFunc {
             $0.setSymbolScale
         },
-        "symbolPerspectiveRatio": {
+        "symbolPerspectiveRatio": nonNullFunc {
             $0.setSymbolPerspectiveRatio
         },
-        "indoorFocusRadius": {
+        "indoorFocusRadius": nonNullFunc {
             $0.setIndoorFocusRadius
         },
-        "pickTolerance": {
+        "pickTolerance": nonNullFunc {
             $0.setPickTolerance
         },
-        "rotationGesturesEnable": {
+        "rotationGesturesEnable": nonNullFunc {
             $0.setRotationGesturesEnable
         },
-        "scrollGesturesEnable": {
+        "scrollGesturesEnable": nonNullFunc {
             $0.setScrollGesturesEnable
         },
-        "tiltGesturesEnable": {
+        "tiltGesturesEnable": nonNullFunc {
             $0.setTiltGesturesEnable
         },
-        "zoomGesturesEnable": {
+        "zoomGesturesEnable": nonNullFunc {
             $0.setZoomGesturesEnable
         },
-        "stopGesturesEnable": {
+        "stopGesturesEnable": nonNullFunc {
             $0.setStopGesturesEnable
         },
-        "scrollGesturesFriction": {
+        "scrollGesturesFriction": nonNullFunc {
             $0.setScrollGesturesFriction
         },
-        "zoomGesturesFriction": {
+        "zoomGesturesFriction": nonNullFunc {
             $0.setZoomGesturesFriction
         },
-        "rotationGesturesFriction": {
+        "rotationGesturesFriction": nonNullFunc {
             $0.setRotationGesturesFriction
         },
         "consumeSymbolTapEvents": { (_: NaverMapOptionApplier) in
-            { (a: Any) in
+            { (a: Any?) throws in
                 /** @see NaverMapView.setMapTapListener method */
             }
         },
-        "scaleBarEnable": {
+        "scaleBarEnable": nonNullFunc {
             $0.setScaleBarEnable
         },
-        "indoorLevelPickerEnable": {
+        "indoorLevelPickerEnable": nonNullFunc {
             $0.setIndoorLevelPickerEnable
         },
-        "locationButtonEnable": {
+        "locationButtonEnable": nonNullFunc {
             $0.setLocationButtonEnable
         },
-        "logoClickEnable": {
+        "logoClickEnable": nonNullFunc {
             $0.setLogoClickEnable
         },
-        "logoAlign": {
+        "logoAlign": nonNullFunc {
             $0.setLogoAlign
         },
-        "logoMargin": {
+        "logoMargin": nonNullFunc {
             $0.setLogoMargin
         },
-        "contentPadding": {
+        "contentPadding": nonNullFunc {
             $0.setContentPadding
         },
-        "minZoom": {
+        "minZoom": nonNullFunc {
             $0.setMinZoom
         },
-        "maxZoom": {
+        "maxZoom": nonNullFunc {
             $0.setMaxZoom
         },
-        "maxTilt": {
+        "maxTilt": nonNullFunc {
             $0.setMaxTilt
         },
-        "locale": {
+        "locale": nonNullFunc {
             $0.setLocale
         },
+        "customStyleId": {
+            $0.setCustomStyleId
+        }
     ]
+    
+    private static func nonNullFunc(_ ev: @escaping ((NaverMapOptionApplier) -> ((Any) -> Void))) -> ((NaverMapOptionApplier) -> ((Any?) throws -> Void)) {
+        return { applier in
+            { arg in
+                guard let arg = arg else {
+                    throw NSError(domain: "NullPointerException", code: 0, userInfo: [
+                        NSLocalizedDescriptionKey: "Argument cannot be null for this option."
+                    ])
+                }
+                ev(applier)(arg)
+            }
+        }
+    }
 }
