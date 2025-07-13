@@ -21,4 +21,6 @@ internal interface NaverMapControlSender {
     fun onCustomStyleLoaded()
 
     fun onCustomStyleLoadFailed(exception: Exception)
+
+    fun dispose()
 }

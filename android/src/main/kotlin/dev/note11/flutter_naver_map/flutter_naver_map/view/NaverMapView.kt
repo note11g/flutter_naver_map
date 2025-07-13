@@ -143,7 +143,7 @@ internal class NaverMapView(
             onDestroy()
         }
 
-        (naverMapControlSender as NaverMapController).remove()
+        naverMapControlSender.dispose()
     }
 
     private fun registerLifecycleCallback() {

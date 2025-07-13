@@ -334,7 +334,7 @@ internal class NaverMapController(
       --- remove ---
     */
 
-    fun remove() {
+    override fun dispose() {
         channel.setMethodCallHandler(null)
         clusteringController.dispose()
         overlayController.remove()
