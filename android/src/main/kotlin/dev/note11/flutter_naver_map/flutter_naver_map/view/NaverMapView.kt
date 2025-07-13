@@ -13,7 +13,7 @@ import com.naver.maps.map.NaverMap
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapControlSender
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapController
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asNullableMap
 import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
 import dev.note11.flutter_naver_map.flutter_naver_map.util.NLocationSource
@@ -81,7 +81,7 @@ internal class NaverMapView(
         naverMapControlSender = NaverMapController(
             naverMap, channel, flutterProvidedContext, overlayController, mapView::invalidate
         ).apply {
-            rawNaverMapOptionTempCache?.let { updateOptions(it.asMap()) {} }
+            rawNaverMapOptionTempCache?.let { updateOptions(it.asNullableMap()) {} }
         }
     }
 

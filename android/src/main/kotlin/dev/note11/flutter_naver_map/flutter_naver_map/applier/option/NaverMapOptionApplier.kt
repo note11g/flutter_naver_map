@@ -2,7 +2,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.applier.option
 
 internal interface NaverMapOptionApplier {
     fun setInitialCameraPosition(rawPosition: Any)
-    fun setExtent(rawLatLngBounds: Any)
+    fun setExtent(rawLatLngBounds: Any?)
     fun setMapType(rawMapType: Any)
     fun setLiteModeEnable(rawEnable: Any)
     fun setNightModeEnable(rawEnable: Any)
@@ -33,5 +33,5 @@ internal interface NaverMapOptionApplier {
     fun setMaxZoom(rawLevel: Any)
     fun setMaxTilt(rawTilt: Any)
     fun setLocale(rawLocale: Any)
-    fun setCustomStyleId(rawCustomStyleId: Any)
+    fun setCustomStyleId(rawCustomStyleId: Any?)
 }

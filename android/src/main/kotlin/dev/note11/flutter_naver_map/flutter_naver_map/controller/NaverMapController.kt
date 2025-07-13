@@ -232,7 +232,7 @@ internal class NaverMapController(
         onSuccess()
     }
 
-    override fun updateOptions(rawOptions: Map<String, Any>, onSuccess: () -> Unit) {
+    override fun updateOptions(rawOptions: Map<String, Any?>, onSuccess: () -> Unit) {
         naverMapViewOptions =
             NaverMapViewOptions.updateNaverMapFromMessageable(naverMap, rawOptions)
         onSuccess()

@@ -1,7 +1,6 @@
 package dev.note11.flutter_naver_map.flutter_naver_map.applier.option
 
 import com.naver.maps.map.NaverMapOptions
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asString
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asBoolean
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asFloat
@@ -23,8 +22,8 @@ class NaverMapOptionApplierImpl(
         options.camera(cameraPosition)
     }
 
-    override fun setExtent(rawLatLngBounds: Any) {
-        options.extent(rawLatLngBounds.asLatLngBounds())
+    override fun setExtent(rawLatLngBounds: Any?) {
+        options.extent(rawLatLngBounds?.asLatLngBounds())
     }
 
     override fun setMapType(rawMapType: Any) {
@@ -157,7 +156,7 @@ class NaverMapOptionApplierImpl(
         options.locale(nLocale?.toLocale())
     }
 
-    override fun setCustomStyleId(rawCustomStyleId: Any) {
-        options.customStyleId(rawCustomStyleId.toString())
+    override fun setCustomStyleId(rawCustomStyleId: Any?) {
+        options.customStyleId(rawCustomStyleId?.toString())
     }
 }
