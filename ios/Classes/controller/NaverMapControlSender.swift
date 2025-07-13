@@ -16,4 +16,6 @@ internal protocol NaverMapControlSender : AnyObject {
     func onCustomStyleLoaded()
 
     func onCustomStyleLoadFailed(exception: any Error)
+    
+    func dispose()
 }
