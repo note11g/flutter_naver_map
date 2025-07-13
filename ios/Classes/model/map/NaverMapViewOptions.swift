@@ -1,10 +1,10 @@
 import NMapsMap
 
 internal struct NaverMapViewOptions {
-    private let args: Dictionary<String, Any>
+    private let args: Dictionary<String, Any?>
     let consumeSymbolTapEvents: Bool
 
-    static func fromMessageable(_ messageableDict: Dictionary<String, Any>) -> NaverMapViewOptions {
+    static func fromMessageable(_ messageableDict: Dictionary<String, Any?>) -> NaverMapViewOptions {
         let consumeSymbolTapEvents = asBool(messageableDict["consumeSymbolTapEvents"]!)
         return NaverMapViewOptions(args: messageableDict, consumeSymbolTapEvents: consumeSymbolTapEvents)
     }

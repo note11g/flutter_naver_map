@@ -176,7 +176,7 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
         onSuccess(nil)
     }
     
-    func updateOptions(options: Dictionary<String, Any>, onSuccess: @escaping (Any?) -> ()) {
+    func updateOptions(options: Dictionary<String, Any?>, onSuccess: @escaping (Any?) -> ()) {
         naverMapViewOptions = NaverMapViewOptions.fromMessageable(options)
         naverMapViewOptions!.updateWithNaverMapView(naverMap: naverMap, isFirst: false)
         onSuccess(nil)

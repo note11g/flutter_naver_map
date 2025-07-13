@@ -21,8 +21,12 @@ internal class NaverMapApplierImpl: NaverMapOptionApplier {
         mapView.moveCamera(cameraUpdate)
     }
 
-    func setExtent(_ rawLatLngBounds: Any) {
-        mapView.extent = asLatLngBounds(rawLatLngBounds)
+    func setExtent(_ rawLatLngBounds: Any?) {
+        if let bounds = rawLatLngBounds {
+            mapView.extent = castOrNull(bounds, caster: asLatLngBounds)
+        } else {
+            mapView.extent = nil
+        }
     }
 
     func setMapType(_ rawMapType: Any) {
@@ -154,7 +158,7 @@ internal class NaverMapApplierImpl: NaverMapOptionApplier {
         mapView.locale = NLocale.fromMessageable(rawLocale)?.localeStr
     }
 
-    func setCustomStyleId(_ rawCustomStyleId: Any) {
-        mapView.customStyleId = asString(rawCustomStyleId)
+    func setCustomStyleId(_ rawCustomStyleId: Any?) {
+        mapView.customStyleId = castOrNull(rawCustomStyleId, caster: asString) ?? "" /// todo: SDK 업데이트 후 fallback empty string 지우기. 현재는 임시 조치 (정상 동작은 함)
     }
 }
