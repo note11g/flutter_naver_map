@@ -214,7 +214,7 @@ class NaverMapViewOptions with NMessageableWithMap {
     this.maxZoom = maximumZoom,
     this.maxTilt = 63,
     this.locale = NLocale.systemLocale,
-    this.customStyleId = null,
+    this.customStyleId,
   });
 
   @override
@@ -253,7 +253,7 @@ class NaverMapViewOptions with NMessageableWithMap {
         "maxTilt": maxTilt,
         "locale": locale,
         "customStyleId": customStyleId,
-      });
+      }, sendNull: true);
 
   @override
   String toString() => "$runtimeType: ${toNPayload().map}";
