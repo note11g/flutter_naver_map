@@ -23,7 +23,6 @@ import dev.note11.flutter_naver_map.flutter_naver_map.model.enum.NOverlayType
 import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.exception.NFlutterException
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
-import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NClusterableMarkerInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NPickableInfo
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NSymbolInfo
@@ -233,8 +232,9 @@ internal class NaverMapController(
     }
 
     override fun updateOptions(rawOptions: Map<String, Any?>, onSuccess: () -> Unit) {
-        naverMapViewOptions =
-            NaverMapViewOptions.updateNaverMapFromMessageable(naverMap, rawOptions)
+        naverMapViewOptions = NaverMapViewOptions.updateNaverMapFromMessageable(
+            naverMap, rawOptions, getCustomStyleCallback()
+        )
         onSuccess()
     }
 

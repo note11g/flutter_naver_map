@@ -12,6 +12,7 @@ import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapControlSender
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapController
+import dev.note11.flutter_naver_map.flutter_naver_map.controller.getCustomStyleCallback
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asNullableMap
 import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
@@ -104,18 +105,10 @@ internal class NaverMapView(
             addOnCameraIdleListener(naverMapControlSender::onCameraIdle)
             addOnIndoorSelectionChangeListener(naverMapControlSender::onSelectedIndoorChanged)
 
-
-            /** Tap Listener 는 아니지만, 따로 setInitHandler와 같이 메소드를 만들지 않고, 기존 메소드에 추가. Listener 종류가 많아지면 용도에 맞게 분리되면 좋을 것 같음 */
-            customStyleId = naverMapViewOptions.naverMapOptions.getCustomStyleId() // nullable
-            setCustomStyleId(customStyleId, object : NaverMap.OnCustomStyleLoadCallback {
-                override fun onCustomStyleLoaded() {
-                    naverMapControlSender.onCustomStyleLoaded()
-                }
-
-                override fun onCustomStyleLoadFailed(exception: Exception) {
-                    naverMapControlSender.onCustomStyleLoadFailed(exception)
-                }
-            })
+            naverMap.setCustomStyleId(
+                naverMapViewOptions.naverMapOptions.customStyleId,
+                naverMapControlSender.getCustomStyleCallback()
+            )
         }
     }
 

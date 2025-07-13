@@ -41,8 +41,9 @@ internal data class NaverMapViewOptions(
         fun updateNaverMapFromMessageable(
             naverMap: NaverMap,
             args: Map<String, Any?>,
+            customStyleCallback: NaverMap.OnCustomStyleLoadCallback? = null,
         ): NaverMapViewOptions {
-            val applier = NaverMapApplierImpl(naverMap)
+            val applier = NaverMapApplierImpl(naverMap, customStyleCallback)
             applier.applyOptions(args)
             return fromMessageable(args, false)
         }

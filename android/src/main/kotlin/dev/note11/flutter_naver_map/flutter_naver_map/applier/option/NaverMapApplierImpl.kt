@@ -15,6 +15,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 
 class NaverMapApplierImpl(
     private val naverMap: NaverMap,
+    private val customStyleCallback: NaverMap.OnCustomStyleLoadCallback? = null,
 ) : NaverMapOptionApplier {
 
     override fun setInitialCameraPosition(rawPosition: Any) = Unit
@@ -156,6 +157,6 @@ class NaverMapApplierImpl(
     }
 
     override fun setCustomStyleId(rawCustomStyleId: Any?) {
-        naverMap.customStyleId = rawCustomStyleId?.toString()
+        naverMap.setCustomStyleId(rawCustomStyleId?.toString(), customStyleCallback)
     }
 }
