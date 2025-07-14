@@ -48,7 +48,7 @@ jobs:
             git push origin HEAD:${{ github.ref_name }}
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_SELF_PAT }}
+          GITHUB_TOKEN: ${{ secrets.SELF_GITHUB_PAT }}
 
       - name: 'Get version from pubspec.yaml'
         id: version
