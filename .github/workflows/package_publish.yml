@@ -48,7 +48,7 @@ jobs:
             git push origin HEAD:${{ github.ref_name }}
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.SELF_GITHUB_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Get version from pubspec.yaml'
         id: version
@@ -172,7 +172,7 @@ jobs:
           git tag -a "v${{ needs.prepare.outputs.version }}" -m "Release v${{ needs.prepare.outputs.version }}"
           git push origin "v${{ needs.prepare.outputs.version }}"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SELF_GITHUB_PAT }}
 
   create-release:
     needs: [prepare, create-tag]
@@ -183,7 +183,7 @@ jobs:
       - name: 'Create GitHub Release'
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SELF_GITHUB_PAT }}
         with:
           tag_name: v${{ needs.prepare.outputs.version }}
           release_name: Release v${{ needs.prepare.outputs.version }}
