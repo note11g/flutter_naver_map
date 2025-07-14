@@ -12,15 +12,12 @@ jobs:
       id-token: write # Required for OIDC authentication
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
 
-      - name: 'Setup Flutter'
-        uses: subosito/flutter-action@v2
+      - name: 'Set up Dart'
+        uses: dart-lang/setup-dart@v1
         with:
-          channel: 'stable'
-          cache: true
-          cache-key: "flutter-:os:-:channel:-:version:-:arch:"
-          pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:"
+          sdk: 'stable'
 
       - name: 'Install dependencies'
         run: flutter pub get
