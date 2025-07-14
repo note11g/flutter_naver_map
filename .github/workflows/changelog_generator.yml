@@ -1,4 +1,4 @@
-name: PR Changelog Auto Generate
+name: PR Changelog Comment
 
 on:
   pull_request:
@@ -8,27 +8,20 @@ on:
       - pre-release
 
 jobs:
-  generate-changelog:
+  post-changelog-comment:
     if: |
       (github.event.action == 'opened' || github.event.action == 'labeled') &&
       (contains(github.event.pull_request.labels.*.name, 'release') || 
        contains(github.event.pull_request.labels.*.name, 'prerelease'))
     runs-on: ubuntu-latest
     permissions:
-      contents: write
       pull-requests: write
     steps:
       - name: Checkout PR branch
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
 
       - name: Get version from pubspec.yaml
         id: version
@@ -37,140 +30,86 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Current version: $VERSION"
 
-      - name: Check if changelog entry exists
-        id: check_changelog
-        run: |
-          if grep -q "## ${{ steps.version.outputs.VERSION }}" CHANGELOG.md; then
-            echo "EXISTS=true" >> $GITHUB_OUTPUT
-            echo "Changelog entry already exists for version ${{ steps.version.outputs.VERSION }}"
-          else
-            echo "EXISTS=false" >> $GITHUB_OUTPUT
-            echo "No changelog entry found for version ${{ steps.version.outputs.VERSION }}"
-          fi
-
-      - name: Generate changelog entry
-        if: steps.check_changelog.outputs.EXISTS == 'false'
+      - name: Extract changelog for current version
+        id: extract_changelog
         run: |
           VERSION="${{ steps.version.outputs.VERSION }}"
-          DATE=$(date +%Y-%m-%d)
-          BASE_BRANCH="${{ github.event.pull_request.base.ref }}"
+          echo "Extracting changelog for version $VERSION..."
           
-          # Get all commits since last tag or from beginning
-          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-          if [ -z "$LAST_TAG" ]; then
-            echo "No previous tags found, getting all commits"
-            COMMITS=$(git log --pretty=format:"- %s" origin/$BASE_BRANCH..HEAD)
+          # Read CHANGELOG.md and extract section for current version
+          if [ -f "CHANGELOG.md" ]; then
+            # Extract content between current version header and next version header
+            CHANGELOG_CONTENT=$(awk -v ver="## $VERSION" '
+              $0 ~ ver {found=1; header=$0; next}
+              found && /^## / {exit}
+              found {print}
+            ' CHANGELOG.md)
+            
+            if [ -n "$CHANGELOG_CONTENT" ]; then
+              echo "FOUND=true" >> $GITHUB_OUTPUT
+              # Save multi-line content properly
+              echo "CONTENT<<EOF" >> $GITHUB_OUTPUT
+              echo "$CHANGELOG_CONTENT" >> $GITHUB_OUTPUT
+              echo "EOF" >> $GITHUB_OUTPUT
+            else
+              echo "FOUND=false" >> $GITHUB_OUTPUT
+              echo "No changelog entry found for version $VERSION"
+            fi
           else
-            echo "Getting commits since $LAST_TAG"
-            COMMITS=$(git log --pretty=format:"- %s" $LAST_TAG..HEAD)
+            echo "FOUND=false" >> $GITHUB_OUTPUT
+            echo "CHANGELOG.md file not found"
           fi
-          
-          # Create temporary changelog entry
-          cat > temp_changelog.md << EOF
-          ## $VERSION - $DATE
-          
-          ### Changes
-          $COMMITS
-          
-          EOF
-          
-          # Insert the new entry after the first line (# Changelog header)
-          if [ -f CHANGELOG.md ]; then
-            head -1 CHANGELOG.md > new_changelog.md
-            echo "" >> new_changelog.md
-            cat temp_changelog.md >> new_changelog.md
-            tail -n +2 CHANGELOG.md >> new_changelog.md
-            mv new_changelog.md CHANGELOG.md
-          else
-            echo "# Changelog" > CHANGELOG.md
-            echo "" >> CHANGELOG.md
-            cat temp_changelog.md >> CHANGELOG.md
-          fi
-          
-          rm temp_changelog.md
 
-      - name: Categorize commits
-        if: steps.check_changelog.outputs.EXISTS == 'false'
-        run: |
-          # This script categorizes commits based on conventional commit format
-          python3 << 'EOF'
-          import re
-          
-          version = "${{ steps.version.outputs.VERSION }}"
-          
-          with open('CHANGELOG.md', 'r') as f:
-              content = f.read()
-          
-          # Find the section for current version
-          version_pattern = f"## {re.escape(version)}.*?(?=##|$)"
-          match = re.search(version_pattern, content, re.DOTALL)
-          
-          if match:
-              section = match.group(0)
-              lines = section.split('\n')
-              
-              # Categorize commits
-              features = []
-              fixes = []
-              others = []
-              
-              for line in lines:
-                  if line.startswith('- '):
-                      commit = line[2:]
-                      if commit.lower().startswith(('feat:', 'feature:', 'add:', 'new:')):
-                          features.append(f"- {commit}")
-                      elif commit.lower().startswith(('fix:', 'bugfix:', 'fixed:')):
-                          fixes.append(f"- {commit}")
-                      elif not commit.startswith(('Merge', 'merge')):
-                          others.append(f"- {commit}")
-              
-              # Rebuild the section
-              new_section = f"## {version} - {lines[0].split(' - ')[1]}\n\n"
-              
-              if features:
-                  new_section += "### ✨ Features\n" + '\n'.join(features) + "\n\n"
-              if fixes:
-                  new_section += "### 🐛 Bug Fixes\n" + '\n'.join(fixes) + "\n\n"
-              if others:
-                  new_section += "### 🔧 Other Changes\n" + '\n'.join(others) + "\n\n"
-              
-              # Replace the section
-              content = re.sub(version_pattern, new_section.rstrip() + '\n', content, flags=re.DOTALL)
-              
-              with open('CHANGELOG.md', 'w') as f:
-                  f.write(content)
-          EOF
-
-      - name: Commit and push changes
-        if: steps.check_changelog.outputs.EXISTS == 'false'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          git add CHANGELOG.md
-          git commit -m "chore: auto-generate changelog for v${{ steps.version.outputs.VERSION }}"
-          git push
-
-      - name: Comment on PR
-        if: steps.check_changelog.outputs.EXISTS == 'false'
+      - name: Comment on PR with changelog
         uses: actions/github-script@v6
         with:
           script: |
             const version = '${{ steps.version.outputs.VERSION }}';
-            const comment = `🎉 **Changelog Updated!**
+            const changelogFound = '${{ steps.extract_changelog.outputs.FOUND }}' === 'true';
             
-            I've automatically generated a changelog entry for version ${version}.
+            let comment;
+            if (changelogFound) {
+              const changelogContent = `${{ steps.extract_changelog.outputs.CONTENT }}`;
+              comment = `## 📋 Changelog for v${version}
             
-            Please review the CHANGELOG.md file and make any necessary adjustments to:
-            - Categorize commits properly
-            - Add more descriptive change descriptions
-            - Remove any unwanted entries
+            ${changelogContent}
             
-            The changelog has been committed to this PR.`;
+            ---
+            _This is an automated comment showing the changelog entry for this release._`;
+            } else {
+              comment = `## ⚠️ No Changelog Entry Found
             
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
+            No changelog entry was found for version ${version} in CHANGELOG.md.
+            
+            Please add a changelog entry before merging this PR.`;
+            }
+            
+            // Check if we already commented
+            const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: comment
+              issue_number: context.issue.number
             });
+            
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('Changelog for v' + version)
+            );
+            
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }
