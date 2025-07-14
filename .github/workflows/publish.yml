@@ -14,10 +14,16 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v3
 
-      - name: 'Set up Dart'
-        uses: dart-lang/setup-dart@v1
+      - name: 'Setup Flutter'
+        uses: subosito/flutter-action@v2
         with:
-          sdk: 'stable'
+          channel: 'stable'
+          cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:"
+          pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:"
+
+      - name: 'Credential Setup'
+        uses: flutter-actions/setup-pubdev-credentials@v1
 
       - name: 'Install dependencies'
         run: flutter pub get
