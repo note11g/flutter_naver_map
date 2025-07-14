@@ -1,4 +1,4 @@
-name: Publish to Pub.dev and Create Release
+name: Create Release
 
 on:
   pull_request:
@@ -27,6 +27,7 @@ jobs:
           channel: 'stable'
           cache: true
           cache-key: "flutter-:os:-:channel:-:version:-:arch:"
+          pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:"
 
       - name: 'Update version.json'
         run: dart run ./tool/update_version.dart

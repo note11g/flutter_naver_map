@@ -20,6 +20,7 @@ jobs:
           channel: 'stable'
           cache: true
           cache-key: "flutter-:os:-:channel:-:version:-:arch:"
+          pub-cache-key: "flutter-pub-:os:-:channel:-:version:-:arch:"
 
       - name: 'Install dependencies'
         run: flutter pub get
