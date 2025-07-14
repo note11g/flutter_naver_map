@@ -1,3 +1,12 @@
+## 1.4.0-dev.3
+
+### Add (New Features)
+- [All Platform] Support custom style with `NaverMapViewOptions.customStyle` ([PR #308](https://github.com/note11g/flutter_naver_map/pull/308))
+
+### Fix
+- [All Platform] `NaverMapViewOptions.extend` was not applied to the map dynamically.
+
+
 ## 1.4.0-dev.2
 
 ### Update
