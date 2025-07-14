@@ -1,9 +1,3 @@
-## 1.4.0-dev.5
-### Fix
-- [All Platform] Fix displayed unmatched package version
-- [Chore] Fix not displayed Readme images
-
-
 ## 1.4.0-dev.4
 ### Fix
 - [iOS] fix unreferenced NFlutterException.swift
