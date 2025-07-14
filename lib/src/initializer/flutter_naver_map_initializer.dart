@@ -23,9 +23,10 @@ class FlutterNaverMap {
     String? clientId,
     Function(NAuthFailedException ex)? onAuthFailed,
   }) async {
-    if (_isInitialized) return;
+    if (!_isInitialized) {
+      NChannel.sdkChannel.setMethodCallHandler(_handler);
+    }
 
-    NChannel.sdkChannel.setMethodCallHandler(_handler);
     this.onAuthFailed = onAuthFailed;
 
     final result = await NChannel.sdkChannel.invokeMethod("initializeNcp",

@@ -218,6 +218,10 @@ internal class OverlayController(
             .run { useAsPixelSize(overlay::setIconWidth, overlay::setIconHeight) }
     }
 
+    override fun setIconAlpha(overlay: LocationOverlay, rawAlpha: Any) {
+        overlay.iconAlpha = rawAlpha.asFloat()
+    }
+
     override fun getPosition(
         overlay: LocationOverlay,
         success: (latLng: Map<String, Any>) -> Unit,
@@ -247,6 +251,10 @@ internal class OverlayController(
         NSize.fromMessageable(rawSize).run {
             useAsPixelSize(overlay::setSubIconWidth, overlay::setSubIconHeight)
         }
+    }
+
+    override fun setSubIconAlpha(overlay: LocationOverlay, rawAlpha: Any) {
+        overlay.subIconAlpha = rawAlpha.asFloat()
     }
 
     /* ----- Marker handler ----- */

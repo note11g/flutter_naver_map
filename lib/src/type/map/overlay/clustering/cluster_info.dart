@@ -20,7 +20,7 @@ class NClusterInfo {
           .cast<Map>()
           .map((e) => NClusterableMarkerInfo._fromMessageable(e))
           .toList(),
-      position: NLatLng._fromMessageable(message["position"]),
+      position: NLatLng.fromMessageable(message["position"]),
       size: message["clusterSize"],
     );
   }
@@ -54,7 +54,7 @@ class NClusterableMarkerInfo extends NOverlayInfo {
     return NClusterableMarkerInfo(
       id: info.id,
       tags: (message["tags"] as Map).cast<String, String>(),
-      position: NLatLng._fromMessageable(message["position"]),
+      position: NLatLng.fromMessageable(message["position"]),
     );
   }
 

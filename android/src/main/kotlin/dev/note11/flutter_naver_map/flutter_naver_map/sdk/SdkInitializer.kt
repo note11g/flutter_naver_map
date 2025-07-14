@@ -19,6 +19,10 @@ internal class SdkInitializer(
         channel.setMethodCallHandler(::handle)
     }
 
+    fun dispose() {
+        channel.setMethodCallHandler(null)
+    }
+
     private fun handle(call: MethodCall, result: MethodChannel.Result) {
         if (call.method == "initializeNcp") {
             initializeWithNcp(

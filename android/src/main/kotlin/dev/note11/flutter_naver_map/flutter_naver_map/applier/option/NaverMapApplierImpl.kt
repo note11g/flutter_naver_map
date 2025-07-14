@@ -107,20 +107,8 @@ class NaverMapApplierImpl(
         naverMap.uiSettings.rotateGesturesFriction = friction
     }
 
-    override fun setScaleBarEnable(rawEnable: Any) {
-        naverMap.uiSettings.isScaleBarEnabled = rawEnable.asBoolean()
-    }
-
     override fun setIndoorLevelPickerEnable(rawEnable: Any) {
         naverMap.uiSettings.isIndoorLevelPickerEnabled = rawEnable.asBoolean()
-    }
-
-    override fun setLocationButtonEnable(rawEnable: Any) {
-        naverMap.uiSettings.isLocationButtonEnabled = rawEnable.asBoolean()
-    }
-
-    override fun setLogoClickEnable(rawEnable: Any) {
-        naverMap.uiSettings.isLogoClickEnabled = rawEnable.asBoolean()
     }
 
     override fun setLogoAlign(rawAlign: Any) {

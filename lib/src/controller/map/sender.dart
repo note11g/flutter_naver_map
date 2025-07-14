@@ -61,20 +61,29 @@ abstract class _NaverMapControlSender {
   Future<List<NPickableInfo>> pickAll(NPoint point, {double radius = 0});
 
   /// 현재 보이는 지도를 이미지 파일로 저장합니다.
-  /// showControls가 true라면, 내 위치 버튼, 실내 지도 피커 등의 컨트롤 UI도 캡쳐합니다.
+  ///
+  /// 앱 내의 임시 저장소에 저장되므로, 앱 종료 시점 이전에 사용하시기 바랍니다.
+  ///
   /// compressQuality는 캡쳐한 이미지의 품질을 지정합니다. (100=원본)
   ///
   /// 반환값: 캡쳐한 이미지 파일
-  Future<File> takeSnapshot(
-      {bool showControls = true, int compressQuality = 80});
+  Future<File> takeSnapshot({
+    @Deprecated("showControls is not supported from 1.4.0")
+    bool showControls = false,
+    int compressQuality = 80,
+  });
 
   /// 위치 추적 모드를 설정합니다.
-  Future<void> setLocationTrackingMode(NLocationTrackingMode mode);
+  void setLocationTrackingMode(NLocationTrackingMode mode);
 
   /// 현재 설정된 위치 추적 모드를 가져옵니다.
   ///
   /// 반환값: 현재 위치 추적 모드
-  Future<NLocationTrackingMode> getLocationTrackingMode();
+  NLocationTrackingMode get locationTrackingMode;
+
+  void setMyLocationTracker(NMyLocationTracker tracker);
+
+  NMyLocationTracker get myLocationTracker;
 
   /// 새로운 오버레이를 추가합니다.
   Future<void> addOverlay(NAddableOverlay overlay);

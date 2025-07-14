@@ -114,7 +114,7 @@ class NPolylineOverlay extends NAddableOverlay<NPolylineOverlay> {
 
   /// 선 오버레이가 차지하는 영역을 반환합니다.
   Future<NLatLngBounds> getBounds() {
-    return _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
+    return _getAsyncWithCast(_boundsName, NLatLngBounds.fromMessageable);
   }
 
   @override

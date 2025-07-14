@@ -8,6 +8,8 @@ class NGroundOverlay extends NAddableOverlay<NGroundOverlay> {
   NLatLngBounds get bounds => _bounds;
   NLatLngBounds _bounds;
 
+  /// 지상 오버레이에 사용할 이미지를 나타냅니다.
+  NOverlayImage get image => _image;
   NOverlayImage _image;
 
   /// 지상 오버레이의 불투명도를 나타냅니다. (0~1)
