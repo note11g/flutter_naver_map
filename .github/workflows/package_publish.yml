@@ -112,30 +112,26 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  publish:
+  create-tag:
     needs: prepare
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
+      contents: write
     steps:
       - name: 'Checkout'
         uses: actions/checkout@main
 
-      - name: 'Setup Flutter (Reuse from prepare job)'
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-          cache: true
-          cache-key: "flutter-:os:-:channel:-:version:-:arch:"
-
-      - name: 'Install dependencies'
-        run: flutter pub get
-
-      - name: 'Publish to pub.dev'
-        run: flutter pub publish --force
+      - name: 'Create and push tag'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${{ needs.prepare.outputs.version }}" -m "Release v${{ needs.prepare.outputs.version }}"
+          git push origin "v${{ needs.prepare.outputs.version }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   create-release:
-    needs: [prepare, publish]
+    needs: [prepare, create-tag]
     runs-on: ubuntu-latest
     permissions:
       contents: write
