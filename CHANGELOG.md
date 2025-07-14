@@ -1,3 +1,8 @@
+## 1.4.0-dev.4
+### Fix
+- [iOS] fix unreferenced NFlutterException.swift
+
+
 ## 1.4.0-dev.3
 
 ### Add (New Features)
