@@ -10,9 +10,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  publishing:
+  prepare:
     if: ${{ github.event_name == 'pull_request' && (github.event.pull_request.merged == true) && (contains(github.event.pull_request.labels.*.name, 'release') || contains(github.event.pull_request.labels.*.name, 'prerelease')) || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.VERSION }}
+      pr_body: ${{ steps.pr_body.outputs.PR_BODY }}
+      pr_number: ${{ steps.pr_body.outputs.PR_NUMBER }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@main
@@ -21,6 +25,8 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:"
 
       - name: 'Update version.json'
         run: dart run ./tool/update_version.dart
@@ -34,36 +40,114 @@ jobs:
           VERSION=$(grep "^version:" pubspec.yaml | sed 's/version: //')
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: 'Publish Package'
-        uses: k-paxian/dart-package-publisher@master
-        with:
-          accessToken: ${{ secrets.OAUTH_ACCESS_TOKEN }}
-          refreshToken: ${{ secrets.OAUTH_REFRESH_TOKEN }}
-          flutter: true
-          format: true
-          skipTests: true
-          force: true
+      - name: 'Check Package Version'
+        run: |
+          LOCAL_VERSION=$(grep "^version:" pubspec.yaml | sed 's/version: //' | tr -d ' ')
+          echo "Local version: $LOCAL_VERSION"
+          
+          # Check if version already exists on pub.dev
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://pub.dev/api/packages/flutter_naver_map/versions/$LOCAL_VERSION")
+          
+          if [ "$HTTP_STATUS" = "200" ]; then
+            echo "::error title=Duplicate Version Detected::Version $LOCAL_VERSION already exists on pub.dev"
+            echo "## ⚠️ Version Check Failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Version $LOCAL_VERSION already exists on pub.dev**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Please update the version in \`pubspec.yaml\` before publishing." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Next Steps:" >> $GITHUB_STEP_SUMMARY
+            echo "1. Update the version number in \`pubspec.yaml\`" >> $GITHUB_STEP_SUMMARY
+            echo "2. Follow semantic versioning (patch/minor/major)" >> $GITHUB_STEP_SUMMARY
+            echo "3. Re-run the workflow" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          elif [ "$HTTP_STATUS" = "404" ]; then
+            echo "Version $LOCAL_VERSION is new, proceeding with publish"
+          else
+            echo "::warning title=Version Check Warning::Unexpected HTTP status $HTTP_STATUS, proceeding with caution"
+          fi
 
       - name: 'Extract PR body for release notes'
         id: pr_body
         run: |
-          PR_BODY="${{ github.event.pull_request.body }}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # Use current PR body
+            PR_BODY="${{ github.event.pull_request.body }}"
+            PR_NUMBER="${{ github.event.pull_request.number }}"
+          else
+            # Fallback: find last merged PR with release/prerelease label
+            echo "Finding last merged PR with release/prerelease label..."
+            
+            # Get current branch
+            CURRENT_BRANCH="${{ github.ref_name }}"
+            if [ -z "$CURRENT_BRANCH" ]; then
+              CURRENT_BRANCH="main"
+            fi
+            
+            # Search for last merged PR with release or prerelease label
+            PR_DATA=$(gh pr list \
+              --base "$CURRENT_BRANCH" \
+              --state merged \
+              --label "release,prerelease" \
+              --limit 10 \
+              --json number,title,body,labels \
+              | jq -r '.[0] // empty')
+            
+            if [ -n "$PR_DATA" ]; then
+              PR_BODY=$(echo "$PR_DATA" | jq -r '.body // "No description provided"')
+              PR_NUMBER=$(echo "$PR_DATA" | jq -r '.number')
+              echo "Found PR #$PR_NUMBER for release notes"
+            else
+              PR_BODY="Manual release via workflow_dispatch"
+              PR_NUMBER="N/A"
+              echo "No recent release PR found, using default message"
+            fi
+          fi
+          
           echo "PR_BODY<<EOF" >> $GITHUB_OUTPUT
           echo "$PR_BODY" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+          
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  create-tag:
+    needs: prepare
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@main
+
+      - name: 'Create and push tag'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${{ needs.prepare.outputs.version }}" -m "Release v${{ needs.prepare.outputs.version }}"
+          git push origin "v${{ needs.prepare.outputs.version }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  create-release:
+    needs: [prepare, create-tag]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
       - name: 'Create GitHub Release'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.version.outputs.VERSION }}
-          release_name: Release v${{ steps.version.outputs.VERSION }}
+          tag_name: v${{ needs.prepare.outputs.version }}
+          release_name: Release v${{ needs.prepare.outputs.version }}
           body: |
-            ${{ steps.pr_body.outputs.PR_BODY }}
+            ${{ needs.prepare.outputs.pr_body }}
             
             ---
-            This release was automatically created from PR #${{ github.event.pull_request.number }}
+            This release was automatically created from PR #${{ needs.prepare.outputs.pr_number }}
           draft: false
           prerelease: ${{ contains(github.event.pull_request.labels.*.name, 'prerelease') }}
 
