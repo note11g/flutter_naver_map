@@ -15,12 +15,13 @@ import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil
 
 class NaverMapApplierImpl(
     private val naverMap: NaverMap,
+    private val customStyleCallback: NaverMap.OnCustomStyleLoadCallback? = null,
 ) : NaverMapOptionApplier {
 
     override fun setInitialCameraPosition(rawPosition: Any) = Unit
 
-    override fun setExtent(rawLatLngBounds: Any) {
-        naverMap.extent = rawLatLngBounds.asLatLngBounds()
+    override fun setExtent(rawLatLngBounds: Any?) {
+        naverMap.extent = rawLatLngBounds?.asLatLngBounds()
     }
 
     override fun setMapType(rawMapType: Any) {
@@ -141,5 +142,9 @@ class NaverMapApplierImpl(
     override fun setLocale(rawLocale: Any) {
         val nLocale = NLocale.fromMessageable(rawLocale)
         naverMap.locale = nLocale?.toLocale()
+    }
+
+    override fun setCustomStyleId(rawCustomStyleId: Any?) {
+        naverMap.setCustomStyleId(rawCustomStyleId?.toString(), customStyleCallback)
     }
 }

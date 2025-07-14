@@ -1,11 +1,33 @@
 part of "../../flutter_naver_map.dart";
 
+class _NRawNativeException implements Exception {
+  final String code;
+  final String? message;
+
+  _NRawNativeException(this.code, this.message);
+
+  factory _NRawNativeException.fromMessageable(dynamic messageable) {
+    return _NRawNativeException(
+      messageable["code"] as String,
+      messageable["message"] as String?,
+    );
+  }
+
+  @override
+  String toString() => "NRawNativeException(code: $code, message: $message)";
+}
+
 /// 인증 실패 처리.
 sealed class NAuthFailedException implements Exception {
   final String code;
   final String? message;
 
   NAuthFailedException._(this.code, this.message);
+
+  factory NAuthFailedException._fromMessageable(dynamic m) {
+    final ex = _NRawNativeException.fromMessageable(m);
+    return NAuthFailedException._internal(ex.code, ex.message);
+  }
 
   factory NAuthFailedException._internal(String code, String? message) {
     return switch (code) {
@@ -52,6 +74,40 @@ class NClientUnspecifiedException extends NAuthFailedException {
 class NAnotherAuthFailedException extends NAuthFailedException {
   NAnotherAuthFailedException._(String code, String? message)
       : super._(code, message);
+}
+
+/// Custom Style 관련 오류.
+sealed class NStyleLoadFailedException implements Exception {
+  final String code;
+  final String? message;
+
+  NStyleLoadFailedException._(this.code, this.message);
+
+  factory NStyleLoadFailedException._fromMessageable(dynamic m) {
+    final ex = _NRawNativeException.fromMessageable(m);
+    return NStyleLoadFailedException._internal(ex.code, ex.message);
+  }
+
+  factory NStyleLoadFailedException._internal(String code, String? message) {
+    return switch (code) {
+      NInvalidStyleException._code => NInvalidStyleException(message),
+      _ => NAnotherStyleLoadFailedException(code, message),
+    };
+  }
+
+  @override
+  String toString() => "$runtimeType(code: $code, message: $message)";
+}
+
+class NInvalidStyleException extends NStyleLoadFailedException {
+  static const _code = "400";
+
+  NInvalidStyleException(String? message) : super._(_code, message);
+}
+
+class NAnotherStyleLoadFailedException extends NStyleLoadFailedException {
+  NAnotherStyleLoadFailedException(super.code, super.message)
+      : super._();
 }
 
 class NOverlayNotAddedOnMapException implements Exception {

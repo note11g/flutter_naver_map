@@ -33,6 +33,10 @@ internal func asDict(_ v: Any) -> Dictionary<String, Any> {
     v as! Dictionary<String, Any>
 }
 
+internal func asNullableDict(_ v: Any) -> Dictionary<String, Any?> {
+    v as! Dictionary<String, Any?>
+}
+
 internal func asDict<T>(_ v: Any, valueCaster: (Any) throws -> T) -> Dictionary<String, T> {
     let dict = asDict(v)
     var newDict: Dictionary<String, T> = [:]

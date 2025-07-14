@@ -41,7 +41,7 @@ internal class NaverMapView: NSObject, FlutterPlatformView {
     }
 
     deinit {
-        (naverMapControlSender as! NaverMapController).removeChannel()
+        naverMapControlSender.dispose()
     }
 }
 
