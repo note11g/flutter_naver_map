@@ -36,6 +36,20 @@ jobs:
       - name: 'Update README images for current branch'
         run: dart run ./tool/update_readme_images.dart
 
+      - name: 'Commit and push changes'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update version.json and README images for release"
+            git push origin HEAD:${{ github.ref_name }}
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: 'Get version from pubspec.yaml'
         id: version
         run: |
@@ -145,6 +159,11 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@main
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: 'Pull latest changes'
+        run: git pull origin ${{ github.ref_name }}
 
       - name: 'Create and push tag'
         run: |
