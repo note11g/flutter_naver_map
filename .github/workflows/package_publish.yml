@@ -17,6 +17,7 @@ jobs:
       version: ${{ steps.version.outputs.VERSION }}
       pr_body: ${{ steps.pr_body.outputs.PR_BODY }}
       pr_number: ${{ steps.pr_body.outputs.PR_NUMBER }}
+      changelog: ${{ steps.pr_body.outputs.CHANGELOG }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@main
@@ -67,7 +68,7 @@ jobs:
             echo "::warning title=Version Check Warning::Unexpected HTTP status $HTTP_STATUS, proceeding with caution"
           fi
 
-      - name: 'Extract PR body for release notes'
+      - name: 'Extract PR body and changelog for release notes'
         id: pr_body
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
@@ -109,6 +110,29 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
           
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
+          
+          # Extract changelog for current version
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          echo "Extracting changelog for version $VERSION..."
+          
+          # Read CHANGELOG.md and extract section for current version
+          CHANGELOG_CONTENT=""
+          if [ -f "CHANGELOG.md" ]; then
+            # Extract content between current version header and next version header
+            CHANGELOG_CONTENT=$(awk -v ver="## $VERSION" '
+              $0 ~ ver {found=1; next}
+              found && /^## / {exit}
+              found {print}
+            ' CHANGELOG.md | sed '/^$/d')
+          fi
+          
+          if [ -z "$CHANGELOG_CONTENT" ]; then
+            CHANGELOG_CONTENT="No changelog entry found for version $VERSION"
+          fi
+          
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG_CONTENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -144,7 +168,24 @@ jobs:
           tag_name: v${{ needs.prepare.outputs.version }}
           release_name: Release v${{ needs.prepare.outputs.version }}
           body: |
+            ## 📝 PR Description
             ${{ needs.prepare.outputs.pr_body }}
+            
+            ## 📋 Changelog
+            ${{ needs.prepare.outputs.changelog }}
+            
+            ---
+            ## 📦 Installation
+            
+            Add this to your `pubspec.yaml`:
+            ```yaml
+            dependencies:
+              flutter_naver_map: ^${{ needs.prepare.outputs.version }}
+            ```
+            
+            ## 🔗 Links
+            - [pub.dev package](https://pub.dev/packages/flutter_naver_map/versions/${{ needs.prepare.outputs.version }})
+            - [API Reference](https://pub.dev/documentation/flutter_naver_map/${{ needs.prepare.outputs.version }}/)
             
             ---
             This release was automatically created from PR #${{ needs.prepare.outputs.pr_number }}
