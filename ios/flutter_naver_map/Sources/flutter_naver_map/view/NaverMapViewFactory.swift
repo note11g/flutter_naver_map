@@ -19,7 +19,7 @@ internal class NaverMapFactory: NSObject, FlutterPlatformViewFactory {
         let overlayChannel = FlutterMethodChannel(name: SwiftFlutterNaverMapPlugin.createOverlayMethodChannelName(id: viewId), binaryMessenger: messenger)
         let overlayController = OverlayController(channel: overlayChannel)
 
-        let convertedArgs = asDict(args!)
+        let convertedArgs = asNullableDict(args!)
         let options = NaverMapViewOptions.fromMessageable(convertedArgs)
 
         return NaverMapView(frame: frame, options: options, channel: channel, overlayController: overlayController)

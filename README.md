@@ -4,15 +4,17 @@
 [![latest release](https://img.shields.io/github/v/release/note11g/flutter_naver_map?include_prereleases&label=latest&color=green)](https://github.com/note11g/flutter_naver_map/releases)
 [![github](https://img.shields.io/github/stars/note11g/flutter_naver_map)](https://github.com/note11g/flutter_naver_map)
 
+
 > **[중요 마이그레이션 안내]**
-> 
+>
 > 1.3.1부터 Naver Cloud Platform의 지도 서비스가 일부 변경됨에 따라, 신규 인증 API가 추가되었습니다.
-> 
+>
 > 기존 인증 방식(API)으로 제공되는 서비스는 25년 7월 1일부터 무료 이용량 제공이 중단될 예정이니
-> 
+>
 > 이점 참고하시어, 빠르게 마이그레이션 하시길 권장드립니다.
-> 
+>
 > [신규 서비스 인증 관련 상세 내용 보기 >](https://github.com/note11g/flutter_naver_map/issues/311)
+
 
 ## Getting Started
 
@@ -50,19 +52,19 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // runApp 실행 이전이면 필요
 
   await FlutterNaverMap().init(
-      clientId: '방금 발급받은 Client ID',
-      onAuthFailed: (ex) {
-        switch (ex) {
-          case NQuotaExceededException(:final message):
-            print("사용량 초과 (message: $message)");
-            break;
-          case NUnauthorizedClientException() ||
-                NClientUnspecifiedException() ||
-                NAnotherAuthFailedException():
-            print("인증 실패: $ex");
-            break;
-        }
-      });
+          clientId: '방금 발급받은 Client ID',
+          onAuthFailed: (ex) {
+            switch (ex) {
+              case NQuotaExceededException(:final message):
+                print("사용량 초과 (message: $message)");
+                break;
+              case NUnauthorizedClientException() ||
+              NClientUnspecifiedException() ||
+              NAnotherAuthFailedException():
+                print("인증 실패: $ex");
+                break;
+            }
+          });
 
   runApp(const MyApp());
 }
@@ -79,25 +81,25 @@ void main() async {
 ```dart
 @override
 Widget build(BuildContext context) {
-    const seoulCityHall = NLatLng(37.5666, 126.979);
-    final safeAreaPadding = MediaQuery.paddingOf(context); 
-    return Scaffold(
-        body: NaverMap(
-            options: NaverMapViewOptions(
-                contentPadding: safeAreaPadding, // 화면의 SafeArea에 중요 지도 요소가 들어가지 않도록 설정하는 Padding. 필요한 경우에만 사용하세요.
-                initialCameraPosition: NCameraPosition(target: seoulCityHall, zoom: 14),
-            ), 
-            onMapReady: (controller) {
-                final marker = NMarker(
-                    id: "city_hall", // Required
-                    position: seoulCityHall, // Required
-                    caption: NOverlayCaption(text: "서울시청"), // Optional
-                );
-                controller.addOverlay(marker); // 지도에 마커를 추가
-                print("naver map is ready!");
-            },
-        ),
-    );
+  const seoulCityHall = NLatLng(37.5666, 126.979);
+  final safeAreaPadding = MediaQuery.paddingOf(context);
+  return Scaffold(
+    body: NaverMap(
+      options: NaverMapViewOptions(
+        contentPadding: safeAreaPadding, // 화면의 SafeArea에 중요 지도 요소가 들어가지 않도록 설정하는 Padding. 필요한 경우에만 사용하세요.
+        initialCameraPosition: NCameraPosition(target: seoulCityHall, zoom: 14),
+      ),
+      onMapReady: (controller) {
+        final marker = NMarker(
+          id: "city_hall", // Required
+          position: seoulCityHall, // Required
+          caption: NOverlayCaption(text: "서울시청"), // Optional
+        );
+        controller.addOverlay(marker); // 지도에 마커를 추가
+        print("naver map is ready!");
+      },
+    ),
+  );
 }
 ```
 

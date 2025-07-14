@@ -47,7 +47,7 @@ internal protocol NaverMapControlHandler {
     
     func forceRefresh(onSuccess: @escaping (Any?) -> Void)
 
-    func updateOptions(options: Dictionary<String, Any>, onSuccess: @escaping (Any?) -> Void)
+    func updateOptions(options: Dictionary<String, Any?>, onSuccess: @escaping (Any?) -> Void)
     
     func updateClusteringOptions(rawOptions: Dictionary<String, Any>, onSuccess: @escaping (Any?) -> Void)
     
@@ -100,7 +100,7 @@ internal extension  NaverMapControlHandler {
         case "deleteOverlay": deleteOverlay(overlayInfo: NOverlayInfo.fromMessageable(call.arguments!), onSuccess: result)
         case "clearOverlays": clearOverlays(type: castOrNull(call.arguments, caster: { NOverlayType(rawValue: asString($0))! }), onSuccess: result)
         case "forceRefresh": forceRefresh(onSuccess: result)
-        case "updateOptions": updateOptions(options: asDict(call.arguments!), onSuccess: result)
+        case "updateOptions": updateOptions(options: asNullableDict(call.arguments!), onSuccess: result)
         case "updateClusteringOptions": updateClusteringOptions(rawOptions: asDict(call.arguments!), onSuccess: result)
         case "openMapOpenSourceLicense": openMapOpenSourceLicense(onSuccess: result)
         case "openLegend": openLegend(onSuccess: result)

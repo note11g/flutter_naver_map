@@ -22,8 +22,8 @@ class NaverMapOptionApplierImpl(
         options.camera(cameraPosition)
     }
 
-    override fun setExtent(rawLatLngBounds: Any) {
-        options.extent(rawLatLngBounds.asLatLngBounds())
+    override fun setExtent(rawLatLngBounds: Any?) {
+        options.extent(rawLatLngBounds?.asLatLngBounds())
     }
 
     override fun setMapType(rawMapType: Any) {
@@ -142,5 +142,9 @@ class NaverMapOptionApplierImpl(
     override fun setLocale(rawLocale: Any) {
         val nLocale = NLocale.fromMessageable(rawLocale)
         options.locale(nLocale?.toLocale())
+    }
+
+    override fun setCustomStyleId(rawCustomStyleId: Any?) {
+        options.customStyleId(rawCustomStyleId?.toString())
     }
 }

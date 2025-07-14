@@ -3,13 +3,15 @@ import NMapsMap
 internal class NaverMapApplierImpl: NaverMapOptionApplier {
     private let isFirst: Bool
     private let naverMapView: NMFNaverMapView
+    private let customStyleCallbacks: CustomStyleCallbacks?
     private var mapView: NMFMapView {
         naverMapView.mapView
     }
 
-    init(_ mapView: NMFNaverMapView, isFirst: Bool) {
+    init(_ mapView: NMFNaverMapView, isFirst: Bool, customStyleCallbacks: CustomStyleCallbacks? = nil) {
         naverMapView = mapView
         self.isFirst = isFirst
+        self.customStyleCallbacks = customStyleCallbacks
     }
 
     func setInitialCameraPosition(_ rawPosition: Any) {
@@ -21,8 +23,12 @@ internal class NaverMapApplierImpl: NaverMapOptionApplier {
         mapView.moveCamera(cameraUpdate)
     }
 
-    func setExtent(_ rawLatLngBounds: Any) {
-        mapView.extent = asLatLngBounds(rawLatLngBounds)
+    func setExtent(_ rawLatLngBounds: Any?) {
+        if let bounds = rawLatLngBounds {
+            mapView.extent = castOrNull(bounds, caster: asLatLngBounds)
+        } else {
+            mapView.extent = nil
+        }
     }
 
     func setMapType(_ rawMapType: Any) {
@@ -144,5 +150,14 @@ internal class NaverMapApplierImpl: NaverMapOptionApplier {
 
     func setLocale(_ rawLocale: Any) {
         mapView.locale = NLocale.fromMessageable(rawLocale)?.localeStr
+    }
+
+    func setCustomStyleId(_ rawCustomStyleId: Any?) {
+        let styleId = castOrNull(rawCustomStyleId, caster: asString) ?? ""  /// todo: SDK 업데이트 후 fallback empty string 지우기. 현재는 임시 조치 (정상 동작은 함)
+        mapView.setCustomStyleId(
+            styleId,
+            loadHandler: customStyleCallbacks?.loadHandler,
+            failHandler: customStyleCallbacks?.failHandler
+        )
     }
 }

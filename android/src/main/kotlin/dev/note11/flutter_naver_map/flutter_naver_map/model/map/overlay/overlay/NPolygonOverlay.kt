@@ -3,6 +3,7 @@ package dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay
 import androidx.annotation.ColorInt
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.PolygonOverlay
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.AddableOverlay
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asDouble
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asInt
 import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asList
