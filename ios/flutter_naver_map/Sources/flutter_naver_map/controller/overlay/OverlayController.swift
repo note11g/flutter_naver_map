@@ -435,6 +435,12 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
         polygonOverlay.outlineWidth = UInt(asRoundInt(rawFloat: rawWidthDp))
     }
 
+    func setOutlinePattern(_ polygonOverlay: NMFPolygonOverlay, patternList: Any) {
+        polygonOverlay.outlinePattern = asArr(patternList) { pattern in
+            NSNumber(value: DisplayUtil.dpToPx(dp: asDouble(pattern)))
+        }
+    }
+
     func getBounds(_ polygonOverlay: NMFPolygonOverlay, success: (Dictionary<String, Any>) -> ()) {
         let ring = polygonOverlay.polygon.exteriorRing
         let bounds = NMGLatLngBounds(latLngs: ring.latLngPoints)
@@ -464,7 +470,7 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
 
     func setPattern(_ polylineOverlay: NMFPolylineOverlay, patternList: Any) {
         polylineOverlay.pattern = asArr(patternList) { pattern in
-            NSNumber(value: asRoundInt(rawFloat: pattern))
+            NSNumber(value: asDouble(pattern))
         }
     }
 

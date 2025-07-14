@@ -87,7 +87,9 @@ class _FNMapPageState extends State<FNMapPage> {
                 haloColor: Colors.blueAccent));
           }),
       onMapReady: onMapReady,
+      onMapLoaded: onMapLoaded,
       onMapTapped: onMapTapped,
+      onMapLongTapped: onMapLongTapped,
       onSymbolTapped: onSymbolTapped,
       onCameraChange: onCameraChange,
       onCameraIdle: onCameraIdle,
@@ -105,12 +107,29 @@ class _FNMapPageState extends State<FNMapPage> {
     // controller.setMyLocationTracker(NExampleMyLocationTracker());
   }
 
+  void onMapLoaded() {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("onMapLoaded"),
+    ));
+  }
+
   void onMapTapped(NPoint point, NLatLng latLng) async {
-    // ...
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("onMapTapped\n$latLng"),
+    ));
+  }
+
+  void onMapLongTapped(NPoint point, NLatLng latLng) async {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("onMapLongTapped\n$latLng"),
+    ));
   }
 
   void onSymbolTapped(NSymbolInfo symbolInfo) {
-    // ...
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content:
+          Text("onSymbolTapped: ${symbolInfo.caption}\n${symbolInfo.position}"),
+    ));
   }
 
   void onCameraChange(NCameraUpdateReason reason, bool isGesture) {
@@ -152,7 +171,6 @@ class _FNMapPageState extends State<FNMapPage> {
                   height: 40,
                   decoration: const BoxDecoration(
                       color: Colors.blueAccent, shape: BoxShape.circle)),
-              size: const Size(40, 40),
               context: context)
           .then((value) {
         clusterIcon = value;

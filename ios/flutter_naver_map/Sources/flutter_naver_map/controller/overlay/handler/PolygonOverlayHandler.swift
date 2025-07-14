@@ -12,6 +12,8 @@ internal protocol PolygonOverlayHandler: OverlayHandler {
 
     func setOutlineWidth(_ polygonOverlay: NMFPolygonOverlay, rawWidthDp: Any)
 
+    func setOutlinePattern(_ polygonOverlay: NMFPolygonOverlay, patternList: Any)
+
     func getBounds(_ polygonOverlay: NMFPolygonOverlay, success: (_ bounds: Dictionary<String, Any>) -> Void)
 }
 
@@ -27,6 +29,8 @@ internal extension  PolygonOverlayHandler {
         case NPolygonOverlay.holesName: setHoles(polygonOverlay, rawHoles: args!)
         case NPolygonOverlay.outlineColorName: setOutlineColor(polygonOverlay, rawColor: args!)
         case NPolygonOverlay.outlineWidthName: setOutlineWidth(polygonOverlay, rawWidthDp: args!)
+        case NPolygonOverlay.outlinePatternName:
+            setOutlinePattern(polygonOverlay, patternList: args!)
         case getterName(NPolygonOverlay.boundsName): getBounds(polygonOverlay, success: result)
         default: result(FlutterMethodNotImplemented)
         }
