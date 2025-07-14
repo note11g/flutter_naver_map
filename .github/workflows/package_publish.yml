@@ -46,7 +46,9 @@ jobs:
           echo "Local version: $LOCAL_VERSION"
           
           # Check if version already exists on pub.dev
-          if curl -s "https://pub.dev/api/packages/flutter_naver_map/versions/$LOCAL_VERSION" | grep -q "version"; then
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://pub.dev/api/packages/flutter_naver_map/versions/$LOCAL_VERSION")
+          
+          if [ "$HTTP_STATUS" = "200" ]; then
             echo "::error title=Duplicate Version Detected::Version $LOCAL_VERSION already exists on pub.dev"
             echo "## ⚠️ Version Check Failed" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
@@ -59,8 +61,10 @@ jobs:
             echo "2. Follow semantic versioning (patch/minor/major)" >> $GITHUB_STEP_SUMMARY
             echo "3. Re-run the workflow" >> $GITHUB_STEP_SUMMARY
             exit 1
-          else
+          elif [ "$HTTP_STATUS" = "404" ]; then
             echo "Version $LOCAL_VERSION is new, proceeding with publish"
+          else
+            echo "::warning title=Version Check Warning::Unexpected HTTP status $HTTP_STATUS, proceeding with caution"
           fi
 
       - name: 'Extract PR body for release notes'
