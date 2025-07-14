@@ -434,7 +434,7 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
     func setOutlineWidth(_ polygonOverlay: NMFPolygonOverlay, rawWidthDp: Any) {
         polygonOverlay.outlineWidth = UInt(asRoundInt(rawFloat: rawWidthDp))
     }
-
+    
     func setOutlinePattern(_ polygonOverlay: NMFPolygonOverlay, patternList: Any) {
         polygonOverlay.outlinePattern = asArr(patternList) { pattern in
             NSNumber(value: DisplayUtil.dpToPx(dp: asDouble(pattern)))

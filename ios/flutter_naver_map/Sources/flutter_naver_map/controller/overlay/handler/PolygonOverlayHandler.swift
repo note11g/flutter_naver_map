@@ -11,7 +11,7 @@ internal protocol PolygonOverlayHandler: OverlayHandler {
     func setOutlineColor(_ polygonOverlay: NMFPolygonOverlay, rawColor: Any)
 
     func setOutlineWidth(_ polygonOverlay: NMFPolygonOverlay, rawWidthDp: Any)
-
+    
     func setOutlinePattern(_ polygonOverlay: NMFPolygonOverlay, patternList: Any)
 
     func getBounds(_ polygonOverlay: NMFPolygonOverlay, success: (_ bounds: Dictionary<String, Any>) -> Void)

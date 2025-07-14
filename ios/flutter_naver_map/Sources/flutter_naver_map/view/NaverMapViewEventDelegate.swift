@@ -14,7 +14,7 @@ internal class NaverMapViewEventDelegate: NSObject, NMFMapViewTouchDelegate, NMF
     func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
         sender?.onMapTapped(nPoint: NPoint.fromCGPointWithDisplay(point), latLng: latlng)
     }
-
+    
     func mapView(_ mapView: NMFMapView, didLongTapMap latlng: NMGLatLng, point: CGPoint) {
         sender?.onMapLongTapped(nPoint: NPoint.fromCGPointWithDisplay(point), latLng: latlng)
     }
@@ -44,7 +44,7 @@ internal class NaverMapViewEventDelegate: NSObject, NMFMapViewTouchDelegate, NMF
     func indoorSelectionDidChanged(_ indoorSelection: NMFIndoorSelection?) {
         sender?.onSelectedIndoorChanged(selectedIndoor: indoorSelection)
     }
-
+    
     func mapViewDidFinishLoadingMap(_ mapView: NMFMapView) {
         sender?.onMapLoaded()
     }

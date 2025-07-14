@@ -17,7 +17,7 @@ internal struct NOverlayImage {
         let overlayImg = NMFOverlayImage(image: scaledImage!)
         return overlayImg
     }
-
+    
     private func makeOverlayImageWithAssetPath() -> NMFOverlayImage {
         let key = SwiftFlutterNaverMapPlugin.getAssets(path: path)
         let assetPath = Bundle.main.path(forResource: key, ofType: nil) ?? ""

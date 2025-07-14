@@ -17,14 +17,18 @@ void main() async {
 
   await FlutterNaverMap().init(
       clientId: 'dzx1zs89q6',
-      onAuthFailed: (ex) => switch (ex) {
-            NQuotaExceededException(:final message) =>
-              print("사용량 초과 (message: $message)"),
-            NUnauthorizedClientException() ||
-            NClientUnspecifiedException() ||
-            NAnotherAuthFailedException() =>
-              print("인증 실패: $ex"),
-          });
+      onAuthFailed: (ex) {
+        switch (ex) {
+          case NQuotaExceededException(:final message):
+            print("사용량 초과 (message: $message)");
+            break;
+          case NUnauthorizedClientException() ||
+                NClientUnspecifiedException() ||
+                NAnotherAuthFailedException():
+            print("인증 실패: $ex");
+            break;
+        }
+      });
 
   runApp(const MyApp());
 }
