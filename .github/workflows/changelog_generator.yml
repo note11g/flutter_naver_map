@@ -47,10 +47,8 @@ jobs:
             
             if [ -n "$CHANGELOG_CONTENT" ]; then
               echo "FOUND=true" >> $GITHUB_OUTPUT
-              # Save multi-line content properly
-              echo "CONTENT<<EOF" >> $GITHUB_OUTPUT
-              echo "$CHANGELOG_CONTENT" >> $GITHUB_OUTPUT
-              echo "EOF" >> $GITHUB_OUTPUT
+              # Save content to a file to avoid any escaping issues
+              echo "$CHANGELOG_CONTENT" > /tmp/changelog_content.txt
             else
               echo "FOUND=false" >> $GITHUB_OUTPUT
               echo "No changelog entry found for version $VERSION"
@@ -66,10 +64,12 @@ jobs:
           script: |
             const version = '${{ steps.version.outputs.VERSION }}';
             const changelogFound = '${{ steps.extract_changelog.outputs.FOUND }}' === 'true';
+            const fs = require('fs');
             
             let comment;
             if (changelogFound) {
-              const changelogContent = `${{ steps.extract_changelog.outputs.CONTENT }}`;
+              // Read changelog content from file to avoid escaping issues
+              const changelogContent = fs.readFileSync('/tmp/changelog_content.txt', 'utf8');
               comment = `## 📋 Changelog for v${version}
             
             ${changelogContent}
