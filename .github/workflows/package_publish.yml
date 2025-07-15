@@ -93,13 +93,13 @@ jobs:
           else
             # Fallback: find last merged PR with release/prerelease label
             echo "Finding last merged PR with release/prerelease label..."
-            
+          
             # Get current branch
             CURRENT_BRANCH="${{ github.ref_name }}"
             if [ -z "$CURRENT_BRANCH" ]; then
               CURRENT_BRANCH="main"
             fi
-            
+          
             # Search for last merged PR with release or prerelease label
             PR_DATA=$(gh pr list \
               --base "$CURRENT_BRANCH" \
@@ -108,7 +108,7 @@ jobs:
               --limit 10 \
               --json number,title,body,labels \
               | jq -r '.[0] // empty')
-            
+          
             if [ -n "$PR_DATA" ]; then
               PR_BODY=$(echo "$PR_DATA" | jq -r '.body // "No description provided"')
               PR_NUMBER=$(echo "$PR_DATA" | jq -r '.number')
