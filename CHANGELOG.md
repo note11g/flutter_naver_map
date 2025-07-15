@@ -1,36 +1,4 @@
-## 1.4.0-dev.5
-### Fix
-- [All Platform] Fix displayed unmatched package version
-- [Chore] Fix not displayed Readme images
-
-
-## 1.4.0-dev.4
-### Fix
-- [iOS] fix unreferenced NFlutterException.swift
-
-
-## 1.4.0-dev.3
-
-### Add (New Features)
-- [All Platform] Support custom style with `NaverMapViewOptions.customStyle` ([PR #308](https://github.com/note11g/flutter_naver_map/pull/308))
-
-### Fix
-- [All Platform] `NaverMapViewOptions.extend` was not applied to the map dynamically.
-
-
-## 1.4.0-dev.2
-
-### Update
-- [All Platform] **Update Naver Map SDK to 3.22.0** ([PR #329](https://github.com/note11g/flutter_naver_map/pull/329))
-
-### Add (New Features)
-- [All Platform] add new api `iconAlpha`, `subIconAlpha`, `setIconAlpha`, `setSubIconAlpha` on `NLocationOverlay`
-
-### Fix
-- [All Platform] Fix NLocale.countryCode support is missing (Fix [#325](https://github.com/note11g/flutter_naver_map/issues/325), [PR #328](https://github.com/note11g/flutter_naver_map/pull/328))
-
-
-## 1.4.0-dev.1
+## 1.4.0
 
 ### Breaking Change
 - [All Platform, Not Working Impact] **Migrated built-in location tracking to be widget-based.** ([PR #322](https://github.com/note11g/flutter_naver_map/pull/322))
@@ -44,6 +12,8 @@
 - [All Platform] The `showControls` argument in `NaverMapController.takeSnapshot` has been removed as it is no longer supported by the native SDK since version 1.4.0.
 
 ### Add (New Features)
+- [All Platform] Support custom style with `NaverMapViewOptions.customStyle` ([PR #308](https://github.com/note11g/flutter_naver_map/pull/308))
+- [All Platform] add new api `iconAlpha`, `subIconAlpha`, `setIconAlpha`, `setSubIconAlpha` on `NLocationOverlay`
 - [All Platform] **Added a new built-in location tracking API, `NDefaultMyLocationTracker`.**
   - This provides the `NMyLocationTracker` interface, allowing users to implement custom location tracking logic.
 - [All Platform] Added `NaverMap.onMapLoaded` and `NaverMap.onMapLongTapped` callbacks. ([PR #315](https://github.com/note11g/flutter_naver_map/pull/315))
@@ -51,13 +21,17 @@
 - [iOS] Added support for Swift Package Manager (SPM). ([Resolve #281](https://github.com/note11g/flutter_naver_map/issues/281), [PR #320](https://github.com/note11g/flutter_naver_map/pull/320))
 
 ### Update
+- [All Platform] **Update Naver Map SDK to 3.22.0** ([PR #329](https://github.com/note11g/flutter_naver_map/pull/329))
 - [All Platform] Improved `NOverlayImage.fromWidget` to automatically detect the widget's size with `null` value. ([Resolve #304](https://github.com/note11g/flutter_naver_map/issues/304))
 - [All Platform] Improved `NLocationTrackingMode.noFollow` to track the current location's bearing. ([PR #323](https://github.com/note11g/flutter_naver_map/pull/323))
 
 ### Fix
+- [All Platform] `NaverMapViewOptions.extend` was not applied to the map dynamically.
+- [All Platform] Fix NLocale.countryCode support is missing (Fix [#325](https://github.com/note11g/flutter_naver_map/issues/325), [PR #328](https://github.com/note11g/flutter_naver_map/pull/328))
 - [iOS] Fixed an issue where `contentsPadding` was not applied to the scale bar. ([Fix #297](https://github.com/note11g/flutter_naver_map/issues/297), [PR #319](https://github.com/note11g/flutter_naver_map/pull/319))
 - [iOS] Updated the InfoWindow UI to match the Android version. ([Fix #229](https://github.com/note11g/flutter_naver_map/issues/229))
 - [All Platform] Fixed a `LateInitializationError` that occurred when `NChannelWrapper` was disposed before initialization. ([Fix #312](https://github.com/note11g/flutter_naver_map/issues/312))
+- [Dev] fix melos detect flutter_naver_map as a mono-repo package ([Resolve #310](https://github.com/note11g/flutter_naver_map/issues/310))
 
 
 ## 1.3.1
