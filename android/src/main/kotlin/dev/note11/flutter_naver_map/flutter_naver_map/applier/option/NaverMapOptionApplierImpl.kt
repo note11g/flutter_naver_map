@@ -22,8 +22,8 @@ class NaverMapOptionApplierImpl(
         options.camera(cameraPosition)
     }
 
-    override fun setExtent(rawLatLngBounds: Any) {
-        options.extent(rawLatLngBounds.asLatLngBounds())
+    override fun setExtent(rawLatLngBounds: Any?) {
+        options.extent(rawLatLngBounds?.asLatLngBounds())
     }
 
     override fun setMapType(rawMapType: Any) {
@@ -109,20 +109,8 @@ class NaverMapOptionApplierImpl(
         options.rotateGesturesFriction(friction)
     }
 
-    override fun setScaleBarEnable(rawEnable: Any) {
-        options.scaleBarEnabled(rawEnable.asBoolean())
-    }
-
     override fun setIndoorLevelPickerEnable(rawEnable: Any) {
         options.indoorLevelPickerEnabled(rawEnable.asBoolean())
-    }
-
-    override fun setLocationButtonEnable(rawEnable: Any) {
-        options.locationButtonEnabled(rawEnable.asBoolean())
-    }
-
-    override fun setLogoClickEnable(rawEnable: Any) {
-        options.logoClickEnabled(rawEnable.asBoolean())
     }
 
     override fun setLogoAlign(rawAlign: Any) {
@@ -154,5 +142,9 @@ class NaverMapOptionApplierImpl(
     override fun setLocale(rawLocale: Any) {
         val nLocale = NLocale.fromMessageable(rawLocale)
         options.locale(nLocale?.toLocale())
+    }
+
+    override fun setCustomStyleId(rawCustomStyleId: Any?) {
+        options.customStyleId(rawCustomStyleId?.toString())
     }
 }

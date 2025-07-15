@@ -33,8 +33,8 @@ class NPayload {
 
   NPayload._(this.map);
 
-  factory NPayload.make(Map<String, dynamic> m) {
-    _removeNull(m);
+  factory NPayload.make(Map<String, dynamic> m, {bool sendNull = false}) {
+    if (!sendNull) _removeNull(m);
     final convertedM = _convertMapValueAsMessageable(m);
     return NPayload._(convertedM);
   }
@@ -56,7 +56,8 @@ class NPayload {
     return m.map((key, value) => MapEntry(key, convertToMessageable(value)));
   }
 
-  static dynamic convertToMessageable(Object value) {
+  static dynamic convertToMessageable(Object? value) {
+    if (value == null) return null;
     if (value.isDefaultType) return value;
 
     return switch (value) {

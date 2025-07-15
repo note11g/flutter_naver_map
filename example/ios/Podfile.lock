@@ -1,50 +1,26 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_naver_map (1.3.1):
+  - lat_compass (0.0.1):
     - Flutter
-    - NMapsMap (= 3.21.0)
-  - integration_test (0.0.1):
-    - Flutter
-  - NMapsGeometry (1.0.2)
-  - NMapsMap (3.21.0):
-    - NMapsGeometry
-  - path_provider_foundation (0.0.1):
-    - Flutter
-    - FlutterMacOS
   - permission_handler_apple (9.3.0):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - flutter_naver_map (from `.symlinks/plugins/flutter_naver_map/ios`)
-  - integration_test (from `.symlinks/plugins/integration_test/ios`)
-  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - lat_compass (from `.symlinks/plugins/lat_compass/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
-
-SPEC REPOS:
-  trunk:
-    - NMapsGeometry
-    - NMapsMap
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  flutter_naver_map:
-    :path: ".symlinks/plugins/flutter_naver_map/ios"
-  integration_test:
-    :path: ".symlinks/plugins/integration_test/ios"
-  path_provider_foundation:
-    :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  lat_compass:
+    :path: ".symlinks/plugins/lat_compass/ios"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_naver_map: dafe40026d3b4739fdff4ae32953021b1b52b0c2
-  integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
-  NMapsGeometry: 4e02554fa9880ef02ed96b075dc84355d6352479
-  NMapsMap: 8e7e35c2446e7c4a88d6dd0d64aa0d1de903e4f0
-  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  lat_compass: eadcaf7fa6194ac03e557b3c0ee7168b5415ff43
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
 
 PODFILE CHECKSUM: 865bfa77219454a712543ad6494f6458c48be43e

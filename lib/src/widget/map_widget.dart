@@ -29,10 +29,19 @@ class NaverMap extends StatefulWidget {
     --- Events ---
   */
 
-  /// 지도가 조작할 수 있는 첫 시점에 실행 되는 함수입니다.
+  /// 지도를 조작할 수 있는 첫 시점에 실행 되는 함수입니다.
+  ///
   /// 위젯 첫 빌드 시에 한 번만 실행 됩니다.
+  ///
   /// 이 콜백을 통해, [NaverMapController]를 매개변수로 얻을 수 있습니다.
   final void Function(NaverMapController controller)? onMapReady;
+
+  /// 지도의 데이터가 모두 로딩되어 최초로 화면에 나타난 후에 실행되는 함수입니다.
+  ///
+  /// 데이터가 모두 로드되어야 실행되므로, [onMapReady] 이후에 한번만 실행됩니다.
+  ///
+  /// 네트워크 속도가 느리거나, 연결에 실패한 경우에는 실행되지 않을 수 있음을 유의해주세요.
+  final void Function()? onMapLoaded;
 
   /// 지도가 사용자에 의해 터치 되었을 때 실행 되는 함수입니다.
   ///
@@ -43,6 +52,9 @@ class NaverMap extends StatefulWidget {
   /// 만약, 심볼 여부와 상관 없이 onMapTapped 메서드를 실행 시키도록 하고 싶다면,
   /// [options.consumeSymbolTapEvents]을 `false`로 설정하세요.
   final void Function(NPoint point, NLatLng latLng)? onMapTapped;
+
+  /// 지도가 사용자에 의해 길게 터치 되었을 때 실행되는 함수입니다.
+  final void Function(NPoint point, NLatLng latLng)? onMapLongTapped;
 
   /// 심볼이 사용자에 의해 터치될 때, 실행 되는 함수입니다.
   /// 사용자가 터치한 심볼의 정보인 [NSymbolInfo]를 매개변수로 제공합니다.
@@ -65,17 +77,24 @@ class NaverMap extends StatefulWidget {
   /// 실내 지도 옵션[option.indoorEnable]이 설정되어 있는 경우에만 실행됩니다.
   final void Function(NSelectedIndoor? selectedIndoor)? onSelectedIndoorChanged;
 
+  final void Function()? onCustomStyleLoaded;
+  final void Function(Exception exception)? onCustomStyleLoadFailed;
+
   const NaverMap({
     super.key,
     this.options = const NaverMapViewOptions(),
     this.clusterOptions = const NaverMapClusteringOptions(),
     this.forceGesture = false,
     this.onMapReady,
+    this.onMapLoaded,
     this.onMapTapped,
+    this.onMapLongTapped,
     this.onSymbolTapped,
     this.onCameraChange,
     this.onCameraIdle,
     this.onSelectedIndoorChanged,
+    this.onCustomStyleLoaded,
+    this.onCustomStyleLoadFailed,
     @visibleForTesting this.forceHybridComposition,
     @visibleForTesting this.forceGLSurfaceView,
   });
@@ -90,11 +109,13 @@ class _NaverMapState extends State<NaverMap>
   late final MethodChannel channel;
   late final NaverMapController controller;
   final controllerCompleter = Completer<NaverMapController>();
+  final onMapReadyCompleter = Completer<void>();
   late NaverMapViewOptions nowViewOptions = widget.options;
   NaverMapClusteringOptions? nowClusterOptions;
   final legacyMapInitializer = NaverMapSdk.instance;
   final onMapReadyTasksQueue = <Future Function()>[];
-  bool isMapReady = false;
+  bool isUpdatedBeforeMapReadyWithUpdateQueue = false;
+  bool isCalledOnMapLoaded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -115,26 +136,80 @@ class _NaverMapState extends State<NaverMap>
         forceHybridComposition: widget.forceHybridComposition,
         forceGLSurfaceView: widget.forceGLSurfaceView,
       )),
-      _naverLogo(widget.options),
+      Positioned.fill(child: _uiLayer(widget.options)),
     ]);
   }
 
-  Widget _naverLogo(final NaverMapViewOptions options) {
-    final align = options.logoAlign;
-    final fullPadding = options.contentPadding + options.logoMargin;
+  Widget _uiLayer(final NaverMapViewOptions options) {
+    final uiLayerMargin = options.logoMargin;
+    final padding = options.contentPadding + uiLayerMargin;
+    return Padding(
+      padding: padding,
+      child: Stack(children: [
+        _naverLogo(
+            align: options.logoAlign, clickEnable: options.logoClickEnable),
+        if (options.scaleBarEnable)
+          _scaleBar(initCameraPosition: options.initialCameraPosition),
+        if (options.locationButtonEnable)
+          _locationButton(nightModeEnable: options.nightModeEnable),
+      ]),
+    );
+  }
+
+  /*
+  --- UI Layer Elements ---
+   */
+
+  Widget _naverLogo({required NLogoAlign align, required bool clickEnable}) {
     return Positioned(
-        left: align.isLeft ? fullPadding.left : null,
-        right: align.isRight ? fullPadding.right : null,
-        top: align.isTop ? fullPadding.top : null,
-        bottom: align.isBottom ? fullPadding.bottom : null,
+        left: align.isLeft ? 0 : null,
+        right: align.isRight ? 0 : null,
+        top: align.isTop ? 0 : null,
+        bottom: align.isBottom ? 0 : null,
         child: FutureBuilder(
             future: controllerCompleter.future,
             builder: (context, snapshot) {
               return NMapLogoWidget(
                   naverMapController: snapshot.data,
-                  logoClickEnable: options.logoClickEnable);
+                  logoClickEnable: clickEnable);
             }));
   }
+
+  Widget _scaleBar({required NCameraPosition? initCameraPosition}) {
+    return Positioned(
+        left: NMapLogoWidget.width + 16,
+        bottom: 0,
+        child: SizedBox(
+            height: NMapLogoWidget.height,
+            child: Center(
+                child: FutureBuilder(
+                    future: controllerCompleter.future,
+                    builder: (context, snapshot) {
+                      return NMapScaleBarWidget(
+                          naverMapController: snapshot.data,
+                          initCameraPosition: initCameraPosition);
+                    }))));
+  }
+
+  Widget _locationButton({required bool nightModeEnable}) {
+    return Positioned(
+        left: 0,
+        bottom: NMapLogoWidget.height + 12,
+        child: SizedBox(
+            width: NMapLogoWidget.width,
+            child: Center(
+                child: FutureBuilder(
+                    future: controllerCompleter.future,
+                    builder: (context, snapshot) {
+                      return NMyLocationButtonWidget(
+                          mapController: snapshot.data,
+                          nightMode: nightModeEnable);
+                    }))));
+  }
+
+  /*
+  --- End of UI Layer Elements ---
+   */
 
   void _onPlatformViewCreated(int id) {
     initChannel(NChannel.naverMapNativeView, id: id, handler: handle);
@@ -166,7 +241,7 @@ class _NaverMapState extends State<NaverMap>
     }
 
     if (updateQueue.isNotEmpty) {
-      if (isMapReady) {
+      if (isUpdatedBeforeMapReadyWithUpdateQueue) {
         for (final update in updateQueue) {
           update.call();
         }
@@ -177,9 +252,8 @@ class _NaverMapState extends State<NaverMap>
   }
 
   Future<void> _runOnMapReadyTasks() async {
-    final tasks = List<Future Function()>.from(onMapReadyTasksQueue);
-    onMapReadyTasksQueue.clear();
-    for (final task in tasks) {
+    while (onMapReadyTasksQueue.isNotEmpty) {
+      final task = onMapReadyTasksQueue.removeAt(0);
       try {
         await task();
       } catch (e) {
@@ -195,14 +269,31 @@ class _NaverMapState extends State<NaverMap>
   @override
   void onMapReady() async {
     controllerCompleter.complete(controller);
-    await _runOnMapReadyTasks();
-    isMapReady = true;
-    widget.onMapReady?.call(controller);
+    await _runOnMapReadyTasks()
+        .then((_) => isUpdatedBeforeMapReadyWithUpdateQueue = true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.onMapReady?.call(controller);
+      onMapReadyCompleter.complete();
+    });
+  }
+
+  @override
+  void onMapLoaded() async {
+    if (isCalledOnMapLoaded) return; // prevent duplicate call.
+    isCalledOnMapLoaded = true;
+    if (!onMapReadyCompleter.isCompleted) {
+      await onMapReadyCompleter.future;
+    }
+    widget.onMapLoaded?.call();
   }
 
   @override
   void onMapTapped(NPoint point, NLatLng latLng) =>
       widget.onMapTapped?.call(point, latLng);
+
+  @override
+  void onMapLongTapped(NPoint point, NLatLng latLng) =>
+      widget.onMapLongTapped?.call(point, latLng);
 
   @override
   void onSymbolTapped(NSymbolInfo symbol) =>
@@ -212,17 +303,23 @@ class _NaverMapState extends State<NaverMap>
   void onCameraChange(NCameraUpdateReason reason, bool animated) =>
       widget.onCameraChange?.call(reason, animated);
 
-  // like hot stream. (if needed, migrate to stream based event handling)
   @override
   void onCameraChangeWithCameraPosition(
       NCameraUpdateReason reason, bool animated, NCameraPosition position) {
-    controller._updateNowCameraPositionData(position);
+    controller._updateNowCameraPositionData(position, reason); // stream update.
     widget.onCameraChange?.call(reason, animated);
   }
 
   @override
   void onSelectedIndoorChanged(NSelectedIndoor? selectedIndoor) =>
       widget.onSelectedIndoorChanged?.call(selectedIndoor);
+
+  @override
+  void onCustomStyleLoaded() => widget.onCustomStyleLoaded?.call();
+
+  @override
+  void onCustomStyleLoadFailed(NStyleLoadFailedException exception) =>
+      widget.onCustomStyleLoadFailed?.call(exception);
 
   @override
   void onCameraIdle() => widget.onCameraIdle?.call();

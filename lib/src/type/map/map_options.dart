@@ -175,6 +175,11 @@ class NaverMapViewOptions with NMessageableWithMap {
   /// 기본값은 시스템 언어를 따르는 `NLocale.systemLocale`
   final Locale locale;
 
+  /// 커스텀 스타일 ID.
+  ///
+  /// 기본값은 커스텀 스타일을 사용하지 않음을 의미하는 null입니다.
+  final String? customStyleId;
+
   const NaverMapViewOptions({
     this.initialCameraPosition = seoulCityHall,
     this.extent,
@@ -209,6 +214,7 @@ class NaverMapViewOptions with NMessageableWithMap {
     this.maxZoom = maximumZoom,
     this.maxTilt = 63,
     this.locale = NLocale.systemLocale,
+    this.customStyleId,
   });
 
   @override
@@ -246,7 +252,8 @@ class NaverMapViewOptions with NMessageableWithMap {
         "maxZoom": maxZoom,
         "maxTilt": maxTilt,
         "locale": locale,
-      });
+        "customStyleId": customStyleId,
+      }, sendNull: true);
 
   @override
   String toString() => "$runtimeType: ${toNPayload().map}";
@@ -285,6 +292,7 @@ class NaverMapViewOptions with NMessageableWithMap {
     double? maxZoom,
     double? maxTilt,
     Locale? locale,
+    String? customStyleId,
   }) =>
       NaverMapViewOptions(
         initialCameraPosition:
@@ -327,6 +335,7 @@ class NaverMapViewOptions with NMessageableWithMap {
         maxZoom: maxZoom ?? this.maxZoom,
         maxTilt: maxTilt ?? this.maxTilt,
         locale: locale ?? this.locale,
+        customStyleId: customStyleId ?? this.customStyleId,
       );
 
   /*
@@ -386,7 +395,8 @@ class NaverMapViewOptions with NMessageableWithMap {
           minZoom == other.minZoom &&
           maxZoom == other.maxZoom &&
           maxTilt == other.maxTilt &&
-          locale == other.locale;
+          locale == other.locale &&
+          customStyleId == other.customStyleId;
 
   @override
   int get hashCode =>
@@ -422,5 +432,6 @@ class NaverMapViewOptions with NMessageableWithMap {
       minZoom.hashCode ^
       maxZoom.hashCode ^
       maxTilt.hashCode ^
-      locale.hashCode;
+      locale.hashCode ^
+      customStyleId.hashCode;
 }

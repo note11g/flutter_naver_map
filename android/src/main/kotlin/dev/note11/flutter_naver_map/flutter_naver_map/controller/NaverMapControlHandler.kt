@@ -159,7 +159,7 @@ internal interface NaverMapControlHandler {
 
     fun forceRefresh(onSuccess: () -> Unit)
 
-    fun updateOptions(rawOptions: Map<String, Any>, onSuccess: () -> Unit)
+    fun updateOptions(rawOptions: Map<String, Any?>, onSuccess: () -> Unit)
 
     fun updateClusteringOptions(rawOptions: Map<String, Any>, onSuccess: () -> Unit)
 

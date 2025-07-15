@@ -6,6 +6,7 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_naver_map_example/design/custom_widget.dart';
 import 'package:flutter_naver_map_example/pages/others/example_page_data.dart';
 import 'package:flutter_naver_map_example/pages/others/routes.dart';
+import 'package:flutter_naver_map_example/util/example_location_tracker.dart';
 import 'package:flutter_naver_map_example/util/overlay_portal_util.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -16,14 +17,18 @@ void main() async {
 
   await FlutterNaverMap().init(
       clientId: 'dzx1zs89q6',
-      onAuthFailed: (ex) => switch (ex) {
-            NQuotaExceededException(:final message) =>
-              print("사용량 초과 (message: $message)"),
-            NUnauthorizedClientException() ||
-            NClientUnspecifiedException() ||
-            NAnotherAuthFailedException() =>
-              print("인증 실패: $ex"),
-          });
+      onAuthFailed: (ex) {
+        switch (ex) {
+          case NQuotaExceededException(:final message):
+            print("사용량 초과 (message: $message)");
+            break;
+          case NUnauthorizedClientException() ||
+                NClientUnspecifiedException() ||
+                NAnotherAuthFailedException():
+            print("인증 실패: $ex");
+            break;
+        }
+      });
 
   runApp(const MyApp());
 }
@@ -86,11 +91,15 @@ class _FNMapPageState extends State<FNMapPage> {
                 haloColor: Colors.blueAccent));
           }),
       onMapReady: onMapReady,
+      onMapLoaded: onMapLoaded,
       onMapTapped: onMapTapped,
+      onMapLongTapped: onMapLongTapped,
       onSymbolTapped: onSymbolTapped,
       onCameraChange: onCameraChange,
       onCameraIdle: onCameraIdle,
       onSelectedIndoorChanged: onSelectedIndoorChanged,
+      onCustomStyleLoaded: onCustomStyleLoaded,
+      onCustomStyleLoadFailed: onCustomStyleLoadFailed,
     );
   }
 
@@ -99,14 +108,32 @@ class _FNMapPageState extends State<FNMapPage> {
   void onMapReady(NaverMapController controller) {
     mapController = controller;
     GetIt.I.registerSingleton(controller);
+    // controller.setMyLocationTracker(NExampleMyLocationTracker());
+  }
+
+  void onMapLoaded() {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("onMapLoaded"),
+    ));
   }
 
   void onMapTapped(NPoint point, NLatLng latLng) async {
-    // ...
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("onMapTapped\n$latLng"),
+    ));
+  }
+
+  void onMapLongTapped(NPoint point, NLatLng latLng) async {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("onMapLongTapped\n$latLng"),
+    ));
   }
 
   void onSymbolTapped(NSymbolInfo symbolInfo) {
-    // ...
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content:
+          Text("onSymbolTapped: ${symbolInfo.caption}\n${symbolInfo.position}"),
+    ));
   }
 
   void onCameraChange(NCameraUpdateReason reason, bool isGesture) {
@@ -119,6 +146,14 @@ class _FNMapPageState extends State<FNMapPage> {
   }
 
   void onSelectedIndoorChanged(NSelectedIndoor? selectedIndoor) {
+    // ...
+  }
+
+  void onCustomStyleLoaded() {
+    // ...
+  }
+
+  void onCustomStyleLoadFailed(Exception exception) {
     // ...
   }
 
@@ -140,7 +175,6 @@ class _FNMapPageState extends State<FNMapPage> {
                   height: 40,
                   decoration: const BoxDecoration(
                       color: Colors.blueAccent, shape: BoxShape.circle)),
-              size: const Size(40, 40),
               context: context)
           .then((value) {
         clusterIcon = value;

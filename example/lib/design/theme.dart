@@ -14,6 +14,12 @@ class ExampleAppTheme {
         primaryContainer: const Color(0xFFD2FFB4),
         onSurface: Colors.grey.shade100,
       ),
+      snackBarTheme: const SnackBarThemeData(
+          backgroundColor: Colors.black87,
+          contentTextStyle: TextStyle(color: Colors.white),
+          showCloseIcon: true,
+          closeIconColor: Colors.white70,
+      ),
       textTheme: const TextTheme(
         titleSmall: TextStyle(
             fontSize: 16, fontWeight: FontWeight.w500, letterSpacing: 0),
@@ -51,6 +57,12 @@ class ExampleAppTheme {
         outlineVariant: Colors.white54,
         primaryContainer: const Color(0xFF7FA864),
         onSurface: Colors.grey.shade800,
+      ),
+      snackBarTheme: const SnackBarThemeData(
+        backgroundColor: Colors.black87,
+        contentTextStyle: TextStyle(color: Colors.white),
+        showCloseIcon: true,
+        closeIconColor: Colors.white70,
       ),
       textTheme: const TextTheme(
         titleSmall: TextStyle(

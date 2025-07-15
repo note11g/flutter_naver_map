@@ -131,9 +131,10 @@ class NLatLngBounds with NMessageableWithMap {
         "northEast": northEast,
       });
 
-  factory NLatLngBounds._fromMessageable(dynamic m) => NLatLngBounds(
-      southWest: NLatLng._fromMessageable(m["southWest"]),
-      northEast: NLatLng._fromMessageable(m["northEast"]));
+  @internal
+  factory NLatLngBounds.fromMessageable(dynamic m) => NLatLngBounds(
+      southWest: NLatLng.fromMessageable(m["southWest"]),
+      northEast: NLatLng.fromMessageable(m["northEast"]));
 
   /*
     --- constant ---

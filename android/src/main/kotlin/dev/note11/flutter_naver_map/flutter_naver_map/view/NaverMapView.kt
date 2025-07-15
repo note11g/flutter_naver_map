@@ -12,11 +12,11 @@ import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapControlSender
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.NaverMapController
+import dev.note11.flutter_naver_map.flutter_naver_map.controller.getCustomStyleCallback
 import dev.note11.flutter_naver_map.flutter_naver_map.controller.overlay.OverlayHandler
-import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asMap
+import dev.note11.flutter_naver_map.flutter_naver_map.converter.DefaultTypeConverter.asNullableMap
 import dev.note11.flutter_naver_map.flutter_naver_map.model.base.NPoint
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.NaverMapViewOptions
-import dev.note11.flutter_naver_map.flutter_naver_map.util.NLocationSource
 import dev.note11.flutter_naver_map.flutter_naver_map.util.TextureSurfaceViewUtil
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
@@ -64,8 +64,7 @@ internal class NaverMapView(
 
     private fun onMapReady() {
         initializeMapController()
-        setLocationSource()
-        setMapTapListener()
+        setMapEventListeners()
 
         mapView.onCreate(null)
         naverMapControlSender.onMapReady()
@@ -81,19 +80,18 @@ internal class NaverMapView(
         naverMapControlSender = NaverMapController(
             naverMap, channel, flutterProvidedContext, overlayController, mapView::invalidate
         ).apply {
-            rawNaverMapOptionTempCache?.let { updateOptions(it.asMap()) {} }
+            rawNaverMapOptionTempCache?.let { updateOptions(it.asNullableMap()) {} }
         }
     }
 
-    private fun setLocationSource() {
-        naverMap.locationSource = NLocationSource(activity)
-    }
-
-    private fun setMapTapListener() {
+    private fun setMapEventListeners() {
         isListenerRegistered = true
         naverMap.run {
             setOnMapClickListener { pointFPx, latLng ->
                 naverMapControlSender.onMapTapped(NPoint.fromPointFWithPx(pointFPx), latLng)
+            }
+            setOnMapLongClickListener { pointFPx, latLng ->
+                naverMapControlSender.onMapLongTapped(NPoint.fromPointFWithPx(pointFPx), latLng)
             }
             setOnSymbolClickListener {
                 naverMapControlSender.onSymbolTapped(it)
@@ -102,17 +100,25 @@ internal class NaverMapView(
             addOnCameraChangeListener(naverMapControlSender::onCameraChange)
             addOnCameraIdleListener(naverMapControlSender::onCameraIdle)
             addOnIndoorSelectionChangeListener(naverMapControlSender::onSelectedIndoorChanged)
+            addOnLoadListener(naverMapControlSender::onMapLoaded)
+
+            naverMap.setCustomStyleId(
+                naverMapViewOptions.naverMapOptions.customStyleId,
+                naverMapControlSender.getCustomStyleCallback()
+            )
         }
     }
 
-    private fun removeMapTapListener() {
+    private fun removeMapEventListeners() {
         if (isListenerRegistered) {
             naverMap.run {
                 onMapClickListener = null
+                onMapLongClickListener = null
                 onSymbolClickListener = null
                 removeOnCameraChangeListener(naverMapControlSender::onCameraChange)
                 removeOnCameraIdleListener(naverMapControlSender::onCameraIdle)
                 removeOnIndoorSelectionChangeListener(naverMapControlSender::onSelectedIndoorChanged)
+                removeOnLoadListener(naverMapControlSender::onMapLoaded)
             }
         }
     }
@@ -121,7 +127,7 @@ internal class NaverMapView(
 
     override fun dispose() {
         unRegisterLifecycleCallback()
-        removeMapTapListener()
+        removeMapEventListeners()
 
         mapView.run {
             onPause()
@@ -129,7 +135,7 @@ internal class NaverMapView(
             onDestroy()
         }
 
-        (naverMapControlSender as NaverMapController).remove()
+        naverMapControlSender.dispose()
     }
 
     private fun registerLifecycleCallback() {
@@ -180,6 +186,7 @@ internal class NaverMapView(
 
     override fun onConfigurationChanged(newConfig: Configuration) {}
 
+    @Deprecated("Deprecated in Java")
     override fun onLowMemory() {
         mapView.onLowMemory()
     }

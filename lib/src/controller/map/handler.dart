@@ -3,7 +3,11 @@ part of "../../../flutter_naver_map.dart";
 mixin _NaverMapControlHandler {
   void onMapReady();
 
+  void onMapLoaded();
+
   void onMapTapped(NPoint point, NLatLng latLng);
+
+  void onMapLongTapped(NPoint point, NLatLng latLng);
 
   void onSymbolTapped(NSymbolInfo symbol);
 
@@ -17,6 +21,10 @@ mixin _NaverMapControlHandler {
 
   void onSelectedIndoorChanged(NSelectedIndoor? selectedIndoor);
 
+  void onCustomStyleLoaded();
+
+  void onCustomStyleLoadFailed(NStyleLoadFailedException exception);
+
   void onAnotherMethod(String methodName, dynamic args) {}
 
   Future<dynamic> handle(MethodCall call) async {
@@ -24,11 +32,21 @@ mixin _NaverMapControlHandler {
       case "onMapReady":
         onMapReady();
         break;
+      case "onMapLoaded":
+        onMapLoaded();
+        break;
       case "onMapTapped":
         final args = call.arguments;
         onMapTapped(
           NPoint._fromMessageable(args["nPoint"]),
-          NLatLng._fromMessageable(args["latLng"]),
+          NLatLng.fromMessageable(args["latLng"]),
+        );
+        break;
+      case "onMapLongTapped":
+        final args = call.arguments;
+        onMapLongTapped(
+          NPoint._fromMessageable(args["nPoint"]),
+          NLatLng.fromMessageable(args["latLng"]),
         );
         break;
       case "onSymbolTapped":
@@ -49,6 +67,13 @@ mixin _NaverMapControlHandler {
             ? NSelectedIndoor._fromMessageable(call.arguments)
             : null;
         onSelectedIndoorChanged(selectedIndoor);
+        break;
+      case "onCustomStyleLoaded":
+        onCustomStyleLoaded();
+        break;
+      case "onCustomStyleLoadFailed":
+        onCustomStyleLoadFailed(
+            NStyleLoadFailedException._fromMessageable(call.arguments));
         break;
       default:
         onAnotherMethod(call.method, call.arguments);

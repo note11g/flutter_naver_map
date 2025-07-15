@@ -12,24 +12,23 @@ import "package:flutter/rendering.dart"
 
 class WidgetToImageUtil {
   static Widget _setSizeAndTextDirection(
-      Widget widget, Size size, BuildContext context, FlutterView view) {
-    return SizedBox(
-      width: size.width,
-      height: size.height,
-      child: MediaQuery(
-          data: MediaQueryData.fromView(view),
-          child: Theme(
-              data: Theme.of(context),
-              child: Directionality(
-                textDirection: TextDirection.ltr,
-                child: widget,
-              ))),
-    );
+      Widget widget, Size? size, BuildContext context, FlutterView view) {
+    final innerWidget = MediaQuery(
+        data: MediaQueryData.fromView(view),
+        child: Theme(
+            data: Theme.of(context),
+            child: Directionality(
+              textDirection: TextDirection.ltr,
+              child: widget,
+            )));
+    if (size == null) return innerWidget;
+    return SizedBox(width: size.width, height: size.height, child: innerWidget);
   }
 
+  /// [size] is null, size will detected automatically.
   static Future<Uint8List> widgetToImageByte(
     Widget widget, {
-    required Size size,
+    required Size? size,
     required BuildContext context,
   }) async {
     final renderBox = RenderRepaintBoundary();
@@ -40,7 +39,9 @@ class WidgetToImageUtil {
     final renderView = RenderView(
         view: view,
         configuration: ViewConfiguration(
-            logicalConstraints: BoxConstraints.tight(size),
+            logicalConstraints: size != null
+                ? BoxConstraints.tight(size)
+                : const BoxConstraints(),
             devicePixelRatio: view.devicePixelRatio),
         child: renderPositionedBox);
 

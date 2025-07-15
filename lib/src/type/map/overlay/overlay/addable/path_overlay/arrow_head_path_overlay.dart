@@ -80,7 +80,7 @@ class NArrowheadPathOverlay extends NAddableOverlay<NArrowheadPathOverlay> {
   }
 
   Future<NLatLngBounds> getBounds() {
-    return _getAsyncWithCast(_boundsName, NLatLngBounds._fromMessageable);
+    return _getAsyncWithCast(_boundsName, NLatLngBounds.fromMessageable);
   }
 
   @override
