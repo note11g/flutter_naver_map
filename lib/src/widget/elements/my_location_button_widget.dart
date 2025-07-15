@@ -186,13 +186,9 @@ class _MyLocationDefaultIconPainter extends CustomPainter {
 }
 
 class _MyLocationFaceIconPainter extends CustomPainter {
-  final Color color;
   static const double _viewBox = 20.0;
-  static const double _margin = 2.4;
 
-  const _MyLocationFaceIconPainter({
-    this.color = const Color(0xFF0086FF),
-  });
+  const _MyLocationFaceIconPainter();
 
   @override
   void paint(Canvas canvas, Size size) {

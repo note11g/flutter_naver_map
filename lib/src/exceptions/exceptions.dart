@@ -72,8 +72,7 @@ class NClientUnspecifiedException extends NAuthFailedException {
 }
 
 class NAnotherAuthFailedException extends NAuthFailedException {
-  NAnotherAuthFailedException._(String code, String? message)
-      : super._(code, message);
+  NAnotherAuthFailedException._(super.code, super.message) : super._();
 }
 
 /// Custom Style 관련 오류.
@@ -106,8 +105,7 @@ class NInvalidStyleException extends NStyleLoadFailedException {
 }
 
 class NAnotherStyleLoadFailedException extends NStyleLoadFailedException {
-  NAnotherStyleLoadFailedException(super.code, super.message)
-      : super._();
+  NAnotherStyleLoadFailedException(super.code, super.message) : super._();
 }
 
 class NOverlayNotAddedOnMapException implements Exception {
