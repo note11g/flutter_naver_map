@@ -55,11 +55,19 @@ internal class NaverMapViewEventDelegate: NSObject, NMFMapViewTouchDelegate, NMF
         mapView.addIndoorSelectionDelegate(delegate: self)
         mapView.addLoadDelegate(delegate: self)
 
+        #if swift(>=6.1)
         mapView.setCustomStyleId(
             mapView.customStyleId,
             loadHandler: sender?.onCustomStyleLoaded,
             failHandler: sender?.onCustomStyleLoadFailed,
         )
+        #else
+        mapView.setCustomStyleId(
+            mapView.customStyleId,
+            loadHandler: sender?.onCustomStyleLoaded,
+            failHandler: sender?.onCustomStyleLoadFailed
+        )
+        #endif
     }
 
     func unregisterDelegates(mapView: NMFMapView) {
