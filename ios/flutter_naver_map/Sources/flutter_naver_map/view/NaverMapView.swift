@@ -22,10 +22,10 @@ internal class NaverMapView: NSObject, FlutterPlatformView {
         naverMapControlSender.onMapReady()
         deactivateLogo()
     }
-    
+
     private func deactivateLogo() {
         let subviews = naverMap.mapView.subviews
-        print("subViews: \(subviews.debugDescription)")
+        if (subviews.count < 2) { return }
         let logoIncludedView = subviews[1]
         logoIncludedView.isHidden = true
     }
@@ -44,4 +44,3 @@ internal class NaverMapView: NSObject, FlutterPlatformView {
         naverMapControlSender.dispose()
     }
 }
-
