@@ -20,8 +20,7 @@ class _NMapInfoDialogState extends State<NMapInfoDialog> {
       ValueNotifier<Map<String, String>>({});
   final currentYear = DateTime.now().year;
 
-  String? get _naverMapVersion => _dependencies
-      .value[Platform.isIOS ? "NMapsMap" : "com.naver.maps:map-sdk"];
+  static final ValueNotifier<String?> _naverMapVersion = ValueNotifier(null);
 
   @override
   void initState() {
@@ -34,6 +33,11 @@ class _NMapInfoDialogState extends State<NMapInfoDialog> {
             : version.nativeVersion.androidDependencies;
       }
     });
+    if (_naverMapVersion.value == null) {
+      FlutterNaverMap().getNativeMapSdkVersion().then((version) {
+        if (version != null) _naverMapVersion.value = version;
+      });
+    }
   }
 
   static Future<_VersionInfo?> _getVersionInfo() async {
@@ -78,12 +82,12 @@ class _NMapInfoDialogState extends State<NMapInfoDialog> {
                               "This library is licensed under the BSD-3-Clause License.")),
                   const SizedBox(height: 14),
                   ValueListenableBuilder(
-                      valueListenable: _dependencies,
-                      builder: (context, _, child) {
+                      valueListenable: _naverMapVersion,
+                      builder: (context, version, child) {
                         return _versionInfo(
                             title:
                                 "Naver Map ${Platform.isIOS ? "iOS" : "Android"} SDK",
-                            version: _naverMapVersion ?? "Unknown",
+                            version: version ?? "Unknown",
                             description:
                                 "Copyright © 2018-$currentYear NAVER Corp.\nAll rights reserved.");
                       }),

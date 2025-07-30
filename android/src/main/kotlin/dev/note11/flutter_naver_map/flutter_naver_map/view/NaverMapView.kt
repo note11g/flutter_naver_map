@@ -67,7 +67,7 @@ internal class NaverMapView(
         setMapEventListeners()
 
         mapView.onCreate(null)
-        naverMapControlSender.onMapReady()
+        if (::naverMap.isInitialized) naverMapControlSender.onMapReady()
         deactivateLogo()
     }
 
@@ -135,7 +135,7 @@ internal class NaverMapView(
             onDestroy()
         }
 
-        naverMapControlSender.dispose()
+        if (::naverMap.isInitialized) naverMapControlSender.dispose()
     }
 
     private fun registerLifecycleCallback() {

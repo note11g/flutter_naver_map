@@ -36,7 +36,7 @@ class _NaverMapSdkImpl implements NaverMapSdk {
 
   Future<void> _handler(MethodCall call) async {
     if (call.method == "onAuthFailed" && onAuthFailed != null) {
-      onAuthFailed!.call(NAuthFailedException._fromMessageable(call.arguments));
+      onAuthFailed!.call(NAuthFailedException.fromMessageable(call.arguments));
     }
   }
 }

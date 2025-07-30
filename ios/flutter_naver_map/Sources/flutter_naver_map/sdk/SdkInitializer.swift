@@ -16,10 +16,18 @@ internal class SdkInitializer: NSObject, NMFAuthManagerDelegate {
     }
 
     private func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        if (call.method == "initializeNcp") {
+        switch call.method {
+        case "initializeNcp":
             initializeWithNcp(asDict(call.arguments!), onSuccess: result)
-        } else if (call.method == "initialize") {
+            break
+        case "initialize":
             initialize(asDict(call.arguments!), onSuccess: result)
+            break
+        case "getNativeMapSdkVersion":
+            getNativeMapSdkVersion(onSuccess: result)
+            break
+        default:
+            result(FlutterMethodNotImplemented)
         }
     }
     
@@ -61,6 +69,10 @@ internal class SdkInitializer: NSObject, NMFAuthManagerDelegate {
     }
     
     // MARK: End Legacy -----
+    
+    private func getNativeMapSdkVersion(onSuccess: (Any?) -> Void) {
+        onSuccess(Bundle.naverMapFrameworkVersion())
+    }
 
     private func setOnAuthFailedListener() {
         NMFAuthManager.shared().delegate = self

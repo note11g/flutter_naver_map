@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/navermaps/SPM-NMapsMap.git",
       "state" : {
-        "revision" : "13a6d280a57c4ebab8320e2d5bf3ce89adacf95e",
-        "version" : "3.22.0"
+        "revision" : "0d1737119ac3277a19af83b29d5af901e81bf326",
+        "version" : "3.22.1"
       }
     }
   ],
