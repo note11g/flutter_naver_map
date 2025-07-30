@@ -1,3 +1,6 @@
+## 1.4.1+1
+- Fix README.md
+
 ## 1.4.1
 ### Fix
 - [iOS] Fix `NSRangeException` when logo is not removed on iOS ([Fix #341](https://github.com/note11g/flutter_naver_map/issues/341))
