@@ -3,6 +3,7 @@
 - [iOS] Fix `NSRangeException` when logo is not removed on iOS ([Fix #341](https://github.com/note11g/flutter_naver_map/issues/341))
 - [Android] Fix access at uninitialized variable NaverMapView.naverMapControlSender ([Fix #340](https://github.com/note11g/flutter_naver_map/issues/340))
 - [All Platform] Fix crash when user tapped symbol and using customStyle at the same time ([Fix #339](https://github.com/note11g/flutter_naver_map/issues/339))
+- [iOS, XCode Build] Fix Swift Version support issue under 6.1 ([PR #338](https://github.com/note11g/flutter_naver_map/pull/338))
 
 ### Update
 - [All Platform] **Update Naver Map SDK to 3.22.1**
