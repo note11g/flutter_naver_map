@@ -153,7 +153,7 @@ internal class NaverMapApplierImpl: NaverMapOptionApplier {
     }
 
     func setCustomStyleId(_ rawCustomStyleId: Any?) {
-        let styleId = castOrNull(rawCustomStyleId, caster: asString) ?? ""  /// todo: SDK 업데이트 후 fallback empty string 지우기. 현재는 임시 조치 (정상 동작은 함)
+        let styleId = castOrNull(rawCustomStyleId, caster: asString)
         mapView.setCustomStyleId(
             styleId,
             loadHandler: customStyleCallbacks?.loadHandler,
