@@ -24,8 +24,8 @@ internal class SdkInitializer(
     }
 
     private fun handle(call: MethodCall, result: MethodChannel.Result) {
-        if (call.method == "initializeNcp") {
-            initializeWithNcp(
+        when (call.method) {
+            "initializeNcp" -> initializeWithNcp(
                 call.arguments.asMap(), onSuccess = result::success, onFailure = {
                     result.error(
                         if (it is NaverMapSdk.AuthFailedException) it.errorCode else it.javaClass.name,
@@ -33,11 +33,12 @@ internal class SdkInitializer(
                         null
                     )
                 })
-        } else if (call.method == "initialize") {
-            initialize(
+            "initialize" -> initialize(
                 call.arguments.asMap(),
                 onSuccess = result::success,
                 onFailure = { result.error(it.errorCode, it.message, null) })
+            "getNativeMapSdkVersion" -> getNativeMapSdkVersion(onSuccess = result::success)
+            else -> result.notImplemented()
         }
     }
 
@@ -100,5 +101,9 @@ internal class SdkInitializer(
             "onAuthFailed",
             NFlutterException(code = ex.errorCode, message = ex.message).toMessageable()
         )
+    }
+
+    private fun getNativeMapSdkVersion(onSuccess: (String) -> Unit) {
+        onSuccess(com.naver.maps.map.BuildConfig.VERSION_NAME)
     }
 }

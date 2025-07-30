@@ -47,6 +47,13 @@ class FlutterNaverMap {
         name: "FlutterNaverMap");
   }
 
+  @internal
+  Future<String?> getNativeMapSdkVersion() async {
+    final version = await NChannel.sdkChannel.invokeMethod<String>(
+        "getNativeMapSdkVersion");
+    return version;
+  }
+
   Future<void> _handler(MethodCall call) async {
     if (call.method == "onAuthFailed" && onAuthFailed != null) {
       onAuthFailed!.call(NAuthFailedException.fromMessageable(call.arguments));
