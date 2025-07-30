@@ -1,9 +1,17 @@
-part of "../../flutter_naver_map.dart";
+import "dart:developer";
+import "dart:io";
+
+import "package:flutter/services.dart";
+import "package:flutter_naver_map/flutter_naver_map.dart";
+import "package:flutter_naver_map/src/messaging/messaging.dart";
+import "package:meta/meta.dart";
 
 class FlutterNaverMap {
-  static bool _isInitialized = false;
+  @internal
+  static bool isInitialized = false;
 
-  static int? _androidSdkVersion;
+  @internal
+  static int? androidSdkVersion;
 
   Function(NAuthFailedException ex)? onAuthFailed;
 
@@ -23,7 +31,7 @@ class FlutterNaverMap {
     String? clientId,
     Function(NAuthFailedException ex)? onAuthFailed,
   }) async {
-    if (!_isInitialized) {
+    if (!isInitialized) {
       NChannel.sdkChannel.setMethodCallHandler(_handler);
     }
 
@@ -32,16 +40,16 @@ class FlutterNaverMap {
     final result = await NChannel.sdkChannel.invokeMethod("initializeNcp",
         {"clientId": clientId, "setAuthFailedListener": onAuthFailed != null});
 
-    if (result != null) _androidSdkVersion = result["androidSdkVersion"];
-    _isInitialized = true;
+    if (result != null) androidSdkVersion = result["androidSdkVersion"];
+    isInitialized = true;
 
-    log("SDK Initialized! (${Platform.operatingSystem}${Platform.isAndroid ? ", SDK $_androidSdkVersion" : ""})",
+    log("SDK Initialized! (${Platform.operatingSystem}${Platform.isAndroid ? ", SDK $androidSdkVersion" : ""})",
         name: "FlutterNaverMap");
   }
 
   Future<void> _handler(MethodCall call) async {
     if (call.method == "onAuthFailed" && onAuthFailed != null) {
-      onAuthFailed!.call(NAuthFailedException._fromMessageable(call.arguments));
+      onAuthFailed!.call(NAuthFailedException.fromMessageable(call.arguments));
     }
   }
 }

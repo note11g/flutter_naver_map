@@ -12,6 +12,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import "package:flutter_naver_map/src/initializer/flutter_naver_map_initializer.dart";
 import 'package:flutter_naver_map/src/messaging/messaging.dart';
 import "package:flutter_naver_map/src/util/custom_data_stream.dart";
 import 'package:flutter_naver_map/src/util/image_util.dart';
@@ -26,6 +27,7 @@ import 'package:flutter_naver_map/src/widget/elements/util/canvas_util.dart';
 export 'src/util/location/builtin/default_my_location_tracker.dart';
 export 'src/util/location/builtin/default_my_location_tracker_platform_interface.dart'
     show NDefaultMyLocationTrackerPermissionStatus;
+export 'package:flutter_naver_map/src/initializer/flutter_naver_map_initializer.dart';
 
 /*
   --- controller ---
@@ -55,7 +57,7 @@ part 'src/exceptions/exceptions.dart';
   --- initializer ---
 */
 
-part 'src/initializer/flutter_naver_map_initializer.dart';
+// part 'src/initializer/flutter_naver_map_initializer.dart';
 
 part 'src/initializer/flutter_naver_map_legacy_initializer.dart';
 

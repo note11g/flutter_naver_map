@@ -120,7 +120,7 @@ class _NaverMapState extends State<NaverMap>
   @override
   Widget build(BuildContext context) {
     assert(
-        FlutterNaverMap._isInitialized || legacyMapInitializer._isInitialized);
+        FlutterNaverMap.isInitialized || legacyMapInitializer._isInitialized);
 
     _updateOptionsIfNeeded();
 
@@ -131,7 +131,7 @@ class _NaverMapState extends State<NaverMap>
         gestureRecognizers: _createGestureRecognizers(widget.forceGesture),
         creationParams: widget.options.toNPayload(),
         onPlatformViewCreated: _onPlatformViewCreated,
-        androidSdkVersion: FlutterNaverMap._androidSdkVersion ??
+        androidSdkVersion: FlutterNaverMap.androidSdkVersion ??
             legacyMapInitializer._androidSdkVersion,
         forceHybridComposition: widget.forceHybridComposition,
         forceGLSurfaceView: widget.forceGLSurfaceView,

@@ -24,7 +24,8 @@ sealed class NAuthFailedException implements Exception {
 
   NAuthFailedException._(this.code, this.message);
 
-  factory NAuthFailedException._fromMessageable(dynamic m) {
+  @internal
+  factory NAuthFailedException.fromMessageable(dynamic m) {
     final ex = _NRawNativeException.fromMessageable(m);
     return NAuthFailedException._internal(ex.code, ex.message);
   }
