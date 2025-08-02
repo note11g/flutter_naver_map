@@ -20,7 +20,7 @@ void clusteringTests() {
       clusterableMarker.setOnTapListener((cm) => completer.complete(cm.info));
 
       await controller.addOverlay(clusterableMarker);
-      await tester.flutterWidgetTester.pumpAndSettle();
+      await tester.pumpAndSettleOnMap();
 
       await clusterableMarker.performClick();
 
@@ -29,4 +29,5 @@ void clusteringTests() {
       expect(tappedInfo, clusterableMarker.info);
     });
   });
+
 }

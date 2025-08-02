@@ -12,7 +12,7 @@ Future<void> mainWithTest(String tag) async {
   print("*** running platform: ${Platform.operatingSystem} ***\n");
 
   WidgetsFlutterBinding.ensureInitialized();
-  await NaverMapSdk.instance.initialize(clientId: '', onAuthFailed: (ex) {});
+  await FlutterNaverMap().init(clientId: '', onAuthFailed: (ex) {});
 
   runApp(MyApp(tag: tag));
 }
@@ -62,8 +62,13 @@ class TestPageState extends State<TestPage> {
             locationButtonEnable: true,
             consumeSymbolTapEvents: false),
         onMapReady: (controller) async {
-          mapControllerCompleter.complete(controller);
-          log("onMapReady", name: "onMapReady");
+          print("onMapReady: received controller $controller");
+          if (!mapControllerCompleter.isCompleted) {
+            mapControllerCompleter.complete(controller);
+            print("onMapReady: completed mapControllerCompleter");
+          } else {
+            print("onMapReady: mapControllerCompleter already completed");
+          }
         },
         onCameraIdle: () {
           print("onCameraIdle: ${DateTime.now().millisecondsSinceEpoch}");

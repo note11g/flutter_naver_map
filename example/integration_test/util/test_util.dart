@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -13,6 +14,39 @@ class NaverMapTester {
   final app.TestPageState testPageState;
 
   NaverMapTester(this.flutterWidgetTester, this.testPageState);
+
+  Future<void> pumpAndSettleOnMap({
+    int maxAttempts = 20,
+    Duration stabilityDelay = const Duration(milliseconds: 100),
+    Duration initialDelay = const Duration(milliseconds: 500),
+  }) async {
+    // Initial delay for NaverMap to initialize
+    await Future.delayed(initialDelay);
+    await flutterWidgetTester.pump();
+
+    int stableCount = 0;
+    const requiredStableFrames = 3; // Need 3 consecutive stable frames
+
+    for (int attempt = 0; attempt < maxAttempts; attempt++) {
+      final hadScheduledFrame = flutterWidgetTester.binding.hasScheduledFrame;
+      await flutterWidgetTester.pump();
+      await Future.delayed(stabilityDelay);
+
+      // If no new frames scheduled during this cycle, count as stable
+      if (!hadScheduledFrame &&
+          !flutterWidgetTester.binding.hasScheduledFrame) {
+        stableCount++;
+        if (stableCount >= requiredStableFrames) {
+          break; // Found stability!
+        }
+      } else {
+        stableCount = 0; // Reset stability counter
+      }
+    }
+
+    // Final pump to ensure everything is rendered
+    await flutterWidgetTester.pump();
+  }
 
   Future<void> runGoldenTest({
     required String fileName,
@@ -42,7 +76,7 @@ class NaverMapTester {
               )
             ]));
 
-    await flutterWidgetTester.pumpAndSettle();
+    await pumpAndSettleOnMap(initialDelay: const Duration(seconds: 2));
 
     await Future.delayed(const Duration(seconds: 1));
 
@@ -61,11 +95,30 @@ void testNaverMap(
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets("test for \"$tag\"", (tester) async {
+    print("Starting test for: $tag");
+
+    print("Calling mainWithTest...");
     await app.mainWithTest(tag);
-    await tester.pumpAndSettle();
+
+    print("Calling initial pump...");
+    await tester.pump();
+
+    print("Waiting for map initialization...");
+    await Future.delayed(const Duration(milliseconds: 2000));
+
+    print("Calling final pump...");
+    await tester.pump();
+
+    print("Getting test page state...");
     final testPageState = _getTestPageState(tester, tag);
+
+    print("Getting naver map controller...");
     final controller = await _getNaverMapForTest(testPageState);
+
+    print("Executing test callback...");
     await callback.call(controller, NaverMapTester(tester, testPageState));
+
+    print("Test completed for: $tag");
   });
 }
 
@@ -76,8 +129,17 @@ app.TestPageState _getTestPageState(WidgetTester tester, String tag) {
 }
 
 Future<NaverMapController> _getNaverMapForTest(app.TestPageState state) async {
-  final controller = await state.mapControllerCompleter.future;
-  print("controller: $controller");
+  print("Waiting for map controller completion...");
+
+  // 타임아웃 추가 (10초)
+  final controller = await state.mapControllerCompleter.future
+      .timeout(const Duration(seconds: 10), onTimeout: () {
+    print("ERROR: Map controller completion timed out after 10 seconds");
+    throw TimeoutException(
+        "Map controller completion timed out", const Duration(seconds: 10));
+  });
+
+  print("controller completed: $controller");
   return controller;
 }
 
@@ -85,7 +147,7 @@ Future<NaverMapController> _getNaverMapForTest(app.TestPageState state) async {
 Future<NaverMapController> createNewNaverMapPageForTest(NaverMapTester tester,
     {required String tag}) async {
   tester.testPageState.newMapTestPage(tag);
-  await tester.flutterWidgetTester.pumpAndSettle();
+  await tester.pumpAndSettleOnMap(initialDelay: const Duration(seconds: 2));
   final newTestPageState = _getTestPageState(tester.flutterWidgetTester, tag);
   final newController = await _getNaverMapForTest(newTestPageState);
   return newController;
