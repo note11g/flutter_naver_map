@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:flutter_naver_map_example/pages/others/overlay_animation_test_page.dart';
 import 'example_page_data.dart';
 
 class DoubleMapTestPage extends StatefulWidget {
@@ -74,13 +75,24 @@ class NewWindowTestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const DoubleMapTestPage()));
-              },
-              child: const Text('openMap'))),
+      body: Column(
+          spacing: 16,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+        ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const DoubleMapTestPage()));
+            },
+            child: const Text('openMapAddAndRemoveTestPage')),
+        ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const OverlayAnimationTestPage()));
+            },
+            child: const Text('openOverlayAnimationTestPage')),
+      ]),
     );
   }
 }
