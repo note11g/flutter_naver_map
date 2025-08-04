@@ -215,8 +215,8 @@ internal class NaverMapController(
 
     override fun clearOverlays(type: NOverlayType?, onSuccess: () -> Unit) {
         if (type == null) {
-            overlayController.clearOverlays()
             clusteringController.clearClusterableMarker()
+            overlayController.clearOverlays()
         } else {
             when (type) {
                 NOverlayType.CLUSTERABLE_MARKER -> clusteringController.clearClusterableMarker()

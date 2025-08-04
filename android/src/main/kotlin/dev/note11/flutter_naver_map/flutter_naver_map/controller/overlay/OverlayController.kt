@@ -26,6 +26,7 @@ import dev.note11.flutter_naver_map.flutter_naver_map.model.map.info.NOverlayQue
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NMultipartPath
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayCaption
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.NOverlayImage
+import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NClusterableMarker
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NInfoWindow
 import dev.note11.flutter_naver_map.flutter_naver_map.model.map.overlay.overlay.NMarker
 import dev.note11.flutter_naver_map.flutter_naver_map.util.DisplayUtil.dpToPx
@@ -37,7 +38,8 @@ internal class OverlayController(
     private val context: Context,
 ) : OverlaySender, LocationOverlayHandler, MarkerHandler, InfoWindowHandler, CircleOverlayHandler,
     GroundOverlayHandler, PolygonOverlayHandler, PolylineOverlayHandler, PathOverlayHandler,
-    MultipartPathOverlayHandler, ArrowheadPathOverlayHandler, ClusterMarkerHandler, ClusterableMarkerHandler {
+    MultipartPathOverlayHandler, ArrowheadPathOverlayHandler, ClusterMarkerHandler,
+    ClusterableMarkerHandler {
     /* ----- channel ----- */
     init {
         channel.setMethodCallHandler(::handler)
@@ -106,7 +108,15 @@ internal class OverlayController(
         val query = NOverlayQuery.fromQuery(call.method)
         val overlay = getOverlay(query.info)
 
-        requireNotNull(overlay) { "overlay can't found because it's null" }
+        if (overlay == null) {
+            if (query.methodName == ClusterMarkerHandler.syncClusterMarkerName) return
+            result.error(
+                "OverlayNotFound",
+                "Overlay with info ${query.info} not found",
+                "query: $query"
+            )
+            return
+        }
 
         val isInvokedOnCommonOverlay =
             handleOverlay(overlay, query.methodName, call.arguments, result)
@@ -689,9 +699,11 @@ internal class OverlayController(
     /* ----- Cluster Marker handler ----- */
     override fun syncClusterMarker(marker: Marker, rawClusterMarker: Any, success: (Any?) -> Unit) {
         val mapData = rawClusterMarker.asMap()
-        val clusterMarker = AddableOverlay.fromMessageableCorrector(mapData, NMarker::fromMessageable)
+        val clusterMarker =
+            AddableOverlay.fromMessageableCorrector(mapData, NMarker::fromMessageable)
         clusterMarker.applyAtRawOverlay(marker)
-        val hasCustomOnTapListener = mapData[OverlayHandler.hasOnTapListenerName]?.asBoolean() == true
+        val hasCustomOnTapListener =
+            mapData[OverlayHandler.hasOnTapListenerName]?.asBoolean() == true
         if (hasCustomOnTapListener) {
             marker.onClickListener = Overlay.OnClickListener {
                 onOverlayTapped(info = NOverlayInfo.fromOverlay(it))

@@ -9,10 +9,14 @@ internal interface ClusterMarkerHandler {
         marker: Overlay, method: String, arg: Any?, result: MethodChannel.Result,
     ) = (marker as Marker).let { m ->
         when (method) {
-            "lSyncClusterMarker" -> syncClusterMarker(m, arg!!, result::success)
+            syncClusterMarkerName -> syncClusterMarker(m, arg!!, result::success)
             else -> result.notImplemented()
         }
     }
 
     fun syncClusterMarker(marker: Marker, rawClusterMarker: Any, success: (Any?) -> Unit)
+
+    companion object {
+        const val syncClusterMarkerName = "lSyncClusterMarker"
+    }
 }
