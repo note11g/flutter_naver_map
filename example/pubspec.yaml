@@ -29,6 +29,8 @@ dependencies:
   geolocator: ^14.0.1
   lat_compass: ^1.1.0
 
+  convenient_test: ^1.5.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -37,6 +39,7 @@ dev_dependencies:
 
   flutter_lints: ^2.0.0
   meta: ^1.10.0
+  convenient_test_dev: ^1.0.0
 
 flutter:
   uses-material-design: true

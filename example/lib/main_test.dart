@@ -23,9 +23,11 @@ class MyApp extends StatelessWidget {
 
   const MyApp({super.key, required this.tag});
 
+  static final navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: newTestPage(tag));
+    return MaterialApp(home: newTestPage(tag), navigatorKey: navigatorKey);
   }
 }
 
@@ -51,33 +53,35 @@ class TestPageState extends State<TestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SizedBox(
-      width: 300,
-      height: 300,
-      child: NaverMap(
-        options: const NaverMapViewOptions(
-            initialCameraPosition:
-                NCameraPosition(target: NLatLng(37, 127), zoom: 14),
-            indoorEnable: true,
-            locationButtonEnable: true,
-            consumeSymbolTapEvents: false),
-        onMapReady: (controller) async {
-          print("onMapReady: received controller $controller");
-          if (!mapControllerCompleter.isCompleted) {
-            mapControllerCompleter.complete(controller);
-            print("onMapReady: completed mapControllerCompleter");
-          } else {
-            print("onMapReady: mapControllerCompleter already completed");
-          }
-        },
-        onCameraIdle: () {
-          print("onCameraIdle: ${DateTime.now().millisecondsSinceEpoch}");
-        },
-        onCameraChange: (reason, animated) {
-          onCameraChangeStreamController.add((reason, animated));
-        },
-      ),
-    ));
+        body: SafeArea(
+          child: SizedBox(
+                width: 300,
+                height: 300,
+                child: NaverMap(
+          options: const NaverMapViewOptions(
+              initialCameraPosition:
+                  NCameraPosition(target: NLatLng(37, 127), zoom: 14),
+              indoorEnable: true,
+              locationButtonEnable: true,
+              consumeSymbolTapEvents: false),
+          onMapReady: (controller) async {
+            print("onMapReady: received controller $controller");
+            if (!mapControllerCompleter.isCompleted) {
+              mapControllerCompleter.complete(controller);
+              print("onMapReady: completed mapControllerCompleter");
+            } else {
+              print("onMapReady: mapControllerCompleter already completed");
+            }
+          },
+          onCameraIdle: () {
+            print("onCameraIdle: ${DateTime.now().millisecondsSinceEpoch}");
+          },
+          onCameraChange: (reason, animated) {
+            onCameraChangeStreamController.add((reason, animated));
+          },
+                ),
+              ),
+        ));
   }
 
   void newMapTestPage(String tag) {
