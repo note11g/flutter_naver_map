@@ -6,6 +6,10 @@ import 'package:meta/meta.dart';
 
 import 'util/test_util.dart';
 
+void main() {
+  clusteringTests();
+}
+
 @isTestGroup
 void clusteringTests() {
   group("clustering tests", () {
@@ -28,6 +32,5 @@ void clusteringTests() {
       print("Tapped info: $tappedInfo");
       expect(tappedInfo, clusterableMarker.info);
     });
-  });
 
 }

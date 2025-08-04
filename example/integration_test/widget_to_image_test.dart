@@ -3,40 +3,46 @@ import "package:flutter_naver_map/src/util/widget_to_image.dart";
 import "package:flutter_test/flutter_test.dart";
 import "package:meta/meta.dart";
 
+void main() {
+  widgetToImageTests();
+}
+
 @isTestGroup
 void widgetToImageTests() {
-  testWidgets("NOverlayImage.fromWidget MemoryLeak test", (tester) async {
-    const myAppPageKey = Key("MyApp");
-    const stfulWidgetKey = Key("stfulA");
-    await tester.pumpWidget(
-        const _MyApp(key: myAppPageKey, stfulWidgetKey: stfulWidgetKey));
+  group("widgetToImageTests", () {
+    testWidgets("NOverlayImage.fromWidget MemoryLeak test", (tester) async {
+      const myAppPageKey = Key("MyApp");
+      const stfulWidgetKey = Key("stfulA");
+      await tester.pumpWidget(
+          const _MyApp(key: myAppPageKey, stfulWidgetKey: stfulWidgetKey));
 
-    await tester.pump();
+      await tester.pump();
 
-    final stfulWidgetFinder = find.byKey(stfulWidgetKey);
-    final _StFulTestWidgetState statefulWidgetState =
-        tester.state(stfulWidgetFinder);
+      final stfulWidgetFinder = find.byKey(stfulWidgetKey);
+      final _StFulTestWidgetState statefulWidgetState =
+          tester.state(stfulWidgetFinder);
 
-    expect(statefulWidgetState.count, 0);
+      expect(statefulWidgetState.count, 0);
 
-    // dispose test : case normal attach to widgetTree
-    final _MyAppState myAppState = tester.state(find.byKey(myAppPageKey));
-    myAppState.disposeStfulTestWidget();
-    await tester.pump();
+      // dispose test : case normal attach to widgetTree
+      final _MyAppState myAppState = tester.state(find.byKey(myAppPageKey));
+      myAppState.disposeStfulTestWidget();
+      await tester.pump();
 
-    print(statefulWidgetState.mounted);
-    expect(statefulWidgetState.mounted, false); // : isDisposed
+      print(statefulWidgetState.mounted);
+      expect(statefulWidgetState.mounted, false); // : isDisposed
 
-    // dispose test : case attach to NOverlayImage.fromWidget inner canvas (virtual canvas)
-    final buildContext = myAppState.context;
-    final widgetToImageBytes = await WidgetToImageUtil.widgetToImageByte(
-        const StFulTestWidget(),
-        size: const Size(40, 80),
-        context: buildContext);
-    print(widgetToImageBytes.length);
-    expect(widgetToImageBytes.length > 100, true); // successful created test
+      // dispose test : case attach to NOverlayImage.fromWidget inner canvas (virtual canvas)
+      final buildContext = myAppState.context;
+      final widgetToImageBytes = await WidgetToImageUtil.widgetToImageByte(
+          const StFulTestWidget(),
+          size: const Size(40, 80),
+          context: buildContext);
+      print(widgetToImageBytes.length);
+      expect(widgetToImageBytes.length > 100, true); // successful created test
 
-    print("test end");
+      print("test end");
+    });
   });
 }
 
