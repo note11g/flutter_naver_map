@@ -14,9 +14,11 @@ internal extension ClusterMarkerHandler {
         let marker = marker as! NMFMarker
         
         switch method {
-        case "lSyncClusterMarker":
+        case syncClusterMarkerName:
             syncClusterMarker(marker, rawClusterMarker: arg!, success: result)
         default: result(FlutterMethodNotImplemented)
         }
     }
 }
+
+internal let syncClusterMarkerName = "lSyncClusterMarker"

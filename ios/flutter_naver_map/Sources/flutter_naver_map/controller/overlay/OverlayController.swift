@@ -89,8 +89,8 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
         let overlay = getOverlay(info: query.info)
 
         guard let overlay else {
-            if (query.info.type == .clusterableMarker) { return }
-            result(FlutterError(code: "overlay_not_found", message: call.method, details: nil))
+            if (query.methodName == syncClusterMarkerName) { return }
+            result(FlutterError(code: "overlay_not_found", message: "Overlay with info \(query.info) not found", details: "query: \(query)"))
             return
         }
 
