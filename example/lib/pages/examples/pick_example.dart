@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math' show max;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:flutter_naver_map/leagcy_flutter_naver_map.dart';
 import '../../design/custom_widget.dart';
 import '../others/example_page_data.dart';
 import 'overlay_example.dart';

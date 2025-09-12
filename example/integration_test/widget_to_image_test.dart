@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:flutter_naver_map/src/util/widget_to_image.dart";
+import "package:flutter_naver_map/legacy_src/util/widget_to_image.dart";
 import "package:flutter_test/flutter_test.dart";
 import "package:meta/meta.dart";
 

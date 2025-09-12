@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer' show log;
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:flutter_naver_map/leagcy_flutter_naver_map.dart';
 
 // 통합 테스트를 위한 main 입니다.
 

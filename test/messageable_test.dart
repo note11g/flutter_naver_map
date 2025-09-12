@@ -1,4 +1,4 @@
-import "package:flutter_naver_map/src/messaging/messaging.dart";
+import "package:flutter_naver_map/legacy_src/messaging/messaging.dart";
 import "package:flutter_test/flutter_test.dart";
 
 void main() {

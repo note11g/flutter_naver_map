@@ -1,6 +1,6 @@
 import 'package:balloon_widget/balloon_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:flutter_naver_map/leagcy_flutter_naver_map.dart';
 
 // import 'package:flutter_naver_map_example/design/custom_widget.dart';
 import 'package:flutter_naver_map_example/design/theme.dart';

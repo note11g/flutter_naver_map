@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:flutter_naver_map/leagcy_flutter_naver_map.dart';
 import '../../design/theme.dart';
 import '../../util/overlay_portal_util.dart';
 import '../../util/string_util.dart';

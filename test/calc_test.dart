@@ -1,5 +1,5 @@
-import "package:flutter_naver_map/flutter_naver_map.dart";
-import "package:flutter_naver_map/src/util/math.dart";
+import "package:flutter_naver_map/leagcy_flutter_naver_map.dart";
+import "package:flutter_naver_map/legacy_src/util/math.dart";
 import "package:flutter_test/flutter_test.dart";
 
 void main() {
