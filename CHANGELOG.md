@@ -1,3 +1,7 @@
+# 1.4.2
+- [All Platform] **Update Naver Map SDK to 3.23.0**
+
+
 ## 1.4.1+1
 - Fix README.md
 
