@@ -107,12 +107,13 @@ Widget build(BuildContext context) {
 ## Version Up Guide
 
 - **`1.2.3` 이상 버전으로 업데이트하시면, 다음 과정을 한번 수행해주셔야 합니다.**
+  (ios는 pod을 쓰지 않는 경우 생략하거나 `pod update` 명령어를 실행하는 것 대신 `XCode > File > Pacakges > Resolve Package Versions`를 실행하세요.)
 
-  (`1.3.0` -> `1.3.1`, `1.3.1` -> `1.4.0`, `1.4.0` -> `1.4.1` 포함)
+  (`<=1.4.1` -> `1.4.2` 포함)
 
     ```shell
     cd ios # 프로젝트의 ios 폴더로 이동
-    pod update NMapsMap
+    pod update NMapsMap # pod을 실행하지 않는 경우 XCode에서 프로젝트를 열어, `File > Pacakges > Resolve Package Versions`를 진행하세요.
   
     cd .. # 프로젝트 루트로 이동 (optional)
   
