@@ -23,8 +23,8 @@ if (flutterVersionName == null) {
 }
 
 android {
-    compileSdk 35
-    ndkVersion "26.1.10909125"
+    compileSdk 36
+    ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -41,7 +41,7 @@ android {
 
     defaultConfig {
         applicationId "dev.note11.flutter_naver_map.flutter_naver_map_example"
-        minSdkVersion 23
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
