@@ -46,11 +46,55 @@ class ImageUtil {
   static Directory? _imageTempDir;
 
   static Future<Directory> _getDir() async {
-    if (_imageTempDir == null) {
-      final tempDir = await getTemporaryDirectory();
-      final imageTempDir = await tempDir.createTemp("img_");
-      _imageTempDir = imageTempDir;
-    }
-    return _imageTempDir!;
+    if (_imageTempDir case Directory dir) return dir;
+
+    final imageTempDir = await _initTempDir();
+    _imageTempDir = imageTempDir;
+    return imageTempDir;
   }
+
+  static Future<Directory> _initTempDir() async {
+    final tempDir = await getTemporaryDirectory();
+    final targetFolderDir = Directory("${tempDir.path}/$_newTempFolderPath");
+    await _cleanUpLegacyTempDir(targetFolderDir);
+    await _cleanUpPreviousTempDir(targetFolderDir);
+    final imageTempDirParent = await targetFolderDir.create();
+    final imageTempDir = await imageTempDirParent.createTemp(_newPathPrefix);
+    return imageTempDir;
+  }
+
+  static Future<void> _cleanUpPreviousTempDir(Directory imgTempDir) async {
+    if (!(await imgTempDir.exists())) return; // guard.
+
+    final previousCacheFolderStream = imgTempDir.list();
+    final previousCacheFolders = await previousCacheFolderStream.toList();
+
+    for (final folder in previousCacheFolders) {
+      folder.delete(recursive: true); // not wait.
+    }
+  }
+
+  static Future<void> _cleanUpLegacyTempDir(Directory newCacheFolderDir) async {
+    // new version folder detected. return fast.
+    if (await newCacheFolderDir.exists()) return;
+
+    final tempDir = await getTemporaryDirectory();
+    final subDirSteam = tempDir.list();
+
+    await for (final dir in subDirSteam) {
+      if (dir case Directory(:final path)) {
+        final name = path.split("/").last;
+        if (name.startsWith(_oldV1PathPrefix)) {
+          dir.delete(recursive: true); // not wait.
+        }
+      }
+    }
+  }
+
+  /// using <= 1.4.2
+  static const _oldV1PathPrefix = "img_";
+
+  /// currently using (1.4.3~)
+  static const _newTempFolderPath = "fnm1_img";
+  static const _newPathPrefix = "fnm1_img_";
 }
