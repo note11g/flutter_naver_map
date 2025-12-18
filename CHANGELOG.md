@@ -1,3 +1,11 @@
+## 1.4.3
+
+### Fix
+- [All Platform] Fixed an issue where the stored image cache wasn’t being cleared.
+
+### Update
+- [All Platform] Support custom `cacheKey` on `NOverlayImage.fromByteArray`
+
 ## 1.4.2
 
 ### Update
