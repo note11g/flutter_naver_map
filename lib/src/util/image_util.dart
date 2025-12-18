@@ -8,15 +8,15 @@ import "package:path_provider/path_provider.dart" show getTemporaryDirectory;
 class ImageUtil {
   static final Map<String, String> _hashPathMap = {};
 
-  static Future<String> saveImage(Uint8List bytes) async {
-    final hash = _generateImageHashFromBytes(bytes);
+  static Future<String> saveImage(Uint8List bytes, [String? cacheKey]) async {
+    final key = cacheKey ?? _generateImageHashFromBytes(bytes);
     late final String path;
-    if (_hashPathMap.containsKey(hash)) {
-      path = _hashPathMap[hash]!;
+    if (_hashPathMap.containsKey(key)) {
+      path = _hashPathMap[key]!;
       log("이미 저장된 이미지입니다. 저장된 path를 반환합니다. $path", name: "ImageSaveUtil");
     } else {
-      path = await _makeFile(hash, bytes);
-      _hashPathMap[hash] = path;
+      path = await _makeFile(key, bytes);
+      _hashPathMap[key] = path;
     }
     return path;
   }
