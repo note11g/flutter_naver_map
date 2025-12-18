@@ -1,3 +1,4 @@
+import "dart:convert" show utf8;
 import "dart:developer" show log;
 import "dart:io" show Directory, File, FileSystemException;
 import "dart:typed_data" show Uint8List;
@@ -30,9 +31,10 @@ class ImageUtil {
 
   /* ----- File ----- */
 
-  static Future<String> _makeFile(String hash, Uint8List bytes) async {
+  static Future<String> _makeFile(String key, Uint8List bytes) async {
     final tempDirPath = await _getDir().then((d) => d.path);
-    final path = "$tempDirPath/$hash.png";
+    final hashedKey = sha256.convert(utf8.encode(key)).toString();
+    final path = "$tempDirPath/$hashedKey.png";
     try {
       final file = await File(path).writeAsBytes(bytes);
       return file.path;
