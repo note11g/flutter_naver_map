@@ -30,4 +30,44 @@ void cameraUpdateTests() {
     expect(lastMovedData?.$2, false);
     onCameraChangeStreamSubscription.cancel();
   });
+
+  testNaverMap("nowCameraPositionStream emits latest camera data",
+      (controller, tester) async {
+    const expectedPosition = NCameraPosition(
+        target: NLatLng(37.5651, 126.9783), zoom: 13, tilt: 0, bearing: 0);
+    const expectedReason = NCameraUpdateReason.control;
+
+    final movingEventFuture = controller.nowCameraPositionStream.firstWhere(
+        (event) => event.reason == expectedReason && !event.isIdle);
+
+    final idleEventFuture = controller.nowCameraPositionStream.firstWhere(
+        (event) =>
+            event.reason == expectedReason &&
+            event.isIdle &&
+            _isSameTarget(event.position.target, expectedPosition.target));
+
+    final update = NCameraUpdate.withParams(
+        target: expectedPosition.target, zoom: expectedPosition.zoom)
+      ..setReason(expectedReason);
+
+    await controller.updateCamera(update);
+
+    final movingEvent =
+        await movingEventFuture.timeout(const Duration(seconds: 5));
+    final idleEvent =
+        await idleEventFuture.timeout(const Duration(seconds: 5));
+
+    expect(movingEvent.isIdle, isFalse);
+    expectCameraPosition(idleEvent.position, expectedPosition);
+    expect(idleEvent.reason, expectedReason);
+    expectCameraPosition(controller.nowCameraPosition, expectedPosition);
+    final fetchedPosition = await controller.getCameraPosition();
+    expectCameraPosition(fetchedPosition, expectedPosition);
+  });
+}
+
+bool _isSameTarget(NLatLng actual, NLatLng expected) {
+  const threshold = 0.00001;
+  return (actual.latitude - expected.latitude).abs() < threshold &&
+      (actual.longitude - expected.longitude).abs() < threshold;
 }
