@@ -10,7 +10,7 @@ class NMapScaleBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: naverMapController?._nowCameraPositionStream,
+        stream: naverMapController?.nowCameraPositionStream,
         builder: (context, snapshot) {
           final cameraPosition = snapshot.data?.position ?? initCameraPosition;
           if (cameraPosition == null) return const SizedBox.shrink();

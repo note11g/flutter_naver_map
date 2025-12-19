@@ -20,7 +20,7 @@ abstract class NaverMapController implements _NaverMapControlSender {
   @experimental
   NCameraPosition get nowCameraPosition;
 
-  Stream<OnCameraChangedParams> get _nowCameraPositionStream;
+  Stream<OnCameraChangedParams> get nowCameraPositionStream;
 
   Stream<NLocationTrackingMode> get _locationTrackingModeStream;
 
@@ -41,7 +41,7 @@ class _NaverMapControllerImpl
       _nowCameraPositionStreamController.currentData.position;
 
   @override
-  Stream<OnCameraChangedParams> get _nowCameraPositionStream =>
+  Stream<OnCameraChangedParams> get nowCameraPositionStream =>
       _nowCameraPositionStreamController.stream;
 
   final NValueHoldHotStreamController<OnCameraChangedParams>

@@ -40,7 +40,7 @@ class _NCompassWidgetState extends State<NCompassWidget> {
       width: widget.size,
       height: widget.size,
       child: StreamBuilder(
-          stream: widget.naverMapController?._nowCameraPositionStream,
+          stream: widget.naverMapController?.nowCameraPositionStream,
           builder: (context, snapshot) {
             final data = snapshot.data;
             final cameraPosition = data?.position ?? widget.initCameraPosition;

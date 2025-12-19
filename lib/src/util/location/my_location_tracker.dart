@@ -209,7 +209,7 @@ abstract class NMyLocationTracker with AppLifeCycleBinder {
   void _startCameraChangedSubscription(NLocationOverlay locationOverlay,
       NaverMapController controller, NLocationTrackingMode mode) {
     _onCameraChangedSubscription?.cancel();
-    _onCameraChangedSubscription = controller._nowCameraPositionStream
+    _onCameraChangedSubscription = controller.nowCameraPositionStream
         .where((e) => !e.isIdle)
         .listen((e) => onCameraChanged(
             e.position, e.reason, locationOverlay, controller, mode));
