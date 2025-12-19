@@ -7,6 +7,7 @@ import "package:crypto/crypto.dart" show sha256;
 import "package:path_provider/path_provider.dart" show getTemporaryDirectory;
 
 class ImageUtil {
+  // todo: maxCacheCount or maxCacheSize 도입
   static final Map<String, String> _hashPathMap = {};
 
   static Future<String> saveImage(Uint8List bytes, [String? cacheKey]) async {
