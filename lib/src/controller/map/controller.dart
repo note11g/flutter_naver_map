@@ -1,10 +1,5 @@
 part of "../../../flutter_naver_map.dart";
 
-typedef _OnCameraChangedParams = ({
-  NCameraPosition position,
-  NCameraUpdateReason reason
-});
-
 abstract class NaverMapController implements _NaverMapControlSender {
   static NaverMapController _createController(MethodChannel controllerChannel,
       {required int viewId, required NCameraPosition initialCameraPosition}) {
@@ -25,12 +20,12 @@ abstract class NaverMapController implements _NaverMapControlSender {
   @experimental
   NCameraPosition get nowCameraPosition;
 
-  Stream<_OnCameraChangedParams> get _nowCameraPositionStream;
+  Stream<OnCameraChangedParams> get nowCameraPositionStream;
 
   Stream<NLocationTrackingMode> get _locationTrackingModeStream;
 
   void _updateNowCameraPositionData(
-      NCameraPosition position, NCameraUpdateReason reason);
+      NCameraPosition position, NCameraUpdateReason? reason, bool isIdle);
 }
 
 class _NaverMapControllerImpl
@@ -46,18 +41,19 @@ class _NaverMapControllerImpl
       _nowCameraPositionStreamController.currentData.position;
 
   @override
-  Stream<_OnCameraChangedParams> get _nowCameraPositionStream =>
+  Stream<OnCameraChangedParams> get nowCameraPositionStream =>
       _nowCameraPositionStreamController.stream;
 
-  final NValueHoldHotStreamController<_OnCameraChangedParams>
+  final NValueHoldHotStreamController<OnCameraChangedParams>
       _nowCameraPositionStreamController;
 
   _NaverMapControllerImpl(this.channel, this.overlayController,
       NCameraPosition initialCameraPosition)
       : _nowCameraPositionStreamController =
-            NValueHoldHotStreamController<_OnCameraChangedParams>((
+            NValueHoldHotStreamController(OnCameraChangedParams(
           position: initialCameraPosition,
-          reason: NCameraUpdateReason.developer
+          reason: NCameraUpdateReason.developer,
+          isIdle: true,
         ));
 
   @override
@@ -255,9 +251,11 @@ class _NaverMapControllerImpl
 
   @override
   void _updateNowCameraPositionData(
-      NCameraPosition position, NCameraUpdateReason reason) {
-    _nowCameraPositionStreamController
-        .add((position: position, reason: reason));
+      NCameraPosition position, NCameraUpdateReason? reason, bool isIdle) {
+    _nowCameraPositionStreamController.add(OnCameraChangedParams(
+        position: position,
+        reason: reason ?? _nowCameraPositionStreamController.currentData.reason,
+        isIdle: isIdle));
   }
 
   /*

@@ -1,3 +1,17 @@
+## 1.4.3
+
+### Add (New Features)
+- [All Platform] Add `NCompassWidget`, `NaverMapOptions.compassEnable`, `NaverMapOptions.compassHideWhenUnrotated`
+- [All Platform] Add New API `NaverMapController.nowCameraPositionStream`
+
+### Fix
+- [All Platform] Fixed an issue where the stored image cache wasn’t being cleared.
+
+### Update
+- [All Platform] Support custom `cacheKey` on `NOverlayImage.fromByteArray`
+- [All Platform] improve accuracy of `NaverMapController.nowCameraPosition`
+
+
 ## 1.4.2
 
 ### Update

@@ -28,8 +28,10 @@ class NOverlayImage with NMessageableWithMap {
         _mode = _NOverlayImageMode.file;
 
   /// ByteArray로 지도에서 사용할 이미지를 생성합니다. (캐시를 사용합니다)
-  static Future<NOverlayImage> fromByteArray(Uint8List imageBytes) async {
-    final path = await ImageUtil.saveImage(imageBytes);
+  /// 
+  /// 기본적으로 image byte를 통해 hash를 생성하여 cache key로 사용하나, 해시 충돌 가능성이 있으므로 [cacheKey] 사용을 권장합니다.
+  static Future<NOverlayImage> fromByteArray(Uint8List imageBytes, {String? cacheKey}) async {
+    final path = await ImageUtil.saveImage(imageBytes, cacheKey);
     return NOverlayImage._(path: path, mode: _NOverlayImageMode.temp);
   }
 

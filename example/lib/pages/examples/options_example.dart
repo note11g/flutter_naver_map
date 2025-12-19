@@ -125,6 +125,12 @@ class _NaverMapViewOptionsExampleState
                     requestLocationPermission(context,
                         onGranted: () => buttonEnable(true));
                   }),
+              TextSwitcher(
+                  title: "나침반",
+                  description: ".compassEnable",
+                  value: options.compassEnable,
+                  onChanged: (v) =>
+                      options = options.copyWith(compassEnable: v)),
               if (indoorAvailable)
                 TextSwitcher(
                     title: "실내 지도",

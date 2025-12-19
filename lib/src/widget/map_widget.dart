@@ -152,6 +152,10 @@ class _NaverMapState extends State<NaverMap>
           _scaleBar(initCameraPosition: options.initialCameraPosition),
         if (options.locationButtonEnable)
           _locationButton(nightModeEnable: options.nightModeEnable),
+        if (options.compassEnable)
+          _compassWidget(
+              initCameraPosition: options.initialCameraPosition,
+              hideWhenUnrotated: options.compassHideWhenUnrotated),
       ]),
     );
   }
@@ -205,6 +209,22 @@ class _NaverMapState extends State<NaverMap>
                           mapController: snapshot.data,
                           nightMode: nightModeEnable);
                     }))));
+  }
+
+  Widget _compassWidget(
+      {required NCameraPosition? initCameraPosition,
+      required bool hideWhenUnrotated}) {
+    return Positioned(
+        top: 0,
+        left: 0,
+        child: FutureBuilder(
+            future: controllerCompleter.future,
+            builder: (context, snapshot) {
+              return NCompassWidget(
+                  naverMapController: snapshot.data,
+                  initCameraPosition: initCameraPosition,
+                  hideWhenUnrotated: hideWhenUnrotated);
+            }));
   }
 
   /*
@@ -300,13 +320,10 @@ class _NaverMapState extends State<NaverMap>
       widget.onSymbolTapped?.call(symbol);
 
   @override
-  void onCameraChange(NCameraUpdateReason reason, bool animated) =>
-      widget.onCameraChange?.call(reason, animated);
-
-  @override
   void onCameraChangeWithCameraPosition(
       NCameraUpdateReason reason, bool animated, NCameraPosition position) {
-    controller._updateNowCameraPositionData(position, reason); // stream update.
+    controller._updateNowCameraPositionData(
+        position, reason, false); // stream update.
     widget.onCameraChange?.call(reason, animated);
   }
 
@@ -322,7 +339,10 @@ class _NaverMapState extends State<NaverMap>
       widget.onCustomStyleLoadFailed?.call(exception);
 
   @override
-  void onCameraIdle() => widget.onCameraIdle?.call();
+  void onCameraIdle(NCameraPosition position) {
+    controller._updateNowCameraPositionData(position, null, true);
+    widget.onCameraIdle?.call();
+  }
 
   @override
   void onAnotherMethod(String methodName, dynamic args) {
