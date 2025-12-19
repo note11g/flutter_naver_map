@@ -135,6 +135,16 @@ class NaverMapViewOptions with NMessageableWithMap {
   /// 기본값은 `false`
   final bool locationButtonEnable;
 
+  /// 나침반을 활성화할지 여부를 지정합니다.
+  ///
+  /// 기본값은 `false`
+  final bool compassEnable;
+
+  /// 나침반을 활성화했다면, 항상 보여주지 않고 회전되었을 때만 보여줄지 여부를 지정합니다.
+  ///
+  /// 기본값은 `true`
+  final bool compassHideWhenUnrotated;
+
   /// 네이버 로고 클릭을 활성화할지 여부를 지정합니다.
   ///
   /// 기본값은 `true`
@@ -206,6 +216,8 @@ class NaverMapViewOptions with NMessageableWithMap {
     this.scaleBarEnable = true,
     this.indoorLevelPickerEnable = true,
     this.locationButtonEnable = false,
+    this.compassEnable = false,
+    this.compassHideWhenUnrotated = true,
     this.logoClickEnable = true,
     this.logoAlign = NLogoAlign.leftBottom,
     this.logoMargin = defaultLogoMargin,
@@ -284,6 +296,8 @@ class NaverMapViewOptions with NMessageableWithMap {
     bool? scaleBarEnable,
     bool? indoorLevelPickerEnable,
     bool? locationButtonEnable,
+    bool? compassEnable,
+    bool? compassHideWhenUnrotated,
     bool? logoClickEnable,
     NLogoAlign? logoAlign,
     EdgeInsets? logoMargin,
@@ -327,6 +341,9 @@ class NaverMapViewOptions with NMessageableWithMap {
         indoorLevelPickerEnable:
             indoorLevelPickerEnable ?? this.indoorLevelPickerEnable,
         locationButtonEnable: locationButtonEnable ?? this.locationButtonEnable,
+        compassEnable: compassEnable ?? this.compassEnable,
+        compassHideWhenUnrotated:
+            compassHideWhenUnrotated ?? this.compassHideWhenUnrotated,
         logoClickEnable: logoClickEnable ?? this.logoClickEnable,
         logoAlign: logoAlign ?? this.logoAlign,
         logoMargin: logoMargin ?? this.logoMargin,
@@ -388,6 +405,8 @@ class NaverMapViewOptions with NMessageableWithMap {
           scaleBarEnable == other.scaleBarEnable &&
           indoorLevelPickerEnable == other.indoorLevelPickerEnable &&
           locationButtonEnable == other.locationButtonEnable &&
+          compassEnable == other.compassEnable &&
+          compassHideWhenUnrotated == other.compassHideWhenUnrotated &&
           logoClickEnable == other.logoClickEnable &&
           logoAlign == other.logoAlign &&
           logoMargin == other.logoMargin &&
@@ -425,6 +444,8 @@ class NaverMapViewOptions with NMessageableWithMap {
       scaleBarEnable.hashCode ^
       indoorLevelPickerEnable.hashCode ^
       locationButtonEnable.hashCode ^
+      compassEnable.hashCode ^
+      compassHideWhenUnrotated.hashCode ^
       logoClickEnable.hashCode ^
       logoAlign.hashCode ^
       logoMargin.hashCode ^
