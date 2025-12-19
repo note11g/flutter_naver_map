@@ -160,6 +160,8 @@ part 'src/widget/elements/zoom_control_widget.dart';
 
 part 'src/widget/elements/scale_bar_widget.dart';
 
+part 'src/widget/elements/compass_widget.dart';
+
 part 'src/widget/elements/my_location_button_widget.dart';
 
 /*
