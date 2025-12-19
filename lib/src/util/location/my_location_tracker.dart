@@ -74,7 +74,7 @@ abstract class NMyLocationTracker with AppLifeCycleBinder {
 
   StreamSubscription<NLatLng>? _locationStreamSub;
   StreamSubscription<double>? _headingStreamSub;
-  StreamSubscription<_OnCameraChangedParams>? _onCameraChangedSubscription;
+  StreamSubscription<OnCameraChangedParams>? _onCameraChangedSubscription;
 
   FutureOr<bool> _startTracking(NLocationTrackingMode mode,
       NLocationOverlay locationOverlay, NaverMapController controller) async {

@@ -315,7 +315,10 @@ internal class NaverMapController(
     }
 
     override fun onCameraIdle() {
-        channel.invokeMethod("onCameraIdle", null)
+        val cameraPosition = naverMap.cameraPosition
+        channel.invokeMethod("onCameraIdle", mapOf(
+            "position" to cameraPosition.toMessageable()
+        ))
     }
 
     override fun onSelectedIndoorChanged(selectedIndoor: IndoorSelection?) {

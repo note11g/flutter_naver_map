@@ -80,6 +80,8 @@ part 'src/type/map/camera/camera_position.dart';
 
 part 'src/type/map/camera/camera_update.dart';
 
+part 'src/type/map/camera/on_camera_changed_params.dart';
+
 part 'src/type/map/enums.dart';
 
 part 'src/type/map/geo/latlng.dart';

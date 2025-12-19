@@ -11,13 +11,10 @@ mixin _NaverMapControlHandler {
 
   void onSymbolTapped(NSymbolInfo symbol);
 
-  @Deprecated("use `onCameraChangeWithCameraPosition` instead")
-  void onCameraChange(NCameraUpdateReason reason, bool animated);
-
   void onCameraChangeWithCameraPosition(
       NCameraUpdateReason reason, bool animated, NCameraPosition position);
 
-  void onCameraIdle();
+  void onCameraIdle(NCameraPosition position);
 
   void onSelectedIndoorChanged(NSelectedIndoor? selectedIndoor);
 
@@ -60,7 +57,8 @@ mixin _NaverMapControlHandler {
             NCameraPosition._fromMessageable(args["position"]));
         break;
       case "onCameraIdle":
-        onCameraIdle();
+        final args = call.arguments;
+        onCameraIdle(NCameraPosition._fromMessageable(args["position"]));
         break;
       case "onSelectedIndoorChanged":
         final selectedIndoor = call.arguments != null

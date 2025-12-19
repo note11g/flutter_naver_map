@@ -248,7 +248,10 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
     }
     
     func onCameraIdle() {
-        channel.invokeMethod("onCameraIdle", arguments: nil)
+        let cameraPosition = mapView.cameraPosition
+        channel.invokeMethod("onCameraIdle", arguments: [
+            "position": cameraPosition.toMessageable()
+        ])
     }
     
     func onSelectedIndoorChanged(selectedIndoor: NMFIndoorSelection?) {
