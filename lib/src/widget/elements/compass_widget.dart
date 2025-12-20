@@ -96,7 +96,7 @@ class _NCompassWidgetState extends State<NCompassWidget> {
     if (currentBearing == null || currentBearing == 0) return;
 
     widget.naverMapController?.updateCamera(NCameraUpdate.withParams(bearing: 0)
-      ..setAnimation(duration: Duration.zero)
+      ..setAnimation(duration: const Duration(milliseconds: 300))
       ..setReason(NCameraUpdateReason.control));
   }
 }
