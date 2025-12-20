@@ -1,3 +1,9 @@
+## 1.4.4
+
+### Change
+- change compass widget tap to reset animation duration to 300ms
+
+
 ## 1.4.3
 
 ### Add (New Features)
