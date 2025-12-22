@@ -1,3 +1,9 @@
+## 1.4.5
+
+### Fix
+- [All Platform] Prevent unnecessary visibility toggling while recomputing cluster markers to reduce flicker ([#349](https://github.com/note11g/flutter_naver_map/issues/349))
+
+
 ## 1.4.4
 
 ### Change

@@ -123,7 +123,10 @@ internal class ClusteringController(
         val info = clusterMarkerInfo.tag as? NClusterInfo? ?: return
 
 //        overlayController.saveOverlay(marker, info.markerInfo.messageOverlayInfo)
-        marker.isVisible = false
+        val alreadyVisibleOnMap = marker.map != null && marker.isVisible
+        if (!alreadyVisibleOnMap) {
+            marker.isVisible = false
+        }
         sendClusterMarkerEvent(info)
         scheduleInvalidateView()
     }
