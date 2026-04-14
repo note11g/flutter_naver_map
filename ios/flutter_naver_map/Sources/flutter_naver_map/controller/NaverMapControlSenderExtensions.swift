@@ -5,8 +5,8 @@ typealias CustomStyleCallbacks = (loadHandler: () -> Void, failHandler: (any Err
 internal extension NaverMapControlSender {
     func getCustomStyleCallback() -> CustomStyleCallbacks {
         return (
-            loadHandler: onCustomStyleLoaded,
-            failHandler: onCustomStyleLoadFailed
+            loadHandler: { [weak self] in self?.onCustomStyleLoaded() },
+            failHandler: { [weak self] error in self?.onCustomStyleLoadFailed(exception: error) }
         )
     }
 }

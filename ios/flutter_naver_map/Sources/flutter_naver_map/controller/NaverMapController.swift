@@ -17,9 +17,20 @@ internal class NaverMapController: NaverMapControlSender, NaverMapControlHandler
         self.channel = channel
         self.overlayController = overlayController
         overlayController.initializeLocationOverlay(overlay: naverMap.mapView.locationOverlay)
-        self.clusteringController = ClusteringController(naverMapView: naverMap.mapView, overlayController: self.overlayController, messageSender: self.channel.invokeMethod)
-        
-        channel.setMethodCallHandler(handle)
+        let localChannel = channel
+        self.clusteringController = ClusteringController(
+            naverMapView: naverMap.mapView,
+            overlayController: self.overlayController,
+            messageSender: { method, args in localChannel.invokeMethod(method, arguments: args) }
+        )
+
+        channel.setMethodCallHandler { [weak self] call, result in
+            self?.handle(call: call, result: result)
+        }
+    }
+
+    deinit {
+        channel.setMethodCallHandler(nil)
     }
     
     func updateCamera(cameraUpdate: NMFCameraUpdate, onSuccess: @escaping (Bool) -> ()) {

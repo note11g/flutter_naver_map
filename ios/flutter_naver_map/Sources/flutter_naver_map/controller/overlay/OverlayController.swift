@@ -7,7 +7,14 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
 
     init(channel: FlutterMethodChannel) {
         self.channel = channel
-        channel.setMethodCallHandler(handler)
+        channel.setMethodCallHandler { [weak self] call, result in
+            self?.handler(call, result: result)
+        }
+    }
+
+    deinit {
+        channel.setMethodCallHandler(nil)
+        overlays.removeAll()
     }
     
     func initializeLocationOverlay(overlay: NMFLocationOverlay) {
