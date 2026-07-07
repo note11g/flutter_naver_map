@@ -35,3 +35,23 @@ build/
 # Android build folder
 local.properties
 
+# Flutter generated files
+.flutter-plugins
+.flutter-plugins-dependencies
+**/GeneratedPluginRegistrant.*
+**/.dart_tool/
+**/.packages
+**/build/
+
+# Android generated files
+**/.gradle/
+**/.cxx/
+
+# iOS generated files
+**/Flutter/ephemeral/
+**/Flutter/Generated.xcconfig
+**/Flutter/flutter_export_environment.sh
+**/Flutter/Flutter.podspec
+**/Pods/
+**/.symlinks/
+**/xcuserdata/
