@@ -24,9 +24,12 @@ internal class NaverMapViewFactory(
             MethodChannel(messenger, FlutterNaverMapPlugin.createOverlayMethodChannelName(viewId))
         val overlayController = OverlayController(overlayChannel, context)
 
-        val convertedArgs = args!!.asNullableMap()
+        // `glsurface` is injected by platform_view.dart and is not a map option. It has to be
+        // removed before the option parser runs: ApplyUtil.applyOptions() throws
+        // NoSuchMethodException on keys it does not know.
+        val convertedArgs = args!!.asNullableMap().toMutableMap()
+        val usingGLSurfaceView = convertedArgs.remove("glsurface") as? Boolean?
         val options = NaverMapViewOptions.fromMessageable(convertedArgs)
-        val usingGLSurfaceView = convertedArgs["glsurface"] as? Boolean?
 
         return NaverMapView(
             activity = activity,
