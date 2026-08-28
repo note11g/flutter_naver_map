@@ -25,7 +25,17 @@ rootProject.allprojects {
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+
+// AGP 9+ ships built-in Kotlin support and registers its own `kotlin { }` extension,
+// which conflicts with the classic 'kotlin-android' plugin unless the app has opted
+// out via `android.builtInKotlin=false` in gradle.properties (Flutter's current
+// recommended interim state; see https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-plugin-authors).
+def agpMajor = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')[0] as int
+def builtInKotlinOptedOut = project.hasProperty('android.builtInKotlin') &&
+        !Boolean.parseBoolean(project.property('android.builtInKotlin').toString())
+if (agpMajor < 9 || builtInKotlinOptedOut) {
+    apply plugin: 'kotlin-android'
+}
 
 android {
     namespace "dev.note11.flutter_naver_map.flutter_naver_map"
@@ -35,10 +45,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
     }
 
     sourceSets {
@@ -52,5 +58,11 @@ android {
     dependencies {
         implementation 'com.naver.maps:map-sdk:3.23.0'
         implementation 'com.google.android.gms:play-services-location:21.3.0'
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8
     }
 }
