@@ -1,10 +1,12 @@
 import "dart:convert" show utf8;
 import "dart:developer" show log;
-import "dart:io" show Directory, File, FileSystemEntity, FileSystemException;
+import "dart:io"
+    show Directory, File, FileSystemEntity, FileSystemException, PathNotFoundException;
 import "dart:typed_data" show Uint8List;
 
 import "package:crypto/crypto.dart" show sha256;
-import "package:path_provider/path_provider.dart" show getTemporaryDirectory;
+import "package:path_provider/path_provider.dart"
+    show getApplicationSupportDirectory, getTemporaryDirectory;
 
 class ImageUtil {
   // todo: maxCacheCount or maxCacheSize 도입
@@ -37,8 +39,15 @@ class ImageUtil {
     final hashedKey = sha256.convert(utf8.encode(key)).toString();
     final path = "$tempDirPath/$hashedKey.png";
     try {
-      final file = await File(path).writeAsBytes(bytes);
-      return file.path;
+      try {
+        return (await File(path).writeAsBytes(bytes)).path;
+      } on PathNotFoundException {
+        // 앱이 켜져 있는 동안 폴더가 지워졌다(저장공간 부족 시 OS 정리 등).
+        // 폴더를 다시 만들고 한 번 더 저장한다. 그렇지 않으면 앱을 다시 켤 때까지
+        // 모든 마커 이미지 저장이 실패한다.
+        await Directory(tempDirPath).create(recursive: true);
+        return (await File(path).writeAsBytes(bytes)).path;
+      }
     } on FileSystemException catch (e) {
       log("저장중 오류가 발생했습니다. 메시지: ${e.message}", name: "ImageSaveUtil");
       rethrow;
@@ -60,14 +69,30 @@ class ImageUtil {
     });
   }
 
+  // 캐시 폴더(getTemporaryDirectory)는 Android 가 저장공간이 부족하면 앱 실행 중에도
+  // 지운다. 그러면 이미 저장한 마커 이미지 파일이 사라져 지도에 아이콘이 뜨지 않는다.
+  // 그래서 OS 가 임의로 지우지 않는 앱 전용 폴더에 둔다. 이전 실행의 폴더는 아래
+  // _cleanUpPreviousTempDir 가 시작 시 지우므로 쌓이지 않는다.
   static Future<Directory> _initTempDir() async {
-    final tempDir = await getTemporaryDirectory();
-    final targetFolderDir = Directory("${tempDir.path}/$_newTempFolderPath");
+    final baseDir = await getApplicationSupportDirectory();
+    final targetFolderDir = Directory("${baseDir.path}/$_newTempFolderPath");
+    await _cleanUpCacheDirFolder();
     await _cleanUpLegacyTempDir(targetFolderDir);
     await _cleanUpPreviousTempDir(targetFolderDir);
     final imageTempDirParent = await targetFolderDir.create();
     final imageTempDir = await imageTempDirParent.createTemp(_newPathPrefix);
     return imageTempDir;
+  }
+
+  /// 이전 버전이 캐시 폴더에 만들던 fnm1_img 폴더를 지운다.
+  static Future<void> _cleanUpCacheDirFolder() async {
+    try {
+      final tempDir = await getTemporaryDirectory();
+      final old = Directory("${tempDir.path}/$_newTempFolderPath");
+      if (await old.exists()) _deleteQuietly(old); // not wait.
+    } catch (e) {
+      log("캐시 폴더의 이전 이미지 폴더 정리 중 오류 무시: $e", name: "ImageUtil");
+    }
   }
 
   static Future<void> _cleanUpPreviousTempDir(Directory imgTempDir) async {
