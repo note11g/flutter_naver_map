@@ -46,14 +46,18 @@ class ImageUtil {
   }
 
   /* ----- TempDir ----- */
-  static Directory? _imageTempDir;
+  // 초기화를 Future 로 기억해 동시에 들어온 호출이 같은 초기화를 기다리게 한다.
+  // 결과(Directory)만 기억하면 첫 초기화가 끝나기 전에 들어온 호출마다 초기화가 돌고,
+  // 각 초기화의 이전 폴더 정리가 다른 호출이 방금 만든 폴더를 지운다.
+  // (앱 시작 직후 마커 비트맵을 여러 개 동시에 저장할 때 발생)
+  static Future<Directory>? _imageTempDir;
 
-  static Future<Directory> _getDir() async {
-    if (_imageTempDir case Directory dir) return dir;
-
-    final imageTempDir = await _initTempDir();
-    _imageTempDir = imageTempDir;
-    return imageTempDir;
+  static Future<Directory> _getDir() {
+    return _imageTempDir ??=
+        _initTempDir().catchError((Object e, StackTrace st) {
+      _imageTempDir = null; // 실패하면 다음 호출에서 다시 시도한다.
+      Error.throwWithStackTrace(e, st);
+    });
   }
 
   static Future<Directory> _initTempDir() async {

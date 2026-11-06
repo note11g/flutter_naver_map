@@ -1,0 +1,51 @@
+import "dart:io";
+import "dart:typed_data";
+
+import "package:flutter_naver_map/src/util/image_util.dart";
+import "package:flutter_test/flutter_test.dart";
+import "package:path_provider_platform_interface/path_provider_platform_interface.dart";
+import "package:plugin_platform_interface/plugin_platform_interface.dart";
+
+class _FakePathProvider extends PathProviderPlatform
+    with MockPlatformInterfaceMixin {
+  _FakePathProvider(this.path);
+
+  final String path;
+
+  @override
+  Future<String?> getTemporaryPath() async => path;
+}
+
+void main() {
+  late Directory tempRoot;
+
+  setUp(() {
+    tempRoot = Directory.systemTemp.createTempSync("fnm_image_util_test");
+    PathProviderPlatform.instance = _FakePathProvider(tempRoot.path);
+  });
+
+  tearDown(() {
+    if (tempRoot.existsSync()) tempRoot.deleteSync(recursive: true);
+  });
+
+  // 앱 시작 직후 여러 마커 비트맵이 동시에 저장되면 임시 폴더 초기화가 여러 번 돌고,
+  // 각 초기화가 다른 호출이 방금 만든 폴더를 "이전 폴더"로 보고 지웠다.
+  // 그러면 저장 실패(PathNotFoundException)나, 지워진 폴더를 기억해 이후 저장이 모두 실패했다.
+  test("동시에 처음 저장해도 모든 이미지 파일이 남고, 이후 저장도 된다", () async {
+    final bytes = Uint8List.fromList(List.filled(64, 7));
+
+    final paths = await Future.wait(
+      List.generate(20, (i) => ImageUtil.saveImage(bytes, "concurrent_$i")),
+    );
+    // 초기화에서 시작된 이전 폴더 정리(fire-and-forget)가 끝날 시간을 준다.
+    await Future<void>.delayed(const Duration(milliseconds: 200));
+
+    for (final path in paths) {
+      expect(File(path).existsSync(), isTrue, reason: path);
+    }
+    expect(paths.map((p) => File(p).parent.path).toSet(), hasLength(1));
+
+    final later = await ImageUtil.saveImage(bytes, "after_init");
+    expect(File(later).existsSync(), isTrue);
+  });
+}
