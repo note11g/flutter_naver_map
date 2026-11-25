@@ -84,12 +84,17 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
 
     /* ----- handler ----- */
 
-    private func handler(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+    private func handler(_ call: FlutterMethodCall, result rawResult: @escaping FlutterResult) {
+        var isReplied = false
+        let result: FlutterResult = { value in
+            isReplied = true
+            rawResult(value)
+        }
         let query = NOverlayQuery.fromQuery(call.method)
         let overlay = getOverlay(info: query.info)
 
         guard let overlay else {
-            if (query.info.type == .clusterableMarker) { return }
+            if (query.info.type == .clusterableMarker) { result(nil); return }
             result(FlutterError(code: "overlay_not_found", message: call.method, details: nil))
             return
         }
@@ -114,6 +119,9 @@ internal class OverlayController: OverlaySender, OverlayHandler, ArrowheadPathOv
             }
             overlayHandleFunc(overlay, query.methodName, call.arguments, result)
         }
+
+        // Dart awaits every overlay call, so setters without a return value must still reply.
+        if !isReplied { result(nil) }
     }
 
     /* ----- All Overlay handler ----- */

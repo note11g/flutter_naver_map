@@ -102,7 +102,8 @@ internal class OverlayController(
 
     /* ----- handler ----- */
 
-    private fun handler(call: MethodCall, result: MethodChannel.Result) {
+    private fun handler(call: MethodCall, rawResult: MethodChannel.Result) {
+        val result = ReplyTrackingResult(rawResult)
         val query = NOverlayQuery.fromQuery(call.method)
         val overlay = getOverlay(query.info)
 
@@ -127,6 +128,9 @@ internal class OverlayController(
             }
             overlayHandleFunc(overlay, query.methodName, call.arguments, result)
         }
+
+        // Dart awaits every overlay call, so setters without a return value must still reply.
+        if (!result.isReplied) result.success(null)
     }
 
     /* ----- All Overlay handler ----- */
@@ -708,5 +712,25 @@ internal class OverlayController(
 
     override fun remove() {
         channel.setMethodCallHandler(null)
+    }
+}
+
+private class ReplyTrackingResult(private val result: MethodChannel.Result) : MethodChannel.Result {
+    var isReplied = false
+        private set
+
+    override fun success(value: Any?) {
+        isReplied = true
+        result.success(value)
+    }
+
+    override fun error(errorCode: String, errorMessage: String?, errorDetails: Any?) {
+        isReplied = true
+        result.error(errorCode, errorMessage, errorDetails)
+    }
+
+    override fun notImplemented() {
+        isReplied = true
+        result.notImplemented()
     }
 }
